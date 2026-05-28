@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RollblackLegacy.Website.Application\RollblackLegacy.Website.Application.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Domain\RollblackLegacy.Website.Domain.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Contracts\RollblackLegacy.Website.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.72" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

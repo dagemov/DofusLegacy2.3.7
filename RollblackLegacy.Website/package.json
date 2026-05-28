@@ -1,0 +1,11 @@
+{
+  "name": "rollblacklegacy-website",
+  "private": true,
+  "scripts": {
+    "build:scss": "sass --no-source-map wwwroot/scss/site.scss wwwroot/css/site.css",
+    "watch:scss": "sass --watch wwwroot/scss/site.scss:wwwroot/css/site.css"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2"
+  }
+}
