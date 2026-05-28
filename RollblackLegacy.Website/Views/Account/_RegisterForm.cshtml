@@ -1,0 +1,73 @@
+@model RegisterAccountInputModel
+
+<form asp-controller="Account"
+      asp-action="Register"
+      method="post"
+      class="register-form"
+      hx-post="/account/register"
+      hx-target="#register-panel-shell"
+      hx-swap="outerHTML">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="register-form__summary"></div>
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.Username),
+        FieldId = "register-username",
+        Label = "Username",
+        Type = "text",
+        Value = Model.Username,
+        Placeholder = "rollblackhero",
+        AutoComplete = "username",
+        HelpText = "Se usa como nombre de cuenta del auth.",
+        HxGet = "/account/check-username",
+        HxTrigger = "keyup changed delay:500ms, blur",
+        HxTarget = "#username-availability"
+    })
+
+    <div id="username-availability" class="register-form__availability"></div>
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.Email),
+        FieldId = "register-email",
+        Label = "Email",
+        Type = "email",
+        Value = Model.Email,
+        Placeholder = "mage@rollblack.example",
+        AutoComplete = "email",
+        HelpText = "El MVP lo registra en la base web y lo reutiliza como respuesta secreta inicial."
+    })
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.Password),
+        FieldId = "register-password",
+        Label = "Password",
+        Type = "password",
+        AutoComplete = "new-password",
+        HelpText = "Se almacena como MD5(password) para ser compatible con Sunshine."
+    })
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.ConfirmPassword),
+        FieldId = "register-confirm-password",
+        Label = "Confirm password",
+        Type = "password",
+        AutoComplete = "new-password",
+        HelpText = "Debe coincidir exactamente con la contrasena."
+    })
+
+    <div class="register-form__actions">
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
+        {
+            Label = "Crear cuenta",
+            Href = "#",
+            Variant = "primary",
+            Icon = "fa-solid fa-hat-wizard",
+            IsSubmit = true
+        })
+    </div>
+</form>

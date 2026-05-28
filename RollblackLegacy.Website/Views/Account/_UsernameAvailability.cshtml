@@ -1,0 +1,10 @@
+@model UsernameAvailabilityViewModel
+
+@if (Model.HasValue)
+{
+    @await Html.PartialAsync("~/Views/Shared/Atoms/_Badge.cshtml", new BadgeViewModel
+    {
+        Label = Model.Message,
+        Tone = Model.Tone
+    })
+}

@@ -1,0 +1,14 @@
+@model RegisterAccountPageViewModel
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<section class="register-stage">
+    <div class="container-xl">
+        @await Html.PartialAsync("~/Views/Shared/Organisms/_RegisterPanel.cshtml", Model)
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
