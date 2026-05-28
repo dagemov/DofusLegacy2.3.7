@@ -1,0 +1,38 @@
+@inject IConfiguration Configuration
+@using RollblackLegacy.Website.Infrastructure
+@{
+    var brand = WebsiteViewModelFactory.CreateBrand(Configuration);
+    var title = ViewData["Title"] as string;
+    var bodyClass = ViewData["BodyClass"] as string ?? string.Empty;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(string.IsNullOrWhiteSpace(title) ? brand.Name : $"{title} | {brand.Name}")</title>
+    <meta name="description" content="@brand.Description" />
+    <link rel="icon" type="image/svg+xml" href="@brand.FaviconPath" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="@bodyClass">
+    <div class="site-shell">
+        <div class="site-shell__mist"></div>
+        @await Html.PartialAsync("~/Views/Shared/Organisms/_Header.cshtml", brand)
+
+        <main class="site-main">
+            @RenderBody()
+        </main>
+
+        @await Html.PartialAsync("~/Views/Shared/Organisms/_Footer.cshtml", brand)
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/htmx.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
