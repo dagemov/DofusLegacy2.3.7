@@ -1,0 +1,160 @@
+<!-- Nom du challenge -->
+<Label name="challengeName">
+	<text>#name</text>
+	<Size>
+		<AbsDimension x="412" />
+	</Size>
+	<fixedHeight>false</fixedHeight>
+	<Anchors>
+		<Anchor>
+			<AbsDimension x="-2" y="0" />
+		</Anchor>
+	</Anchors>
+	<cssClass>#cssClass</cssClass>
+	<css>[local.css]tooltip_title.css</css>
+</Label>
+
+<!-- Description du challenge -->
+<Label name="description">
+	<text>#description</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="412" />
+	</Size>
+	<fixedHeight>false</fixedHeight>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>description</cssClass>
+</Label>
+
+<Container>
+	<Anchors>
+		<Anchor relativeTo="$LAST" relativePoint="BOTTOMLEFT" />
+	</Anchors>
+	<Size>
+		<RelDimension x="1" />
+		<AbsDimension y="9" />
+	</Size>
+	<Texture>
+		<uri>[local.assets]tooltip_tx_separator</uri>
+		<Size>
+			<AbsDimension x="200" y="9" />
+		</Size>
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+	</Texture>
+</Container>
+
+<!-- Bonus butin -->
+<Label name="loot">
+	<text>#loot</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+</Label>
+
+<Label name="baseLoot">
+	<text>#baseLoot</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>subtitle</cssClass>
+</Label>
+
+<Label name="groupLoot">
+	<text>#groupLoot</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>subtitle</cssClass>
+</Label>
+
+<!-- Bonus experience -->
+<Label name="experience">
+	<text>#experience</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+</Label>
+
+<Label name="baseExperience">
+	<text>#baseExperience</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>subtitle</cssClass>
+</Label>
+
+<Label name="groupExperience">
+	<text>#groupExperience</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>subtitle</cssClass>
+</Label>
+
+<Container>
+	<Anchors>
+		<Anchor relativeTo="$LAST" relativePoint="BOTTOMLEFT" />
+	</Anchors>
+	<Size>
+		<RelDimension x="1" />
+		<AbsDimension y="9" />
+	</Size>
+	<Texture>
+		<uri>[local.assets]tooltip_tx_separator</uri>
+		<Size>
+			<AbsDimension x="200" y="9" />
+		</Size>
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+	</Texture>
+</Container>
+
+<!-- Etat du challenge -->
+<Label name="state">
+	<text>#state</text>
+	<Anchors>
+		<Anchor relativeTo="$LAST"  point="TOPLEFT" relativePoint="BOTTOMLEFT" >
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="400" y="16" />
+	</Size>
+	<css>[local.css]tooltip_default.css</css>
+	<cssClass>#cssClass</cssClass>
+</Label>

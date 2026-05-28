@@ -1,0 +1,31 @@
+p {
+	font-family: Eras;
+	font-size: 20px;
+	color: #3f2828;
+	font-weight: bold;
+	text-align: center;
+}
+
+light {
+	font-family: Eras;
+	font-weight: bold;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: center;
+}
+
+small {
+	font-family: Eras;
+	font-size: 17px;
+	color: #3f2828;
+	font-weight: bold;
+	text-align: center;
+}
+
+lightSmall {
+	font-family: Eras;
+	font-weight: bold;
+	font-size: 17px;
+	color: #e0eeff;
+	text-align: center;
+}

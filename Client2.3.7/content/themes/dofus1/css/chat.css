@@ -1,0 +1,176 @@
+/* Feuille de style destin?e ? :
+? login : TextArea des news.
+? banner : typo utilis?e dans la TextArea du chat
+*/
+
+/* Alert */
+p {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #c10000;
+}
+
+/* Global */
+p0 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #312D24;
+}
+
+/* Team */
+p1 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #006699;
+}
+
+/* Guild */
+p2 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #663399;
+}
+
+/* Align */
+p3 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #BB6200;
+}
+
+/* Party */
+p4 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #006699;
+}
+
+/* Sales */
+p5 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #663300;
+}
+
+/* Seek */
+p6 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #737373;
+}
+
+/* Noob */
+p7 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #0000cc;
+}
+
+/* Admin */
+p8 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #ff00ff;
+}
+
+/* Private */
+p9 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #0066ff;
+}
+
+/* Info */
+p10 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #009900;
+}
+
+/* FightLog */
+p11 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #009900;
+}
+
+/* Pub */
+p12 {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #24a394;
+}
+
+sender {
+	font-family: Tahoma;
+	font-size: 16px;
+	text-align: left;
+	padding-left: 15;
+	text-indent: -10;
+	leading:-2;
+	color: #ffc79e;
+}
+
+bubble {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	padding-left: -15;
+	text-align: left;
+}

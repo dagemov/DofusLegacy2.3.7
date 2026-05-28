@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+    	<Import url="mod://Ankama_Config/ui/template/configCheckbox.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/greyButton.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       		<Constant name="css" value="[config.ui.skin]css/" />
+       		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />
+   	</Constants>
+
+	<Container name="configUiCtr">
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="20" />
+			</Size>
+			<text>[ui.option.chatOptions]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+		<!-- Texture tx_bgForeground1-->
+
+		<Texture name="tx_bgForeground1">
+			<Anchors>
+				<Anchor relativeTo="lbl_title1">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="485" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title2">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground1">
+					<AbsDimension x="0" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="20" />
+			</Size>
+			<text>[ui.option.miscellaneousOptions]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground2-->
+
+		<Texture name="tx_bgForeground2">
+			<Anchors>
+				<Anchor relativeTo="lbl_title2">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="150" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		
+		
+		
+		
+		<!-- PARTIE 1 option DU CHAT -->
+		
+		
+		<!-- Label lbl_reset-->
+
+		<!-- iconButton btn_resetColors-->
+
+		<iconButton name="btn_resetColors">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="202" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]btn_reset</uri>
+		</iconButton>
+
+		<Label name="lbl_resetColors">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="40" y="199" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="300" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.option.resetDefaultColors]</text>
+		</Label>
+
+
+		<!-- Container useless mais un peu qd mm, sert à placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="5" />
+			</Size>
+		</Container>
+
+		<configCheckbox name="btn_chatExpertMode" text="[ui.option.chatExpertMode]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_letLivingObjectTalk" text="[ui.option.useSpeakingItem]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_filterInsult" text="[ui.option.censorship]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showTime" text="[ui.option.useChatTime]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_channelLocked" text="[ui.option.channelLocked]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showShortcut" text="[ui.option.useShortcut]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_smileysAutoclosed" text="[ui.option.autoHideSmileys]" uri="[local.assets]tx_light_checkbox" />
+		
+
+		
+		<!-- Label lbl_exemple-->
+
+		<Label name="lbl_exemple">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="55" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="125" />
+			</Size>
+			<multiline>true</multiline>
+			<wordWrap>true</wordWrap>
+            		<css>[local.css]chat.css</css>
+            		<text>[ui.option.textSample]</text>
+		</Label>
+
+
+		<!-- ColorPicker cp_colorChoice-->
+
+		<ColorPicker name="cp_colorPk">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="360" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="400" y="200" />
+			</Size>
+			<sliderTexture>[local.bitmap]cursorSlider.png</sliderTexture>
+			<gradientTexture>[local.bitmap]cursorGradient.png</gradientTexture>
+			<Hooks>
+				<onColorChange />
+			</Hooks>
+		</ColorPicker>
+
+
+		<!-- ComboBox cb_channel-->
+
+		<ComboBox name="cb_channel">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="19" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="25" />
+			</Size>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Config::channelColorizedItem,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</ComboBox>
+		
+			
+		
+		
+		<!-- PARTIE 2 option DIVERSES -->
+		
+		
+		
+		<!-- Container useless mais un peu qd mm, sert à placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+		
+		<configCheckbox name="btn_displayTooltips" text="[ui.option.displayTooltips]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_confirmItemDrop" text="[ui.option.confirmItemDrop]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_confirmBeforeUnknownCraft" text="[ui.craft.optionWrongCraftConfirm]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showNotifications" text="[ui.option.allowTutorial]" uri="[local.assets]tx_light_checkbox" />
+
+									
+
+		<!-- Button btn_resetNotifications -->
+
+		<iconButton name="btn_resetNotifications">
+			<Anchors>
+				<Anchor relativeTo="btn_showNotifications" relativePoint="RIGHT" point="LEFT">
+					<AbsDimension x="-40" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_reset</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+        </iconButton>
+	</Container>
+</Definition>

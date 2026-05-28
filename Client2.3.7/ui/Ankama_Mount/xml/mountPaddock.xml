@@ -1,0 +1,999 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/sortButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="20" y="40" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+
+
+
+		<!-- PARTIE DE GAUCHE      ETABLE + ENCLOS  -->
+
+
+
+
+		<Texture>
+			<Size>
+				<AbsDimension x="432" y="814" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<!-- TITRE DE L'INTERFACE -->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="374" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+
+
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="86" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="391" y="422" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="19" y="60" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="189" y="28" />
+			</Size>
+			<uri>[local.assets]tx_onglet</uri>
+			<gotoAndStop>3</gotoAndStop>
+		</Texture>				
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="62" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="159" y="20" />
+			</Size>
+			<text>[ui.mount.barn]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+					  
+		<!-- ComboBox cb_1-->
+
+		<ComboBox name="cb_barn" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="345" y="25" />
+			</Size>
+			<autoSelect>true</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+		</ComboBox>
+		
+		
+		<Container name="ctr_searchBarn">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="93" />
+				</Anchor>
+			</Anchors>
+			<visible>false</visible>
+			
+			<Texture>
+				<Size>
+					<AbsDimension x="345" y="25" />
+				</Size>
+				<uri>[local.assets]tx_inputBackgroundDark</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Input name="lbl_searchBarn">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="-1" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="340" y="22" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Input>
+		</Container>
+
+		<!-- iconButton btn_search etable-->
+
+		<iconButton name="btn_searchBarn">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="380" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]btn_recherche</uri>
+			<autoGrid>false</autoGrid>
+			<checkBox>true</checkBox>
+		</iconButton>
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="20" />
+			</Size>
+			<text>[ui.sersel.type]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="83" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+			<text>[ui.common.sex]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="166" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="300" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<text>[ui.common.level]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<sortButton name="btn_barnType">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_barnGender">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="83" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_barnName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="166" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_barnLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="300" y="125" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+		</sortButton>
+		
+		<!-- Grid gd_1-->
+
+		<Grid name="gd_barn">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="152" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="362" y="320" />
+			</Size>
+			<autoSelectMode>2</autoSelectMode>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Mount::barnItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>335</slotWidth>
+			<slotHeight>32</slotHeight>
+		</Grid>
+		
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="27" y="122" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="375" y="380" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+						
+
+		<!-- Label lbl_stock-->
+
+		<Label name="lbl_stock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="473" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="326" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		
+				
+		
+		
+		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="539" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="391" y="258" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="19" y="512" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="189" y="28" />
+			</Size>
+			<uri>[local.assets]tx_onglet</uri>
+			<gotoAndStop>3</gotoAndStop>
+		</Texture>
+		
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="514" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="184" y="20" />
+			</Size>
+			<text>[ui.common.mountPark]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+
+		<!-- ComboBox cb_2-->
+
+		<ComboBox name="cb_paddock" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="546" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="345" y="25" />
+			</Size>
+			<autoSelect>true</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<maxHeight>250</maxHeight>
+		</ComboBox>
+		
+		<Container name="ctr_searchPaddock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="546" />
+				</Anchor>
+			</Anchors>
+			<visible>false</visible>
+			
+			<Texture>
+				<Size>
+					<AbsDimension x="345" y="25" />
+				</Size>
+				<uri>[local.assets]tx_inputBackgroundDark</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Input name="lbl_searchPaddock">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="-1" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="337" y="22" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Input>
+		</Container>
+		
+
+		<!-- iconButton btn_search Enclos -->
+
+		<iconButton name="btn_searchPaddock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="380" y="546" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<checkBox>true</checkBox>
+			<uri>[local.assets]btn_recherche</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+
+		
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="20" />
+			</Size>
+			<text>[ui.sersel.type]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="83" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+			<text>[ui.common.sex]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<mouseEnabled>true</mouseEnabled>
+			<useHandCursor>true</useHandCursor>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="166" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="300" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<text>[ui.common.level]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<sortButton name="btn_paddockType">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_paddockGender">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="83" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_paddockName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="166" y="20" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_paddockLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="300" y="577" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+		</sortButton>
+
+
+
+		<!-- Grid gd_2-->
+
+		<Grid name="gd_paddock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="31" y="604" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="363" y="160" />
+			</Size>
+			<autoSelectMode>2</autoSelectMode>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Mount::barnItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>335</slotWidth>
+			<slotHeight>32</slotHeight>
+		</Grid>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="574" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="375" y="218" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Label lbl_park-->
+
+		<Label name="lbl_park">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="762" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="326" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+
+
+
+
+		<!-- PARTIE CENTRALE        BOUTONS  -->
+
+
+
+
+
+
+
+
+		<Texture name="tx_bgbtntop">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="464" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]gestionDragodinde_tx_SmallBackground</uri>
+		</Texture>
+
+		<Texture name="tx_bgbtnbottom">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="464" y="664" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]gestionDragodinde_tx_SmallBackground</uri>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="464" y="744" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]gestionDragodinde_tx_SmallBackground</uri>
+		</Texture>
+		
+		<!-- simpleButton btn_park-->
+
+		<simpleButton name="btn_park">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="486" y="681" />
+				</Anchor>
+			</Anchors>
+
+			<uri>[local.assets]gestionDragodinde_btn_flecheOrangeG</uri>
+
+			<Size>
+				<AbsDimension x="140" y="40" />
+			</Size>
+			<label>[ui.mount.parkAction]</label>
+			<css>[local.css]button.css</css>
+		</simpleButton>
+
+		<!-- simpleButton btn_exchange-->
+
+		<simpleButton name="btn_exchange">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="632" y="681" />
+				</Anchor>
+			</Anchors>
+
+			<uri>[local.assets]gestionDragodinde_btn_flecheOrangeD</uri>
+
+			<Size>
+				<AbsDimension x="140" y="40" />
+			</Size>
+			<label>[ui.common.exchange]</label>
+			<css>[local.css]button.css</css>
+		</simpleButton>
+
+		<!-- simpleButton btn_stock-->
+
+		<simpleButton name="btn_stock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="486" y="17" />
+				</Anchor>
+			</Anchors>
+
+			<uri>[local.assets]gestionDragodinde_btn_flecheOrangeG</uri>
+
+			<Size>
+				<AbsDimension x="140" y="40" />
+			</Size>
+			<label>[ui.common.stock]</label>
+			<css>[local.css]button.css</css>
+		</simpleButton>
+
+		<!-- simpleButton btn_equip-->
+
+		<simpleButton name="btn_equip">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="632" y="17" />
+				</Anchor>
+			</Anchors>
+
+			<uri>[local.assets]gestionDragodinde_btn_flecheOrangeD</uri>
+
+			<Size>
+				<AbsDimension x="140" y="40" />
+			</Size>
+			<label>[ui.common.equip]</label>
+			<css>[local.css]button.css</css>
+		</simpleButton>
+
+		<!-- FERMER -->
+
+		<simpleButton name="btn_close">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="487" y="763" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]btn_orange</uri>
+
+			<Size>
+				<AbsDimension x="284" y="31" />
+			</Size>
+			<label>[ui.common.close]</label>
+			<css>[local.css]button.css</css>
+		</simpleButton>
+
+
+
+
+
+
+
+		<!-- PARTIE DE DROITE      MONTURE + CERTIFICATS  -->
+
+
+
+
+		<!-- FENETRE MONTURE EQUIPEE -->
+		
+		<Container name="ctr_mountEquiped">
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="827" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="412" y="195" />
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- TITRE MONTURE EQUIPE -->
+			
+			<Label name="lbl_mountEquiped">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="853" y="15" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="360" y="35" />
+				</Size>
+				<css>[local.css]title.css</css>
+			</Label>
+	
+			<!-- Label lbl_mountName-->
+	
+			<Label name="lbl_mountName">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="953" y="77" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="261" y="26" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+	
+			<!-- Label lbl_mountLevel-->
+	
+			<Label name="lbl_mountLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="953" y="104" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="261" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			
+			<!-- Label lbl_mountDescription-->
+
+			<Label name="lbl_mountDescription">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="953" y="125" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="261" y="45" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<multiline>true</multiline>
+				<wordWrap>true</wordWrap>
+			</Label>
+			
+		</Container>
+
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="839" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="388" y="175" />
+			</Size>
+			<uri>[local.assets]craft_tx_OrangeLine</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<!-- IMAGE DE LA MONTURE EQUIPEE -->
+
+		<EntityDisplayer name="ed_mount">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="841" y="62" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="121" y="108" />
+			</Size>
+			<mouseEnabled>false</mouseEnabled>
+			<mouseChildren>false</mouseChildren>
+		</EntityDisplayer>
+
+
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="827" y="205" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="412" y="608" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="853" y="220" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="360" y="35" />
+			</Size>
+			<text>[ui.mount.certificates]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		
+
+		<!-- ComboBox cb_3-->
+
+		<ComboBox name="cb_inventory" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="848" y="268" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="345" y="25" />
+			</Size>
+			<autoSelect>true</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+		</ComboBox>
+		
+		<Container name="ctr_searchInventory">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="848" y="268" />
+				</Anchor>
+			</Anchors>
+			<visible>false</visible>
+			
+			<Texture>
+				<Size>
+					<AbsDimension x="345" y="25" />
+				</Size>
+				<uri>[local.assets]tx_inputBackgroundDark</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Input name="lbl_searchInventory">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="-1" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="338" y="22" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Input>
+		</Container>
+
+
+
+		<!-- iconButton btn_search certificats -->
+
+		<iconButton name="btn_searchInventory">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1196" y="268" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<checkBox>true</checkBox>
+			<uri>[local.assets]btn_recherche</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="848" y="295" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="376" y="505" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="890" y="298" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="204" y="20" />
+			</Size>
+			<text>[ui.sersel.type]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>left</cssClass>
+		</Label>
+
+		<!-- Grid gd_3-->
+		
+		<Grid name="gd_inventory">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="852" y="324" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="362" y="448" />
+			</Size>
+			<autoSelectMode>2</autoSelectMode>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Mount::inventoryItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>335</slotWidth>
+			<slotHeight>32</slotHeight>
+		</Grid>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="848" y="295" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="376" y="505" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- Label lbl_certificates-->
+
+		<Label name="lbl_certificates">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="859" y="770" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="324" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</Container>
+</Definition>

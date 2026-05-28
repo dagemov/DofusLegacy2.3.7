@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+	<Container name="mainCtr">
+
+		<!-- ICONE OBJET -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Slot name="slot_icon">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+			<Hooks>
+				<onRollOver />
+				<onRollOut />
+				<onRightClick />
+			</Hooks>
+		</Slot>
+		
+		<!-- BOUTON QUANTITE 1 -->
+		
+		<Button name="btn_q1">		
+			<Common>			
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="53" y="0" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Size>
+						<AbsDimension x="123" y="48" />
+					</Size>
+					<uri>[local.assets]tx_invisible</uri>
+				</Texture>
+			</Common>
+			
+			<State type="OVER">
+				<SetProperties target="btn_q1">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED">
+				<SetProperties target="btn_q1">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_q1">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+		</Button>
+				
+		<Label name="lbl_q1">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="52" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="122" y="20" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+			<mouseChildren>false</mouseChildren>
+		</Label>
+		
+		
+		
+		<!-- BOUTON QUANTITE 2 -->
+		
+		<Button name="btn_q2">		
+			<Common>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="176" y="0" />
+					</Anchor>
+				</Anchors>
+				<Texture>
+					<Size>
+						<AbsDimension x="124" y="48" />
+					</Size>
+					<uri>[local.assets]tx_invisible</uri>
+				</Texture>
+			</Common>
+			
+			<State type="OVER">
+				<SetProperties target="btn_q2">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED">
+				<SetProperties target="btn_q2">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_q2">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+		</Button>
+				
+		<Label name="lbl_q2">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="175" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="122" y="20" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+			<mouseChildren>false</mouseChildren>
+		</Label>
+		
+		<!-- BOUTON QUANTITE 3 -->
+		
+		<Button name="btn_q3">		
+			<Common>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="300" y="0" />
+					</Anchor>
+				</Anchors>
+				<Texture>
+					<Size>
+						<AbsDimension x="129" y="48" />
+					</Size>
+					<uri>[local.assets]tx_invisible</uri>
+				</Texture>
+			</Common>
+			
+			<State type="OVER">
+				<SetProperties target="btn_q3">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED">
+				<SetProperties target="btn_q3">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_q3">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+		</Button>
+		
+		<Label name="lbl_q3">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="299" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="127" y="20" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+			<mouseChildren>false</mouseChildren>
+		</Label>
+	</Container>
+</Definition>

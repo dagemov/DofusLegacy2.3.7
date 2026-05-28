@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+    	<Import url="[config.mod.template.button]simpleButton.xml" />
+    	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		
+		<Texture>
+			<Size>
+				<AbsDimension x="550" y="300" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+
+		<!-- simpleButton btnOk-->
+
+		<simpleButton name="btn_ok">
+			<Anchors>
+				<Anchor relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="-75" y="-20" />
+				</Anchor>
+			</Anchors>			
+			<Size>
+				<AbsDimension x="130" y="30" />
+			</Size>
+			<label>[ui.common.yes]</label>
+		</simpleButton>
+
+		<!-- simpleButton btnNo-->
+
+		<simpleButton name="btn_undo">
+			<Anchors>
+				<Anchor relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="75" y="-20" />
+				</Anchor>
+			</Anchors>			
+			<Size>
+				<AbsDimension x="130" y="30" />
+			</Size>
+			<label>[ui.common.no]</label>
+		</simpleButton>
+
+		<!-- Label lblTitle -->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="500" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<!-- Label lblDescription-->
+
+		<TextArea name="lbl_description">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="510" y="140" />
+			</Size>
+			<wordWrap>true</wordWrap>
+			<multiline>true</multiline>
+			<cssClass>p</cssClass>
+			<css>[local.css]normal.css</css>
+		</TextArea>
+
+
+		<labelCheckBox name="btn_checkbox">
+			<Anchors>
+				<Anchor relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="-56" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>470</labelWidth>
+			<labelHeight>19</labelHeight>
+			<labelPosX>16</labelPosX>
+			<cssClass>p</cssClass>
+			<selected>false</selected>
+		</labelCheckBox>
+		
+		
+		
+		<!-- BOUTON DE FERMETURE -->
+		
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	</Container>
+</Definition>

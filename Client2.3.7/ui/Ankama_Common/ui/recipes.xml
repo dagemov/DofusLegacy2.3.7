@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	<Constants>
+	   <Constant name="jobIconPath" value="[config.gfx.path]jobs/" />
+	   
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Import url="[config.mod.template.button]checkBox.xml" />
+	<Import url="[config.mod.template.button]labelCheckBox.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Container>
+	
+	
+		<!-- Texture tx_background-->
+
+		<Texture>
+			<Size>
+				<AbsDimension x="453" y="672" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="19" y="86" />
+				</Anchor>
+			</Anchors>
+
+			<Size>
+				<AbsDimension x="418" y="550" />
+			</Size>
+
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="19" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="421" y="35" />
+			</Size>
+			<text>[ui.common.recipes]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+        <Container name="searchCtr">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="56"/>
+				</Anchor>
+			</Anchors>
+
+			<Texture name="txSearch">
+				<Size>
+					<AbsDimension x="203" y="25" />
+				</Size>
+				<uri>[local.assets]tx_inputBackgroundDark</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<Input name="searchInput">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="3" y="0"/>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="194" y="25" />
+				</Size>
+				<text>[ui.common.search.input]</text>
+				<css>[local.css]normal.css</css>
+				<maxChars>18</maxChars>
+			</Input>
+
+		</Container>
+
+		<checkBox name="chk1">
+			<Anchors><Anchor><AbsDimension x="257" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk2">
+			<Anchors><Anchor><AbsDimension x="279" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk3">
+			<Anchors><Anchor><AbsDimension x="301" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk4">
+			<Anchors><Anchor><AbsDimension x="323" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk5">
+			<Anchors><Anchor><AbsDimension x="345" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk6">
+			<Anchors><Anchor><AbsDimension x="367" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk7">
+			<Anchors><Anchor><AbsDimension x="389" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<checkBox name="chk8">
+			<Anchors><Anchor><AbsDimension x="411" y="60" /></Anchor></Anchors>
+			<Size><AbsDimension x="18" y="18" /></Size>
+			<selected>false</selected>
+		</checkBox>
+
+
+		<Grid name="gdRecipes">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="16" y="112"/>
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="410" y="500" />
+			</Size>
+			<slotWidth>385</slotWidth>
+			<slotHeight>100</slotHeight>
+			<rendererName>XmlUiGridRenderer</rendererName>
+			<rendererArgs>recipeItem</rendererArgs>
+			<scrollDisplay>always</scrollDisplay>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+            <Hooks>
+            	<onSelectItem />
+            </Hooks>
+		</Grid>
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="16" y="83" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="422" y="557" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		
+
+		<labelCheckBox name="chk9">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="636" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="14" y="14" />
+			</Size>
+			<labelWidth>393</labelWidth>
+			<labelHeight>21</labelHeight>
+			<labelPosX>20</labelPosX>
+			<uri>[local.assets]tx_light_checkbox</uri>
+			<text>[ui.craft.possibleRecipes]</text>
+			<css>[local.css]normal.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</labelCheckBox>
+
+	</Container>
+</Definition>

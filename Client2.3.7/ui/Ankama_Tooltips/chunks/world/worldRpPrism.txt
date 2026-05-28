@@ -1,0 +1,52 @@
+<!-- ALIGNEMENT -->
+
+<Container>
+	<Anchors>
+		<Anchor relativeTo="infosCtr" relativePoint="TOP">
+			<AbsDimension x="0" y="-5" />
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="0" y="0" />
+	</Size>
+	<Texture name="tx_alignement" />
+</Container>
+
+<Container>
+	<Anchors>
+		<Anchor relativeTo="infosCtr" relativePoint="BOTTOM">
+			<AbsDimension x="0" y="-5" />
+		</Anchor>
+	</Anchors>
+	<Size>
+		<AbsDimension x="0" y="0" />
+	</Size>
+	<Texture name="tx_alignementBottom" />
+</Container>
+
+<Container name="infosCtr">
+
+	<Label name="lbl_prismName">
+		<Size>
+			<AbsDimension x="0" />
+		</Size>
+		<text>#playerName</text>
+		<fixedWidth>false</fixedWidth>
+		<css>[local.css]tooltip_title.css</css>
+	</Label>
+	
+	<Container strata="LOW">
+			<Anchors>
+				<Anchor relativePoint="TOPLEFT">
+					<AbsDimension x="-5" y="-5" />
+				</Anchor>
+				<Anchor relativePoint="BOTTOMRIGHT">
+					<AbsDimension x="5" y="5" />
+				</Anchor>
+			</Anchors>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+			<bgCornerRadius>10</bgCornerRadius>
+			<bgColor>[colors.tooltip.bg]</bgColor>
+			<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
+	</Container>
+</Container>

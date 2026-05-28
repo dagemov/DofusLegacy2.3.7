@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+    
+	<Container name="bgCtr">
+		<Size>
+			<RelDimension x="1" y="1"/>
+		</Size>
+		<bgColor> 0x000000 </bgColor>
+		<bgAlpha> 1</bgAlpha>
+		<mouseEnabled>true</mouseEnabled>
+	</Container>
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<AbsDimension x="-20" y="-55" />
+			</Anchor>
+		</Anchors>
+		<Size>
+			<AbsDimension x="1184" y="799" />
+		</Size>
+		<mouseEnabled>true</mouseEnabled>
+
+		<!-- TEXTURE BACKGROUND -->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="62" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1122" y="799" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackground</uri>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+		</Texture>
+		
+		<WebBrowser name="browser">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="73" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1095" y="780" />
+			</Size>
+			<cacheId>ankamaWebPortal</cacheId>
+			<cacheLife>15</cacheLife>
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<scrollTopOffset>26</scrollTopOffset>
+		</WebBrowser>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="62" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1122" y="799" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_backgroundBorder</uri>
+		</Texture>
+		
+		<!-- BOUTON CROIX -->
+
+		<iconButton name="btnClose">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+        
+        <Container name="bigCloseCtr">
+
+			<!-- Texture tx_buttonBackground -->
+			<Texture>
+				<Anchors>
+					<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="38" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="432" y="47" />
+				</Size>
+				<uri>[local.assets]tx_buttonBackground</uri>
+			</Texture>
+
+
+			<!-- Button btnBigClose-->
+			<simpleButton label="[ui.common.close]" name="btnBigClose">
+				<Size>
+					<AbsDimension x="236" y="35" />
+				</Size>
+				<Anchors>
+					<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="30" />
+					</Anchor>
+				</Anchors>
+			</simpleButton>	
+		</Container>
+        
+        <Container name="uiCtr">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="75" y="10" />
+				</Anchor>
+			</Anchors>
+		</Container>
+        
+	</Container>
+</Definition>
+

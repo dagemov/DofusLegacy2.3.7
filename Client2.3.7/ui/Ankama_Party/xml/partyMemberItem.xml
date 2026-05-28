@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+	<Container name="mainCtr">
+		<Button name="member_item">
+			
+			<Common>
+				<Size>
+					<AbsDimension x="60" y="70" />
+				</Size>
+		
+				<!-- Le cadre (portrait) -->
+				<!-- Le cadre peut changer si il s'agit du cadre du leader (Texture_tx_leaderFrame) -->
+		
+				<Texture name="txPlayerContainer">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="5" y="3" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="52" y="60" />
+					</Size>
+					<autoGrid>false</autoGrid>
+					<uri>[local.assets]Texture_tx_characterContainer</uri>
+				</Texture>
+				
+				<!-- La barre de vie -->
+		
+				<Texture name="txPlayerLife">
+					<Anchors relativeTo="txPlayerContainer" relativePoint="LEFT" point="LEFT">
+						<Anchor>
+							<AbsDimension x="49" y="58" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="4" y="52" />
+					</Size>
+					<autoGrid>false</autoGrid>
+					<uri>[local.assets]Texture_tx_lifePoint</uri>
+				</Texture>
+				
+				<!-- Le portrait -->
+				
+				<EntityDisplayer name="playerEntityLook">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="8" y="10" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="40" y="48" />
+					</Size>
+					<useFade>false</useFade>
+				</EntityDisplayer>
+				
+				<!-- La couronne du leader (invisible par défaut -->
+		
+				<Texture name="txLeaderCrown" strata="TOP">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="16" y="46" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="26" y="13" />
+					</Size>
+					<autoGrid>false</autoGrid>
+					<uri>[local.assets]Texture_tx_LeaderCrown</uri>
+				</Texture>
+				
+				<!-- La flèche indiquant qu'on suit un joueur -->
+				<!-- Elle sera différente selon que l'on suit le chef du groupe ou un simple membre -->
+		
+				<Texture name="txFollowArrow" strata="TOP">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="7" y="7" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="14" y="14" />
+					</Size>
+					<autoGrid>false</autoGrid>
+					<uri>[local.assets]Texture_tx_FollowArrow</uri>
+				</Texture>
+				
+			</Common>
+		</Button>
+		<Hooks>
+			<onRollOver />
+			<onRollOut />
+		</Hooks>
+	</Container>
+</Definition>

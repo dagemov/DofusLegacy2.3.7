@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+	<Import url="[config.mod.template]button/greyButton.xml" />
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container>
+		<Size>
+			<AbsDimension x="1134" y="616" />
+		</Size>
+		<Anchors>
+			<Anchor point="TOP" relativePoint="TOP" >
+				<AbsDimension x="-1" y="217" />
+			</Anchor>
+		</Anchors>
+
+		<!-- Texture tx_background-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="58" y="37" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1019" y="573" />
+			</Size>
+			<uri>[local.assets]tx_serverchoice2_bg</uri>
+		</Texture>
+
+
+
+		<!-- Label lbl_title-->
+
+		<Label>
+			<Anchors>
+				<Anchor point="TOP" relativePoint="TOP" >
+					<AbsDimension x="0" y="-5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1134" y="30" />
+			</Size>
+			<text>[ui.sersel.choseServer]</text>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+
+		
+
+
+
+		
+		<!-- Grid gd_listServer -->
+		
+		<Grid name="gd_listServer">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="64" y="65" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1024" y="424" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Connection::serverImgXmlItem</rendererArgs>
+			<slotWidth>186</slotWidth>
+			<slotHeight>424</slotHeight>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</Grid>
+		
+		
+		<!-- Button btn_grosseflechegauche-->
+
+		<iconButton name="btn_arrowLeft">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="255" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="62" />
+			</Size>
+			<uri>[local.assets]btn_bigArrow_left</uri>
+		</iconButton>
+
+		<!-- Button btn_grosseflechedroite-->
+
+		<iconButton name="btn_arrowRight">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1080" y="255" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="62" />
+			</Size>
+			<uri>[local.assets]btn_bigArrow_right</uri>
+		</iconButton>
+
+
+		<!-- Button btn_create -->		
+
+		<greyButton label="[ui.charsel.createCharacter]" name="btn_create" width="241" height="35">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="875" y="527" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</greyButton>
+		
+		<!-- Button btn_cancel ->
+
+		<greyButton label="[ui.common.quit]" name="btn_cancel" width="241" height="35">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="527" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</greyButton-->
+
+		<!-- Button btn_validate -->		
+
+		<simpleButton label="[ui.common.select]" name="btn_validate">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="452" y="567" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="229" y="39" />
+			</Size>
+		</simpleButton>
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="414" y="575" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="305" y="40" />
+			</Size>
+			<uri>[local.assets]tx_decobtn_front</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		
+	</Container>
+	
+	<Shortcuts>
+		<validUi />
+	</Shortcuts>
+</Definition>

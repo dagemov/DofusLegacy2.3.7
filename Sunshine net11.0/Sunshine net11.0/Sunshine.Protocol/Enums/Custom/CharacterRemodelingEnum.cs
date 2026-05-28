@@ -1,0 +1,11 @@
+namespace Sunshine.Protocol.Enums
+{
+    public enum CharacterRemodelingEnum : sbyte
+    {
+        CHARACTER_REMODELING_NAME = 1,
+        CHARACTER_REMODELING_COLORS = 2,
+        CHARACTER_REMODELING_COSMETIC = 4,
+        CHARACTER_REMODELING_BREED = 8,
+        CHARACTER_REMODELING_GENDER = 16,
+    }
+}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<!--Constant name="heads" value="[local.assets]heads/SmallHead_" /-->
+		<Constant name="heads" value="[config.content.path]gfx/heads/SmallHead_" />
+		<Constant name="alignment_uri" value="[config.content.path]gfx/alignments/wings.swf|tx_alignment" />
+		<Constant name="smilies_uri" value="[config.content.path]gfx/smilies/assets.swf|smiley_" />
+		
+		<Constant name="dead_uri" value="[local.assets]Social_tx_deadState" />
+		<Constant name="offline_uri" value="[local.assets]Social_tx_offlineState" />
+		<Constant name="fight_uri" value="[local.assets]Social_tx_fightState" />
+		
+	</Constants>
+	
+	<Container name="friendItemCtr">
+		<Size>
+			<AbsDimension x="842" y="35" />
+		</Size>
+
+		<!-- Texture tx_alignment-->
+
+		<Texture name="tx_alignment">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="5" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="100" y="35" />
+			</Size>
+		</Texture>
+
+		<!-- Texture tx_head-->
+
+		<Texture name="tx_head">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+		</Texture>
+
+		<!-- Label lbl_name-->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="122" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="272" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<hyperlinkEnabled>true</hyperlinkEnabled>
+			<useStyleSheet>true</useStyleSheet>
+		</Label>
+
+		<!-- Label lbl_level-->
+
+		<Label name="lbl_level">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="419" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="53" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_guild-->
+
+		<Label name="lbl_guild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="496" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="245" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Texture tx_state -->
+
+		<Texture name="tx_state">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="745" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="35" />
+			</Size>
+		</Texture>
+
+		<!-- Texture tx_mood -->
+
+		<Texture name="tx_mood">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="753" y="1" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="32" y="34" />
+			</Size>
+		</Texture>
+
+		<!-- Texture tx_fight -->
+
+		<Texture name="tx_fight">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="760" y="-2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="24" />
+			</Size>
+		</Texture>
+
+		<!-- simpleButton btn_delete-->
+
+		<iconButton name="btn_delete">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="813" y="7" />
+				</Anchor>
+			</Anchors>
+        	<Size>
+                <AbsDimension x="20" y="20" />
+            </Size>
+        	<uri>[local.assets]btn_cross_square</uri>
+        </iconButton>
+		
+	</Container>
+</Definition>
+

@@ -1,0 +1,6 @@
+<Label name="lbl_text">
+	<autoResize>false</autoResize>
+	<fixedWidth>false</fixedWidth>
+	<cssClass>center</cssClass>
+	<css>[local.css]tooltip_title.css</css>
+</Label>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+
+		<Button name="btn_house">
+		
+			<Common>
+				<Size>
+					<AbsDimension x="376" y="41" />
+				</Size>
+				<radioMode>true</radioMode>
+				
+				<Label name="lbl_house">	
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="9" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="212" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+				<Label name="lbl_owner">	
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="240" y="9" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="126" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+			</Common>
+			
+			<State type="OVER">
+				<SetProperties target="btn_house">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+
+			<State type="SELECTED">
+				<SetProperties target="btn_house">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_house">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+
+		</Button>
+
+	</Container>
+</Definition>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+
+	<Container name="mainCtr">
+		<Size>
+			<AbsDimension x="720" y="35" />
+		</Size>
+
+		<!-- Label lblDescription-->
+
+		<Label name="lblDescription">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="10" y="4" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="430" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- simpleButton btnAssoc-->
+
+		<simpleButton name="btnAssoc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="460" y="2" />
+				</Anchor>
+			</Anchors>
+			
+			<Size>
+				<AbsDimension x="250" y="31" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>darkcenter</cssClass>
+		</simpleButton>
+	</Container>
+</Definition>

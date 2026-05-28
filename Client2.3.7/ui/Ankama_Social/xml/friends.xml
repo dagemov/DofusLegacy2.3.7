@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/horizontalTab.xml" />
+	<Import url="[config.mod.template]button/sortButton.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+    
+	<Container name="friendCtr">	
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="0" y="2" />
+			</Anchor>
+		</Anchors>	
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="10" y="-10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="300" y="28" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<text>[ui.common.friends]</text>
+		</Label>
+
+		<!-- TEXTURE BACKGROUND -->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="75" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="918" y="573" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+		</Texture>
+		
+				
+		<!-- ONGLET DES AMIS, ENNEMIS, IGNORES -->
+
+		<horizontalTab name="btn_friend">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1" y="49" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.friends]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_enemy">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="181" y="49" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.enemies]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_ignored">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="362" y="49" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.ignoreds]</text>
+		</horizontalTab>
+		
+				
+				
+		<!-- AJOUTER UN AMI/ENNEMI/IGNORE -->
+		
+		
+		<Texture name="tx_add">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="430" y="82" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="365" y="25" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_inputBackgroundDark</uri>
+		</Texture>
+
+		<Label name="lbl_add">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="16" y="83" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="400" y="20" />
+			</Size>
+			<text>[ui.common.addSomeone]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Input name="inp_add">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="435" y="80" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="352" y="25" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+			<maxChars>30</maxChars>
+		</Input>
+
+		<simpleButton label="[ui.common.add]" name="btn_add"   >
+			<Size>
+				<AbsDimension x="98" y="23" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="804" y="84" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+		</simpleButton>
+		
+				
+				
+		<!-- LISTE -->
+		
+		
+
+		
+		<Label name="lbl_tabName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="117" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="269" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lbl_tabLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="429" y="117" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="72" y="20" />
+			</Size>
+			<text>[ui.common.level]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lbl_tabGuild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="508" y="117" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="207" y="20" />
+			</Size>
+			<text>[ui.common.guild]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+				
+				
+		<!-- Grid gd_list -->
+
+		<Grid name="gd_list">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="145" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="869" y="420" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Social::friendXmlItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>842</slotWidth>
+			<slotHeight>35</slotHeight>
+		</Grid>
+
+		<!-- Texture tx_listForeground -->
+
+		<Texture name="tx_listForeground">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="16" y="114" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="887" y="480" />
+			</Size>
+			<uri>[local.assets]Friend_tx_grille</uri>
+		</Texture>
+				
+						
+										
+						
+		<sortButton name="btn_tabAli1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="30" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabBreed">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="58" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="34" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabAli2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="94" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="34" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="132" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="289" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="424" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="75" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabGuild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="501" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="262" y="24" />
+			</Size>
+		</sortButton>
+
+		<sortButton name="btn_tabState">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="766" y="118" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="55" y="24" />
+			</Size>
+		</sortButton>
+						
+		<!-- CHECKBOX D'OPTIONS -->
+				
+		
+					
+					
+		<labelCheckBox name="btn_showOfflineFriends">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="18" y="598" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>800</labelWidth>
+			<labelHeight>19</labelHeight>
+			<labelPosX>16</labelPosX>
+			<text>[ui.social.showOfflinePerson]</text>
+			<selected>false</selected>
+		</labelCheckBox>
+
+
+		<labelCheckBox name="btn_warnWhenFriendIsOnline">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="18" y="619" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>800</labelWidth>
+			<labelHeight>19</labelHeight>
+			<labelPosX>16</labelPosX>
+			<text>[ui.social.warnWhenFriendsComeOnline]</text>
+			<selected>false</selected>
+		</labelCheckBox>
+		
+
+	</Container>
+	
+	<Shortcuts>
+		<validUi />
+	</Shortcuts>
+	
+</Definition>
+

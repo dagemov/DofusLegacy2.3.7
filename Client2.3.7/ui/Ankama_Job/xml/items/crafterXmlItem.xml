@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<!--Constant name="heads" value="[local.assets]heads/SmallHead_" /-->
+		<Constant name="heads" value="[config.content.path]gfx/heads/SmallHead_" />
+		
+		<Constant name="dead_uri" value="[local.assets]Social_tx_deadState" />
+		<Constant name="offline_uri" value="[local.assets]Social_tx_offlineState" />
+		<Constant name="fight_uri" value="[local.assets]Social_tx_fightState" />
+		
+		<Constant name="alignment_uri" value="[config.content.path]gfx/alignments/wings.swf|tx_alignment" />
+	</Constants>
+	
+	<Container name="crafterItemCtr">
+		<Size>
+			<AbsDimension x="637" y="35" />
+		</Size>
+
+		<!-- Texture tx_alignment-->
+
+		<Texture name="tx_alignment">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="100" y="35" />
+			</Size>
+		</Texture>
+
+		<!-- Texture tx_head-->
+
+		<Texture name="tx_head">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="3" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+		</Texture>
+
+		<!-- Label lbl_name-->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="119" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="212" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+  			<hyperlinkEnabled>true</hyperlinkEnabled>
+			<useStyleSheet>true</useStyleSheet>
+		</Label>
+
+		<!-- Label lbl_level-->
+
+		<Label name="lbl_level">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="344" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="38" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- Label lbl_loc-->
+
+		<Label name="lbl_loc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="399" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="88" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		<!-- Texture tx_loc-->
+
+		<Texture name="tx_loc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="387" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="104" y="35" />
+			</Size>
+			<uri>[local.assets]tx_invisible</uri>
+		</Texture>
+
+		<!-- Label lbl_notFree-->
+
+		<Label name="lbl_notFree">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="505" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="41" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_nbSlots-->
+
+		<Label name="lbl_nbSlots">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="564" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="26" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+		<!-- simpleButton btn_more-->
+
+		<iconButton name="btn_more">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="605" y="8" />
+				</Anchor>
+			</Anchors>
+        	<Size>
+                <AbsDimension x="20" y="20" />
+            </Size>
+        	<uri>[local.assets]btn_etc_square</uri>
+        	<Hooks>
+        		<onRelease />
+        	</Hooks>
+        </iconButton>
+		
+	</Container>
+</Definition>
+

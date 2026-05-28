@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+	<Container name="mainCtr">
+		<Button name="btn_item">
+			<Common>
+				<Size>
+					<AbsDimension x="335" y="32" />
+				</Size>
+				<checkBox>true</checkBox>
+				<mouseChildren>false</mouseChildren>
+			
+				<Texture>
+					<Size>
+						<AbsDimension x="335" y="32" />
+					</Size>
+					<bgColor>0</bgColor>
+					<bgAlpha>0</bgAlpha>
+				</Texture>
+		
+				<!-- Label lbl_name-->
+		
+				<Label name="lbl_name">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="40" y="5" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="290" y="21" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+				
+			</Common>	
+			
+			<Hooks>
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+			
+			<State type="OVER">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="DISABLED">
+			</State>
+			<State type="SELECTED">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+		</Button>
+		
+		<!-- Texture tx_icon-->
+		
+		<Slot name="slot_icon">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="5" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="28" y="28" />
+			</Size>
+		</Slot>
+	</Container>
+</Definition>

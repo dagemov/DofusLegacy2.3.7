@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       		<Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="icons_uri" value="[config.content.path]gfx/icons" />
+		<Constant name="maps_uri" value="[config.content.path]gfx/maps/" />
+   </Constants>
+
+    <Import url="[config.mod.template.button]iconButton.xml" />
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="[config.mod.template.button]labelCheckBox.xml" />
+	<Import url="[config.mod.template.button]horizontalTab.xml" />
+
+	<Container name="mainCtr">
+		<Texture>
+			<Size>
+				<AbsDimension x="1280" y="880" />
+			</Size>
+			<uri>[local.assets]map_tx_Background</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="12" y="31" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1255" y="58" />
+			</Size>
+			<uri>[local.assets]tx_titleBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Texture Texture_tx_decoration-->
+
+		<Texture name="Texture_tx_decoration">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="983" y="41" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="243" y="38" />
+			</Size>
+			<uri>[local.assets]map_tx_PictosBandeauHaut</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="135" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="299" y="722" />
+			</Size>
+			<uri>[local.assets]map_tx_bgList</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="342" y="104" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="908" y="753" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="43" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="931" y="37" />
+			</Size>
+			<text>[ui.cartography.title]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+		
+		
+		
+		
+		
+
+		<!-- simpleButton btnLocation-->
+
+		<horizontalTab name="btnLocation">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="108" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="149" y="28" />
+			</Size>
+			<text>[ui.common.localisation]</text>
+		</horizontalTab>
+
+		<!-- simpleButton btnConquest-->
+
+		<horizontalTab name="btnConquest">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="177" y="108" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="149" y="28" />
+			</Size>
+			<text>[ui.common.conquest]</text>
+		</horizontalTab>
+		
+		
+				
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="29" y="139" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="294" y="24" />
+			</Size>
+			<uri>[local.assets]tx_inputBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Input tiSearch-->
+
+		<Input name="tiSearch">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="137" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="266" y="20" />
+			</Size>
+			<text>[ui.common.search.input]</text>
+			<css>[local.css]normal.css</css>
+		</Input>
+
+		<!-- iconButton btnValidSearch-->
+
+		<iconButton name="btnValidSearch">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="301" y="139" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="24" y="24" />
+			</Size>
+			<uri>[local.assets]btn_recherche</uri>
+			<checkBox>true</checkBox>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- Tree gdZone-->
+
+		<Tree name="gdZone">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="36" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="281" y="656" />
+			</Size>
+			<slotWidth>261</slotWidth>
+			<slotHeight>24</slotHeight>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected],[local.assets]btn_expend,[local.assets]map_tx_ArbreT,[local.assets]map_tx_ArbreL</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Tree>
+
+		<!-- labelCheckBox btnDisplayOnlyVisible-->
+
+		<labelCheckBox name="btnDisplayOnlyVisible">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="832" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="12" y="12" />
+			</Size>
+			<labelWidth>270</labelWidth>
+			<labelHeight>30</labelHeight>
+			<labelPosX>16</labelPosX>
+			<text>[ui.cartography.displayAllArea]</text>
+			<css>[local.css]normal.css</css>
+			<selected>true</selected>
+		</labelCheckBox>
+		
+		
+		
+		
+		<!-- PARTIE DE DROITE -->
+		
+		
+		
+		<!-- iconButton btnMove-->
+
+		<iconButton name="btnMove">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="355" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_move</uri>
+			<autoGrid>false</autoGrid>
+			<radioMode>true</radioMode>
+			<radioGroup>mapMode</radioGroup>
+			<selected>true</selected>
+		</iconButton>
+
+		<!-- iconButton btnFlag-->
+
+		<iconButton name="btnFlag">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="382" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_drapeau</uri>
+			<autoGrid>false</autoGrid>
+			<radioMode>true</radioMode>
+			<radioGroup>mapMode</radioGroup>
+			<selected>false</selected>
+		</iconButton>
+
+		<!-- iconButton btnPlayer-->
+
+		<iconButton name="btnPlayer">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="417" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_centrer</uri>
+		</iconButton>
+
+		<!-- iconButton btnGrid-->
+
+		<iconButton name="btnGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="444" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_grille</uri>
+			<checkBox>true</checkBox>
+		</iconButton>
+		
+		
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="471" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="75" y="20" />
+			</Size>
+			<text>[ui.common.zoom]</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="549" y="117" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="77" y="27" />
+			</Size>
+			<uri>[local.assets]map_tx_BackgroundZoom</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+		<!-- iconButton btnZoom1-->
+
+		<iconButton name="btnZoom1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="550" y="130" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="13" y="13" />
+			</Size>
+			<radioMode>true</radioMode>
+			<radioGroup>zoomGroup</radioGroup>
+			<uri>[local.assets]btn_zoom01</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- iconButton btnZoom2-->
+
+		<iconButton name="btnZoom2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="565" y="127" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="13" y="16" />
+			</Size>
+			<radioMode>true</radioMode>
+			<radioGroup>zoomGroup</radioGroup>
+			<uri>[local.assets]btn_zoom02</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- iconButton btnZoom3-->
+
+		<iconButton name="btnZoom3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="581" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="13" y="19" />
+			</Size>
+			<radioMode>true</radioMode>
+			<radioGroup>zoomGroup</radioGroup>
+			<uri>[local.assets]btn_zoom03</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- iconButton btnZoom4-->
+
+		<iconButton name="btnZoom4">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="596" y="121" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="13" y="22" />
+			</Size>
+			<radioMode>true</radioMode>
+			<radioGroup>zoomGroup</radioGroup>
+			<uri>[local.assets]btn_zoom04</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- iconButton btnZoom5-->
+
+		<iconButton name="btnZoom5">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="611" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="13" y="24" />
+			</Size>
+			<radioMode>true</radioMode>
+			<radioGroup>zoomGroup</radioGroup>
+			<uri>[local.assets]btn_zoom05</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+
+		<!-- Label lblZone-->
+
+		<Label name="lblZone">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="634" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="407" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		
+
+		<!-- iconButton btnFilterBidHouse-->
+
+		<iconButton name="btnFilterBidHouse">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1084" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_HDV</uri>
+			<checkBox>true</checkBox>
+			<selected>true</selected>
+		</iconButton>
+
+		<!-- iconButton btnFilterCraftHouse-->
+
+		<iconButton name="btnFilterCraftHouse">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1112" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_Ateliers</uri>
+			<autoGrid>false</autoGrid>
+			<checkBox>true</checkBox>
+			<selected>true</selected>
+		</iconButton>
+
+		<!-- iconButton btnFilterMisc-->
+
+		<iconButton name="btnFilterMisc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1140" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_Autres</uri>
+			<autoGrid>false</autoGrid>
+			<checkBox>true</checkBox>
+			<selected>true</selected>
+		</iconButton>
+
+		<!-- iconButton btnFilterConquest-->
+
+		<iconButton name="btnFilterConquest">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1169" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_Conquetes</uri>
+			<autoGrid>false</autoGrid>
+			<checkBox>true</checkBox>
+			<selected>true</selected>
+		</iconButton>
+
+		<!-- iconButton btnFilterDungeon-->
+
+		<iconButton name="btnFilterDungeon">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1197" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]map_btn_Donjons</uri>
+			<autoGrid>false</autoGrid>
+			<checkBox>true</checkBox>
+			<selected>true</selected>
+		</iconButton>
+		
+		
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="353" y="155" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="887" y="695" />
+			</Size>
+			<uri>[local.assets]tx_darkBg</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- MapViewer mapViewer-->
+
+		<MapViewer name="mapViewer">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="356" y="159" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="880" y="689" />
+			</Size>
+			<mouseEnabled>true</mouseEnabled>
+			<roundCornerRadius>15</roundCornerRadius>
+		</MapViewer>
+
+        <Container name="ctrCoordInfo">
+			<visible>false</visible>
+			
+			<Container name="ctrCoordInfoBg">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="20" y="5" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="1" y="25" />
+				</Size>
+				<bgColor>[colors.tooltip.bg]</bgColor>
+				<alpha>[colors.tooltip.bg.alpha]</alpha>
+			</Container>
+			
+			<Label name="lblCoordInfo">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="20" y="5" />
+					</Anchor>
+				</Anchors>
+				<fixedWidth>false</fixedWidth>
+				<css>[local.css]normal.css</css>
+			</Label>
+		</Container>
+		
+		<!-- iconButton btnClose-->
+
+        <iconButton name="btnClose">
+            <Anchors>
+                <Anchor>
+                    <AbsDimension x="1235" y="45" />
+                </Anchor>
+            </Anchors>
+            <Size>
+                <AbsDimension x="25" y="25" />
+            </Size>
+            <uri>[local.assets]btn_cross_square</uri>
+        </iconButton>
+        
+        <!-- iconButton btnFilterTemple-->
+
+        <iconButton name="btnFilterTemple">
+            <Anchors>
+                <Anchor>
+                    <AbsDimension x="1056" y="118" />
+                </Anchor>
+            </Anchors>
+            <Size>
+                <AbsDimension x="25" y="25" />
+            </Size>
+            <uri>[local.assets]map_btn_temples</uri>
+            <autoGrid>false</autoGrid>
+            <checkBox>true</checkBox>
+            <selected>true</selected>
+        </iconButton>
+	</Container>
+</Definition>

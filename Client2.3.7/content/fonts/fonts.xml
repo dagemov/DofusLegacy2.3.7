@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- test -->
+<FontsList>
+	<Fonts  lang="fr,ru,en">
+		<font name="Eras" realName="Eras" classname="Eras" sizemultiplicator="1">[config.ui.common.fonts]Eras.swl</font>
+		<font name="Tahoma" realName="Tahoma" classname="Tahoma" sizemultiplicator="1">[config.ui.common.fonts]Tahoma.swl</font>
+		<font name="Verdana" realName="Verdana" classname="Verdana" sizemultiplicator="1">[config.ui.common.fonts]Verdana.swl</font>
+	</Fonts>
+	<Fonts lang="ja">
+		<font name="Eras" realName="Arial Unicode MS" classname="Arialuni" sizemultiplicator="1">[config.ui.common.fonts]Arialuni.swl</font>
+		<font name="Tahoma" realName="Arial Unicode MS" classname="Arialuni" sizemultiplicator="1">[config.ui.common.fonts]Arialuni.swl</font>
+		<font name="Verdana" realName="Arial Unicode MS" classname="Arialuni" sizemultiplicator="1">[config.ui.common.fonts]Arialuni.swl</font>
+	</Fonts>
+</FontsList>

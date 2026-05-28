@@ -1,0 +1,9 @@
+/* Feuille de style destinée à simplifier la création d'une scrollbar 
+en centralisant les adresses des textures */
+
+.skin {
+	texture-back: assets.swf|sb_background;
+	texture-box:  assets.swf|sb_ascenseur;
+	texture-max:  assets.swf|sb_flechebas;
+	texture-min:  assets.swf|sb_flechehaut;
+}
