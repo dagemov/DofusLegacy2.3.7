@@ -64,6 +64,8 @@ Generate the host-side `Config.xml` and `Database.xml` used by a locally launche
 
 That command targets `Sunshine net11.0\Sunshine net11.0\bin\Debug\net11.0` by default and uses the published MariaDB endpoint from `.env`, so the host runtime connects through `127.0.0.1:${MYSQL_PUBLISH_PORT}` instead of the internal Docker hostname `db`.
 
+If XAMPP or another local MySQL server is also installed, do not switch the host runtime to `localhost`. On Windows that can resolve to a different listener than the Docker-published loopback port and make Sunshine hit the wrong `sunshine` database copy.
+
 Probe the VPS first, create a localhost tunnel when it is alive, and only fall back to local Docker when the VPS game ports are down:
 
 ```powershell
@@ -98,5 +100,6 @@ docker network rm sunshine-net
 
 - `docker/entrypoint.sh` generates `Config.xml` and `Database.xml` at runtime; manual config mounts are no longer required.
 - `localhost` is not used for the host-side MariaDB connection. The local runtime should use `127.0.0.1` to match the loopback-only Docker publish rule.
+- When both Docker MariaDB and XAMPP MySQL are installed, treat the Docker-published `127.0.0.1:${MYSQL_PUBLISH_PORT}` endpoint as the official Sunshine runtime database unless you deliberately regenerate the runtime config for another target.
 - The current Sunshine project targets `net11.0` and the Docker build therefore uses `.NET 11 preview` images as of May 27, 2026.
 - Secrets remain out of Git because `.env` is ignored.
