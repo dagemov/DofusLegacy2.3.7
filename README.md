@@ -56,6 +56,14 @@ Run the portability matrix:
 .\scripts\test-portability.ps1
 ```
 
+Generate the host-side `Config.xml` and `Database.xml` used by a locally launched Sunshine process:
+
+```powershell
+.\scripts\sync-env-to-config.ps1
+```
+
+That command targets `Sunshine net11.0\Sunshine net11.0\bin\Debug\net11.0` by default and uses the published MariaDB endpoint from `.env`, so the host runtime connects through `127.0.0.1:${MYSQL_PUBLISH_PORT}` instead of the internal Docker hostname `db`.
+
 Probe the VPS first, create a localhost tunnel when it is alive, and only fall back to local Docker when the VPS game ports are down:
 
 ```powershell
@@ -72,7 +80,7 @@ Bootstrap a local fallback from the rollback config and dump if the VPS ports ar
 
 - `scripts/setup.ps1`: validates runtime payload, checks compose and starts the requested override.
 - `scripts/start-vps-or-local.ps1`: probes the VPS game ports and starts local Docker only when the remote auth/world ports are down.
-- `scripts/sync-env-to-config.ps1`: generates host-side `Config.xml` and `Database.xml` from `.env`.
+- `scripts/sync-env-to-config.ps1`: generates host-side `Config.xml` and `Database.xml` from `.env`, defaulting to the Sunshine `bin\Debug\net11.0` directory and the published host MySQL endpoint.
 - `scripts/validate-torrent.ps1`: verifies the runtime payload required by Sunshine.
 - `scripts/vps-tunnel.ps1`: starts or stops a localhost TCP forwarder for the VPS when SSH is unavailable.
 - `scripts/test-portability.ps1`: executes T1-T8 and returns a non-zero exit code on critical failures.
@@ -89,5 +97,6 @@ docker network rm sunshine-net
 ## Important notes
 
 - `docker/entrypoint.sh` generates `Config.xml` and `Database.xml` at runtime; manual config mounts are no longer required.
+- `localhost` is not used for the host-side MariaDB connection. The local runtime should use `127.0.0.1` to match the loopback-only Docker publish rule.
 - The current Sunshine project targets `net11.0` and the Docker build therefore uses `.NET 11 preview` images as of May 27, 2026.
 - Secrets remain out of Git because `.env` is ignored.
