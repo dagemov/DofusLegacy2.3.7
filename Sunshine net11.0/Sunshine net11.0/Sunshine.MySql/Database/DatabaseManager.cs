@@ -11,8 +11,10 @@ namespace Sunshine.Mysql.Database
     {
         private static MySqlConnection _connection;
         private static readonly object _locker = new object();
+        private static readonly string _settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database.xml");
 
         public static string ConnectionString { get; private set; }
+        public static string SettingsPath => _settingsPath;
 
         public static MySqlConnection Connection
         {
@@ -31,14 +33,12 @@ namespace Sunshine.Mysql.Database
 
         private static Dictionary<string, string> LoadSettings()
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database.xml");
-
-            if (!File.Exists(path))
-                throw new FileNotFoundException("Database.xml not found.", path);
+            if (!File.Exists(_settingsPath))
+                throw new FileNotFoundException("Database.xml not found.", _settingsPath);
 
             var settings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var rawLine in File.ReadAllLines(path))
+            foreach (var rawLine in File.ReadAllLines(_settingsPath))
             {
                 var line = (rawLine ?? string.Empty).Trim();
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#") || line.StartsWith("//") || line.StartsWith(";"))
@@ -72,6 +72,16 @@ namespace Sunshine.Mysql.Database
                 : 3306;
         }
 
+        private static string NormalizeHost(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return "127.0.0.1";
+
+            return string.Equals(value, "localhost", StringComparison.OrdinalIgnoreCase)
+                ? "127.0.0.1"
+                : value;
+        }
+
         public static MySqlConnection CreateConnection()
         {
             if (string.IsNullOrWhiteSpace(ConnectionString))
@@ -85,19 +95,25 @@ namespace Sunshine.Mysql.Database
             try
             {
                 var settings = LoadSettings();
+                var server = NormalizeHost(GetSetting(settings, "Hostname", "127.0.0.1"));
+                var database = GetSetting(settings, "Database", "sunshine");
+                var userId = GetSetting(settings, "Username", "sunshine");
+                var password = GetSetting(settings, "Password", string.Empty);
                 var builder = new MySqlConnectionStringBuilder
                 {
-                    Server = GetSetting(settings, "Hostname", "localhost"),
+                    Server = server,
                     Port = GetPort(settings),
-                    Database = GetSetting(settings, "Database", "sunshine"),
-                    UserID = GetSetting(settings, "Username", "root"),
-                    Password = GetSetting(settings, "Password", string.Empty),
+                    Database = database,
+                    UserID = userId,
+                    Password = password,
                     AllowUserVariables = true
                 };
 
                 ConnectionString = builder.ConnectionString;
                 _connection = new MySqlConnection(ConnectionString);
                 Logger.Write("[ Server MYSQL ] Initialization Database");
+                Logger.Write($"[ Server MYSQL ] Runtime config Path={_settingsPath}");
+                Logger.Write($"[ Server MYSQL ] Runtime config Host={server}; Port={builder.Port}; Database={database}; User={userId}; PasswordSet={!string.IsNullOrWhiteSpace(password)}");
                 Logger.Write("[ Server MYSQL ] Opening Database....");
                 _connection.Open();
                 Logger.Write("[ Server MYSQL ] Connected to the Database");
