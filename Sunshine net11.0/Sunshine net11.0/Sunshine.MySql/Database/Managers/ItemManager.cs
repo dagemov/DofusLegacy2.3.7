@@ -64,13 +64,9 @@ namespace Sunshine.MySql.Database.Managers
 
                 try
                 {
-                    var connectionString = DatabaseManager.Connection != null
-                        ? DatabaseManager.Connection.ConnectionString
-                        : null;
-
-                    if (!string.IsNullOrWhiteSpace(connectionString))
+                    if (!string.IsNullOrWhiteSpace(DatabaseManager.ConnectionString))
                     {
-                        using (var connection = new MySqlConnection(connectionString))
+                        using (var connection = DatabaseManager.CreateConnection())
                         {
                             connection.Open();
 

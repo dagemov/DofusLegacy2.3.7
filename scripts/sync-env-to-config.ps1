@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
     [string]$EnvPath,
-    [string]$OutputDirectory
+    [string]$OutputDirectory,
+    [ValidateSet("host", "docker")]
+    [string]$DatabaseTarget = "host"
 )
 
 if (-not $EnvPath) {
@@ -9,7 +11,12 @@ if (-not $EnvPath) {
 }
 
 if (-not $OutputDirectory) {
-    $OutputDirectory = Join-Path $PSScriptRoot "..\\config\\generated"
+    if ($DatabaseTarget -eq "host") {
+        $OutputDirectory = Join-Path $PSScriptRoot "..\\Sunshine net11.0\\Sunshine net11.0\\bin\\Debug\\net11.0"
+    }
+    else {
+        $OutputDirectory = Join-Path $PSScriptRoot "..\\config\\generated"
+    }
 }
 
 function Read-EnvFile {
@@ -53,11 +60,40 @@ function Get-EnvValue {
     return $DefaultValue
 }
 
+function Normalize-HostValue {
+    param(
+        [string]$Value,
+        [string]$DefaultValue
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Value)) {
+        return $DefaultValue
+    }
+
+    if ($Value.Equals("localhost", [System.StringComparison]::OrdinalIgnoreCase)) {
+        return "127.0.0.1"
+    }
+
+    return $Value
+}
+
 $envValues = Read-EnvFile -Path $EnvPath
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 
 $configPath = Join-Path $OutputDirectory "Config.xml"
 $databasePath = Join-Path $OutputDirectory "Database.xml"
+$databaseHost = if ($DatabaseTarget -eq "docker") {
+    Get-EnvValue -Values $envValues -Key "MYSQL_HOST" -DefaultValue "db"
+}
+else {
+    Normalize-HostValue -Value (Get-EnvValue -Values $envValues -Key "MYSQL_PUBLISH_HOST" -DefaultValue "127.0.0.1") -DefaultValue "127.0.0.1"
+}
+$databasePort = if ($DatabaseTarget -eq "docker") {
+    Get-EnvValue -Values $envValues -Key "MYSQL_PORT" -DefaultValue "3306"
+}
+else {
+    Get-EnvValue -Values $envValues -Key "MYSQL_PUBLISH_PORT" -DefaultValue "3306"
+}
 
 @"
 # Sunshine configuration generated from .env
@@ -80,11 +116,11 @@ AutoSaveInterval=$(Get-EnvValue -Values $envValues -Key "AUTO_SAVE_INTERVAL" -De
 Database Sunshine
 
 Database = $(Get-EnvValue -Values $envValues -Key "MYSQL_DATABASE" -DefaultValue "sunshine")
-Hostname = db
-Port = 3306
+Hostname = $databaseHost
+Port = $databasePort
 Username = $(Get-EnvValue -Values $envValues -Key "MYSQL_APP_USER" -DefaultValue "sunshine")
 Password = $(Get-EnvValue -Values $envValues -Key "MYSQL_APP_PASSWORD" -DefaultValue "change-me-app")
 "@ | Set-Content -Path $databasePath -Encoding ASCII
 
 Write-Host "Generated $configPath"
-Write-Host "Generated $databasePath"
+Write-Host "Generated $databasePath for $DatabaseTarget access."
