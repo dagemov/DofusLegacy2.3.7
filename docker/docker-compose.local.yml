@@ -1,0 +1,11 @@
+services:
+  db:
+    ports:
+      - "127.0.0.1:${MYSQL_PUBLISH_PORT:-3306}:3306"
+
+  sunshine:
+    environment:
+      WORLD_PUBLIC_HOST: 127.0.0.1
+    ports:
+      - "127.0.0.1:${AUTH_PORT:-2450}:${AUTH_PORT:-2450}"
+      - "127.0.0.1:${WORLD_PORT:-5557}:${WORLD_PORT:-5557}"

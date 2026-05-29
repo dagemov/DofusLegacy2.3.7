@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+	   <Constant name="css" value="[config.ui.skin]css/" />
+	   <Constant name="jobIconPath" value="[config.gfx.path]jobs/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+	</Constants>
+	
+	<Import url="[config.mod.template.button]checkBox.xml" />
+	<Import url="[config.mod.template.button]labelCheckBox.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="[config.mod.template.button]greyButton.xml" />
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="-121" y="-35" />
+			</Anchor>
+		</Anchors>
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="122" y="61" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1096" y="70" />
+			</Size>
+			<uri>[local.assets]tx_titleBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="147" y="148" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="539" y="130" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="147" y="296" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="539" y="69" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="147" y="365" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="539" y="347" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="147" y="712" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="539" y="64" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="710" y="149" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="485" y="626" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="164" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="587" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="529" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+		</Texture>
+		
+		<Texture name="subjobIcon1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<useHandCursor>true</useHandCursor>
+		</Texture>
+		
+		<Texture name="subjobIcon2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="529" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<useHandCursor>true</useHandCursor>
+		</Texture>
+		
+		<Texture name="subjobIcon3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="587" y="203" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<useHandCursor>true</useHandCursor>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="367" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="265" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			
+		</Texture>
+		
+		<Texture name="jobIcon1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="164" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			
+		</Texture>
+
+		<Texture name="jobIcon3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="367" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			
+		</Texture>
+
+		<Texture name="jobIcon2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="265" y="167" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="86" y="86" />
+			</Size>
+			
+		</Texture>
+		
+		<Texture name="jobIconOver">
+			<uri>[local.bitmap]selected.png</uri>
+			<visible>false</visible>			
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="934" y="73" />
+					<!--AbsDimension x="935" y="73" /-->
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="228" y="38" />
+			</Size>
+			<uri>[local.assets]tx_job_decoration</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+
+		<!-- Label lblIconJobLvl3-->
+
+		<Label name="lblIconJobLvl3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="365" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="87" y="18" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lblIconJobLvl2-->
+
+		<Label name="lblIconJobLvl2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="264" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="87" y="18" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lblIconJobLvl1-->
+
+		<Label name="lblIconJobLvl1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="163" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="87" y="18" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lblRecipes">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="722" y="163" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="133" y="22" />
+			</Size>
+			<text>[ui.common.recipes]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<!-- Label lblCurrentLvl-->
+
+		<Label name="lblCurrentLvl">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="516" y="304" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="165" y="22" />
+			</Size>
+			<cssClass>boldright</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lblCurrentJob-->
+
+		<Label name="lblCurrentJob">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="156" y="304" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="323" y="22" />
+			</Size>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="155" y="377" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="315" y="22" />
+			</Size>
+			<text>[ui.common.abilities]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="471" y="174" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="200" y="22" />
+			</Size>
+			<text>[ui.common.specializations]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="170" y="73" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="538" y="37" />
+			</Size>
+			<text>[ui.common.myJobs]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- checkBox chk8-->
+
+		<checkBox name="chk8">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1167" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk7-->
+
+		<checkBox name="chk7">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1145" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk6-->
+
+		<checkBox name="chk6">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1123" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk5-->
+
+		<checkBox name="chk5">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1101" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk4-->
+
+		<checkBox name="chk4">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1081" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk3-->
+
+		<checkBox name="chk3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1060" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk2-->
+
+		<checkBox name="chk2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1037" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<!-- checkBox chk1-->
+
+		<checkBox name="chk1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1015" y="168" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<selected>false</selected>
+		</checkBox>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="858" y="166" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="141" y="25" />
+			</Size>
+			<uri>[local.assets]tx_inputBackgroundDark</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Input name="searchInput">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="858" y="165" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="141" y="25" />
+			</Size>
+			<text>[ui.common.search.input]</text>
+			<css>[local.css]normal.css</css>
+			<maxChars>13</maxChars>
+		</Input>
+		
+		<!-- Texture txtProgressBar-->
+		
+		<Texture name="txProgressBarBackground">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="159" y="336" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="519" y="15" />
+			</Size>
+			<uri>[local.assets]tx_progressBarBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture name="txProgressBar">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="160" y="337" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="517" y="13" />
+			</Size>
+			<uri>[local.assets]tx_progressBar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<!--Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="159" y="336" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="519" y="15" />
+			</Size>
+			<uri>[local.assets]tx_graduation</uri>
+			<mouseEnabled>false</mouseEnabled>
+		</Texture-->
+		
+		
+		
+		<!-- BOUTON OPTIONS -->
+
+		<greyButton label="[ui.craft.jobOptions]" name="btn_options" width="450" height="33">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="192" y="730" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+        </greyButton>
+		
+		<!-- labelCheckBox chkPublicMode->
+		
+		<labelCheckBox name="chkPublicMode">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="148" y="764" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.publicMode]</text>
+		</labelCheckBox-->
+		
+		<!-- Grid gdRecipes-->
+
+		<Grid name="gdRecipes">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="709" y="198" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="483" y="577" />
+			</Size>
+			<slotWidth>470</slotWidth>
+			<slotHeight>112</slotHeight>
+			<rendererName>XmlUiGridRenderer</rendererName>
+			<rendererArgs>recipeItem</rendererArgs>
+			<scrollDisplay>always</scrollDisplay>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+		
+		<!-- Grid gdSkill-->
+
+		<Grid name="gdSkills">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="161" y="410" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="514" y="285" />
+			</Size>
+			<slotWidth>489</slotWidth>
+			<slotHeight>57</slotHeight>
+			<rendererName>XmlUiGridRenderer</rendererName>
+			<rendererArgs>skillItem,[colors.grid.line]</rendererArgs>
+			<scrollDisplay>always</scrollDisplay>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+	</Container>
+</Definition>

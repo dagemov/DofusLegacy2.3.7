@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="[config.mod.template.button]iconButton.xml" />
+
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" >
+				<AbsDimension y="-75" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<Texture>
+			<Size>
+				<AbsDimension x="1100" y="740" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="29" y="74" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="186" y="636" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="230" y="74" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="840" y="593" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="29" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1035" y="35" />
+			</Size>
+			<text>[ui.common.options]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Label lblOptTitle-->
+
+		<Label name="lblOptTitle">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="249" y="80" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="25" />
+			</Size>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<!-- Label lblOptDescription-->
+
+		<Label name="lblOptDescription">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="249" y="105" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="76" />
+			</Size>
+			<wordWrap>true</wordWrap>
+			<multiline>true</multiline>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- simpleButton btnCache-->
+		<!-- DANS CONFIG MAINTENANT !
+		<simpleButton name="btnCache">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="211" y="676" />
+				</Anchor>
+			</Anchors>
+			
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="199" y="30" />
+			</Size>
+			<label>[ui.option.clearCache]</label>
+		</simpleButton>
+		-->
+		<!-- simpleButton btnDefault-->
+
+		<simpleButton name="btnDefault">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="760" y="684" />
+				</Anchor>
+			</Anchors>
+			
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="140" y="30" />
+			</Size>
+			<label>[ui.common.default]</label>
+		</simpleButton>
+
+		<!-- simpleButton btnClose2-->
+
+		<simpleButton name="btnClose2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="930" y="684" />
+				</Anchor>
+			</Anchors>
+			
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="140" y="30" />
+			</Size>
+			<label>[ui.common.close]</label>
+		</simpleButton>
+
+		<!-- Grid listOpt-->
+
+		<Grid name="listOpt">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="90" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="174" y="600" />
+			</Size>
+			<slotWidth>170</slotWidth>
+			<slotHeight>25</slotHeight>
+			<rendererName>LabelGridRenderer</rendererName>
+			<rendererArgs>[local.css]normal.css,[colors.grid.line],,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+
+		<!-- iconButton btnClose-->
+
+		<iconButton name="btnClose">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+		</iconButton>
+
+		<!-- ScrollContainer uiCtr-->
+
+		<ScrollContainer name="uiCtr">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="245" y="165" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="810" y="485" />
+			</Size>
+			<scrollbarCss>[local.css]scrollBar.css</scrollbarCss>
+		</ScrollContainer>
+	</Container>
+</Definition>

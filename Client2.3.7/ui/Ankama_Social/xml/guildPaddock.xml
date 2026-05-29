@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="cssGridMenu" value="[config.ui.skin]css/normal.css" />
+	   	<Constant name="illus" value="[config.gfx.path]illusUi/" />
+	</Constants>
+
+	<Container name="mainCtr">
+	
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="15" y="124" />
+			</Anchor>
+		</Anchors>
+
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="8" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="322" y="20" />
+			</Size>
+			<text>[ui.common.localisation]</text>
+			<css>[local.cssGridMenu]</css>
+		</Label>
+		
+		<!-- LISTE DES ENCLOS -->
+
+		<Grid name="grid_paddock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="36" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="364" y="451" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Social::guildPaddockXmlItem,[colors.grid.line]</rendererArgs>
+			<slotWidth>347</slotWidth>
+			<slotHeight>41</slotHeight>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="384" y="514" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="392" y="238" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="40" />
+			</Size>
+			<uri>[local.assets]tx_flecheombre</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+		
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="422" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="470" y="165" />
+			</Size>
+			<uri>[local.assets]tx_darkBg</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="427" y="181" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="457" y="332" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="425" y="18" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="142" y="150" />
+			</Size>
+			<uri>[local.illus]IllusDinde.png</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="574" y="11" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="307" y="140" />
+			</Size>
+		
+			<!-- Label lbl_name-->
+
+			<Label name="lbl_name">
+				<Size>
+					<AbsDimension x="305" y="55" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+				<multiline>true</multiline>
+				<wordWrap>true</wordWrap>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="50" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="172" y="20" />
+				</Size>
+				<text>[ui.common.mountParkItem] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="70" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="172" y="20" />
+				</Size>
+				<text>[ui.common.mounts] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_maxObject-->
+
+			<Label name="lbl_maxObject">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="200" y="50" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="105" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+			<!-- Label lbl_quantity-->
+
+			<Label name="lbl_quantity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="200" y="70" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="105" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+
+			<!-- simpleButton btn_join-->
+
+			<simpleButton name="btn_join">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="1" y="100" />
+					</Anchor>
+				</Anchors>
+
+				<uri>[local.assets]btn_orange</uri>
+
+				<Size>
+					<AbsDimension x="304" y="35" />
+				</Size>
+				<label>[ui.common.join]</label>
+				<css>[local.css]button.css</css>
+			</simpleButton>
+
+		</Container>
+		
+		
+		
+		<!--Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="439" y="150" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="429" y="22" />
+			</Size>
+			<text>[ui.common.mountList]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="440" y="181" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="249" y="20" />
+			</Size>
+			<text>[ui.common.mountType]</text>
+			<css>[local.cssGridMenu]</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="695" y="181" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="152" y="20" />
+			</Size>
+			<text>[ui.common.ownerWord]</text>
+			<css>[local.cssGridMenu]</css>
+		</Label>
+		
+		
+		
+		
+		<!-- LISTE DES MONTURES -->
+
+		<Grid name="grid_mount">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="430" y="208" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="447" y="280" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Social::guildMountXmlItem,[colors.grid.line],[colors.grid.bg]</rendererArgs>
+			<slotWidth>421</slotWidth>
+			<slotHeight>35</slotHeight>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="427" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="460" y="337" />
+			</Size>
+			<uri>[local.assets]SocialGuildeEnclos_tx_grilleDroite</uri>
+		</Texture>
+	</Container>
+</Definition>

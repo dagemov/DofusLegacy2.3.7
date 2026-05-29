@@ -1,0 +1,11 @@
+﻿<Texture>
+	<uri>file://content/gfx/smilies/assets.swf|smiley_#id</uri>
+	<Size>
+		<AbsDimension x="32" y="32" />
+	</Size>
+</Texture>
+<Size>
+	<AbsDimension x="32" y="32" />
+</Size>
+<bgColor>0x777777</bgColor>
+<bgAlpha>0</bgAlpha>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="complete_uri" value="[local.assets]Quetes_tx_PetitPictoOK" />
+		<Constant name="active_uri" value="[local.assets]Quetes_tx_PictoSablier" />
+	</Constants>
+	
+	<Container name="questCtr">
+	
+	
+		<Button name="btn_quest">
+			<Common>
+				<Size>
+					<AbsDimension x="451" y="40" />
+				</Size>
+				<radioMode>true</radioMode>
+
+
+				<!-- Texture tx_questComplete-->
+
+				<Texture name="tx_questComplete">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="6" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="42" y="40" />
+					</Size>
+				</Texture>
+
+				<!-- Label lbl_questName-->
+
+				<Label name="lbl_questName">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="53" y="10" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="396" y="21" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+				
+			</Common>
+			<State type="OVER">
+				<SetProperties target="btn_quest">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="DISABLED">
+			</State>
+			<State type="SELECTED">
+				<SetProperties target="btn_quest">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_quest">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+		</Button>
+		
+	</Container>
+</Definition>

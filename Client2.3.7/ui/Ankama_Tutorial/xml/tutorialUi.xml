@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	 <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		 <Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+		 
+		 <Constant name="itemIconPath" value="[config.gfx.path]items/bitmap/" />
+		 <Constant name="jobIconPath" value="[config.gfx.path]jobs/" />
+		 <Constant name="spellIconPath" value="[config.gfx.path]spells/" />
+		 <Constant name="emoteIconPath" value="[config.gfx.path]emotes/" />
+		 
+		<Constant name="emptySlot_uri" value="[local.bitmap]emptySlot.png" />
+	 </Constants>
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Container name="ctr_joinTutorial">
+		<Anchors>
+			<Anchor relativePoint="TOPRIGHT" point="TOPRIGHT">
+				<AbsDimension x="-10" y="30" />
+			</Anchor>
+		</Anchors>
+		
+		<iconButton name="btn_joinTutorial">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="64" />
+			</Size>
+			<uri>[local.assets]tutorial_btn_joinTutorial</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+	</Container>
+
+	<Container name="ctr_quest">
+		<visible>false</visible>
+		<mouseEnabled>true</mouseEnabled>
+
+		<Texture>
+			<Size>
+				<AbsDimension x="422" y="291" />
+			</Size>
+			<uri>[local.assets]tx_generalBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="24" y="221" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="377" y="51" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="283" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="422" y="79" />
+			</Size>
+			<uri>[local.assets]tx_generalBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="24" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="395" y="84" />
+			</Size>
+			<uri>[local.assets]tutorial_tx_round</uri>
+		</Texture>
+
+		<Texture name="tx_progressBar">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="319" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="378" y="27" />
+			</Size>
+			<uri>[local.assets]tutorial_tx_progress</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- Label lbl_step-->
+
+		<Label name="lbl_step">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="19" y="40" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="48" y="30" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="72" y="25" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="330" y="75" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<verticalAlign>center</verticalAlign>
+			<wordWrap>true</wordWrap>
+			<multiline>true</multiline>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="232" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="245" y="23" />
+			</Size>
+			<text>[ui.grimoire.quest.rewards]:</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="24" y="290" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="230" y="23" />
+			</Size>
+			<text>[ui.tutorial.progress]:</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<!-- Label lbl_stepAdvancing-->
+
+		<Label name="lbl_stepAdvancing">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="242" y="293" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="20" />
+			</Size>
+			<cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Slot slot_reward1-->
+
+		<Slot name="slot_reward1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="284" y="224" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+			<emptyTexture>[local.bitmap]emptySlot.png</emptyTexture>
+			<!--<highlightTexture>[local.bitmap]over.png</highlightTexture>
+			<selectedTexture>[local.bitmap]selected.png</selectedTexture>
+			<acceptDragTexture>[local.bitmap]acceptDrop.png</acceptDragTexture>
+			<refuseDragTexture>[local.bitmap]refuseDrop.png</refuseDragTexture>-->
+			<allowDrag>false</allowDrag>
+		</Slot>
+
+		<!-- Texture tx_reward2-->
+
+		<Texture name="tx_reward2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="224" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+			<uri>[local.bitmap]emptySlot.png</uri>
+		</Texture>
+		
+		<!-- Label lbl_expRewardValue -->
+
+		<Label name="lbl_expRewardValue">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="224" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="20" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- Label lbl_expRewardXp -->
+
+		<Label name="lbl_expRewardXp">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="242" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="20" />
+			</Size>
+			<text>[ui.common.xp]</text>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>				
+
+		<!-- Container texta_description-->
+
+		<TextArea name="texta_description">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="101" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="384" y="114" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+			<useStyleSheet>true</useStyleSheet>
+			<hyperlinkEnabled>true</hyperlinkEnabled>
+		</TextArea>
+
+		<!-- iconButton btn_exit-->
+
+		<iconButton name="btn_exit">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	</Container>
+</Definition>

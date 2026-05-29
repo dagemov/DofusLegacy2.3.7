@@ -1,0 +1,62 @@
+<radio>
+	
+	<!-- Parametres du template -->
+	<Param name="width" >12</Param>
+	<Param name="height" >12</Param>
+	<Param name="name" />
+	<Param name="group" />
+	<Param name="Anchors" />
+	<Param name="Hooks" />
+	<Param name="selected">false</Param>
+	
+	<!-- Variables internes au template -->
+	<Var name="textureName">'btn_texture_' + '#name'</Var>
+	
+	<Button name="#name">
+		<Common>
+			<radioGroup>#group</radioGroup>
+			<radioMode>true</radioMode>
+			<Anchors>#Anchors</Anchors>
+			<Texture strata="LOW" name="$textureName">
+				<Size>
+					<AbsDimension x="#width" y="#height" />
+				</Size>
+				<gotoAndStop>normal</gotoAndStop>
+				<uri>[local.assets]simpleRadio</uri>
+			</Texture>
+			
+			<Hooks>#Hooks</Hooks>
+		</Common>
+		
+		<State type="OVER">
+			<SetProperties target="$textureName">
+				<gotoAndStop>over</gotoAndStop>
+			</SetProperties>
+		</State>
+		
+		<State type="PRESSED">
+			<SetProperties target="$textureName">
+				<gotoAndStop>pressed</gotoAndStop>
+			</SetProperties>
+		</State>
+		
+		<State type="SELECTED">
+			<SetProperties target="$textureName">
+				<gotoAndStop>selected</gotoAndStop>
+			</SetProperties>
+		</State>
+		
+		<State type="SELECTED_OVER">
+			<SetProperties target="$textureName">
+				<gotoAndStop>selected_over</gotoAndStop>
+			</SetProperties>
+		</State>
+		
+		<State type="SELECTED_PRESSED">
+			<SetProperties target="$textureName">
+				<gotoAndStop>selected_pressed</gotoAndStop>
+			</SetProperties>
+		</State>
+	</Button>
+	
+</radio>

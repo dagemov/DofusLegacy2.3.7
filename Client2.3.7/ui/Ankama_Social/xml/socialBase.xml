@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    <Import url="mod://Ankama_Social/xml/template/socialTab.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+    
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<AbsDimension x="0" y="-80" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- ONGLET DES AMIS -->
+
+		<socialTab name="btn_tabFriend">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="47" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]social_btn_tabFriend</uri>
+			<text>[ui.common.friends]</text>
+		</socialTab>
+
+		<!-- ONGLET DE GUILDE -->
+
+		<socialTab name="btn_tabGuild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="104" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]social_btn_tabGuild</uri>
+			<text>[ui.common.enemies]</text>
+		</socialTab>
+
+		<!-- ONGLET DES EPOUX -->
+
+		<socialTab name="btn_tabSpouse">
+            <Anchors>
+                <Anchor>
+                    <AbsDimension x="0" y="161" />
+                </Anchor>
+            </Anchors>
+            <uri>[local.assets]social_btn_tabSpouse</uri>
+			<text>[ui.common.ignoreds]</text>
+		</socialTab>
+		
+		
+
+		<!-- TEXTURE BACKGROUND -->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="62" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="960" y="700" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+		</Texture>
+		
+		
+		<Container name="uiCtr">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="84" y="25" />
+				</Anchor>
+			</Anchors>
+		</Container>
+		
+
+		<!-- TEXTURE BOUTON FERMER -->
+		        
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+        
+	</Container>
+</Definition>
+

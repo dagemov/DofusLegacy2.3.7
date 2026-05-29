@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template.button]simpleSlot.xml" />
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+       
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+		<Constant name="iconsUri" value="[config.content.path]gfx/presets/icons.swf|" />
+   	</Constants>
+
+	<Container>
+        <Size>
+            <AbsDimension x="254" y="637" />
+        </Size>
+		<mouseEnabled>true</mouseEnabled>
+		
+
+		<!-- Texture tx_bg1-->
+
+		<Texture>
+			<Size>
+				<AbsDimension x="254" y="637" />
+			</Size>
+			<uri>[local.assets]map_tx_bgList</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- gd_presets -->
+		<Grid name="gd_presets">
+			<Anchors> 
+				<Anchor>
+					<AbsDimension x="8" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="244" y="110" />
+			</Size>
+			<slotWidth>52</slotWidth>
+			<slotHeight>52</slotHeight>
+			<autoSelect>false</autoSelect>
+			<rendererName>SlotGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+			<Hooks>
+				<onSelectItem />
+				<onItemRollOver />
+				<onItemRollOut />
+				<onItemRollOut />
+			</Hooks>
+		</Grid>
+
+
+		<!-- Button btn_new -->		
+
+		<simpleButton label="[ui.common.new]" name="btn_new">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="7" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="242" y="30" />
+			</Size>
+		</simpleButton>
+		
+		
+		<Label name="lbl_explanation">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="5" y="190" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="242" y="400" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<multiline>true</multiline>
+			<wordWrap>true</wordWrap>
+			<verticalAlign>center</verticalAlign>
+			<text>[ui.preset.howToUse]</text>
+		</Label>
+
+		
+
+		<Container name="ctr_bottom">
+
+
+			<Label name="lbl_title">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="156" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="245" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+
+
+			<!-- gd_items -->
+			<Grid name="gd_items">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="8" y="187" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="244" y="217" />
+				</Size>
+				<slotWidth>52</slotWidth>
+				<slotHeight>52</slotHeight>
+				<autoSelect>false</autoSelect>
+				<rendererName>SlotGridRenderer</rendererName>
+				<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+				<Hooks>
+					<onSelectItem />
+					<onItemRollOver />
+					<onItemRollOut />
+				</Hooks>
+			</Grid>
+
+
+			<!-- Button btn_deleteItem -->		
+
+			<iconButton name="btn_deleteItem">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="225" y="405" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="18" y="18" />
+				</Size>
+        		<uri>[local.assets]btn_cross_square</uri>
+			</iconButton>
+
+
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="408" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="245" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.option.tabPic]</text>
+			</Label>
+
+
+
+			<!-- Grid gd_icons -->
+
+			<Grid name="gd_icons">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="437" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="244" y="105" />
+				</Size>
+	            <verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+	            <scrollDisplay>always</scrollDisplay>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateIcon</rendererArgs>
+				<slotWidth>32</slotWidth>
+				<slotHeight>32</slotHeight>
+
+				<Container>
+					<Size>
+						<AbsDimension x="32" y="32" />
+					</Size>
+					<Button name="btn_icon">
+						<Common>
+							<Texture>
+								<Size>
+									<AbsDimension x="32" y="32" />
+								</Size>
+								<uri>[local.assets]tx_slot</uri>
+							</Texture>
+							<Texture name="tx_icon">
+								<Size>
+									<AbsDimension x="32" y="32" />
+								</Size>
+								<luminosity>1</luminosity>
+							</Texture>
+							<Texture name="tx_selected">
+								<Size>
+									<AbsDimension x="32" y="32" />
+								</Size>
+								<uri>[local.bitmap]selected.png</uri>
+								<visible>false</visible>
+							</Texture>
+							<Hooks>
+								<onSelectItem />
+							</Hooks>
+							<cacheAsBitmap>true</cacheAsBitmap>
+						</Common>
+						<State type="OVER">
+							<SetProperties target="tx_icon">
+								<luminosity>1.5</luminosity>
+							</SetProperties>
+						</State>
+						<State type="SELECTED">
+							<SetProperties target="tx_selected">
+								<visible>true</visible>
+							</SetProperties>
+						</State>
+					</Button>	
+
+				</Container>
+
+				<Hooks>
+					<onSelectItem />
+				</Hooks>
+			</Grid>
+
+
+
+
+
+			<!-- Button btn_update -->		
+
+			<iconButton name="btn_update">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="7" y="548" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="118" y="38" />
+				</Size>
+				<uri>[local.assets]set_btn_update</uri>
+			</iconButton>
+
+			<!-- Button btn_delete -->		
+
+			<iconButton name="btn_delete">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="130" y="548" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="118" y="38" />
+				</Size>
+				<uri>[local.assets]set_btn_cross</uri>
+			</iconButton>
+
+			<!-- Button btn_save -->		
+
+			<simpleButton label="[ui.common.save]" name="btn_save">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="7" y="590" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="242" y="38" />
+				</Size>
+			</simpleButton>
+
+		
+		</Container>
+	</Container>
+</Definition>
+

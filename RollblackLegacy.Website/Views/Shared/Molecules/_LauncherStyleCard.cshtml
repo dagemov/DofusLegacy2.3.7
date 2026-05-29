@@ -1,0 +1,10 @@
+@model LauncherCardViewModel
+
+<article class="launcher-card @(Model.Modifier ?? string.Empty)">
+    @if (!string.IsNullOrWhiteSpace(Model.Eyebrow))
+    {
+        <span class="launcher-card__eyebrow">@Model.Eyebrow</span>
+    }
+    <h3 class="launcher-card__title">@Model.Title</h3>
+    <p class="launcher-card__description">@Model.Description</p>
+</article>

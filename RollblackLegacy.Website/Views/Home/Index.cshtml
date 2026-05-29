@@ -1,0 +1,64 @@
+@model HomePageViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="hero-stage">
+    <div class="container-xl">
+        <div class="hero-panel launcher-panel">
+            <div class="hero-panel__copy">
+                <span class="hero-panel__eyebrow">Official website / registration MVP</span>
+                <h1 class="hero-panel__title">@Model.HeroTitle</h1>
+                <p class="hero-panel__subtitle">@Model.HeroSubtitle</p>
+
+                <div class="hero-panel__actions">
+                    @foreach (var action in Model.HeroActions)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", action)
+                    }
+                </div>
+            </div>
+
+            <div class="hero-panel__art">
+                <img src="@Model.Brand.LogoPath" alt="@Model.Brand.Name" class="hero-panel__logo" />
+                <div class="hero-panel__window-shell">
+                    <img src="~/images/launcher/window-shell.png" alt="Launcher reference" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-dashboard">
+    <div class="container-xl">
+        <div class="home-dashboard__grid">
+            <div class="home-dashboard__main">
+                @await Html.PartialAsync("~/Views/Shared/Organisms/_NewsPanel.cshtml", Model.NewsItems)
+            </div>
+
+            <aside class="home-dashboard__aside">
+                <section class="launcher-panel launcher-panel--stack">
+                    <div class="section-heading">
+                        <span class="section-heading__eyebrow">Estado del servidor</span>
+                        <h2 class="section-heading__title">Panel placeholder</h2>
+                    </div>
+
+                    <div class="status-stack">
+                        @foreach (var status in Model.ServerStatuses)
+                        {
+                            @await Html.PartialAsync("~/Views/Shared/Molecules/_ServerStatusBadge.cshtml", status)
+                        }
+                    </div>
+                </section>
+
+                @await Html.PartialAsync("~/Views/Shared/Molecules/_LauncherStyleCard.cshtml", new LauncherCardViewModel
+                {
+                    Eyebrow = "Launcher",
+                    Title = "Estetica inspirada en Uplauncher",
+                    Description = "El layout toma referencias del shell, las luces lima y los paneles de metal/piedra del launcher actual para mantener continuidad visual.",
+                    Modifier = "launcher-card--accent"
+                })
+            </aside>
+        </div>
+    </div>
+</section>

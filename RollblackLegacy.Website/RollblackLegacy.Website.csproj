@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RollblackLegacy.Website.Application\RollblackLegacy.Website.Application.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Infrastructure\RollblackLegacy.Website.Infrastructure.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Contracts\RollblackLegacy.Website.Contracts.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

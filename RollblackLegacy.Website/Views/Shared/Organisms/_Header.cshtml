@@ -1,0 +1,12 @@
+@model BrandIdentityViewModel
+
+<header class="site-header">
+    <div class="container-xl site-header__inner">
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Logo.cshtml", Model)
+
+        <nav class="site-header__nav" aria-label="Public navigation">
+            <a href="/" class="site-header__link">Home</a>
+            <a href="/account/register" class="site-header__link">Registro</a>
+        </nav>
+    </div>
+</header>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="fighterType_uri" value="[config.content.path]gfx/illusUi/fightersType.swf|" />
+	</Constants>
+	
+	<Container name="mainCtr">
+
+		<Button name="btn_itemFight">
+			<Common>
+				<Size>
+					<AbsDimension x="638" y="30" />
+				</Size>
+				
+				<radioMode>true</radioMode>
+
+				<Container name="ctrIcons">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="0" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="60" y="30" />
+					</Size>
+				</Container>
+				
+				<!-- Texture tx_lock-->
+		
+				<!--<Texture name="tx_lock">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="11" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+				</Texture>-->
+		
+				<!-- Texture tx_twoArrows-->
+		
+				<Texture name="tx_twoArrows">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="255" y="8" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="44" y="15" />
+					</Size>
+					<uri>[local.assets]spectator_tx_DoubleFleche</uri>
+					<autoGrid>false</autoGrid>
+				</Texture>
+		
+				<!-- Texture tx_alignTeamOne-->
+		
+				<Texture name="tx_alignTeamOne">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="67" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="35" y="30" />
+					</Size>
+					<autoGrid>true</autoGrid>
+				</Texture>
+		
+				<!-- Texture tx_alignTeamTwo-->
+		
+				<Texture name="tx_alignTeamTwo">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="455" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="35" y="30" />
+					</Size>
+					<autoGrid>true</autoGrid>
+				</Texture>
+		
+				<!-- Label lbl_nbPLayerTeamOne-->
+		
+				<Label name="lbl_nbPLayerTeamOne">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="112" y="2" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="132" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+		
+				<!-- Label lbl_nbPLayerTeamTwo-->
+		
+				<Label name="lbl_nbPLayerTeamTwo">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="313" y="2" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="132" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+				</Label>
+		
+				<!-- Label lbl_timeStartFight-->
+		
+				<Label name="lbl_timeStartFight">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="500" y="2" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="130" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+				</Label>
+				
+			</Common>	
+			
+			<State type="OVER">
+				<SetProperties target="btn_itemFight">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			
+			<State type="SELECTED">
+				<SetProperties target="btn_itemFight">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+		</Button>
+	</Container>
+</Definition>

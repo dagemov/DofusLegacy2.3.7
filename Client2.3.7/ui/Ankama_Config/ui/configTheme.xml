@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+    <Import url="mod://Ankama_Config/ui/template/configCheckbox.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/greyButton.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+       <Constant name="bitmap" value="[config.ui.skin]bitmap/" />
+   	</Constants>
+
+	<Container name="configUiCtr">
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="24" />
+			</Size>
+			<text>[ui.option.changeUiSkin]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+				
+		
+		
+		<!-- Grid grid_theme-->
+
+		<Grid name="grid_theme">
+			<Anchors>
+				<Anchor relativeTo="lbl_title">
+					<AbsDimension x="2" y="63" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="295" y="390" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateThemeLine,[colors.grid.line],[colors.grid.bg]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>262</slotWidth>
+			<slotHeight>39</slotHeight>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+
+			<Container>
+				<Size>
+					<AbsDimension x="262" y="39" />
+				</Size>
+				<Button name="btn_theme">
+					<Common>
+						<Size>
+							<AbsDimension x="262" y="39" />
+						</Size>
+						<radioMode>true</radioMode>
+
+						<Texture>
+							<Size>
+								<AbsDimension x="262" y="39" />
+							</Size>
+							<bgColor>0</bgColor>
+							<bgAlpha>0</bgAlpha>
+						</Texture>
+
+						<!-- Label lbl_name-->
+
+						<Label name="lbl_name">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="5" y="6" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="234" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+					</Common>
+
+					<State type="OVER">
+						<SetProperties target="btn_theme">
+							<bgColor>[colors.grid.over]</bgColor>
+						</SetProperties>
+					</State>
+
+					<State type="SELECTED">
+						<SetProperties target="btn_theme">
+							<bgColor>[colors.grid.selected]</bgColor>
+						</SetProperties>
+					</State>
+
+					<State type="SELECTED_OVER">
+						<SetProperties target="btn_theme">
+							<bgColor>[colors.grid.selected]</bgColor>
+						</SetProperties>
+					</State>
+				</Button>
+
+				<iconButton name="btn_selectTheme">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="242" y="12" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="16" y="16" />
+					</Size>
+					<uri>[local.assets]tx_light_checkbox</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+			</Container>
+		</Grid>
+		
+		
+		<!-- Texture tx_gridForeground-->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="lbl_title">
+					<AbsDimension x="0" y="33" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="300" y="450" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+				
+		<!-- Texture tx_bgForeground-->
+
+		<Texture name="tx_bgForeground">
+			<Anchors>
+				<Anchor relativeTo="lbl_title">
+					<AbsDimension x="296" y="32" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="510" y="452" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+
+		
+				
+		<!-- Label name -->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground">
+					<AbsDimension x="10" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="480" y="25" />
+			</Size>			
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		
+
+		<TextArea name="lbl_description">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground">
+					<AbsDimension x="10" y="55" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="480" y="80" />
+			</Size>			
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+			<verticalAlign>center</verticalAlign>
+			<css>[local.css]normal.css</css>
+		</TextArea>
+
+		<!-- Label lbl_noPreview-->
+
+		<Label>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground">
+					<AbsDimension x="9" y="273" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="482" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.option.noPreview]</text>
+		</Label>
+
+
+		<Texture name="tx_preview">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground">
+					<AbsDimension x="35" y="140" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="440" y="295" />
+			</Size>
+		</Texture>
+		
+	</Container>
+</Definition>
+

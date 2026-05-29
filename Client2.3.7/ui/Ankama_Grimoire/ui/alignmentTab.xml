@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="mod://Ankama_Grimoire/ui/template/orangeButton.xml" />
+
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="gifts_uri" value="[config.content.path]gfx/gifts/" />
+		<Constant name="alignment_uri" value="[config.content.path]gfx/alignments/" />
+	</Constants>
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="0" y="0" />
+			</Anchor>
+		</Anchors>
+		
+		<!-- Container pour la partie haute (bannière) de l'interface -->
+
+		<Container name="Container_Top">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="26" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1096" y="70" />
+			</Size>
+			
+			<!-- La texture de fond de la bannière -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<RelDimension x="1" y="1" />
+				</Size>
+				<uri>[local.assets]tx_titleBackground</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+			
+			<!-- Le titre de la fenêtre -->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="48" y="12" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="199" y="37" />
+				</Size>
+				<text>[ui.common.alignment]</text>
+				<css>[local.css]title.css</css>
+			</Label>
+			
+			
+			<!-- La décoration de droite -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="813" y="12" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="228" y="38" />
+				</Size>
+				<uri>[local.assets]Alignement_tx_IlluBandeauHaut</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+			
+		</Container>
+		
+		
+		
+		
+		
+		
+		<Container name="mainCtr2">
+		
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="17" y="112" />
+				</Anchor>
+			</Anchors>
+	
+			<Texture>
+				<Size>
+					<AbsDimension x="213" y="213" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="213" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="338" y="213" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>	
+	
+	
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="224" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="551" y="433" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="562" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="500" y="656" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+	
+	
+			<!-- PARTIE GAUCHE -->
+	
+	
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="9" y="9" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="196" y="196" />
+				</Size>
+				<uri>[local.assets]tx_darkBg</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>	
+
+			<!-- Texture tx_alignmentIcon-->
+
+			<Texture name="tx_alignmentIcon">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="7" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="199" y="198" />
+				</Size>
+			</Texture>
+	
+			<!-- Label lbl_alignment-->
+
+			<Label name="lbl_alignment">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="225" y="7" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="313" y="23" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+		
+			<!-- Label lbl_alignmentInfo-->
+
+			<Label name="lbl_alignmentInfo">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="218" y="33" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="329" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+		
+							
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="225" y="103" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="315" y="100" />
+				</Size>
+				<uri>[local.assets]tx_darkBg</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<!-- Texture tx_wing-->
+
+			<Texture name="tx_wing">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="388" y="150" />
+					</Anchor>
+				</Anchors>
+			</Texture>
+	
+		
+			<!-- AFFICHAGE PERSONNAGE -->
+
+			<EntityDisplayer name="entityDisplayer">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="292" y="53" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="192" y="150" />
+				</Size>
+				<direction>2</direction>
+				<scale>1.5</scale>
+				<yOffset>50</yOffset>
+			</EntityDisplayer>
+	
+	
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="228" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="404" y="26" />
+				</Size>
+				<text>[ui.pvp.pvpMode]</text>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+			
+				
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="264" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="265" y="20" />
+				</Size>
+				<text>[ui.pvp.rank]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_alignmentGrade-->
+
+			<Label name="lbl_alignmentGrade">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="275" y="264" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="265" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+			
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="295" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="528" y="20" />
+				</Size>
+				<text>[ui.pvp.honourPoints]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+			<Texture name="tx_progressBG1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="320" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="525" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- Texture tx_progressBar1-->
+	
+			<Texture name="tx_progressBar1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="14" y="321" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="523" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="73" y="320" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="406" y="14" />
+				</Size>
+				<uri>[local.assets]Alignement_tx_GraduationsG</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="344" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="528" y="20" />
+				</Size>
+				<text>[ui.pvp.disgracePoints]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+			<Texture name="tx_progressBG2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="370" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="525" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- Texture tx_progressBar2-->
+	
+			<Texture name="tx_progressBar2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="14" y="371" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="523" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="73" y="370" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="406" y="14" />
+				</Size>
+				<uri>[local.assets]Alignement_tx_GraduationsG</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+			
+			
+			
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="415" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="209" y="20" />
+				</Size>
+				<text>[ui.pvp.balance]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_balance -->
+
+			<Label name="lbl_balance">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="224" y="415" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="316" y="20" />
+				</Size>
+				<text>100 % (C'est genial !!)</text>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="30" y="444" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="490" y="20" />
+				</Size>
+				<text>[ui.pvp.alignedAreaModificators]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+			
+			
+			
+			<Grid name="gd_aliBonus">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="14" y="472" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="523" y="102" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateAliBonusLine,[colors.grid.line]</rendererArgs>
+				<slotWidth>523</slotWidth>
+				<slotHeight>34</slotHeight>
+
+				<Container name="aliBonusItemCtr">
+					<Size>
+						<AbsDimension x="523" y="34" />
+					</Size>
+					
+					<Label name="lbl_name">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="15" y="5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="254" y="20" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<Label name="lbl_valueP">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="281" y="5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="73" y="20" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+			
+					<Texture>
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="373" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="40" y="18" />
+						</Size>
+						<uri>[local.assets]tx_darkArrow</uri>
+					</Texture>
+				
+			
+					<Label name="lbl_valueM">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="433" y="5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="74" y="20" />
+						</Size>
+						<css>[local.css]normal.css</css>
+						<cssClass>right</cssClass>
+					</Label>
+				</Container>			
+			</Grid>		
+			
+						
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="442" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="530" y="162" />
+				</Size>
+				<uri>[local.assets]tx_commonGrid</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>	
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			
+			
+			<!-- PARTIE DROITE -->
+			
+	
+		
+							
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="571" y="10" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="70" />
+				</Size>
+				<uri>[local.assets]tx_darkBg</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>	
+
+			<!-- Texture tx_orderIcon-->
+
+			<Texture name="tx_orderIcon">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="572" y="11" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="68" y="68" />
+				</Size>
+			</Texture>
+			
+			<!-- Label lbl_order -->
+
+			<Label name="lbl_order">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="650" y="27" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="398" y="22" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+			
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="590" y="90" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="444" y="20" />
+				</Size>
+				<text>[ui.pvp.allSpecializations]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+	
+				
+
+			<Grid name="gd_specializations">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="575" y="118" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="466" y="150" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateSpecLine,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>442</slotWidth>
+				<slotHeight>30</slotHeight>
+
+				<Button name="specItemCtr">
+					<Common>
+						<Size>
+							<AbsDimension x="442" y="30" />
+						</Size>
+						
+						<Texture>
+							<Size>
+								<AbsDimension x="442" y="30" />
+							</Size>
+							<bgColor>0</bgColor>
+							<bgAlpha>0</bgAlpha>
+						</Texture>
+
+						<Texture name="tx_whiteArrow">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="8" y="9" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="8" y="12" />
+							</Size>
+							<uri>[local.assets]Alignement_tx_PetiteFlecheBlanche</uri>
+						</Texture>
+
+						<Label name="lbl_name">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="23" y="2" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="373" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+
+						<Label name="lbl_level">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="399" y="2" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="40" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+					</Common>
+					
+					<State type="OVER">
+						<SetProperties target="specItemCtr">
+							<bgColor>[colors.grid.over]</bgColor>
+						</SetProperties>
+					</State>
+					
+					<State type="SELECTED">
+						<SetProperties target="specItemCtr">
+							<bgColor>[colors.grid.selected]</bgColor>
+						</SetProperties>
+					</State>
+					
+					<State type="SELECTED_OVER">
+						<SetProperties target="specItemCtr">
+							<bgColor>[colors.grid.selected]</bgColor>
+						</SetProperties>
+					</State>
+				</Button>	
+			
+				<Hooks>
+					<onSelectItem />
+				</Hooks>		
+			</Grid>		
+							
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="571" y="88" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="483" y="210" />
+				</Size>
+				<uri>[local.assets]tx_commonGridScrollbar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+	
+		
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="793" y="304" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="40" y="25" />
+				</Size>
+				<uri>[local.assets]spectator_tx_Fleche</uri>
+			</Texture>
+			
+			
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="590" y="334" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="428" y="20" />
+				</Size>
+				<text>[ui.common.feats]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+	
+			
+			
+			<Grid name="gd_gift">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="575" y="363" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="466" y="255" />
+				</Size>
+				<slotWidth>442</slotWidth>
+				<slotHeight>51</slotHeight>
+				<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+				<rendererArgs>Ankama_Grimoire::giftXmlItem,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			</Grid>	
+			
+						
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="571" y="331" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="483" y="315" />
+				</Size>
+				<uri>[local.assets]tx_commonGridScrollbar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+	
+	
+	
+	
+			<!-- Texture tx_pvpOff-->
+	
+			<Texture name="tx_pvpOff">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="224" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="551" y="433" />
+				</Size>
+				<bgCornerRadius>39</bgCornerRadius>
+				<bgColor>0x000000</bgColor>
+				<bgAlpha>0.3</bgAlpha>
+			</Texture>
+			
+			<!-- TEXTURE ALIGNEMENT NEUTRE -->
+			
+			<Texture name="tx_neutralAlignment">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="562" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="500" y="657" />
+				</Size>
+				<bgCornerRadius>39</bgCornerRadius>
+				<bgColor>0x000000</bgColor>
+				<bgAlpha>0.3</bgAlpha>
+			</Texture>
+				
+			<!-- Acces à la map -->
+
+			<simpleButton name="btn_conquestMap" label="[ui.common.conquest]">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="420" y="230" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="120" y="25" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</simpleButton>
+	
+			<!-- ACTIVER / DESACTIVER LE MODE PVP -->
+	
+			<simpleButton name="btn_pvp">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="11" y="613" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="528" y="32" />
+				</Size>
+			</simpleButton>
+			
+		</Container>
+		
+	</Container>
+</Definition>
+

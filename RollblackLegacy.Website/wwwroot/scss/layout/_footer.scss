@@ -1,0 +1,25 @@
+@use "../abstracts/variables" as *;
+
+.site-footer {
+  padding: 2rem 0 2.5rem;
+}
+
+.site-footer__inner {
+  align-items: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: $color-text-muted;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-top: 1.4rem;
+}
+
+.site-footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}

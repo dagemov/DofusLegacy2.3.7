@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" >
+				<AbsDimension x="0" y="-60" />
+			</Anchor>
+		</Anchors>
+
+		<Texture>
+			<Size>
+				<AbsDimension x="510" y="840" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" >
+					<AbsDimension x="-1" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="47" y="30" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+
+		
+		<Container name="ctr_item">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="22" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="462" y="315" />
+			</Size>
+		</Container>
+		
+		
+		<iconButton name="btn_reset">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" >
+					<AbsDimension x="-26" y="57" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_reset</uri>
+        </iconButton>
+		
+
+		<Container name="ctr_createItem">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="342" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="462" y="94" />
+			</Size>
+		
+			<Texture>
+				<Size>
+					<AbsDimension x="462" y="88" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="435" y="20" />
+				</Size>
+				<text>[ui.item.utilityReceipt]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+
+			<!-- Slot slot_0-->
+
+			<Slot name="slot_0">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="14" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_1-->
+
+			<Slot name="slot_1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="67" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_2-->
+
+			<Slot name="slot_2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="120" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_3-->
+
+			<Slot name="slot_3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="173" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_4-->
+
+			<Slot name="slot_4">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="226" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_5-->
+
+			<Slot name="slot_5">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="279" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_6-->
+
+			<Slot name="slot_6">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="332" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<!-- Slot slot_7-->
+
+			<Slot name="slot_7">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="385" y="34" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+				<allowDrag>false</allowDrag>
+				<css>[local.css]normal.css</css>
+			</Slot>
+
+			<Label name="lbl_noRecipe">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="33" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="435" y="42" />
+				</Size>
+				<visible>false</visible>
+				<text>[ui.item.utilityNoReceipt]</text>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+				<wordWrap>true</wordWrap>
+				<multiline>true</multiline>
+			</Label>
+
+		</Container>
+		
+		
+		
+		<Container name="ctr_useItem">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="435" />
+				</Anchor>
+			</Anchors>
+		
+			<Texture>
+				<Size>
+					<AbsDimension x="462" y="386" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="435" y="20" />
+				</Size>
+				<text>[ui.item.utilityCrafts]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- iconButton btn_search-->
+
+			<iconButton name="btn_search">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="418" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<uri>[local.assets]btn_recherche</uri>
+				<checkBox>true</checkBox>
+				<autoGrid>false</autoGrid>
+			</iconButton>
+
+			<Container name="ctr_search">
+				<visible>false</visible>
+
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="14" y="30" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="395" y="25" />
+					</Size>
+					<autoGrid>true</autoGrid>
+					<uri>[local.assets]tx_inputBackground</uri>
+				</Texture>
+
+				<Input name="lbl_input">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="20" y="30" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="383" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Input>
+			</Container>
+
+
+			<!-- Grid grid_listRecipe-->
+
+			<Grid name="gd_recipes">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="21" y="69" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="410" y="300" />
+				</Size>
+				<slotWidth>385</slotWidth>
+				<slotHeight>100</slotHeight>
+				<rendererName>XmlUiGridRenderer</rendererName>
+				<rendererArgs>recipeItem</rendererArgs>
+				<scrollDisplay>always</scrollDisplay>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			</Grid>
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="17" y="60" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="425" y="316" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]itemRecipes_tx_grid</uri>
+			</Texture>
+
+			<ComboBox name="cb_filter">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="14" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="395" y="25" />
+				</Size>
+				<autoSelect>true</autoSelect>
+				<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+				<listTexture>[local.assets]tx_combobox</listTexture>
+				<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+				<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			</ComboBox>
+		
+		</Container>
+
+		
+	</Container>
+</Definition>

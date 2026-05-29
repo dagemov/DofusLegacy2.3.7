@@ -1,0 +1,20 @@
+<Container name="levelCtr">		
+	<Label name="lbl_level">
+		<text>#level</text>
+		<fixedWidth>false</fixedWidth>
+		<cssClass>center</cssClass>
+		<css>[local.css]tooltip_title.css</css>
+	</Label>
+</Container>
+
+<Label name="lbl_fightersList">
+	<Anchors>
+		<Anchor>
+			<AbsDimension x="0" y="20" />
+		</Anchor>
+	</Anchors>
+	<text>#fighters</text>
+	<css>[local.css]tooltip_monster.css</css>
+	<fixedWidth>false</fixedWidth>
+	<multiline>true</multiline>
+</Label>

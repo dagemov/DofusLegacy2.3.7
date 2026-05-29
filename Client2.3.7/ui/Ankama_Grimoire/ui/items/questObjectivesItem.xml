@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="validated_uri" value="[local.assets]Quetes_tx_PetitPictoOK" />
+		<Constant name="map_uri" value="[local.assets]Quetes_tx_PictoBoussole" />
+	</Constants>
+	
+	<Container name="questObjCtr">
+		<Size>
+			<AbsDimension x="485" y="29" />
+		</Size>
+
+
+		<!-- Texture tx_achieve-->
+
+		<Texture name="tx_achieve">
+			<Size>
+				<AbsDimension x="30" y="29" />
+			</Size>
+		</Texture>
+
+		<!-- Label lbl_objective-->
+
+		<Label name="lbl_objective">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="451" y="26" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<hyperlinkEnabled>true</hyperlinkEnabled>
+            <useStyleSheet>true</useStyleSheet>
+		</Label>
+		
+	</Container>
+</Definition>
+

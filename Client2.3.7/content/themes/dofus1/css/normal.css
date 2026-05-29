@@ -1,0 +1,286 @@
+p {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+left {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	text-align: left;
+}
+
+right {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	text-align: right;
+}
+
+center {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	text-align: center;
+	letterSpacing: 0.3;
+}
+
+/*--------------- Bold Style ----------------*/
+
+bold {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	font-weight: bold;
+}
+
+boldright {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	font-weight: bold;
+	text-align: right;
+}
+
+boldcenter {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #312D24;
+	font-weight: bold;
+	text-align: center;
+}
+
+/*--------------- dark Style ----------------*/
+
+dark {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #4E280A;
+	letterSpacing: 0.3;
+}
+
+darkcenter {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #4E280A;
+	text-align:center;
+	letterSpacing: 0.3;
+}
+
+darkright {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #4E280A;
+	text-align: right;
+}
+
+rightlink {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #15179E;
+	text-align: right;
+}
+
+/*--------------- invers� Style ----------------*/
+
+opposite {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #e0eeff;
+	letterSpacing: 0.3;
+}
+
+oppositecenter {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #e0eeff;
+	text-align:center;
+	letterSpacing: 0.3;
+}
+
+oppositeright {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #e0eeff;
+	text-align: right;
+}
+
+
+/*------------------ over ----------------------*/
+
+over {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #d55b02;
+	text-align: justify;
+}
+
+centerover {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #d55b02;
+	text-align: center;
+}
+		
+title {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #ffffff;
+}
+
+	
+disabled {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #6F645E;
+	text-align: justify;
+}
+
+/*------------------ color style ---------------*/
+
+/* vert */
+p0 {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #1d7905;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+/* jaune */
+p1 {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #967f02;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+/* orange */
+p2 {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #d55b02;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+/* rouge */
+p3 {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #c10000;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+/* gris inactif */
+p4 {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #78735e;
+	text-align: justify;
+	letterSpacing: 0.3;
+}
+
+
+/* Classes servant � l'affichage des zones align�es sur la carte */
+bonta {
+	font-family: Tahoma;
+	font-size: 17px;
+	color: #7dc0ff;
+	text-align: left;
+}
+brakmar {
+	font-family: Tahoma;
+	font-size: 17px;
+	color: #c10000;
+	text-align: left;
+}
+
+
+/* Classes servant � l'affichage des objets speciaux en hdv */
+
+itemSet {
+	font-family: Tahoma;
+	font-size: 17px;
+	color: #a96a01;
+	letterSpacing: 0.3;
+}
+itemEtheral {
+	font-family: Tahoma;
+	font-size: 17px;
+	color: #1e6ccc;
+	letterSpacing: 0.3;
+}
+malus {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #7e1818;
+	letterSpacing: 0.3;
+}
+bonus {
+	font-family: Tahoma;
+	font-size: 18px;
+	color:#104E15;
+	letterSpacing: 0.3;
+}
+exotic {
+	font-family: Tahoma;
+	font-size: 18px;
+	color:#0342a1;
+	letterSpacing: 0.3;
+}
+
+/* Quantit� affich�e sur les items */
+quantity {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #e0eeff;
+	text-align: justify;
+}
+
+/* Classes servant � l'affichage des carac de dinde */
+
+rightred {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #c10000;
+	text-align: right;
+}
+
+rightgreen {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #3baf08;
+	text-align: right;
+}
+
+rightblue {
+	font-family: Tahoma;
+	font-size: 18px;
+	color: #46adb6;
+	text-align: right;
+}
+
+
+
+
+
+centerultrasmalldonotuse {
+	font-family: Tahoma;
+	font-size: 15px;
+	color: #312D24;
+	text-align: center;
+	letterSpacing: 0.2;
+}
+centeroverultrasmalldonotuse {
+	font-family: Tahoma;
+	font-size: 15px;
+	color: #d55b02;
+	text-align: center;
+	letterSpacing: 0.2;
+}

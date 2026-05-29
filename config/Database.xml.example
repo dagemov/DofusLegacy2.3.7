@@ -1,0 +1,7 @@
+Database Sunshine
+
+Database = ${MYSQL_DATABASE}
+Hostname = db
+Port = 3306
+Username = ${MYSQL_APP_USER}
+Password = ${MYSQL_APP_PASSWORD}

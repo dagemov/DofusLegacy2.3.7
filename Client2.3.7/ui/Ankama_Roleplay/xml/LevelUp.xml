@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="mainCtr" strata="TOP">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Texture de fond -->
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="577" y="283" />
+			</Size>
+			<uri>[local.assets]tx_decoBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		
+		<!-- Label "Niveau X !" -->
+		<Label name="lbl_newLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="46" y="29" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="508" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+		
+		
+				
+		<!-- Texture de fond 1 -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="201" y="89" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="355" y="72" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+		
+		<!-- Texture de fond 2 -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="201" y="161" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="355" y="97" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Texture de pdv -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="214" y="176" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]levelUp_tx_pictoLife</uri>
+		</Texture>
+		<!-- Texture de points de sort -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="214" y="198" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]levelUp_tx_pictoSpell</uri>
+		</Texture>
+		<!-- Texture de points de carac -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="214" y="220" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]levelUp_tx_pictoCarac</uri>
+		</Texture>
+		
+		
+		<!-- Label "Points de vie" -->
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="236" y="172" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="250" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.levelUp.LifePoints]</text>
+		</Label>
+
+		<!-- Label "Points de sort" -->
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="236" y="194" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="250" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.levelUp.SpellPoints]</text>
+		</Label>
+
+		<!-- Label "Points de caractéristique" -->
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="236" y="216" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="250" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.levelUp.CaracPoints]</text>
+		</Label>
+
+		<!-- Label du nombre de points de vie gagnés -->
+		<Label name="lbl_lifeStatPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="480" y="172" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label du nombre de points de sort gagnés -->
+		<Label name="lbl_spellStatPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="480" y="194" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label du nombre de points de caractéristique gagnés -->
+		<Label name="lbl_caracStatPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="480" y="216" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label "Nouveau sort" ou "Prochain sort au niveau xx" selon les cas -->
+		<Label name="lbl_spell">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="213" y="113" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="283" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- Le slot du sort -->
+		<Slot name="spellSlot">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="495" y="105" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<emptyTexture>[local.assets]tx_slot</emptyTexture>
+		</Slot>
+		
+		<!-- Le personnage de gauche -->
+		<EntityDisplayer name="playerLook">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="54" y="1" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="123" y="270" />
+			</Size>
+			<staticDisplay>true</staticDisplay>
+		</EntityDisplayer>
+		
+		<!-- Petit effect de lumière sur le nouveau sort (si nouveau sort il y a) -->
+		<Texture name="tx_spellSlotEffect" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="495" y="105" />
+				</Anchor>
+			</Anchors>
+		</Texture>
+		
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+	</Container>
+	
+</Definition>

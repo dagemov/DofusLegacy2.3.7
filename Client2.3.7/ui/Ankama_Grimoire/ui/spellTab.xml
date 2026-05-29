@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+	<Import url="[config.mod.template.button]horizontalTab.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	 
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container>
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="0" y="0" />
+			</Anchor>
+		</Anchors>
+		
+		<!-- Container pour la partie haute (bannière) de l'interface -->
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="26" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1096" y="70" />
+			</Size>
+			
+			<!-- La texture de fond de la bannière -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<RelDimension x="1" y="1" />
+				</Size>
+				<uri>[local.assets]tx_titleBackground</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+			
+			<!-- Le titre de la fenêtre -->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="48" y="12" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="199" y="37" />
+				</Size>
+				<text>[ui.grimoire.mySpell]</text>
+				<css>[local.css]title.css</css>
+			</Label>
+			
+			
+			<!-- La décoration de droite -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="813" y="12" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="228" y="38" />
+				</Size>
+				<uri>[local.assets]SPELL_Texture_tx_decoration</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+			
+		</Container>
+		
+		<!-- Fin du container de la bannière  -->
+		
+		
+		
+		
+		
+		
+
+		<!-- Container pour la partie gauche (la grille) de l'interface -->
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="15" y="96" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="571" y="671" />
+			</Size>
+
+			<!-- Texture de fond de la grille -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+      					<AbsDimension x="0" y="26" />
+     				</Anchor>
+    			</Anchors>
+    			<Size>
+     				<AbsDimension x="571" y="645" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<!-- Grid grid_spell-->
+
+			<Grid name="grid_spell">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="3" y="56" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="553" y="588" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateSpellLine,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<autoSelect>false</autoSelect>
+				<slotWidth>524</slotWidth>
+				<slotHeight>49</slotHeight>
+				<Hooks>
+					<onSelectItem />
+				</Hooks>
+
+				<Container>
+					<Size>
+						<AbsDimension x="524" y="49" />
+					</Size>
+					<Button name="btn_spell">
+						<Common>
+							<Size>
+								<AbsDimension x="524" y="49" />
+							</Size>
+							<radioMode>true</radioMode>
+							<linkedTo>slot_icon</linkedTo>
+							
+							
+							<Texture>
+								<Size>
+									<AbsDimension x="524" y="49" />
+								</Size>
+								<bgColor>0</bgColor>
+								<bgAlpha>0</bgAlpha>
+							</Texture>
+
+							<!-- Slot slot_icon-->
+
+							<Slot name="slot_icon">
+								<Anchors>
+									<Anchor>
+										<AbsDimension x="6" y="2" />
+									</Anchor>
+								</Anchors>
+								<Size>
+									<AbsDimension x="44" y="44" />
+								</Size>
+								<css>[local.css]normal.css</css>
+							</Slot>
+
+							<!-- Label lbl_spellName-->
+
+							<Label name="lbl_spellName">
+								<Anchors>
+									<Anchor>
+										<AbsDimension x="65" y="13" />
+									</Anchor>
+								</Anchors>
+								<Size>
+									<AbsDimension x="334" y="20" />
+								</Size>
+								<css>[local.css]normal.css</css>
+							</Label>
+
+							<!-- Label lbl_spellLevel-->
+
+							<Label name="lbl_spellLevel">
+								<Anchors>
+									<Anchor>
+										<AbsDimension x="399" y="13" />
+									</Anchor>
+								</Anchors>
+								<Size>
+									<AbsDimension x="63" y="20" />
+								</Size>
+								<css>[local.css]normal.css</css>
+								<cssClass>right</cssClass>
+							</Label>
+						</Common>
+
+						<State type="OVER">
+							<SetProperties target="btn_spell">
+								<bgColor>[colors.grid.over]</bgColor>
+							</SetProperties>
+						</State>
+
+						<State type="SELECTED">
+							<SetProperties target="btn_spell">
+								<bgColor>[colors.grid.selected]</bgColor>
+							</SetProperties>
+						</State>
+
+						<State type="SELECTED_OVER">
+							<SetProperties target="btn_spell">
+								<bgColor>[colors.grid.selected]</bgColor>
+							</SetProperties>
+						</State>
+					</Button>
+
+					<iconButton name="btn_increase_spell">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="485" y="14" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="25" y="25" />
+						</Size>
+						<uri>[local.assets]btn_plus_square</uri>
+						<Hooks>
+							<onRelease />
+							<onRollOver />
+							<onRollOut />
+						</Hooks>
+					</iconButton>
+				</Container>
+			</Grid>
+
+			<!-- Texture de foreground de la grille -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="25" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="572" y="651" />
+				</Size>
+				<uri>[local.assets]Spell_tx_Grid</uri>
+			</Texture>
+
+			<!-- Button btn_tabName-->
+
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="68" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="282" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.spellName]</text>
+			</Label>
+			<iconButton name="btn_tabName">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="61" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="338" y="25" />
+				</Size>
+				<uri>[local.assets]tx_invisible</uri>
+			</iconButton>
+
+			<!-- Button btn_tabLevel -->
+
+			<iconButton name="btn_tabLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="400" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="73" y="25" />
+				</Size>
+				<uri>[local.assets]tx_invisible</uri>
+			</iconButton>
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="401" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="71" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+				<text>[ui.social.guildRank]</text>
+			</Label>
+			
+			
+			<iconButton name="btn_tabBoost">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="476" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="50" y="25" />
+				</Size>
+				<uri>[local.assets]tx_invisible</uri>
+			</iconButton>
+
+
+
+			<!-- Label "Capital de pts" -->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="63" y="645" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="387" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+				<text>[ui.grimoire.spellCapital]</text>
+			</Label>
+
+			<!-- Label représentant le nombre de points de sort du joueur -->
+
+			<Label name="lbl_spell_point">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="451" y="645" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="62" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+
+
+			<!-- Combobox de sélection de type de sort -->
+
+			<ComboBox name="cbx_selection_type_spell">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="3" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="565" y="25" />
+				</Size>
+				<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+				<listTexture>[local.assets]tx_combobox</listTexture>
+				<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+				<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+				<Hooks>
+					<onSelectItem />
+				</Hooks>
+			</ComboBox>
+
+		</Container>
+
+		<!-- Fin du container pour la partie gauche de l'interface  -->
+		
+		
+		
+		
+		
+
+		<!-- Texture de fleche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="593" y="422" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="40" />
+			</Size>
+			<uri>[local.assets]tx_flecheombre</uri>
+		</Texture>
+		
+		
+		
+		
+		
+		<!-- Container pour la partie droite de l'interface -->
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="624" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="456" y="668" />
+			</Size>
+			
+			
+			
+			<horizontalTab name="btn_SpellLevelOne">
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>1</text>
+			</horizontalTab>
+
+			<horizontalTab name="btn_SpellLevelTwo">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="60" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>2</text>
+			</horizontalTab>
+
+			<horizontalTab name="btn_SpellLevelThree">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="120" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>3</text>
+			</horizontalTab>
+
+			<horizontalTab name="btn_SpellLevelFour">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="180" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>4</text>
+			</horizontalTab>
+
+			<horizontalTab name="btn_SpellLevelFive">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="240" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>5</text>
+			</horizontalTab>
+
+			<horizontalTab name="btn_SpellLevelSix">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="300" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="60" y="30" />
+				</Size>
+				<text>6</text>
+			</horizontalTab>
+			
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="367" y="11" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="7" y="12" />
+				</Size>
+				<uri>[local.assets]Alignement_tx_PetiteFlecheBlanche</uri>
+			</Texture>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="358" y="2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="90" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+				<text>[ui.social.guildRank]</text>
+			</Label>
+			
+			
+			
+			
+			<!-- Texture de fond de la zone de droite -->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="456" y="640" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<!-- Texture tx_tooltip-->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="5" y="115" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="447" y="548" />
+				</Size>
+				<uri>[local.assets]tx_darkBg</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- ScrollContainer tooltipContainer-->
+			
+			<ScrollContainer name="toolTipContainer">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="15" y="125" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="427" y="528" />
+				</Size>
+				<scrollbarCss>[local.css]scrollBar.css</scrollbarCss>
+				<useHorizontalScroll>false</useHorizontalScroll>
+			</ScrollContainer>
+			
+			
+			<!-- Texture de l'icone de sort large -->
+	
+			<Texture name="tx_spell_icon_large">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="17" y="38" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="70" />
+				</Size>
+			</Texture>
+			
+			<!-- Label nom du sort -->
+	
+			<Label name="lbl_name">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="98" y="45" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="344" y="22" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+			
+			<!-- Label "niveau requis" -->
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="98" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="300" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.spell.requiredLevel]</text>
+			</Label>
+			
+			<!-- Label valeur du niveau requis -->
+	
+			<Label name="lbl_requiredLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="98" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="300" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+			
+			
+		</Container>
+
+		<!-- Fin du container pour la partie droite de l'interface  -->
+		
+		
+		
+		
+		
+		
+	</Container>
+</Definition>
+

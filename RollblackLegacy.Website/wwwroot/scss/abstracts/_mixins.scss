@@ -1,0 +1,31 @@
+@use "variables" as *;
+
+@mixin panel-frame {
+  background: linear-gradient(180deg, rgba(63, 50, 39, 0.9), $color-panel-strong);
+  border: 1px solid $color-panel-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-panel;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    border: 1px solid rgba(255, 245, 223, 0.08);
+  }
+}
+
+@mixin button-variant($from, $to, $text-color) {
+  background: linear-gradient(180deg, $from, $to);
+  color: $text-color;
+  border-color: rgba(255, 255, 255, 0.08);
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24);
+  }
+}

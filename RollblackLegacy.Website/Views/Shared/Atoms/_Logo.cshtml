@@ -1,0 +1,9 @@
+@model BrandIdentityViewModel
+
+<a class="brandmark" href="/" aria-label="@Model.Name">
+    <img src="@Model.LogoPath" alt="@Model.Name" class="brandmark__image" />
+    <span class="brandmark__copy">
+        <strong>@Model.Name</strong>
+        <small>@Model.Tagline</small>
+    </span>
+</a>
