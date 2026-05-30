@@ -101,8 +101,8 @@
     <!--======================================================================-->
     <!--                   Constantes pour les langues                        -->
     <!--======================================================================-->
-    <entry key="lang.current">fr</entry>
-    <entry key="binds.current">frFR</entry>
+    <entry key="lang.current">es</entry>
+    <entry key="binds.current">esES</entry>
     <entry key="lang.usingIME">ja</entry>
     <!--======================================================================-->
     <!--                  Constantes pour les données                         -->
@@ -115,7 +115,7 @@
     <!--======================================================================-->
     <!--               Constantes pour les raccourcis clavier                 -->
     <!--======================================================================-->
-    <entry key="binds.current">frFR</entry>
+    <entry key="binds.current">esES</entry>
     <entry key="binds.path.root">[config.data.path.root]binds/</entry>
     <!--======================================================================-->
     <!--                 Constantes pour le moteur de rendu                   -->
