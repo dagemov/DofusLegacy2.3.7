@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using Sunshine.BaseServer.Configuration;
+using Sunshine.Logs;
 using Sunshine.Protocol.Utils;
 using Sunshine.Protocol.Types;
 using System.Linq;
@@ -21,6 +23,7 @@ namespace Sunshine.MySql.Database.Managers
     public class AccountManager : Singleton<AccountManager>
     {
         public Protocol.Types.Version requiredVersion = new Protocol.Types.Version(2, 3, 7, 35100, 0, 0);
+        private static bool AuthDebugEnabled => GameConfig.GetBool("AuthDebugHashes", false);
 
         public Account GetAccount(string username, bool isForServer = false)
         {
@@ -32,12 +35,21 @@ namespace Sunshine.MySql.Database.Managers
                         .FirstOrDefault(x => x?.Account != null && string.Equals(x.Account.Username, username, StringComparison.OrdinalIgnoreCase));
 
                     if (connectedCharacter?.Account != null)
+                    {
+                        LogAuthLookup(username, connectedCharacter.Account, "connected-character-cache");
                         return connectedCharacter.Account;
+                    }
                 }
-                return DatabaseManager.Connection.QueryFirstOrDefault<Account>("SELECT * FROM accounts WHERE LOWER(Username) = LOWER(@Username) LIMIT 1", new { Username = (username ?? string.Empty).Trim() });
+
+                var account = DatabaseManager.Connection.QueryFirstOrDefault<Account>("SELECT * FROM accounts WHERE LOWER(Username) = LOWER(@Username) LIMIT 1", new { Username = (username ?? string.Empty).Trim() });
+                LogAuthLookup(username, account, "accounts-query");
+                return account;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (AuthDebugEnabled)
+                    Logger.WriteInfo($"[AUTH-DEBUG] accountLookup username={FormatValue(username)} source={(isForServer ? "server-selection" : "auth-login")} accountFound=false db={DatabaseManager.DescribeConnectionString(DatabaseManager.ConnectionString)} error={ex.GetType().Name}");
+
                 return null;
             }
         }
@@ -160,6 +172,19 @@ namespace Sunshine.MySql.Database.Managers
                 return false;
 
             return false;
+        }
+
+        private static void LogAuthLookup(string username, Account account, string source)
+        {
+            if (!AuthDebugEnabled)
+                return;
+
+            Logger.WriteInfo($"[AUTH-DEBUG] accountLookup username={FormatValue(username)} source={FormatValue(source)} accountFound={account != null} db={DatabaseManager.DescribeConnectionString(DatabaseManager.ConnectionString)}");
+        }
+
+        private static string FormatValue(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "<empty>" : value.Trim();
         }
     }
 }

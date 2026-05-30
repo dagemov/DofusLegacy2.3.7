@@ -7,6 +7,8 @@ WorldPort=${WORLD_PORT}
 #AuthBindIp=0.0.0.0
 #WorldBindIp=0.0.0.0
 ProtocolVersion=${PROTOCOL_VERSION}
+# Optional safe auth diagnostics. Logs metadata and short hash previews only.
+#AuthDebugHashes=false
 
 RateXp=${RATE_XP}
 RateDrop=${RATE_DROP}

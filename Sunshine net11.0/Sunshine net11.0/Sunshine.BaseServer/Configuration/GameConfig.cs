@@ -71,6 +71,33 @@ namespace Sunshine.BaseServer.Configuration
             return int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out value) ? value : defaultValue;
         }
 
+        public static bool GetBool(string key, bool defaultValue = false)
+        {
+            var raw = GetString(key, defaultValue ? "true" : "false");
+
+            bool value;
+            if (bool.TryParse(raw, out value))
+                return value;
+
+            switch ((raw ?? string.Empty).Trim().ToLowerInvariant())
+            {
+                case "1":
+                case "yes":
+                case "y":
+                case "on":
+                    return true;
+
+                case "0":
+                case "no":
+                case "n":
+                case "off":
+                    return false;
+
+                default:
+                    return defaultValue;
+            }
+        }
+
         public static double GetDouble(string key, double defaultValue = 0d)
         {
             var raw = GetString(key, defaultValue.ToString(CultureInfo.InvariantCulture));
