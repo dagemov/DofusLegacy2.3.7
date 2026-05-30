@@ -215,8 +215,8 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 ? "127.0.0.1"
                 : world.Address.Trim();
 
-            // Dofus 2.3.7.35100 : conserver le ticket Auth original.
-            // Ne pas utiliser la génération de ticket SaveKrosmoz / 2.10 ici.
+            // Dofus 2.3.7.35100: keep the original Auth ticket.
+            // Do not use the SaveKrosmoz / 2.10 ticket generation here.
             if (string.IsNullOrWhiteSpace(client.Ticket))
                 client.Ticket = Utils.RandomString(32, true);
 
