@@ -90,6 +90,29 @@ namespace Sunshine.Mysql.Database
             return new MySqlConnection(ConnectionString);
         }
 
+        public static string DescribeConnectionString(string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+                return "Host=<empty> Port=<empty> Database=<empty> User=<empty> PasswordSet=false";
+
+            try
+            {
+                var builder = new MySqlConnectionStringBuilder(connectionString);
+                return string.Format(
+                    CultureInfo.InvariantCulture,
+                    "Host={0} Port={1} Database={2} User={3} PasswordSet={4}",
+                    string.IsNullOrWhiteSpace(builder.Server) ? "<empty>" : builder.Server,
+                    builder.Port,
+                    string.IsNullOrWhiteSpace(builder.Database) ? "<empty>" : builder.Database,
+                    string.IsNullOrWhiteSpace(builder.UserID) ? "<empty>" : builder.UserID,
+                    !string.IsNullOrEmpty(builder.Password));
+            }
+            catch
+            {
+                return "Host=<invalid> Port=<invalid> Database=<invalid> User=<invalid> PasswordSet=false";
+            }
+        }
+
         public static void Initilize()
         {
             try

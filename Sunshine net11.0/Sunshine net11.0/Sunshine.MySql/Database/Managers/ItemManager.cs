@@ -66,6 +66,8 @@ namespace Sunshine.MySql.Database.Managers
                 {
                     if (!string.IsNullOrWhiteSpace(DatabaseManager.ConnectionString))
                     {
+                        Logs.Logger.WriteInfo($"ItemManager UID provider DB config: {DatabaseManager.DescribeConnectionString(DatabaseManager.ConnectionString)}");
+
                         using (var connection = DatabaseManager.CreateConnection())
                         {
                             connection.Open();
