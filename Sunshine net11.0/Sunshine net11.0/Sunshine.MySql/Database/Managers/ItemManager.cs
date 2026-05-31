@@ -64,12 +64,8 @@ namespace Sunshine.MySql.Database.Managers
 
                 try
                 {
-                    if (!string.IsNullOrWhiteSpace(DatabaseManager.ConnectionString))
+                    using (var connection = DatabaseManager.CreateConnection())
                     {
-                        Logs.Logger.WriteInfo($"ItemManager UID provider DB config: {DatabaseManager.DescribeConnectionString(DatabaseManager.ConnectionString)}");
-
-                        using (var connection = DatabaseManager.CreateConnection())
-                        {
                             connection.Open();
 
                             highestId = Math.Max(highestId, GetMaxItemUid(connection, "characters_items"));
@@ -77,7 +73,6 @@ namespace Sunshine.MySql.Database.Managers
                             highestId = Math.Max(highestId, GetMaxItemUid(connection, "characters_items_merchant"));
                             highestId = Math.Max(highestId, GetMaxItemUid(connection, "house_chest_items"));
                             highestId = Math.Max(highestId, GetMaxItemUid(connection, "world_trashes_items"));
-                        }
                     }
                 }
                 catch (Exception ex)
