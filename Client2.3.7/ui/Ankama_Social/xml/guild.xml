@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/horizontalTab.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+        
+       	<Constant name="picto_uri" value="[config.content.path]gfx/emblems/" />   
+	</Constants>
+    
+	<Container name="mainCtr">
+	
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="-9" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="935" y="77" />
+			</Size>
+			<uri>[local.assets]Guild_tx_background</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="10" y="-6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="450" y="32" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- TEXTURE BACKGROUND -->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="112" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="918" y="544" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+		</Texture>
+		
+		<!-- INFO GUILDE -->
+		
+		<Container name="guildInfo">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="460" y="0" />
+				</Anchor>
+			</Anchors>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="4" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="195" y="20" />
+				</Size>
+				<text>[ui.common.level] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="24" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="195" y="20" />
+				</Size>
+				<text>[ui.common.experiment] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="44" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="195" y="20" />
+				</Size>
+				<text>[ui.social.guildMembers] :</text>
+				<css>[local.css]normal.css</css>		
+			</Label>
+
+			<!-- Label lbl_guildLevel-->
+
+			<Label name="lbl_guildLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="200" y="4" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="115" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+			<!-- Label lbl_members-->
+
+			<Label name="lbl_members">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="200" y="44" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="115" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+			<!-- Texture tx_emblem-->
+
+			<Texture name="tx_emblemBack">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="340" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="74" y="74" />
+				</Size>
+			</Texture>
+			<Texture name="tx_emblemUp">
+				<Anchors>
+					<Anchor relativeTo="tx_emblemBack" relativePoint="CENTER">
+						<AbsDimension x="-22" y="-22" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="44" y="44" />
+				</Size>
+			</Texture>
+
+			<!-- BARRE DE PROGRESSION D'EXPERIENCE DE GUILDE -->
+
+			<Texture name="tx_progressBarBackground">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="200" y="31" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="115" y="11" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<Texture name="tx_progressBar">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="201" y="32" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="113" y="9" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+				<width>0</width>
+			</Texture>
+		</Container>
+		
+				
+		<!-- ONGLETS GUILDE -->
+
+		<horizontalTab name="btn_members">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="86" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.social.guildMembers]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_customization">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="180" y="86" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.social.guildBoosts]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_taxCollector">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="360" y="86" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.social.guildTaxCollectors]</text>
+		</horizontalTab>
+		<horizontalTab name="btn_paddock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="540" y="86" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.mountPark]</text>
+		</horizontalTab>
+		<horizontalTab name="btn_houses">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="720" y="86" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.housesWord]</text>
+		</horizontalTab>
+	</Container>
+</Definition>
+

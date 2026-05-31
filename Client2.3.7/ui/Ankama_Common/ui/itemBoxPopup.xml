@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" >
+				<AbsDimension x="0" y="-60" />
+			</Anchor>
+		</Anchors>
+		
+		<Size>
+			<AbsDimension x="529" y="358" />
+		</Size>
+
+		<Texture>
+			<Size>
+				<AbsDimension x="529" y="358" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<Container name="ctr_item">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="22" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="462" y="315" />
+			</Size>
+		</Container>
+
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" >
+					<AbsDimension x="-1" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="47" y="30" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+	</Container>
+</Definition>

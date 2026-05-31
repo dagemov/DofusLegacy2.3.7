@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+   </Constants>
+
+	<Container name="mainCtr">
+		
+		<!-- INTERFACE PRINCIPALE -->
+		<Container name="ctr_menu">
+			<Anchors>
+				<Anchor point="CENTER" relativePoint="CENTER" />
+			</Anchors>
+			
+			<Texture>
+				<Size>
+					<AbsDimension x="357" y="339" />
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<autoGrid>true</autoGrid>
+				<mouseEnabled>true</mouseEnabled>
+			</Texture>
+	
+			<!-- iconButton Button_btn_croix-->
+	
+			<iconButton name="btn_close">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="36" />
+				</Size>
+				<uri>[local.assets]btn_cornerCross</uri>
+        	</iconButton>
+	
+			<!-- Slot slot_icon-->
+	
+			<Slot name="slot_icon">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="32" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="110" y="110" />
+				</Size>
+			</Slot>
+	
+			<!-- simpleButton btn_look-->
+	
+			<simpleButton name="btn_look">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="156" y="155" />
+					</Anchor>
+				</Anchors>
+				
+				<uri>[local.assets]btn_orange</uri>
+				
+				<Size>
+				<AbsDimension x="166" y="31" />
+			</Size>
+				<label>[ui.item.skin]</label>
+				<css>[local.css]button.css</css>
+			</simpleButton>
+	
+			<!-- simpleButton btn_destroy-->
+	
+			<simpleButton name="btn_destroy">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="156" y="115" />
+					</Anchor>
+				</Anchors>
+				
+				<uri>[local.assets]btn_orange</uri>
+				
+				<Size>
+				<AbsDimension x="166" y="31" />
+			</Size>
+				<label>[ui.item.dissociate]</label>
+				<css>[local.css]button.css</css>
+			</simpleButton>
+	
+			<!-- simpleButton btn_feed-->
+	
+			<simpleButton name="btn_feed">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="156" y="74" />
+					</Anchor>
+				</Anchors>
+				
+				<uri>[local.assets]btn_orange</uri>
+				
+				<Size>
+				<AbsDimension x="166" y="31" />
+			</Size>
+				<label>[ui.common.feed]</label>
+				<css>[local.css]button.css</css>
+			</simpleButton>
+	
+	
+			<Texture name="tx_xpBack">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="212" y="294" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="112" y="12" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- Texture tx_xp-->
+	
+			<Texture name="tx_xp">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="213" y="295" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="27" y="10" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="24" y="15" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="300" y="35" />
+				</Size>
+				<text>[ui.item.manageItem]</text>
+				<css>[local.css]title.css</css>
+			</Label>
+	
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="34" y="204" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="143" y="20" />
+				</Size>
+				<text>[ui.sersel.state] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+			<!-- Label lbl_weight-->
+	
+			<Label name="lbl_mood">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="176" y="204" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="154" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+	
+			<!-- Label lbl_date-->
+	
+			<Label name="lbl_date">
+				<Anchors>
+					<Anchor relativePoint="TOP" point="TOP">
+						<AbsDimension y="227" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="330" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="34" y="262" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="143" y="20" />
+				</Size>
+				<text>[ui.common.level] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+			<!-- Label lbl_level_2-->
+	
+			<Label name="lbl_level">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="226" y="262" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="104" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+	
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="34" y="288" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="158" y="20" />
+				</Size>
+				<text>[ui.common.experiment] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+		</Container>
+		
+		<!-- LISTE DES OBJETS QUE L'ON PEUT DONNER A MANGER -->
+		
+		<Container name="ctr_feed">
+			
+			<Size>
+				<AbsDimension x="1280" y="1024" />
+			</Size>
+			<bgColor>0x000000</bgColor>
+			<bgAlpha>0.3</bgAlpha>
+			<visible>false</visible>
+			<mouseEnabled>true</mouseEnabled>
+			
+			<Container>
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="CENTER" />
+				</Anchors>
+
+				<Texture name="tx_bgFeed">
+					<Size>
+						<AbsDimension x="510" y="550" />
+					</Size>
+					<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+				
+				<!-- iconButton btn_close-->
+				
+				<iconButton name="btn_closeFeed">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+					</Anchors>
+					<Size>
+						<AbsDimension x="57" y="36" />
+					</Size>
+					<uri>[local.assets]btn_cornerCross</uri>
+        		</iconButton>
+				
+				<!-- Texture Texture_tx_fondBtnFermer-->
+				
+				<Texture>
+					<Anchors>
+						<Anchor relativeTo="tx_bgFeed" point="TOP" relativePoint="BOTTOM" >
+							<AbsDimension x="0" y="-10" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="336" y="47" />
+					</Size>
+					<uri>[local.assets]tx_buttonBackground</uri>
+					<autoGrid>false</autoGrid>
+				</Texture>
+				
+				<!-- simpleButton btn_ok-->
+				
+				<simpleButton label="[ui.common.validation]" name="btn_feedOk">
+					<Anchors>
+						<Anchor relativeTo="tx_bgFeed" point="TOP" relativePoint="BOTTOM" >
+							<AbsDimension x="0" y="-5" />
+						</Anchor>
+					</Anchors>				
+					<Size>
+						<AbsDimension x="191" y="35" />
+					</Size>
+				</simpleButton>
+		
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="22" y="15" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="445" y="35" />
+					</Size>
+					<text>[ui.item.feed]</text>
+					<css>[local.css]title.css</css>
+				</Label>
+				
+				<!-- Grid grid_list-->
+				
+				<Grid name="grid_food">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="23" y="63" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="462" y="142" />
+					</Size>
+					<autoSelect>false</autoSelect>
+					<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+					<slotWidth>44</slotWidth>
+					<slotHeight>44</slotHeight>
+					<!--scrollDisplay>never</scrollDisplay-->
+					<rendererName>SlotGridRenderer</rendererName>
+					<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css,false</rendererArgs>
+					<Hooks>
+						<onItemRollOver />
+						<onItemRollOut />
+						<onSelectItem />
+					</Hooks>
+				</Grid>
+				
+				
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="13" y="212" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="485" y="40" />
+					</Size>
+					<uri>[local.assets]tx_titleBackground</uri>
+					<autoGrid>false</autoGrid>
+				</Texture>
+				
+				
+							
+				<Label name="lbl_selectItem">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="20" y="370" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="462" y="20" />
+					</Size>
+					<cssClass>center</cssClass>
+					<css>[local.css]normal.css</css>
+					<text>[ui.common.selectItem]</text>
+				</Label>
+
+						
+				<Container name="ctr_item">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="23" y="215" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="462" y="315" />
+					</Size>
+				</Container>
+			</Container>
+		</Container>
+		
+		<!-- INTERFACE DE CHANGEMENT D'APPARENCE DE L'OBJET -->
+		
+		<Container name="ctr_look">
+			
+			<Size>
+				<AbsDimension x="1280" y="1024" />
+			</Size>
+			<bgColor>0x000000</bgColor>
+			<bgAlpha>0.3</bgAlpha>
+			<visible>false</visible>
+			<mouseEnabled>true</mouseEnabled>
+			
+			<Container>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="389" y="450" />
+					</Anchor>
+				</Anchors>
+				
+				<Texture>
+					<Size>
+						<AbsDimension x="502" y="180" />
+					</Size>
+					<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+				
+				<!-- Texture Texture_tx_fondBtnFermer-->
+				
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="83" y="169" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="336" y="47" />
+					</Size>
+					<uri>[local.assets]tx_buttonBackground</uri>
+					<autoGrid>false</autoGrid>
+				</Texture>
+		
+				<!-- simpleButton btn_lookOk-->
+		
+				<simpleButton name="btn_lookOk">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="155" y="175" />
+						</Anchor>
+					</Anchors>
+					
+					<uri>[local.assets]btn_orange</uri>
+					
+					<Size>
+						<AbsDimension x="191" y="35" />
+					</Size>
+					<label>[ui.common.validation]</label>
+					<css>[local.css]button.css</css>
+				</simpleButton>
+		
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="24" y="15" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="440" y="35" />
+					</Size>
+					<text>[ui.item.chooseSkin]</text>
+					<css>[local.css]title.css</css>
+				</Label>
+				
+				<!-- Grid grid_look-->
+				
+				<Grid name="grid_look">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="24" y="67" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="455" y="90" />
+					</Size>
+					<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+					<slotWidth>44</slotWidth>
+					<slotHeight>44</slotHeight>
+					<scrollDisplay>never</scrollDisplay>
+					<rendererName>SlotGridRenderer</rendererName>
+					<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css,false</rendererArgs>
+				</Grid>
+				
+				<!-- iconButton btn_lookClose-->
+				
+				<iconButton name="btn_closeLook">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+					</Anchors>
+					<Size>
+						<AbsDimension x="57" y="36" />
+					</Size>
+					<uri>[local.assets]btn_cornerCross</uri>
+        		</iconButton>
+			</Container>
+		</Container>
+		
+	</Container>
+</Definition>

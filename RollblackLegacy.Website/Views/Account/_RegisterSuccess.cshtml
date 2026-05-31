@@ -1,0 +1,44 @@
+@model RegisterAccountResultViewModel
+
+<div class="register-success">
+    @await Html.PartialAsync("~/Views/Shared/Atoms/_Badge.cshtml", new BadgeViewModel
+    {
+        Label = "Cuenta creada",
+        Tone = "success",
+        IconPath = "/images/status/server-on.png"
+    })
+
+    <h3 class="register-success__title">@Model.Title</h3>
+    <p class="register-success__message">@Model.Message</p>
+
+    <div class="register-success__meta">
+        <div>
+            <span class="register-success__label">Username</span>
+            <strong>@Model.Username</strong>
+        </div>
+        <div>
+            <span class="register-success__label">Email</span>
+            <strong>@Model.Email</strong>
+        </div>
+    </div>
+
+    @if (Model.UsesWebsiteContactTable)
+    {
+        <p class="register-success__note">El auth original no trae columna nativa de email en `accounts`, asi que el sitio lo guarda en una tabla complementaria del mismo esquema.</p>
+    }
+
+    <div class="register-success__actions">
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
+        {
+            Label = "Registrar otra cuenta",
+            Href = "/account/register",
+            Variant = "secondary"
+        })
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
+        {
+            Label = "Volver al inicio",
+            Href = "/",
+            Variant = "ghost"
+        })
+    </div>
+</div>

@@ -1,0 +1,9 @@
+@model BadgeViewModel
+
+<span class="rl-badge rl-badge--@Model.Tone">
+    @if (!string.IsNullOrWhiteSpace(Model.IconPath))
+    {
+        <img src="@Model.IconPath" alt="" class="rl-badge__icon" />
+    }
+    <span>@Model.Label</span>
+</span>

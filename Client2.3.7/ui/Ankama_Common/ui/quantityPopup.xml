@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	
+	<Container>
+		<Size>
+			<AbsDimension x="282" y="44" />
+		</Size>
+		
+		<mouseEnabled>true</mouseEnabled>
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+		
+		<Texture>
+			<Size>
+				<RelDimension x="1" y="1" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]PopupQty_tx_background</uri>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="9" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="110" y="25" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_inputBackground</uri>
+		</Texture>
+		
+		<Input name="inputQty">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="137" y="8" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="106" y="23" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+			<restrict>0-9.</restrict>
+			<maxChars>12</maxChars>
+		</Input>
+		
+		<simpleButton name="btnMin"   >
+			<Size>
+				<AbsDimension x="60" y="30" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="7" y="7" />
+				</Anchor>
+			</Anchors>
+			<label>[ui.common.minWord]</label>
+			<cssClass>small</cssClass>
+			<css>[local.css]button.css</css>
+			<uri>[local.assets]PopupQty_btn_petitBtnOrange</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+		
+		<simpleButton name="btnMax"   >
+			<Size>
+				<AbsDimension x="60" y="30" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="70" y="7" />
+				</Anchor>
+			</Anchors>
+			<label>[ui.common.maxWord]</label>
+			<cssClass>small</cssClass>
+			<css>[local.css]button.css</css>
+			<uri>[local.assets]PopupQty_btn_petitBtnOrange</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+		
+		<iconButton name="btnOk">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="250" y="9" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="25" />
+			</Size>
+			<uri>[local.assets]PopupQty_btn_btnOrangeOk</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</iconButton>
+	</Container>
+</Definition>

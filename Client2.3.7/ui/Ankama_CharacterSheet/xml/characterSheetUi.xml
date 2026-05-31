@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+    <Import url="[config.mod.template]button/horizontalTab.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+       
+		<Constant name="picto_uri" value="[config.content.path]gfx/characteristics/characteristics.swf|tx_" />
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+		<Constant name="alignment_uri" value="[config.content.path]gfx/alignments/" />
+	   	<Constant name="job_uri" value="[config.gfx.path]jobs/" />
+   	</Constants>
+
+	<Container>
+        <Size>
+            <AbsDimension x="411" y="806" />
+        </Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT">
+				<AbsDimension x="16" y="-155" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="411" y="805" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+	
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="18" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="384" y="87" />
+			</Size>
+			<uri>[local.assets]FichePerso_tx_bgTitle</uri>
+		</Texture>	
+
+		<!-- Texture tx_alignmentIcon-->
+
+		<Texture name="tx_alignmentIcon">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="21" y="21" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="81" y="81" />
+			</Size>
+		</Texture>
+			
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="104" y="25" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="285" y="30" />
+			</Size>
+            <css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Label lbl_lvl-->
+
+		<Label name="lbl_lvl">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="106" y="69" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="283" y="24" />
+			</Size>
+            <css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		<horizontalTab name="btn_regular">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="110" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="186" y="28" />
+			</Size>
+			<text>[ui.stats.summary]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_advanced">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="205" y="110" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="186" y="28" />
+			</Size>
+			<text>[ui.stats.advanced]</text>
+		</horizontalTab>		
+
+
+
+
+		<!-- Texture tx_bg-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="138" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="372" y="648" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]map_tx_bgList</uri>
+		</Texture>
+
+
+		<Container name="ctr_regular">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="138" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="372" y="648" />
+			</Size>
+
+
+			<!-- Label lbl_energy-->
+
+			<Label name="lbl_energy">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="7" y="8" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="131" y="20" />
+				</Size>
+				<text>[ui.common.energy]</text>
+				<css>[local.css]normal.css</css>
+			</Label>	
+
+
+			<!-- Texture tx_energyGauge-->
+
+			<Texture name="tx_energyGauge">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="142" y="14" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="223" y="16" />
+				</Size>
+				<uri>[local.assets]FichePerso_tx_jaugeRouge</uri>
+			</Texture>
+
+
+			<!-- Label lbl_xp-->
+
+			<Label name="lbl_xp">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="7" y="31" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="131" y="20" />
+				</Size>
+				<text>[ui.common.experiment]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Texture tx_xpGauge-->
+
+			<Texture name="tx_xpGauge">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="142" y="37" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="223" y="16" />
+				</Size>
+				<uri>[local.assets]FichePerso_tx_jaugeBleu</uri>
+			</Texture>
+
+
+
+			<!-- Grid gd_stat-->
+
+			<Grid name="gd_stat">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="67" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="371" y="210" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateStatLine,[colors.grid.line]</rendererArgs>
+				<slotWidth>371</slotWidth>
+				<slotHeight>30</slotHeight>
+
+				<Container name="statItemCtr">
+					<Size>
+						<AbsDimension x="371" y="30" />
+					</Size>
+
+					<!-- Texture tx_picto-->
+
+					<Texture name="tx_pictoStat">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="7" y="7" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="17" y="17" />
+						</Size>
+					</Texture>
+
+					<!-- Label lbl_name-->
+
+					<Label name="lbl_nameStat">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="30" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="230" y="22" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<!-- Label lbl_value-->
+
+					<Label name="lbl_valueStat">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="260" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="104" y="22" />
+						</Size>
+						<cssClass>right</cssClass>
+						<css>[local.css]normal.css</css>
+					</Label>
+				</Container>
+
+			</Grid>		
+
+
+
+			<Container>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="277" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="372" y="30" />
+				</Size>
+				<bgColor>[colors.grid.title]</bgColor>
+			</Container>
+
+			<!-- Label -->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="9" y="278" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="353" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>opposite</cssClass>
+				<text>[ui.common.caracteristics]</text>
+			</Label>
+
+
+			<!-- Grid gd_carac-->
+
+			<Grid name="gd_carac">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="307" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="371" y="180" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateCaracLine,[colors.grid.line]</rendererArgs>
+				<slotWidth>371</slotWidth>
+				<slotHeight>30</slotHeight>
+
+				<Container name="caracItemCtr">
+					<Size>
+						<AbsDimension x="371" y="30" />
+					</Size>
+
+					<!-- Texture tx_picto-->
+
+					<Texture name="tx_pictoCarac">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="7" y="7" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="17" y="17" />
+						</Size>
+					</Texture>
+
+					<!-- Label lbl_name-->
+
+					<Label name="lbl_nameCarac">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="31" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="220" y="22" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<!-- Label lbl_value-->
+
+					<Label name="lbl_valueCarac">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="251" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="73" y="22" />
+						</Size>
+						<cssClass>right</cssClass>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+
+					<iconButton name="btn_plus">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="339" y="2" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="26" y="26" />
+						</Size>
+						<uri>[local.assets]btn_plus_square</uri>
+					</iconButton>
+
+
+				</Container>
+
+			</Grid>		
+
+
+
+
+
+
+			<Texture>
+				<Anchors>
+					<Anchor relativeTo="gd_carac" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="372" y="32" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_bgSubTitle</uri>
+			</Texture>
+
+
+			<!-- Label -->
+
+			<Label name="lbl_statPointsTitle">
+				<Anchors>
+					<Anchor relativeTo="gd_carac" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<AbsDimension x="8" y="4" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="271" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>opposite</cssClass>
+				<text>[ui.stats.statPoints] :</text>
+			</Label>
+
+			<!-- Label lbl_statPoints-->
+
+			<Label name="lbl_statPoints">
+				<Anchors>
+					<Anchor relativeTo="gd_carac" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<AbsDimension x="185" y="4" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="176" y="22" />
+				</Size>
+				<cssClass>oppositeright</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+
+
+
+			<Container>
+				<Anchors>
+					<Anchor relativeTo="gd_carac" point="TOPLEFT" relativePoint="BOTTOMLEFT">
+						<AbsDimension x="0" y="32" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="372" y="32" />
+				</Size>
+				<bgColor>[colors.grid.title]</bgColor>
+			</Container>
+
+
+			<!-- Label -->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="522" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="353" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>opposite</cssClass>
+				<text>[ui.common.myJobs]</text>
+			</Label>
+			
+			
+			<Texture name="tx_slotBg0">
+				<Anchors><Anchor><AbsDimension x="8" y="567" /></Anchor></Anchors>
+				<Size><AbsDimension x="69" y="69" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+			<Texture name="tx_slotBg1">
+				<Anchors><Anchor><AbsDimension x="81" y="567" /></Anchor></Anchors>
+				<Size><AbsDimension x="69" y="69" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+			<Texture name="tx_slotBg2">
+				<Anchors><Anchor><AbsDimension x="154" y="567" /></Anchor></Anchors>
+				<Size><AbsDimension x="69" y="69" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+			
+			<Texture name="tx_slotBg3">
+				<Anchors><Anchor><AbsDimension x="229" y="593" /></Anchor></Anchors>
+				<Size><AbsDimension x="43" y="43" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+			<Texture name="tx_slotBg4">
+				<Anchors><Anchor><AbsDimension x="275" y="593" /></Anchor></Anchors>
+				<Size><AbsDimension x="43" y="43" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+			<Texture name="tx_slotBg5">
+				<Anchors><Anchor><AbsDimension x="320" y="593" /></Anchor></Anchors>
+				<Size><AbsDimension x="43" y="43" /></Size>
+				<uri>[local.assets]tx_slot</uri>
+			</Texture>
+
+			<Texture name="tx_jobIcon1">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg0" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="69" y="69" />
+				</Size>
+			</Texture>
+								
+			<Texture name="tx_jobIcon2">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg1" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="69" y="69" />
+				</Size>
+			</Texture>
+
+			<Texture name="tx_jobIcon3">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg2" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="69" y="69" />
+				</Size>
+			</Texture>
+			
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="230" y="567" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="135" y="22" />
+				</Size>
+				<text>[ui.common.specializations]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+			
+					
+			<Texture name="tx_subjobIcon1">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg3" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="43" y="43" />
+				</Size>
+			</Texture>
+
+			<Texture name="tx_subjobIcon2">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg4" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="43" y="43" />
+				</Size>
+			</Texture>
+
+			<Texture name="tx_subjobIcon3">
+				<Anchors>
+					<Anchor relativeTo="tx_slotBg5" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="43" y="43" />
+				</Size>
+			</Texture>
+
+	
+					
+			<Texture name="tx_jobIconOver">
+				<uri>[local.bitmap]selected.png</uri>
+				<visible>false</visible>			
+			</Texture>
+			
+
+		</Container>
+		
+		
+		
+		
+		
+		<Container name="ctr_advanced">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="138" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="372" y="648" />
+			</Size>
+				
+
+			
+			<!-- Label lbl_tabName-->
+
+			<Label name="lbl_name">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="30" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="135" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.caracteristics]</text>
+			</Label>
+
+			<!-- Label lbl_tabBase-->
+
+			<Label name="lbl_tabBase">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="170" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.base]</text>
+			</Label>
+
+			<!-- Label lbl_tabBonus-->
+
+			<Label name="lbl_tabBonus">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="228" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+				<text>[ui.fightend.bonus]</text>
+			</Label>
+
+			<!-- Label lbl_tabTotal-->
+
+			<Label name="lbl_tabTotal">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="284" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.total]</text>
+			</Label>
+		
+			
+		
+		
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="372" y="623" />
+				</Size>
+				<uri>[local.assets]FichePerso_tx_grilleCaracAvancees</uri>
+			</Texture>
+
+
+		
+			<!-- Grid gd_caracAdvanced-->
+
+			<Grid name="gd_caracAdvanced">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="23" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="366" y="603" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateAdvancedLine,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>342</slotWidth>
+				<slotHeight>30</slotHeight>
+				
+				<Container name="caracAdvancedItemCtr">
+					<Size>
+						<AbsDimension x="342" y="30" />
+					</Size>
+
+					<!-- Texture tx_picto-->
+
+					<Texture name="tx_picto">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="6" y="6" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="17" y="17" />
+						</Size>
+					</Texture>
+
+					<!-- Label lbl_name-->
+
+					<Label name="lbl_name">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="33" y="1" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="135" y="22" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<!-- Label lbl_base-->
+
+					<Label name="lbl_base">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="170" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="57" y="22" />
+						</Size>
+						<cssClass>center</cssClass>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<!-- Label lbl_bonus-->
+
+					<Label name="lbl_bonus">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="228" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="57" y="22" />
+						</Size>
+						<cssClass>center</cssClass>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+					<!-- Label lbl_total-->
+
+					<Label name="lbl_total">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="286" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="57" y="22" />
+						</Size>
+						<cssClass>center</cssClass>
+						<css>[local.css]normal.css</css>
+					</Label>
+
+						
+				</Container>
+				
+			</Grid>	
+
+			
+		</Container>
+		
+		
+				
+				
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor relativeTo="tx_background" point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+		</iconButton>
+
+				
+	</Container>
+</Definition>
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+	<Constants>
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+	
+				<!-- Label lbl_mountType-->
+
+				<Label name="lbl_mountType">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="8" y="6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="253" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+				<!-- Label lbl_owner-->
+
+				<Label name="lbl_owner">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="268" y="6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="150" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+				
+	</Container>
+</Definition>

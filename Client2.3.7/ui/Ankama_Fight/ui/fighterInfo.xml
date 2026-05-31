@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="picto_uri" value="[config.content.path]gfx/characteristics/characteristics.swf|tx_" />
+	</Constants>
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor relativePoint="BOTTOMRIGHT" point="BOTTOMRIGHT">
+				<AbsDimension x="51" y="4" />
+			</Anchor>
+		</Anchors>
+		<Size>
+			<AbsDimension x="574" y="141" />
+		</Size>
+			
+		<!-- La texture de fond -->
+
+		<Texture>
+			<Size>
+				<AbsDimension x="574" y="141" />
+			</Size>
+			<uri>[local.assets]fightersInfos_tx_background</uri>
+		</Texture>
+		
+		<Container name="ctr_entity">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="513" y="0" />
+				</Anchor>
+			</Anchors>
+			<!--Size>
+				<AbsDimension x="94" y="130" />
+			</Size-->
+			<EntityDisplayer name="entityDisplayer">
+				<Size>
+					<AbsDimension x="94" y="130" />
+				</Size>
+				<useCache>true</useCache>
+			</EntityDisplayer>
+		</Container>
+		
+		<!-- Le nom du combattant -->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="34" y="3" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="304" y="24" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Le niveau du combattant -->
+
+		<Label name="lbl_level">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="288" y="3" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="102" y="24" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+			
+			
+		<!-- PREMIERE LIGNE -->
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="36" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="21" />
+			</Size>
+			<uri>[local.assets]fightersInfos_tx_pictoEpee</uri>
+		</Texture>
+			
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="37" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]lifePoints</uri>
+		</Texture>
+		<Label name="lbl_lifePoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="32" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="197" y="37" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]shieldPoints</uri>
+		</Texture>
+		<Label name="lbl_shieldPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="215" y="32" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="60" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="277" y="37" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]actionPoints</uri>
+		</Texture>
+		<Label name="lbl_actionPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="295" y="32" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="332" y="37" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]movementPoints</uri>
+		</Texture>
+		<Label name="lbl_movementPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="349" y="32" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+					
+					
+		<!-- DEUXIEME LIGNE -->
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="68" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="21" />
+			</Size>
+			<uri>[local.assets]fightersInfos_tx_pictoAile</uri>
+		</Texture>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]actionPoints</uri>
+		</Texture>
+		<Label name="lbl_action">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="66" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="113" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]movementPoints</uri>
+		</Texture>
+		<Label name="lbl_movement">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="130" y="66" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="194" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]tackle</uri>
+		</Texture>
+		<Label name="lbl_tackle">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="211" y="66" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- TROISIEME LIGNE -->
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="3" y="96" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="21" />
+			</Size>
+			<uri>[local.assets]fightersInfos_tx_pictoBouclier</uri>
+		</Texture>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="33" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]neutral</uri>
+		</Texture>
+		<Label name="lbl_neutral">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="65" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="110" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]strength</uri>
+		</Texture>
+		<Label name="lbl_strength">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="127" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="186" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]intelligence</uri>
+		</Texture>
+		<Label name="lbl_intelligence">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="204" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="262" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]chance</uri>
+		</Texture>
+		<Label name="lbl_chance">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="280" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="339" y="97" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.picto_uri]agility</uri>
+		</Texture>
+		<Label name="lbl_agility">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="357" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+	</Container>
+</Definition>
+

@@ -1,0 +1,37 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+
+.rl-btn {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  box-shadow: $shadow-button;
+  display: inline-flex;
+  gap: 0.7rem;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0.8rem 1.4rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  &--primary {
+    @include button-variant(#ffc76a, #bb6c20, #1f1308);
+  }
+
+  &--secondary {
+    @include button-variant(#dfff76, #8f9f2b, #162008);
+  }
+
+  &--ghost {
+    @include button-variant(rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02), $color-text);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: none;
+  }
+}
+
+.rl-btn__icon {
+  font-size: 0.95rem;
+}

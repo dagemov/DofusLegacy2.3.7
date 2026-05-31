@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template.button]simpleSlot.xml" />
+	<Import url="[config.mod.template.button]labelCheckBox.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+       
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+   	</Constants>
+
+	<Container>
+        <Size>
+            <AbsDimension x="799" y="806" />
+        </Size>
+		<Anchors>
+			<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+				<AbsDimension x="-15" y="-155" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="799" y="806" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Size>
+				<AbsDimension x="255" y="35" />
+			</Size>
+            <cssClass>center</cssClass>
+            <css>[local.css]title.css</css>
+            <text>[ui.common.inventory]</text>
+		</Label>
+		
+
+		<Container name="ctr_equipment">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="24" y="63" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="485" y="725" />
+			</Size>
+
+			<!-- Texture tx_bg1-->
+
+			<Texture name="tx_bg1">
+				<Size>
+					<AbsDimension x="72" y="375" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_blockBackground</uri>
+			</Texture>
+
+			<simpleSlot name="slot_9" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="8" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotDofus</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_10" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="69" />
+					</Anchor>
+				</Anchors>
+			</simpleSlot>
+
+			<simpleSlot name="slot_11" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="131" />
+					</Anchor>
+				</Anchors>
+			</simpleSlot>
+
+			<simpleSlot name="slot_12" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="192" />
+					</Anchor>
+				</Anchors>
+			</simpleSlot>
+
+			<simpleSlot name="slot_13" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="253" />
+					</Anchor>
+				</Anchors>
+			</simpleSlot>
+
+			<simpleSlot name="slot_14" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg1">
+						<AbsDimension x="10" y="314" />
+					</Anchor>
+				</Anchors>
+			</simpleSlot>
+
+
+
+
+
+			<!-- Texture tx_bg2-->
+
+			<Texture name="tx_bg2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="76" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="407" y="375" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_blockBackground</uri>
+			</Texture>		
+
+
+			<simpleSlot name="slot_0"  width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="9" y="38" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem0</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_15" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="9" y="100" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem15</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_4" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="9" y="161" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem4</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_3" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="9" y="222" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem3</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_5" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="9" y="284" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem5</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_6" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="348" y="38" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem6</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_1" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="348" y="100" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem1</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_2" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="348" y="161" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem2</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_7" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="348" y="222" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem7</emptyTexture>
+			</simpleSlot>
+
+			<simpleSlot name="slot_8" width="52" height="52">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="348" y="284" />
+					</Anchor>
+				</Anchors>
+				<emptyTexture>[local.assets]tx_slotItem8</emptyTexture>
+			</simpleSlot>
+
+
+
+
+			<!-- Texture tx_bgBorder-->
+
+			<Texture>
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="68" y="7" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="273" y="360" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_blockBorder</uri>
+			</Texture>		
+
+			<!-- Texture tx_breedSymbol-->
+
+			<Texture name="tx_breedSymbol">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="74" y="52" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="262" y="279" />
+				</Size>
+				<uri>[local.illus]symboles_classe.swf|FichePerso_tx_symboleClasse</uri>
+			</Texture>
+
+
+			<EntityDisplayer name="entityDisplayer">
+				<Anchors>
+					<Anchor relativeTo="tx_bg2">
+						<AbsDimension x="69" y="16" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="270" y="341" />
+				</Size>
+				<clearSubEntities>false</clearSubEntities>
+				<useFade>false</useFade>
+			</EntityDisplayer>
+			
+			
+			
+			
+			<Label name="lbl_selectItem">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="2" y="540" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="478" y="20" />
+				</Size>
+				<cssClass>center</cssClass>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.selectItem]</text>
+			</Label>
+
+
+			<!-- Texture tx_backgroundItem -->
+
+			<Texture name="tx_backgroundItem">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="385" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="484" y="340" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]storage_tx_bgTitle</uri>
+			</Texture>
+
+			<Container name="ctr_item">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="10" y="402" />
+					</Anchor>
+				</Anchors>
+			</Container>
+
+
+		</Container>
+
+
+
+
+
+
+
+
+
+		<Container name="ctr_storage">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="518" y="62" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="262" y="728" />
+			</Size>
+
+			<!-- background 2 -->
+			 <Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="1" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="260" y="704" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+			<!-- Filter and search button -->
+
+			<ComboBox name="cbFilter" strata="TOP">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="7" y="41" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="218" y="25" />
+				</Size>
+				<autoSelect>false</autoSelect>
+				<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+				<listTexture>[local.assets]tx_combobox</listTexture>
+				<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+				<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			</ComboBox>
+
+			<Container name="searchCtr">
+				<visible>false</visible>
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="7" y="41" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Size>
+						<AbsDimension x="218" y="25" />
+					</Size>
+					<autoGrid>true</autoGrid>
+					<uri>[local.assets]tx_inputBackgroundDark</uri>
+				</Texture>
+
+				<Input name="searchInput">
+					<Size>
+						<AbsDimension x="218" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Input>
+			</Container>
+
+			 <iconButton name="btnSearch">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="229" y="41" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<checkBox>true</checkBox>
+				<uri>[local.assets]btn_recherche</uri>
+			</iconButton>
+
+			<iconButton name="btnMoveAll">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="28" y="70" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="21" y="21" />
+				</Size>
+				<uri>[local.assets]InventaireDragodinde_btn_viderLeft</uri>
+				<scaleX>-1</scaleX>
+				<visible>false</visible>
+				<Hooks>
+					<onRelease />
+					<onRollOver />
+					<onRollOut />
+				</Hooks>				
+			</iconButton>
+
+			<!-- Storage grid -->
+			<Grid name="grid">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="7" y="72" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="243" y="603" />
+				</Size>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>52</slotWidth>
+				<slotHeight>52</slotHeight>
+				<scrollDisplay>always</scrollDisplay>
+				<rendererName>SlotGridRenderer</rendererName>
+				<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+			</Grid>
+
+			<!-- foreground grid -->
+			 <Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="262" y="705" />
+				</Size>
+				<uri>[local.assets]storage_tx_gridLine</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			
+
+			<!-- La barre de poids -->
+			 <Texture name="txWeightBar">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="2" y="710" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="255" y="18" />
+				</Size>
+				<uri>[local.assets]inventaire_tx_jauge_poids</uri>
+			</Texture>
+
+			<!-- Kamas -->
+			<Container name="kamaCtr">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="677" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="4" y="5" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="23" y="17" />
+					</Size>
+					<uri>[local.assets]tx_kama</uri>
+				</Texture>
+
+				<Label name="lblKama">
+					<Anchors> 
+						<Anchor>
+							<AbsDimension x="30" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="208" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+					<text>[ui.common.kamas]</text>
+				</Label>
+			</Container>
+
+
+			<!-- Filter's buttons -->
+
+
+			<Container name="filterCtr">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="38" y="4" />
+					</Anchor>
+				</Anchors>
+				<iconButton name="btnEquipable">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="0" y="1" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_weapons</uri>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnConsumables">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="39" y="1" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_potions</uri>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnRessources">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="77" y="1" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_resources</uri>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnQuest">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="116" y="1" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_keys</uri>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnSet">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="155" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_set</uri>
+				</iconButton>
+	        </Container>
+	        
+			        
+			<!-- FILTRER LES OBJETS POUR CET HOTEL DES VENTES -->
+			<labelCheckBox name="btn_filter">
+				<visible>false</visible>
+				<labelWidth>25</labelWidth>
+				<labelHeight>25</labelHeight>
+			</labelCheckBox>
+			
+			
+		</Container>
+		
+		<Container name="ctr_preset">
+			<Anchors>
+				<Anchor relativeTo="ctr_storage" >
+					<AbsDimension x="4" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="254" y="637" />
+			</Size>
+		</Container>
+		
+		
+		
+		
+		<!-- iconButton btnClose-->
+
+		<iconButton name="btnClose">
+			<Anchors>
+				<Anchor relativeTo="tx_background" point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	        
+		<iconButton name="btnMinimize">
+			<Anchors>
+				<Anchor relativeTo="btnClose">
+					<AbsDimension x="-28" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="49" y="36" />
+			</Size>
+			<checkBox>true</checkBox>
+			<uri>[local.assets]btn_PlusMinus</uri>
+		</iconButton>
+
+		
+		
+		
+		
+		
+	</Container>
+</Definition>
+

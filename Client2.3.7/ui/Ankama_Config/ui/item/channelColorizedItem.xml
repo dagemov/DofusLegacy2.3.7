@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+   	<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+	<Container name="mainCtr">
+		<Size>
+			<AbsDimension x="300" y="25" />
+		</Size>
+
+		<!-- Label lbl_colorChannel-->
+
+		<Label name="lbl_colorChannel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="70" y="-2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="230" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Texture tx_color-->
+
+		<Texture name="tx_color">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="55" y="16" />
+			</Size>
+			<uri>[local.assets]options_colorRectangle</uri>
+		</Texture>
+
+		<!-- Texture tx_colorbubble-->
+
+		<Texture name="tx_colorbubble">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="55" y="18" />
+			</Size>
+			<uri>[local.assets]options_colorBubble</uri>
+		</Texture>
+	</Container>
+</Definition>

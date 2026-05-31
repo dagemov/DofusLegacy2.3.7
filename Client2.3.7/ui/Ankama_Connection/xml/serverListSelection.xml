@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+	<Import url="[config.mod.template]button/greyButton.xml" />
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/sortButton.xml" />
+	<Import url="[config.mod.template.button]horizontalTab.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="illus_uri" value="[config.content.path]gfx/illus/" />
+		
+		<Constant name="status_0" value="[ui.server.state.unknown]" />
+		<Constant name="status_1" value="[ui.server.state.offline]" />
+		<Constant name="status_2" value="[ui.server.state.starting]" />
+		<Constant name="status_3" value="[ui.server.state.online]" />
+		<Constant name="status_4" value="[ui.server.state.nojoin]" />
+		<Constant name="status_5" value="[ui.server.state.saving]" />
+		<Constant name="status_6" value="[ui.server.state.stoping]" />
+		<Constant name="status_7" value="[ui.server.state.full]" />		
+		
+		<Constant name="rules_0" value="[ui.server.rules.0]" />
+		<Constant name="rules_1" value="[ui.server.rules.1]" />
+	</Constants>
+	
+	<Container name="serverCtr">
+		<Size>
+			<AbsDimension x="1119" y="546" />
+		</Size>
+		<Anchors>
+			<Anchor point="TOP" relativePoint="TOP" >
+				<AbsDimension x="-1" y="219" />
+			</Anchor>
+		</Anchors>
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1119" y="562" />
+			</Size>
+			<uri>[local.assets]SelectionServeur_tx_background</uri>
+		</Texture>
+
+
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor point="TOP" relativePoint="TOP" >
+					<AbsDimension x="0" y="-5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="700" y="30" />
+			</Size>
+			<text>[ui.sersel.choseServer]</text>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+
+		
+
+
+
+		<!-- Texture tx_gridBgBottom -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="115" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="488" y="355" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Texture tx_gridBgTop -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="89" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="450" y="381" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<!-- Grid gd_listServer -->
+		
+		<Grid name="gd_listServer">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="8" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="470" y="330" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Connection::serverXmlItem,[colors.grid.line],[colors.grid.bg]</rendererArgs>
+			<slotWidth>443</slotWidth>
+			<slotHeight>33</slotHeight>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</Grid>
+
+
+
+		<!-- Texture tx_gridForeground -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="89" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="488" y="382" />
+			</Size>
+			<uri>[local.assets]SelectionServeur_tx_grid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+
+		
+		<!-- Button btn_tabCountry-->
+		
+		<sortButton name="btn_tabCountry">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="7" y="91" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="50" y="24" />
+			</Size>
+		</sortButton>
+		
+
+		<!-- Button btn_tabName-->
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="63" y="91" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="203" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<sortButton name="btn_tabName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="59" y="91" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="213" y="24" />
+			</Size>
+		</sortButton>
+
+
+		<!-- Button btn_tabPopulation-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="278" y="91" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="111" y="20" />
+			</Size>
+			<text>[ui.sersel.population]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<sortButton name="btn_tabPopulation">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="274" y="91" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="123" y="24" />
+			</Size>
+		</sortButton>
+
+		<!-- Button btn_tabState-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="403" y="91" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="20" />
+			</Size>
+			<text>[ui.sersel.state]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<sortButton name="btn_tabState">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="399" y="91" />
+				</Anchor>
+			</Anchors>				
+			<Size>
+				<AbsDimension x="50" y="24" />
+			</Size>
+		</sortButton>
+
+
+
+
+			
+		<!-- Texture tx_input -->
+
+		<Texture name="tx_input">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="212" y="51" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="242" y="26" />
+			</Size>
+			<uri>[local.assets]tx_inputBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- Label lbl_findAFriend-->
+
+		<Label name="lbl_findAFriend">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="7" y="51" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="203" y="20" />
+			</Size>
+			<text>[ui.sersel.findFriend] : </text>
+			<css>[local.css]normal.css</css>
+			<cssClass>darkright</cssClass>
+		</Label>
+
+		<!-- Label inp_findAfriend-->
+
+		<Input name="inp_findAFriend">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="215" y="51" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="236" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Input>
+
+		<!-- Button btn_closeSearch-->
+		
+		<iconButton name="btn_friendSearch"   >
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="456" y="54" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]PopupQty_btn_btnOrangeOk</uri>
+		</iconButton>
+
+		<!-- Button btn_closeSearch-->
+		
+		<iconButton name="btn_closeSearch"   >
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="478" y="54" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_cross_square</uri>
+		</iconButton>
+
+
+
+
+
+
+		<!-- Label lbl_title_selectedServer-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="585" y="88" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="229" y="20" />
+			</Size>
+			<text>[ui.sersel.selectedServer] : </text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+
+		<Container name="ctr_serverForm">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="576" y="112" />
+				</Anchor>
+			</Anchors>
+		
+		</Container>
+
+
+
+		<!-- Button btn_ckboxCommu-->
+		
+		
+		<iconButton name="btn_ckboxCommu">
+			<checkBox>true</checkBox>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="483" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="53" y="24" />
+			</Size>
+			<uri>[local.assets]SelectionServeur_btn_community</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+        </iconButton>
+
+		<!-- Button btn_ckboxMy-->
+
+		<iconButton name="btn_ckboxMy">
+			<checkBox>true</checkBox>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="86" y="483" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="53" y="24" />
+			</Size>
+			<uri>[local.assets]SelectionServeur_btn_character</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+        </iconButton>
+		
+		
+				
+		<!-- Button btn_autochoice-->
+
+		<greyButton label="[ui.sersel.autochoice]" name="btn_autochoice" width="228" height="27">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="878" y="518" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</greyButton>
+		
+		<!-- Button btn_cancel -->
+
+		<greyButton label="[ui.common.back]" name="btn_cancel" width="228" height="27">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="518" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+				<cssClass>small</cssClass>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</greyButton>
+		
+		
+		
+		<!-- Texture tx_decoboutonroange_back-->
+
+		<Texture name="tx_btnCreateBack">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="393" y="549" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="354" y="60" />
+			</Size>
+			<uri>[local.assets]tx_decobtn_back</uri>
+		</Texture>
+
+		<!-- Button btn_validate -->		
+
+		<simpleButton label="[ui.common.validation]" name="btn_validate">
+			<Size>
+				<AbsDimension x="123" y="40" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="498" y="555" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+
+		<!-- Texture tx_decoboutonorange_front-->
+
+		<Texture name="tx_btnCreateFront">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="468" y="567" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="191" y="41" />
+			</Size>
+			<uri>[local.assets]tx_decobtn_front</uri>
+		</Texture>
+		
+		
+	</Container>
+	
+	<Shortcuts>
+		<validUi />
+	</Shortcuts>
+</Definition>

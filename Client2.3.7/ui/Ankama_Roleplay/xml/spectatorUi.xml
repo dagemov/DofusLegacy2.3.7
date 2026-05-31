@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<AbsDimension x="0" y="-60" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Le fond -->
+
+		<Texture name="tx_background" strata="LOW">
+			<Size>
+				<AbsDimension x="720" y="830" />
+			</Size>
+			<autoGrid>true</autoGrid>
+            <uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+
+		<!-- Le titre de la fenetre -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="645" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<text>[ui.spectator.fightList]</text>
+		</Label>
+
+
+		<!-- bg top -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="64" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="678" y="300" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- La fleche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="340" y="370" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="25" />
+			</Size>
+			<uri>[local.assets]spectator_tx_Fleche</uri>
+		</Texture>
+		
+		<!-- "Nombre de joueurs" Grille du haut -->
+
+		<Label name="lbl_playerNumberLeftGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="86" y="68" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="438" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.common.numberOfPlayers]</text>
+		</Label>
+
+		<!-- "Duree" Grille du haut -->
+
+		<Label name="lbl_fightStartTimeLeftGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="527" y="68" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="133" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.fightend.duration]</text>
+		</Label>
+		
+		<!-- La grille des combats (haut) -->
+
+		<Grid name="gd_fights">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="94" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="664" y="240" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Roleplay::fightItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>638</slotWidth>
+			<slotHeight>30</slotHeight>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</Grid>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="64" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="678" y="300" />
+			</Size>
+			<uri>[local.assets]spectator_tx_ListGrid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<!-- "Equipe gauche" -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="400" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="338" y="360" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<Texture name="tx_redSquareTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="408" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="23" y="23" />
+			</Size>
+			<uri>[local.assets]spectator_tx_CarreRouge</uri>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="78" y="404" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="260" y="25" />
+			</Size>
+			<css>[local.css]titleSmall.css</css>
+			<text>[ui.common.attackers]</text>
+		</Label>
+
+		<!-- "Niveau" de l'equipe gauche -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="48" y="431" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="228" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.level] : </text>
+		</Label>
+
+		<!-- Le niveau de l'equipe gauche -->
+
+		<Label name="lbl_numericLevelLeftTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="258" y="431" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+
+		<!-- "Nom" de la grille de l'equipe gauche -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="460" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="198" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.name]</text>
+		</Label>
+
+		<!-- "Niveau" de la grille de l'equipe gauche -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="245" y="460" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="75" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.common.level]</text>
+		</Label>
+
+		<!-- La grille de l'equipe gauche -->
+        
+        <Grid name="gd_leftTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="32" y="485" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="315" y="192" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateFighterLine,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>289</slotWidth>
+			<slotHeight>24</slotHeight>
+			<Container name="fighterCtr">
+				<Size>
+					<AbsDimension x="289" y="24" />
+				</Size>
+
+				<!-- Nom du combattant -->
+
+				<Label name="lbl_playerName">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="6" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="199" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<hyperlinkEnabled>true</hyperlinkEnabled>
+					<useStyleSheet>true</useStyleSheet>
+				</Label>
+
+				<!-- Niveau du combattant -->
+
+				<Label name="lbl_playerLevel">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="210" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="70" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+				</Label>
+
+			</Container>
+		</Grid>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="456" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="328" y="253" />
+			</Size>
+			<uri>[local.assets]spectator_tx_TeamGrid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Container name="ctrIconsLeft">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="678" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="90" y="25" />
+			</Size>
+		</Container>
+		
+		
+		
+
+		<!-- "Equipe droite" -->
+
+
+		<!-- bg bottom right -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="360" y="400" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="338" y="360" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="388" y="408" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="23" y="23" />
+			</Size>
+			<uri>[local.assets]spectator_tx_CarreBleu</uri>
+		</Texture>
+		
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="415" y="404" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="259" y="25" />
+			</Size>
+			<css>[local.css]titleSmall.css</css>
+			<text>[ui.common.defenders]</text>
+		</Label>
+
+		<!-- "Niveau" de l'equipe droite -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="386" y="431" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="231" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.level] : </text>
+		</Label>
+
+		<!-- Le niveau de l'equipe gauche -->
+
+		<Label name="lbl_numericLevelRightTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="600" y="431" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="54" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- "Nom" de la grille de l'equipe droite -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="375" y="460" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="198" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.name]</text>
+		</Label>
+
+		<!-- "Niveau" de la grille de l'equipe droite -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="581" y="460" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="74" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.common.level]</text>
+		</Label>
+
+		<!-- La grille de l'equipe droite -->
+        
+        <Grid name="gd_rightTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="368" y="485" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="315" y="192" />
+			</Size>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateFighterLine,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>289</slotWidth>
+			<slotHeight>24</slotHeight>
+			
+			<Container name="fighterCtr">
+				<Size>
+					<AbsDimension x="289" y="24" />
+				</Size>
+
+				<!-- Nom du combattant -->
+
+				<Label name="lbl_playerName">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="6" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="199" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<hyperlinkEnabled>true</hyperlinkEnabled>
+					<useStyleSheet>true</useStyleSheet>
+				</Label>
+
+				<!-- Niveau du combattant -->
+
+				<Label name="lbl_playerLevel">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="210" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="70" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+				</Label>
+
+			</Container>
+		</Grid>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="365" y="456" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="328" y="253" />
+			</Size>
+			<uri>[local.assets]spectator_tx_TeamGrid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Container name="ctrIconsRight">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="390" y="678" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="90" y="25" />
+			</Size>
+		</Container>
+		
+		
+		
+		
+		
+		<simpleButton label="[ui.common.join]" name="btn_fightRed"   >
+			<Size>
+				<AbsDimension x="291" y="44" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="45" y="713" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+        
+		<simpleButton label="[ui.common.join]" name="btn_fightBlue"   >
+			<Size>
+				<AbsDimension x="291" y="44" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="385" y="713" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+		
+		<!-- BOUTON CROIX -->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+        
+		
+		<!-- Le bouton "Observer" -->		
+		<simpleButton label="[ui.common.tospectate]" name="btn_spectate"   >
+			<Size>
+				<AbsDimension x="626" y="44" />
+			</Size>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="45" y="769" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+	</Container>
+</Definition>

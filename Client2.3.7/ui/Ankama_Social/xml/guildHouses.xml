@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/horizontalTab.xml" />
+	<Import url="[config.mod.template]button/sortButton.xml" />
+   
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="cssGridMenu" value="[config.ui.skin]css/normal.css" />
+		<Constant name="houses_uri" value="[config.content.path]gfx/houses/" />
+	</Constants>
+
+	<Container name="mainCtr">
+
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="15" y="124" />
+			</Anchor>
+		</Anchors>
+
+		<!-- GRILLE MAISONS -->
+
+		<Label name="lbl_tabHouse">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="18" y="9" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="120" y="20" />
+			</Size>
+			<text>[ui.common.houseWord]</text>
+			<css>[local.cssGridMenu]</css>
+		</Label>
+
+		<sortButton name="btn_tabHouse">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="8" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="228" y="25" />
+			</Size>
+		</sortButton>
+
+		<Label name="lbl_tabOwner">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="240" y="9" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="120" y="20" />
+			</Size>
+			<text>[ui.common.ownerWord]</text>
+			<css>[local.cssGridMenu]</css>
+		</Label>
+
+		<sortButton name="btn_tabOwner">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="231" y="8" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="144" y="25" />
+			</Size>
+		</sortButton>
+
+		<Grid name="grid_house">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="35" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="405" y="455" />
+			</Size>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Social::guildHouseXmlItem,[colors.grid.line]</rendererArgs>
+			<slotWidth>376</slotWidth>
+			<slotHeight>41</slotHeight>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+		
+		<Texture name="tx_gridHouse">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="515" />
+			</Size>
+			<uri>[local.assets]SocialGuildeMaisons_tx_grilleGauche</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- FLECHE DROITE -->
+		
+		<Texture name="tx_arrow">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="430" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="25" y="40" />
+			</Size>
+			<uri>[local.assets]tx_flecheombre</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+		
+		
+		<!-- PARTIE DROITE -->
+
+		<Texture name="slot_house">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="465" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="160" />
+			</Size>
+			<uri>[local.assets]tx_darkBg</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- ICONE MAISON -->
+		
+		<Texture name="tx_illusBg">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="145" y="146" />
+			</Size>
+			<uri>[local.assets]SocialGuildeMaisons_tx_cadreIllusMaisons</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<Texture name="tx_house">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" point="BOTTOMLEFT" relativeTo="tx_illusBg" >
+					<AbsDimension x="2" y="-2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="114" y="163" />
+			</Size>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- INFORMATIONS MAISON -->
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="625" y="11" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="252" y="140" />
+			</Size>
+		
+			<!-- Label lbl_name-->
+
+			<Label name="lbl_house">
+				<Size>
+					<AbsDimension x="252" y="55" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+				<multiline>true</multiline>
+				<wordWrap>true</wordWrap>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="55" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="126" y="20" />
+				</Size>
+				<text>[ui.common.ownerWord] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="136" y="20" />
+				</Size>
+				<text>[ui.common.coordinates] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_owner-->
+
+			<Label name="lbl_owner">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="126" y="55" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="126" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+			<!-- Label lbl_coord-->
+
+			<Label name="lbl_coord">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="136" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="116" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>right</cssClass>
+			</Label>
+
+
+			<!-- simpleButton btn_join-->
+
+			<simpleButton name="btn_join">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="1" y="105" />
+					</Anchor>
+				</Anchors>
+
+				<uri>[local.assets]btn_orange</uri>
+
+				<Size>
+					<AbsDimension x="250" y="35" />
+				</Size>
+				<label>[ui.common.join]</label>
+				<css>[local.css]button.css</css>
+			</simpleButton>
+
+		</Container>
+		
+		
+
+
+
+
+		<!-- ONGLETS MAISON -->
+		
+		<horizontalTab name="btn_rights">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="176" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.social.guildHouseRights]</text>
+		</horizontalTab>
+		
+		<horizontalTab name="btn_skills">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="653" y="176" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.abilities]</text>
+		</horizontalTab>
+
+		<!-- FOND GRILLE DROITS/COMPETENCES -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="200" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="405" y="310" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Grid name="grid_skill">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="473" y="200" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="398" y="283" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateSkillLine,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>376</slotWidth>
+			<slotHeight>35</slotHeight>
+
+			<Container name="skillItemCtr">
+				<Size>
+					<AbsDimension x="376" y="35" />
+				</Size>
+
+				<!-- Label lbl_skill-->
+
+				<Label name="lbl_skill">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="362" y="21" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+			</Container>
+		
+		</Grid>		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="469" y="172" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="410" y="340" />
+			</Size>
+			<uri>[local.assets]SocialGuildeMaisons_tx_grilleDroite</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+		
+		
+		
+		
+		
+		<Container name="ctr_noHouse">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="463" y="3" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="423" y="513" />
+			</Size>
+			<Texture>
+				<Size>
+					<AbsDimension x="423" y="513" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="10" y="240" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="400" y="71" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+				<text>[ui.guild.noHouse]</text>
+				<verticalAlign>center</verticalAlign>
+				<wordWrap>true</wordWrap>
+				<multiline>true</multiline>
+			</Label>
+			
+		</Container>
+
+	</Container>
+</Definition>
+

@@ -1,0 +1,5 @@
+<Shortcuts>
+	<category name="general">
+    	<shortcut name="toggleConsole" textfieldEnabled="true">[ui.shortcuts.toggleConsole]</shortcut>
+    </category>
+</Shortcuts>

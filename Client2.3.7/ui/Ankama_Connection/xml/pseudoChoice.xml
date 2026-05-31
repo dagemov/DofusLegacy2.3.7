@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition modal="true">
+	
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="mainCtr">	
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="680" y="409" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Texture tx_buttonBackground -->
+
+		<Texture name="tx_buttonBackground">
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="544" y="47" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="54" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="600" y="35" />
+			</Size>
+			<text>[ui.pseudoChoice.title]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Button btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+
+		<!-- Label lbl_text-->
+
+		<Label name="lbl_text">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="43" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="584" y="148" />
+			</Size>
+			<wordWrap>true</wordWrap>
+			<text>[ui.pseudoChoice.help]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Texture tx_input-->
+		
+		<Texture name="tx_input">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="278" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="583" y="33" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]Pseudo_input</uri>
+		</Texture>
+
+		<!-- Input input_pseudo-->
+
+		<Input name="input_pseudo">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="59" y="280" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="565" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>dark</cssClass>
+		</Input>
+
+		<!-- Label lbl_result-->
+
+		<Label name="lbl_result">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="49" y="325" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="584" y="36" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Button btn_undo-->
+		
+		<simpleButton label="[ui.charcrea.undo]" name="btn_undo"   >
+			<Size>
+				<AbsDimension x="150" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="-110" y="32" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+		<!-- Button btn_validate-->
+		
+		<simpleButton label="[ui.common.validation]" name="btn_validate"   >
+			<Size>
+				<AbsDimension x="150" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="110" y="32" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+	</Container>
+	
+	<Shortcuts>
+		<validUi />
+	</Shortcuts>
+</Definition>
+

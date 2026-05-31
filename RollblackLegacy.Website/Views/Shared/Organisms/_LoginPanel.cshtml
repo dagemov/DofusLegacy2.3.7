@@ -1,0 +1,30 @@
+@model LoginAccountPageViewModel
+
+<div id="login-panel-shell" class="login-shell">
+    <aside class="launcher-panel login-shell__aside">
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Logo.cshtml", Model.Brand)
+
+        <div class="login-shell__copy">
+            <span class="section-heading__eyebrow">@Model.Brand.Eyebrow</span>
+            <h1 class="section-heading__title">@Model.Title</h1>
+            <p class="login-shell__subtitle">@Model.Subtitle</p>
+        </div>
+
+        @await Html.PartialAsync("~/Views/Shared/Molecules/_LauncherStyleCard.cshtml", new LauncherCardViewModel
+        {
+            Eyebrow = "Cuenta",
+            Title = "Misma credencial que el juego",
+            Description = "El login valida tu usuario contra la base auth Sunshine. En el cliente seguiras usando la contrasena del launcher.",
+            Modifier = "launcher-card--accent"
+        })
+
+        <p class="login-shell__footer-link">
+            ¿No tienes cuenta?
+            <a href="/account/register">Crear cuenta</a>
+        </p>
+    </aside>
+
+    <section class="launcher-panel login-shell__main">
+        @await Html.PartialAsync("~/Views/Account/_LoginForm.cshtml", Model)
+    </section>
+</div>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template.button]labelCheckBox.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+	
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+		
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="450" y="220" />
+			</Anchor>
+		</Anchors>
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="520" y="472" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="480" y="62" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="136" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="480" y="318" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<ComboBox name="cbRank" strata="TOP">
+			<Anchors> 
+				<Anchor>
+					<AbsDimension x="255" y="77" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="230" y="25" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+		</ComboBox>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="16" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="481" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+		
+		<!-- GRILLE D'OPTION -->
+		
+		<Grid name="gd_list">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="165" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="465" y="260" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateRightLine,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>440</slotWidth>
+			<slotHeight>26</slotHeight>
+									
+			<!-- Container décrivant une ligne de la grille -->
+			<Container>
+				<Size>
+					<AbsDimension x="440" y="26" />
+				</Size>
+
+				<labelCheckBox name="lblcb_right">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="410" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="15" y="15" />
+					</Size>
+					<radioMode>false</radioMode>
+					<labelPosX>-400</labelPosX>
+					<labelWidth>400</labelWidth>
+					<labelHeight>20</labelHeight>
+					<uri>[local.assets]tx_light_checkbox</uri>
+					<css>[local.css]normal.css</css>
+				</labelCheckBox>									
+			</Container>
+		</Grid>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="136" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="480" y="320" />
+			</Size>
+			<uri>[local.assets]tx_commonGridScrollbar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="29" y="79" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="181" y="20" />
+			</Size>
+			<text>[ui.social.guildRank]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="29" y="100" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="334" y="20" />
+			</Size>
+			<text>[ui.social.percentXpFull]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_rank-->
+
+		<Label name="lbl_rank">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="220" y="79" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="264" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label lbl_guildXP-->
+
+		<Label name="lbl_guildXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="365" y="101" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="85" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<iconButton name="btn_changeGuildXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="464" y="105" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_etc_square</uri>
+		</iconButton>
+
+
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        	</iconButton>
+        		
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="332" y="47" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- Button btn_valid-->
+
+		<simpleButton label="[ui.common.validation]" name="btnModify"   >
+			<Size>
+				<AbsDimension x="156" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>		
+	</Container>
+</Definition>

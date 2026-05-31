@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+   </Constants>
+
+	<Container name="ponyFighterCtr">
+
+		<!-- Texture tx_bgFighter -->
+
+		<Texture name="tx_bgFighter">
+			<Size>
+				<AbsDimension x="43" y="43" />
+			</Size>
+			<uri>[local.bitmap]emptySlot.png</uri>
+		</Texture>
+
+		<!-- EntityDisplayer ent_fighterEntity -->
+
+		<EntityDisplayer name="ent_fighterEntity">
+			<Size>
+				<AbsDimension x="43" y="90" />
+			</Size>
+		</EntityDisplayer>
+
+		<!-- Texture tx_deco -->
+
+		<Texture name="tx_deco">
+			<Size>
+				<AbsDimension x="43" y="43" />
+			</Size>
+		</Texture>
+	</Container>
+</Definition>

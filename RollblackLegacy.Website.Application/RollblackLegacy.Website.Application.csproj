@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RollblackLegacy.Auth\RollblackLegacy.Auth.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Domain\RollblackLegacy.Website.Domain.csproj" />
+    <ProjectReference Include="..\RollblackLegacy.Website.Contracts\RollblackLegacy.Website.Contracts.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

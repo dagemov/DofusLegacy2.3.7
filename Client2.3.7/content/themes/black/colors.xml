@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LangFile>
+	<!--
+							Fichier de couleurs d'interfaces
+		Syntaxe :
+			<entry key="nom de la clef">contenu</entry>
+			
+		Note :
+			Le nom du fichier (sans son extension) est automatiquement ajoute avant la clef. Par
+			exemple, pour faire reference aux clefs declarees dans le fichier "colors.xml", il
+			faudra ajouter "colors." aux noms des clefs
+			
+	-->
+	
+	<!--======================================================================-->
+	<!--                            Couleurs                                -->
+	<!--======================================================================-->
+	
+	<entry key="ui.shadow">0x333333</entry>
+	<entry key="ui.bg.pregame">0x534741</entry>
+	
+	<entry key="grid.title">0xAAA2A2</entry>
+	<entry key="grid.bg">0x6A6562</entry>
+	<entry key="grid.line">0x7E7673</entry>
+	<entry key="grid.over">0xDA6B07</entry>
+	<entry key="grid.selected">0xF88D30</entry>
+	
+	<entry key="shortcut">0xfff074</entry>
+	
+	<entry key="hyperlink.link">0xffd376</entry>
+	<entry key="hyperlink.hover">0xfb6e0d</entry>
+	<entry key="hyperlink.warning">0x006699</entry>
+	
+	<entry key="hierarchy.moderator">0xff4343</entry>
+	<entry key="hierarchy.gamemaster_padawan">0xc79866</entry>
+	<entry key="hierarchy.gamemaster">0xc79866</entry>
+	<entry key="hierarchy.administrator">0x686fff</entry>
+		
+	<entry key="contextmenu.title">0xE2E2E2</entry>
+	<entry key="contextmenu.title.alpha">0.2</entry>
+	<entry key="contextmenu.over">0xFF6600</entry>
+	<entry key="contextmenu.border">0xA6A299</entry>
+	<entry key="contextmenu.bg">0x000000</entry>
+	<entry key="contextmenu.bg.alpha">0.8</entry>
+	<entry key="contextmenu.shadow">0x222222</entry>
+	<entry key="contextmenu.separator">0xBDAA7D</entry>
+	
+	<entry key="timeline.border_current_fighter">0xE73307</entry>	
+	
+	<entry key="tooltip.bg">0x111111</entry>
+	<entry key="tooltip.bg.alpha">0.8</entry>
+	
+	<entry key="text.glow">0x111111</entry>
+	
+</LangFile>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/sortButton.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+	<Container name="crafterListCtr">
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<AbsDimension x="0" y="-80" />
+			</Anchor>
+		</Anchors>
+
+		<!-- Texture tx_bg-->
+
+		<Texture name="tx_bg">
+			<Size>
+				<AbsDimension x="753" y="728" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Texture tx_bgGrid-->
+
+		<Texture name="tx_bgGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="24" y="75" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="707" y="634" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+		
+		
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="563" y="35" />
+			</Size>
+			<text>[ui.craft.craftersList]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+
+
+
+		<Container name="listCtr">
+
+
+			<!-- Label lbl_name-->
+
+			<Label name="lbl_name">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="166" y="120" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="173" y="17" />
+				</Size>
+				<text>[ui.common.name]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_level-->
+
+			<Label name="lbl_level">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="384" y="120" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="40" y="17" />
+				</Size>
+				<text>[ui.common.short.level]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Texture tx_craftTable-->
+
+			<Texture name="tx_craftTable">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="469" y="124" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="17" y="15" />
+				</Size>
+				<uri>[local.assets]Artisan_tx_pictoMarteau</uri>
+			</Texture>
+
+			<!-- Texture tx_craftCost-->
+
+			<Texture name="tx_craftCost">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="551" y="124" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="17" y="17" />
+				</Size>
+				<uri>[local.assets]Artisan_tx_pictoKama</uri>
+			</Texture>
+
+			<!-- Texture tx_craftSlotsMini-->
+
+			<Texture name="tx_craftSlotsMini">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="603" y="123" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="17" y="19" />
+				</Size>
+				<uri>[local.assets]Artisan_tx_pictoIngrédients</uri>
+			</Texture>
+
+			<!-- Grid gd_crafters-->
+
+			<Grid name="gd_crafters">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="39" y="146" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="669" y="525" />
+				</Size>
+				<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+				<rendererArgs>Ankama_Job::crafterXmlItem,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>638</slotWidth>
+				<slotHeight>36</slotHeight>
+			</Grid>
+
+			<!-- Texture tx_decoGrid-->
+
+			<Texture name="tx_decoGrid">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="36" y="116" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="682" y="583" />
+				</Size>
+				<uri>[local.assets]Artisan_tx_grille</uri>
+			</Texture>
+
+
+
+
+			<sortButton name="btn_tabAli1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="42" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="34" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabBreed">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="80" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="33" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabAli2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="117" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="33" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabName">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="153" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="221" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="378" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="46" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabCoord">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="426" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="104" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabCost">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="523" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="58" y="24" />
+				</Size>
+			</sortButton>
+
+			<sortButton name="btn_tabNbSlots">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="594" y="119" />
+					</Anchor>
+				</Anchors>				
+				<Size>
+					<AbsDimension x="40" y="24" />
+				</Size>
+			</sortButton>
+
+
+			<!-- Label lbl_nbCrafter-->
+
+			<Label name="lbl_nbCrafter">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="409" y="670" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="259" y="19" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+		</Container>
+
+
+
+
+
+		<!-- ComboBox combo_job-->
+
+		<ComboBox name="combo_job">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="57" y="88" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="614" y="25" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</ComboBox>
+
+
+		<!-- iconButton btn_search-> On enleve ca pour le moment, on verra dans dofus 2.1
+
+		<iconButton name="btn_search">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="677" y="89" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+        	<uri>[local.assets]btn_recherche</uri>
+			<checkBox>true</checkBox>
+        	<Hooks>
+        		<onRelease />
+        	</Hooks>
+		</iconButton-->
+
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	</Container>
+</Definition>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="smilies_uri" value="[config.content.path]gfx/smilies/" />
+		<Constant name="emote_cooldown_uri" value="[config.content.path]gfx/emotes/cooldown.swf" />
+	</Constants>
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="chat.tchatCtr">
+				<AbsDimension x="24" y="24" />
+			</Anchor>
+		</Anchors>
+		<Size>
+			<AbsDimension x="485" y="172" />
+		</Size>		
+		
+		
+		<Container name="ctr_smileys">
+		
+			<!-- Texture tx_background-->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="42" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="485" y="130" />
+				</Size>
+				<uri>[local.assets]smiley_tx_background</uri>
+				<mouseEnabled>true</mouseEnabled>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<!-- Grid gd_smileys -->
+
+			<Grid name="gd_smileys">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="25" y="52" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="447" y="105" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateSmiley</rendererArgs>
+				<slotWidth>32</slotWidth>
+				<slotHeight>34</slotHeight>
+
+				<Container name="smileyCtr">
+					<Size>
+						<AbsDimension x="32" y="34" />
+					</Size>
+					<Button name="btn_smiley">
+						<Common>
+							<Texture name="tx_bgSmiley">
+								<Size>
+									<AbsDimension x="32" y="34" />
+								</Size>
+								<bgColor>[colors.grid.selected]</bgColor>
+								<bgAlpha>0.7</bgAlpha>
+								<visible>false</visible>
+							</Texture>
+							<Texture name="tx_smiley">
+								<Size>
+									<AbsDimension x="32" y="34" />
+								</Size>
+								<luminosity>1</luminosity>
+							</Texture>
+							<Hooks>
+								<onItemRollOver />
+								<onItemRollOut />
+							</Hooks>
+						</Common>
+						<State type="OVER">
+							<SetProperties target="tx_smiley">
+								<luminosity>1.5</luminosity>
+							</SetProperties>
+						</State>
+						<State type="SELECTED_OVER">
+							<SetProperties target="tx_smiley">
+								<luminosity>1.5</luminosity>
+							</SetProperties>
+						</State>
+					</Button>
+
+				</Container>
+
+				<Hooks>
+					<onSelectItem />
+					<onItemRightClick />
+					<onItemRollOver />
+					<onItemRollOut />
+				</Hooks>
+			</Grid>
+
+		</Container>
+
+		<Container name="ctr_emotes">
+		
+			<!-- Texture tx_background-->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="42" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="485" y="130" />
+				</Size>
+				<uri>[local.assets]smiley_tx_background</uri>
+				<mouseEnabled>true</mouseEnabled>
+				<autoGrid>true</autoGrid>
+			</Texture>
+		
+			<!-- Grid gd_emotes -->
+
+			<Grid name="gd_emotes">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="25" y="52" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="447" y="105" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateEmote</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>32</slotWidth>
+				<slotHeight>34</slotHeight>
+
+				<Container name="emoteCtr">
+					<Size>
+						<AbsDimension x="32" y="34" />
+					</Size>
+					<Button name="btn_emote">
+						<Common>
+							<Texture name="tx_emote">
+								<Size>
+									<AbsDimension x="32" y="34" />
+								</Size>
+								<luminosity>1</luminosity>
+							</Texture>
+							<Hooks>
+								<onSelectItem />
+							</Hooks>
+							<cacheAsBitmap>true</cacheAsBitmap>
+						</Common>
+						<State type="OVER">
+							<SetProperties target="tx_emote">
+								<luminosity>1.5</luminosity>
+							</SetProperties>
+						</State>
+					</Button>	
+					<Texture name="tx_emote_cooldown">
+					   <Size>
+                           <AbsDimension x="32" y="34" />
+                       </Size>
+					</Texture>
+
+				</Container>
+
+				<Hooks>
+					<onSelectItem />
+					<onItemRollOver />
+					<onItemRollOut />
+				</Hooks>
+			</Grid>
+		</Container>
+		
+		
+	</Container>
+</Definition>

@@ -1,0 +1,76 @@
+p {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#E7DEDA;
+	text-align: left;
+}
+
+b {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#E7DEDA;
+	text-align: left;
+	font-weight: bold;
+}
+
+left {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#E7DEDA;
+	text-align: left;
+}
+
+right {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#E7DEDA;
+	text-align: right;
+}
+
+header {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#c1c0ba;
+	text-align: left;
+	letterSpacing: 0.5;
+	thickness: 150;
+}
+
+description {
+	font-family: Verdana;
+	font-size: 17px;
+	text-align: left;
+	color:#ffac4b;
+	thickness: 150;
+}
+
+subtitle {
+	font-family: Verdana;
+	font-size: 17px;
+	text-align: left;
+	color:#888888;
+	thickness: 200;
+}
+
+bonus {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#72ce19;
+	text-align: left;
+	thickness: 150;
+}
+
+malus {
+	font-family: Verdana;
+	font-size: 17px;
+	color:#e85656;
+	text-align: left;
+	thickness: 200;
+}
+
+text {
+	font-family: Verdana;
+	font-size: 16px;
+	color:#E7DEDA;
+	text-align: left;
+}
