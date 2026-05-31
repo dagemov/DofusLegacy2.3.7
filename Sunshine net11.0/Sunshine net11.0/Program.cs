@@ -5,6 +5,7 @@ using Sunshine.BaseServer;
 using Sunshine.AuthServer;
 using Sunshine.WorldServer;
 using System;
+using System.Threading;
 using System.Text;
 
 namespace Sunshine
@@ -45,6 +46,8 @@ namespace Sunshine
 
             if (InteractiveConsoleEnabled)
                 RunCommandLoop();
+            else
+                Thread.Sleep(Timeout.Infinite);
         }
 
         private static void ApplyStartupSettings(string[] args)

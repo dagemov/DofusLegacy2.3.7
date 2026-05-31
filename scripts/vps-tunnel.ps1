@@ -2,7 +2,7 @@
 param(
     [ValidateSet("start", "stop", "status")]
     [string]$Mode = "status",
-    [string]$VpsHost = "194.99.21.223",
+    [string]$VpsHost = "174.138.35.107",
     [string]$ListenAddress = "127.0.0.1",
     [int]$AuthPort = 0,
     [int]$WorldPort = 0,

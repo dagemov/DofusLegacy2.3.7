@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$VpsHost = "194.99.21.223",
+    [string]$VpsHost = "174.138.35.107",
     [switch]$Build,
     [switch]$StartTunnel,
     [switch]$ForceLocal,

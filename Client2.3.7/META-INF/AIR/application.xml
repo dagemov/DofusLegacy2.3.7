@@ -14,7 +14,7 @@
 -->
 
 	<!-- The application identifier string, unique to this application. Required. -->
-	<id>Dofus-3</id>
+	<id>Dofus</id>
 
 	<!-- Used as the filename for the application. Required. -->
 	<filename>Dofus</filename>

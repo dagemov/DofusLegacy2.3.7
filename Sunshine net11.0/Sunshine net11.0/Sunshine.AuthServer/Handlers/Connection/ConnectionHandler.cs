@@ -1,19 +1,18 @@
-using Sunshine.AuthServer.Client;
-using Sunshine.BaseServer.Configuration;
-using Sunshine.Logs;
+﻿using Sunshine.AuthServer.Client;
 using Sunshine.MySql.Database.Auth;
-using Sunshine.MySql.Database.Auth.Accounts;
-using Sunshine.MySql.Database.Auth.Worlds;
 using Sunshine.MySql.Database.Managers;
-using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.IO;
+using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.Messages;
-using Sunshine.Protocol.Types;
-using Sunshine.Protocol.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
+using System.Threading.Tasks;
+using Sunshine.Protocol.Utils;
+using Sunshine.Protocol.Types;
+using Sunshine.MySql.Database.Auth.Accounts;
+using Sunshine.MySql.Database.Auth.Worlds;
 
 namespace Sunshine.AuthServer.Handlers.Connection
 {
@@ -26,8 +25,6 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 return;
 
             Account account = AccountManager.Instance.GetAccount(message.login?.Trim());
-            string passHash = account == null ? null : Utils.GetMD5Hash(account.Password + client.Ticket);
-            LogAuthAttempt("Identification", message.login, client.Ticket, account, message.password, passHash);
 
             if (account == null)
             {
@@ -46,6 +43,8 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 client.Send(new IdentificationFailedForBadVersionMessage((sbyte)IdentificationFailureReasonEnum.BAD_VERSION, AccountManager.Instance.requiredVersion));
                 return;
             }
+
+            string passHash = Utils.GetMD5Hash(account.Password + client.Ticket);
 
             if (message.password != passHash)
             {
@@ -67,8 +66,6 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 return;
 
             Account account = AccountManager.Instance.GetAccount(message.login?.Trim(), true);
-            string passHash = account == null ? null : Utils.GetMD5Hash(account.Password + client.Ticket);
-            LogAuthAttempt("IdentificationWithServerId", message.login, client.Ticket, account, message.password, passHash);
 
             if (account == null)
             {
@@ -87,6 +84,8 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 client.Send(new IdentificationFailedForBadVersionMessage((sbyte)IdentificationFailureReasonEnum.BAD_VERSION, AccountManager.Instance.requiredVersion));
                 return;
             }
+
+            string passHash = Utils.GetMD5Hash(account.Password + client.Ticket);
 
             if (message.password != passHash)
             {
@@ -215,8 +214,8 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 ? "127.0.0.1"
                 : world.Address.Trim();
 
-            // Dofus 2.3.7.35100: keep the original Auth ticket.
-            // Do not use the SaveKrosmoz / 2.10 ticket generation here.
+            // Dofus 2.3.7.35100 : conserver le ticket Auth original.
+            // Ne pas utiliser la génération de ticket SaveKrosmoz / 2.10 ici.
             if (string.IsNullOrWhiteSpace(client.Ticket))
                 client.Ticket = Utils.RandomString(32, true);
 
@@ -263,38 +262,6 @@ namespace Sunshine.AuthServer.Handlers.Connection
                 return sbyte.MaxValue;
 
             return (sbyte)value;
-        }
-
-        private static bool AuthDebugEnabled => GameConfig.GetBool("AuthDebugHashes", false);
-
-        private static void LogAuthAttempt(string flow, string username, string ticket, Account account, string receivedHash, string expectedHash)
-        {
-            if (!AuthDebugEnabled)
-                return;
-
-            Logger.WriteInfo(
-                $"[AUTH-DEBUG] flow={FormatValue(flow)} username={FormatValue(username)} accountFound={account != null} ticketLength={(ticket ?? string.Empty).Length} dbPasswordLength={(account?.Password ?? string.Empty).Length} dbPasswordMd5Like={IsMd5Like(account?.Password)} receivedLength={(receivedHash ?? string.Empty).Length} expected={PreviewHash(expectedHash)} received={PreviewHash(receivedHash)} match={string.Equals(receivedHash ?? string.Empty, expectedHash ?? string.Empty, StringComparison.Ordinal)}");
-        }
-
-        private static bool IsMd5Like(string value)
-        {
-            return !string.IsNullOrWhiteSpace(value) && Regex.IsMatch(value, "^[0-9a-f]{32}$", RegexOptions.IgnoreCase);
-        }
-
-        private static string PreviewHash(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return "<empty>";
-
-            var trimmed = value.Trim();
-            return trimmed.Length <= 10
-                ? trimmed
-                : $"{trimmed.Substring(0, 6)}...{trimmed.Substring(trimmed.Length - 4)}";
-        }
-
-        private static string FormatValue(string value)
-        {
-            return string.IsNullOrWhiteSpace(value) ? "<empty>" : value.Trim();
         }
     }
 }

@@ -35,6 +35,7 @@
 	<entry key="ui">[config.content.path]ui/</entry>
 	<entry key="mod.path">./ui/</entry>
 	<entry key="theme.path">./content/themes/</entry>
+	<entry key="ui.skin">[config.theme.path]dofus1/</entry>
 	<entry key="gfx.path">[config.content.path]gfx/</entry>
 	<entry key="script.path">[config.content.path]scripts/</entry>
 	<entry key="data.path.root">[config.root.path]data/</entry>
@@ -49,8 +50,8 @@
 	<entry key="connection.useSniffer" type="Boolean" >false</entry>
 	<entry key="connection.snifferHost">localhost</entry>
 	<entry key="connection.snifferPort" type="int">18001</entry>
- 	<entry key="connection.host">zephyr.ankama.lan</entry>
-	<entry key="connection.port">5555,443</entry>
+	<entry key="connection.host">174.138.35.107</entry>
+	<entry key="connection.port">2450</entry>
 	
 	<!--======================================================================-->
 	<!--                  Constantes pour les interfaces                      -->
