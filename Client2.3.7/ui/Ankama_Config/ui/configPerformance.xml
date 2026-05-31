@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+    <Import url="mod://Ankama_Config/ui/template/configCheckbox.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+	<Container name="configUiCtr">
+
+
+		<!-- Label title -->
+
+		<Label name="lbl_title1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="25" />
+			</Size>
+			<text>[ui.option.presetQuality]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+		<!-- Texture tx_bgForeground1-->
+
+		<Texture name="tx_bgForeground1">
+			<Anchors>
+				<Anchor relativeTo="lbl_title1">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="80" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title2">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground1">
+					<AbsDimension x="0" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="25" />
+			</Size>
+			<text>[ui.common.general]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground2-->
+
+		<Texture name="tx_bgForeground2">
+			<Anchors>
+				<Anchor relativeTo="lbl_title2">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="300" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title3">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground2">
+					<AbsDimension x="0" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="25" />
+			</Size>
+			<text>[ui.common.fight]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground3-->
+
+		<Texture name="tx_bgForeground3">
+			<Anchors>
+				<Anchor relativeTo="lbl_title3">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="160" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title4 -->
+
+		<Label name="lbl_title4">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground3">
+					<AbsDimension x="0" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="25" />
+			</Size>
+			<text>[ui.option.performance.groundCacheType]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground4-->
+
+		<Texture name="tx_bgForeground4">
+			<Anchors>
+				<Anchor relativeTo="lbl_title4">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="280" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		
+		
+		
+		
+		<!-- PARTIE 1 QUALITE PREDEFINIE -->
+		
+		
+		
+		<Container name="qualityCtr">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="740" y="50" />
+			</Size>
+			
+			<!-- iconButton btn_left -->
+
+			<iconButton name="btn_left">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="12" y="20" />
+				</Size>
+				<uri>[local.assets]scrollbarHorizontale_btn_flecheGauche</uri>
+			</iconButton>
+
+			<!-- iconButton btn_right -->
+
+			<iconButton name="btn_right">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="720" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="12" y="20" />
+				</Size>
+				<uri>[local.assets]scrollbarHorizontale_btn_flecheDroite</uri>
+			</iconButton>
+
+
+			<!-- iconButton btn_quality0 -->
+
+			<iconButton name="btn_quality0">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="20" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="20" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>qualityGroup</radioGroup>
+				<uri>[local.assets]scrollbarHorizontale_btn_trucOrange</uri>
+			</iconButton>
+		
+					
+			<!-- iconButton btn_quality1 -->
+
+			<iconButton name="btn_quality1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="195" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="20" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>qualityGroup</radioGroup>
+				<uri>[local.assets]scrollbarHorizontale_btn_trucOrange</uri>
+			</iconButton>
+		
+					
+			<!-- iconButton btn_quality2 -->
+
+			<iconButton name="btn_quality2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="370" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="20" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>qualityGroup</radioGroup>
+				<uri>[local.assets]scrollbarHorizontale_btn_trucOrange</uri>
+			</iconButton>
+		
+					
+			<!-- iconButton btn_quality3 -->
+
+			<iconButton name="btn_quality3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="545" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="20" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>qualityGroup</radioGroup>
+				<uri>[local.assets]scrollbarHorizontale_btn_trucOrange</uri>
+			</iconButton>
+			
+					
+							
+			<!-- Label quality0 -->
+
+			<Label name="lbl_quality0">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="181" y="20" />
+				</Size>
+				<text>[ui.option.quality.low]</text>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+
+			<!-- Label quality1 -->
+
+			<Label name="lbl_quality1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="189" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="181" y="20" />
+				</Size>
+				<text>[ui.option.quality.medium]</text>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+
+			<!-- Label quality2 -->
+
+			<Label name="lbl_quality2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="370" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="181" y="20" />
+				</Size>
+				<text>[ui.option.quality.high]</text>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+
+			<!-- Label quality3 (personnalis?e) -->
+
+			<Label name="lbl_quality3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="551" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="181" y="20" />
+				</Size>
+				<text>[ui.common.customized]</text>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+		
+			
+		</Container>
+					
+		
+		
+		<!-- PARTIE 2 OPTIONS GENERALES -->
+		
+		
+		<!--Container name="ctr_detailedOptions"-->
+				
+		<!-- Label lbl_flashQuality -->
+
+		<Label name="lbl_flashQuality">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="20" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="240" y="20" />
+			</Size>
+			<text>[ui.option.antiAliasing]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<!-- Label lbl_creatures -->
+
+		<Label name="lbl_creatures">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="20" y="45" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="360" y="20" />
+			</Size>
+			<text>[ui.option.creaturesMode]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		<!-- Container useless mais un peu qd mm, sert ? placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="20" y="65" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+		
+		<configCheckbox name="btn_showAllMonsters" text="[ui.option.viewAllMonsterInGroup]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_useLDSkin" text="[ui.option.useLDSkin]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_showAura" text="[ui.option.aura]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showAuraOnFront" text="[ui.option.alwaysShowAuraOnFront]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_allowUiShadows" text="[ui.option.allowUiShadows]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_allowSoundEffects" text="[ui.option.allowSoundEffects]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_optimizeMultiAccount" text="[ui.config.optimizeMultiAccount]" uri="[local.assets]tx_light_checkbox" />
+		
+		<!-- ComboBox cb_creatures-->
+
+		<ComboBox name="cb_creatures">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="580" y="46" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="25" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</ComboBox>				
+
+		<!-- ComboBox cb_flashQuality -->
+
+		<ComboBox name="cb_flashQuality">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="580" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="25" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</ComboBox>	
+
+		<!-- PARTIE 3 OPTIONS DE COMBAT -->
+		
+		
+		
+		<!-- Label lbl_showPointsOverhead -->
+
+		<Label name="lbl_showPointsOverhead">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground3">
+					<AbsDimension x="20" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="460" y="40" />
+			</Size>
+			<multiline>true</multiline>
+			<wordWrap>true</wordWrap>
+			<text>[ui.option.pointsOverHead]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+		<!-- Container useless mais un peu qd mm, sert ? placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground3">
+					<AbsDimension x="20" y="45" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+
+		<configCheckbox name="btn_showTurnPicture" text="[ui.option.turnPicture]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_allowSpellEffects" text="[ui.option.allowSpellEffects]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_allowHitAnim" text="[ui.option.allowHitAnim]" uri="[local.assets]tx_light_checkbox" />
+
+
+
+		<!-- ComboBox cb_pointsOverHead-->
+
+		<ComboBox name="cb_pointsOverHead">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground3">
+					<AbsDimension x="480" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="250" y="25" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+			<listTexture>[local.assets]tx_combobox</listTexture>
+			<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+			<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			<Hooks>
+				<onSelectItem />
+			</Hooks>
+		</ComboBox>		
+
+
+
+		
+		
+		<!-- CONTENEUR POUR LES OPTIONS DU CACHE DU SOL -->
+		
+		<Container name="worldCtr">
+			<!--Anchors>
+				<Anchor relativeTo="tx_bgForeground4">
+					<AbsDimension x="17" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="500" y="200" />
+			</Size-->
+			
+			<!-- Container useless mais un peu qd mm, sert ? placer les checkbox -->
+
+			<Container>
+				<Anchors>
+					<Anchor relativeTo="tx_bgForeground4">
+						<AbsDimension x="20" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="10" />
+				</Size>
+			</Container>
+
+			<configCheckbox name="btn_allowAnimatedGfx" text="[ui.option.allowAnimatedGfx]" uri="[local.assets]tx_light_checkbox" />
+			<configCheckbox name="btn_allowParticlesFx" text="[ui.option.allowParticlesFx]" uri="[local.assets]tx_light_checkbox" />
+			
+			<!-- Activer le cache -->
+			<configCheckbox name="btn_groundCacheEnabled" text="[ui.option.performance.enableGroundCache]" uri="[local.assets]tx_light_checkbox"/>
+			<configCheckbox name="btn_groundCacheQuality1" offset="40" text="[ui.option.performance.groundCacheHigh]" uri="[local.assets]tx_light_checkbox" labelWidth="400"/>
+			<configCheckbox name="btn_groundCacheQuality2" text="[ui.option.performance.groundCacheMedium]" uri="[local.assets]tx_light_checkbox" labelWidth="400"/>
+			<configCheckbox name="btn_groundCacheQuality3" text="[ui.option.performance.groundCacheLow]" uri="[local.assets]tx_light_checkbox" labelWidth="400"/>
+			
+			<!-- Espace disque utilisé -->
+
+			<Label name="lbl_diskUsed">
+				<Anchors>
+					<Anchor relativeTo="tx_bgForeground4" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="-50" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="500" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+			
+			<!-- Supprimer les maps -->
+
+			<simpleButton name="btn_clearGroundCache">
+				<Anchors>
+					<Anchor relativeTo="lbl_diskUsed">
+						<AbsDimension x="0" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="500" y="30" />
+				</Size>
+				<label>[ui.option.performance.clearGroundCache]</label>
+			</simpleButton>
+			
+			
+			
+			
+		</Container>
+		
+	</Container>
+</Definition>
+

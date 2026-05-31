@@ -1,0 +1,172 @@
+	<Container name="levelCtr">		
+		<Label name="lbl_level">
+			<fixedWidth>false</fixedWidth>
+			<cssClass>center</cssClass>
+			<css>[local.css]tooltip_title.css</css>
+		</Label>
+	</Container>
+	
+	<Container name="starsCtr">
+		<Size>
+			<AbsDimension x="100" y="25" />
+		</Size>
+		
+		<Texture name="star00">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile0</uri>
+		</Texture>
+		<Texture name="star01">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile0</uri>
+		</Texture>
+		<Texture name="star02">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile0</uri>
+		</Texture>
+		<Texture name="star03">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="60" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile0</uri>
+		</Texture>
+		<Texture name="star04">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="80" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile0</uri>
+		</Texture>
+		
+		
+		
+		
+		<Texture name="star10">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile1</uri>
+		</Texture>
+		<Texture name="star11">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile1</uri>
+		</Texture>
+		<Texture name="star12">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile1</uri>
+		</Texture>
+		<Texture name="star13">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="60" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile1</uri>
+		</Texture>
+		<Texture name="star14">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="80" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile1</uri>
+		</Texture>
+		
+		
+		
+		
+		<Texture name="star20">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile2</uri>
+		</Texture>
+		<Texture name="star21">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile2</uri>
+		</Texture>
+		<Texture name="star22">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile2</uri>
+		</Texture>
+		<Texture name="star23">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="60" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile2</uri>
+		</Texture>
+		<Texture name="star24">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="80" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]etoile2</uri>
+		</Texture>
+	</Container>
+	
+	<Container name="monsterXpContainer">
+		<Label name="lbl_monsterXp">
+			<css>[local.css]tooltip_monster.css</css>
+			<multiline>true</multiline>
+		</Label>
+		<Size>
+			<AbsDimension x="100" y="1" />
+		</Size>
+		<bgColor>0xFF9E9E9E</bgColor>
+	</Container>
+	
+	<Label name="lbl_monsterList">
+		<css>[local.css]tooltip_monster.css</css>
+		<multiline>true</multiline>
+	</Label>
+	
+	
+	
+	<Container name="tx_back" strata="LOW">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="-4" y="-4" />
+				</Anchor>
+			</Anchors>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+			<bgCornerRadius>10</bgCornerRadius>
+			<bgColor>[colors.tooltip.bg]</bgColor>
+			<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
+	</Container>

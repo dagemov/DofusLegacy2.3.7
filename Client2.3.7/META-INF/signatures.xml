@@ -1,0 +1,45 @@
+<signatures>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="PackageSignature">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/TR/xmldsig-core#rsa-sha1"/>
+      <Reference URI="#PackageContents">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>zJH69r0rXKo0Xjx3Y1Ppr2S8q7yoIvtVd9Gggoh0H+k=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue Id="PackageSignatureValue">KENJLgF7oKKpn/XXGID6kohV92n0g/7y9GHmsD1YZ9SwqdDdN9KyTjfFh966IxuIv7+n7kCiyJmr
+wm0Wx8ImWfOebxbcRmAwuCyAGCg1zglCP0aOKCowev5tFQh14OUPuXUGEFzHqrwdPi4wGBHjP1P8
+VHHGh+bDsCEoUcs4J7TUJNMy9ElOgGN7vSp9kd4YYOHiYWQb8KrVWEwrVCD8QFNidDagvErpk8bR
+jlLwDq3Z+xYkQ5vQ7OS+5wMXT0RBqPUmLZjIfPMZrwBdVVXCPS/sAbqZBtmGApojXjbKuy5O4tsl
+04B1gKwDys1api4dzSpbv0VfAhCqpkoUqTCDXQ==</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>MIIDSTCCAjGgAwIBAgIaLTQ5YjI0ZjU6MTI0NGQzMDZjNzA6LTgwMDAwDQYJKoZIhvcNAQEFBQAw
+TzELMAkGA1UEBhMCRlIxDzANBgNVBAoTBkFua2FtYTEXMBUGA1UECxMOVGhlIERPRlVTIFRlYW0x
+FjAUBgNVBAMTDUFua2FtYSBTdHVkaW8wHhcNMDkxMDEzMDkxNzQ5WhcNMTQxMDEzMDkxNzQ5WjBP
+MQswCQYDVQQGEwJGUjEPMA0GA1UEChMGQW5rYW1hMRcwFQYDVQQLEw5UaGUgRE9GVVMgVGVhbTEW
+MBQGA1UEAxMNQW5rYW1hIFN0dWRpbzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIRU
+K6jni8YrUmMbG4Q4IxwIJVgNkdiih4CKwCNjypd5Il9b2SfXO6LceYzuE1pIAcXpnL2lABsHtmgX
+eOglLgEP1s+8baqnxKdODxDsb/fHqbOQXckywhxz6PWvN+EKA64y8qhlgV3jKeHf5N+E2wu+x5ii
+1diw058M96BQ1uVlTji3vl1yRxbcRX/laXWZapzOLI5o0fWRpw7E8szwkYKMtPgGOnbBBubjsbCX
+x65nCPE5wPIaEwbvlugaUg1kc2feA6gUwhaXgYsLosmjJ/Sx3b7jI9n7vdIodPFpEa0IjjXhOTHN
+bqcX+ynTSw6SPWwuaXLsn2jCe06m5l4Cxw8CAwEAAaMXMBUwEwYDVR0lBAwwCgYIKwYBBQUHAwMw
+DQYJKoZIhvcNAQEFBQADggEBABHwDj8b0m0aMs5BaT3PaokNDEdyJAPc5pdawRfQVgBDqoNWbYtd
+MMy+bmaYfjv88Eph6u+vHiLVzqk/QmE8+dBpoxF8uH+Ep4VqmDhaEi7fSWVc9DQpniy2gNu2EoA7
+GfCpyFTSEe4wKVF5qqAeN7Y/njDNl6+qY9dJWv9eseF9RPsYSXFMSWdQM/sqU1e1obzRCu2F2KtE
+2plzkOKaUrZoqZH9c7MrCXIR3/TXD4HAPVPR7C1/S2KYI++Z0L6Z9+GjWaZyX1kbn8t6I3LzcIdZ
+2UEujgW9NI+EKY4zeUxtLzWZ4/3oAOG8Y05sKL5mvqIyUzdbB1h1cKmHVcuSDjg=</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+    <Object>
+      <Manifest Id="PackageContents">
+        <Reference URI="mimetype"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>0/oCb84THKMagtI0Dy0KogEu92TegdesqRr/clXct1c=</DigestValue></Reference><Reference URI="META-INF/AIR/application.xml"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>bTRcXc3/1oYzYTMdzeZP/UupmR/VVD7u5E/2CVE+/9g=</DigestValue></Reference><Reference URI="DofusInvoker.swf"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>/t4Z6YLfnmnYUWFPVwF1jH+6g0MjCbZ1uO8eM/hOT6E=</DigestValue></Reference><Reference URI="icon/dofus-icon-128.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>YVjUSuUUixKKeQoaRoqgwndS05Af1c61mxNceiJgQ3E=</DigestValue></Reference><Reference URI="icon/dofus-icon-16.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>Lztt2JAHemGovQdS7jRjmI1avocwgOSLYUWQ+tSQEXo=</DigestValue></Reference><Reference URI="icon/dofus-icon-32.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>YY8UItgJM4oHAuvvqIEXdVEnQpIMGO8+GeNhboX8kUA=</DigestValue></Reference><Reference URI="icon/dofus-icon-48.png"><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod><DigestValue>I0hgAPFb0MhRcwbDrH5lnDkhZj8Gx300whkenQyzDOM=</DigestValue></Reference>
+      </Manifest>
+    </Object>
+    
+  </Signature>
+</signatures>

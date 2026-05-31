@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+   		<Constant name="state_uri" value="[local.assets]pony_tx_state" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+   	</Constants>
+
+	<Container name="mainCtr">
+
+		<!-- Texture tx_fightState-->
+
+		<Texture name="tx_fightState">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="43" y="40" />
+			</Size>
+		</Texture>
+
+		<!-- Label lbl_ponyName-->
+
+		<Label name="lbl_ponyName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="360" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_ponyLoc-->
+
+		<Label name="lbl_ponyLoc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="33" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="340" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_ponyPodsXp -->
+
+		<Label name="lbl_ponyPodsXp">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="50" y="64" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="340" y="40" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Texture tx_defenseTeam-->
+
+		<Texture name="tx_defenseTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="431" y="12" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="30" />
+			</Size>
+			<uri>[local.assets]SocialGuildePercepteur_tx_PictoDefenseur</uri>
+		</Texture>
+
+		<!-- Texture tx_attackTeam-->
+
+		<Texture name="tx_attackTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="431" y="62" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="30" />
+			</Size>
+			<uri>[local.assets]SocialGuildePercepteur_tx_PictoAttaquant</uri>
+		</Texture>
+
+		<!-- Texture tx_bgAttackTeam-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="431" y="51" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="411" y="51" />
+			</Size>
+			<uri>[local.assets]SocialGuildePercepteur_tx_bgDefenseurs</uri>
+		</Texture>
+
+		<!-- Grid gd_defenseTeam-->
+
+		<Grid name="gd_defenseTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="472" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="359" y="43" />
+			</Size>
+			<slotWidth>43</slotWidth>
+			<slotHeight>43</slotHeight>
+			<rendererName>EntityGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png</rendererArgs>
+			<scrollDisplay>none</scrollDisplay>
+			<autoSelect>false</autoSelect>
+		</Grid>
+
+		<!-- Grid gd_attackTeam-->
+
+		<Grid name="gd_attackTeam">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="472" y="53" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="359" y="43" />
+			</Size>
+			<slotWidth>43</slotWidth>
+			<slotHeight>43</slotHeight>
+			<rendererName>EntityGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png</rendererArgs>
+			<scrollDisplay>none</scrollDisplay>
+			<autoSelect>false</autoSelect>
+		</Grid>	
+		
+		
+		
+		<!-- Texture tx_timeBgProgressBar-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="413" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="9" y="91" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_progressBarBackground2</uri>
+		</Texture>
+
+		<!-- Texture tx_timeProgressBar-->
+
+		<Texture name="tx_timeProgressBar">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="414" y="94" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="7" y="88" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_progressBar2</uri>
+		</Texture>
+	</Container>
+</Definition>

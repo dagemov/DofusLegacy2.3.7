@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+	
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+    <Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="text_victory" value="[ui.fightend.victory]" />
+		<Constant name="text_loss" value="[ui.fightend.loss]" />
+		
+		<Constant name="star_y" value="74" type="int" />
+		<Constant name="star_x" value="773" type="int" />
+		<Constant name="star_offset" value="2" type="int" />
+		
+		<Constant name="star_width" value="17" type="int" />
+		<Constant name="star_height" value="16" type="int" />
+		<Constant name="star_uri" value="[local.assets]etoile" />
+		
+		<Constant name="cadre_uri" value="[local.assets]craft_tx_OrangeLine" />
+		
+		<Constant name="bg_max_height" value="737" type="int" />
+		<Constant name="bg2_max_height" value="594" type="int" />
+		<Constant name="bg_min_height" value="607" type="int" />
+		<Constant name="bg2_min_height" value="464" type="int" />
+	</Constants>
+	
+	<Container name="mainCtr">	
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER">
+				<AbsDimension x="0" y="-40" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+
+
+
+
+
+
+
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="1233" y="737" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackground</uri>
+		</Texture>
+
+		<!-- Texture tx_buttonBackground -->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="432" y="47" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+			
+		<!-- Button btn_close2-->
+
+		<simpleButton label="[ui.common.close]" name="btn_close2"   >
+			<Size>
+				<AbsDimension x="236" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+		</simpleButton>		
+
+
+
+		<!-- Texture tx_titleLine-->
+
+		<Texture name="tx_titleLine">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1206" y="79" />
+			</Size>
+			<uri>[local.assets]fightResult_tx_titleLine</uri>
+		</Texture>
+
+		<Texture name="tx_challenge1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1067" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+		</Texture>
+
+		<Texture name="tx_challenge2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1121" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+		</Texture>
+
+		<Texture name="tx_challenge_result1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1067" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<uri>[local.assets]Challenge_tx_Perdu</uri>
+		</Texture>
+
+		<Texture name="tx_challenge_result2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1121" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<uri>[local.assets]Challenge_tx_Perdu</uri>
+		</Texture>
+
+
+
+		<!-- Label lbl_titleResult-->
+
+		<Label name="lbl_titleResult">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="52" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="268" y="26" />
+			</Size>
+			<text>[ui.fightend.gameResult]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Label lbl_result-->
+
+		<Label name="lbl_result">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="304" y="52" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="185" y="30" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<!-- Label lbl_titleTime-->
+
+		<Label name="lbl_titleTime">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="520" y="44" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="123" y="20" />
+			</Size>
+			<text>[ui.fightend.duration] :</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_time-->
+
+		<Label name="lbl_time">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="646" y="44" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="215" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label lbl_titleBonus-->
+
+		<Label name="lbl_titleBonus">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="520" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="188" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Container name="ctr_stars">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="770" y="73" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="95" y="16" /></Size>
+			<bgColor>0xffffff</bgColor>
+			<bgAlpha>0</bgAlpha>
+			
+			<!-- Texture tx_star0-->
+
+			<Texture name="tx_star0">
+				<Size><AbsDimension x="17" y="16" /></Size>
+				<uri>[local.assets]etoile0</uri>
+			</Texture>
+
+			<!-- Texture tx_star1-->
+
+			<Texture name="tx_star1">
+				<Anchors><Anchor><AbsDimension x="19" y="0" /></Anchor></Anchors>
+				<Size><AbsDimension x="17" y="16" /></Size>
+				<uri>[local.assets]etoile0</uri>
+			</Texture>
+
+			<!-- Texture tx_star2-->
+
+			<Texture name="tx_star2">
+				<Anchors><Anchor><AbsDimension x="38" y="0" /></Anchor></Anchors>
+				<Size><AbsDimension x="17" y="16" /></Size>
+				<uri>[local.assets]etoile0</uri>
+			</Texture>
+
+			<!-- Texture tx_star3-->
+
+			<Texture name="tx_star3">
+				<Anchors><Anchor><AbsDimension x="57" y="0" /></Anchor></Anchors>
+				<Size><AbsDimension x="17" y="16" /></Size>
+				<uri>[local.assets]etoile0</uri>
+			</Texture>
+
+			<!-- Texture tx_star4-->
+
+			<Texture name="tx_star4">
+				<Anchors><Anchor><AbsDimension x="75" y="0" /></Anchor></Anchors>
+				<Size><AbsDimension x="17" y="16" /></Size>
+				<uri>[local.assets]etoile0</uri>
+			</Texture>
+		
+		</Container>
+
+
+		<!-- Label lbl_titleChallenge-->
+
+		<Label name="lbl_titleChallenge">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="920" y="57" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<text>[ui.fightend.challenge] :</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		
+		
+		
+		
+		<!-- Texture tx_bgResult -->
+
+		<Texture name="tx_bgResult">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="27" y="122" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1179" y="594" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+		
+		
+		
+		
+		
+		
+		
+		<!-- Texture tx_winnerPicto-->
+
+		<Texture name="tx_winnerPicto">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="52" y="130" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="21" y="21" />
+			</Size>
+			<uri>[local.assets]fightResult_tx_pictoCoupe</uri>
+		</Texture>
+		
+		<!-- Label lbl_winner-->
+
+		<Label name="lbl_winner">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="77" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="370" y="26" />
+			</Size>
+			<text>[ui.fightend.winners]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Label lbl_winnerName-->
+
+		<Label name="lbl_winnerName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="84" y="156" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="154" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_winnerLevel-->
+
+		<Label name="lbl_winnerLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="311" y="156" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="61" y="20" />
+			</Size>
+			<text>[ui.common.short.level]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_winnerXP-->
+
+		<Label name="lbl_winnerXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="381" y="156" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="20" />
+			</Size>
+			<text>[ui.fightend.xp]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+
+		<!-- Label lbl_winnerKamas-->
+
+		<Label name="lbl_winnerKamas">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="697" y="156" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="106" y="20" />
+			</Size>
+			<text>[ui.common.kamas]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_winnerObjects-->
+
+		<Label name="lbl_winnerObjects">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="816" y="156" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="226" y="20" />
+			</Size>
+			<text>[ui.fightend.objects]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Grid gd_winnerGrid-->
+
+		<Grid name="gd_winnerGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="185" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1146" y="132" />
+			</Size>
+			<rendererName>XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Fight::fighterPvmXmlItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>1116</slotWidth>
+			<slotHeight>33</slotHeight>
+		</Grid>
+
+		<!-- Texture tx_winnerGridDeco-->
+
+		<Texture name="tx_winnerGridDeco">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="154" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1164" y="192" />
+			</Size>
+			<uri>[local.assets]fightResult_tx_grilleGagnantPerdant</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		<!-- Texture tx_loserPicto-->
+
+		<Texture name="tx_loserPicto">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="52" y="359" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="21" y="21" />
+			</Size>
+			<uri>[local.assets]fightResult_tx_pictoLoser</uri>
+		</Texture>
+
+		<!-- Label lbl_loser-->
+
+		<Label name="lbl_loser">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="77" y="354" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="239" y="26" />
+			</Size>
+			<text>[ui.fightend.losers]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+
+		<!-- Label lbl_loserName-->
+
+		<Label name="lbl_loserName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="84" y="386" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="118" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_loserLevel-->
+
+		<Label name="lbl_loserLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="310" y="386" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="61" y="20" />
+			</Size>
+			<text>[ui.common.short.level]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_loserXP-->
+
+		<Label name="lbl_loserXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="381" y="386" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="20" />
+			</Size>
+			<text>[ui.fightend.xp]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+
+		<!-- Label lbl_loserKamas-->
+
+		<Label name="lbl_loserKamas">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="697" y="386" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="105" y="20" />
+			</Size>
+			<text>[ui.common.kamas]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_loserObjects-->
+
+		<Label name="lbl_loserObjects">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="816" y="386" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="210" y="20" />
+			</Size>
+			<text>[ui.fightend.objects]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Grid gd_loserGrid-->
+
+		<Grid name="gd_loserGrid">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="415" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1146" y="132" />
+			</Size>
+			<rendererName>XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Fight::fighterPvmXmlItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>1116</slotWidth>
+			<slotHeight>33</slotHeight>
+		</Grid>
+
+		<!-- Texture tx_loserGridDeco-->
+
+		<Texture name="tx_loserGridDeco">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="35" y="385" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1164" y="192" />
+			</Size>
+			<uri>[local.assets]fightResult_tx_grilleGagnantPerdant</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<Container name="ctr_pvp">
+
+			<Label name="lbl_winnerHonour">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="600" y="156" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="90" y="20" />
+				</Size>
+				<text>[ui.common.honour]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="593" y="156" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="1" y="186" />
+				</Size>
+				<uri>[local.assets]fightResult_tx_verticalLine</uri>
+			</Texture>
+
+			<Label name="lbl_loserHonour">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="600" y="386" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="90" y="20" />
+				</Size>
+				<text>[ui.common.honour]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="593" y="386" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="1" y="189" />
+				</Size>
+				<uri>[local.assets]fightResult_tx_verticalLine</uri>
+			</Texture>
+						
+		</Container>
+		
+		
+		
+		<Container name="ctr_pony">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="583" />
+				</Anchor>
+			</Anchors>			
+		
+			<!-- Texture tx_ponyPicto-->
+
+			<Texture name="tx_ponyPicto">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="52" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="21" y="21" />
+				</Size>
+				<uri>[local.assets]fightResult_tx_pictoFiole</uri>
+			</Texture>
+
+			<!-- Label lbl_pony-->
+
+			<Label name="lbl_pony">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="77" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="344" y="26" />
+				</Size>
+				<text>[ui.common.taxCollector]</text>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+
+			<!-- Label lbl_ponyName-->
+
+			<Label name="lbl_ponyName">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="84" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="118" y="20" />
+				</Size>
+				<text>[ui.common.name]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_ponyLevel-->
+
+			<Label name="lbl_ponyLevel">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="310" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="61" y="20" />
+				</Size>
+				<text>[ui.common.short.level]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_ponyXP-->
+
+			<Label name="lbl_ponyXP">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="381" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="180" y="20" />
+				</Size>
+				<text>[ui.fightend.xp]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_ponyKamas-->
+
+			<Label name="lbl_ponyKamas">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="697" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="105" y="20" />
+				</Size>
+				<text>[ui.common.kamas]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_ponyObjects-->
+
+			<Label name="lbl_ponyObjects">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="816" y="28" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="210" y="20" />
+				</Size>
+				<text>[ui.fightend.objects]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Grid gd_ponyGrid-->
+
+			<Grid name="gd_ponyGrid">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="37" y="56" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="1116" y="33" />
+				</Size>
+				<rendererName>XmlUiGridRenderer</rendererName>
+				<rendererArgs>Ankama_Fight::fighterPvmXmlItem,[colors.grid.line]</rendererArgs>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>1116</slotWidth>
+				<slotHeight>33</slotHeight>
+			</Grid>
+
+			<!-- Texture tx_ponyGridDeco-->
+
+			<Texture name="tx_ponyGridDeco">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="35" y="27" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="1164" y="91" />
+				</Size>
+				<uri>[local.assets]fightResult_tx_grilleGagnantPerdant</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+		</Container>
+		
+		
+		
+		
+		
+		<!-- Button btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+		
+
+	</Container>
+</Definition>
+

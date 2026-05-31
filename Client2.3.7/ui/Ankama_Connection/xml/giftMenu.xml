@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+       	<Constant name="bitmap" value="[config.ui.skin]bitmap/" />
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+   	</Constants>
+
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="[config.mod.template.button]iconButton.xml" />
+	
+		
+	<Container>
+		<Size>
+			<RelDimension x="1" y="1"/>
+		</Size>
+		<bgColor> 0x000000 </bgColor>
+		<bgAlpha> 0.3</bgAlpha>
+	</Container>
+
+	<Container name="mainCtr">
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="120" y="266" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1050" y="680" />
+			</Size>
+			
+			<Texture name="tx_background">
+				<Size>
+					<AbsDimension x="1050" y="680" />
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<shadowColor>[colors.ui.shadow]</shadowColor>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="65" y="15" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="910" y="35" />
+				</Size>
+				<text>[ui.connection.giftReceived]</text>
+				<css>[local.css]title.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+
+
+
+			<!-- INFORMATION SUR LE CADEAU -->
+
+			<Container>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="23" y="70" />
+					</Anchor>
+				</Anchors>
+				
+				<Texture>
+					<Size>
+						<AbsDimension x="484" y="230" />
+					</Size>
+					<uri>[local.assets]tx_blockBackground</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+
+				<Label name="lbl_giftName">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="10" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="464" y="22" />
+					</Size>
+					<css>[local.css]titleSmall.css</css>
+				</Label>
+
+
+				<!-- Label lbl_giftInfo-->
+
+				<TextArea name="lbl_giftInfo">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="20" y="45" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="434" y="80" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<scrollCss>[local.css]scrollBar.css</scrollCss>
+					<hideScroll>true</hideScroll>
+				</TextArea>
+
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="135" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="464" y="20" />
+					</Size>
+					<text>[ui.connection.contents]</text>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+
+				<!-- iconButton btn_left_arrow-->
+
+				<iconButton name="btn_left_arrow">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="175" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="20" y="31" />
+					</Size>
+					<uri>[local.assets]btn_bigArrow_left</uri>
+				</iconButton>
+
+				<!-- iconButton btn_right_arrow-->
+
+				<iconButton name="btn_right_arrow">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="450" y="175" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="20" y="31" />
+					</Size>
+					<uri>[local.assets]btn_bigArrow_right</uri>
+				</iconButton>
+
+				<!-- Grid gd_items_slot-->
+
+				<Grid name="gd_items_slot">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="55" y="170" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="370" y="44" />
+					</Size>
+					<slotWidth>44</slotWidth>
+					<slotHeight>44</slotHeight>
+					<rendererName>SlotGridRenderer</rendererName>
+					<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css, false</rendererArgs>
+					<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+					<Hooks>
+						<onItemRollOver />
+						<onItemRollOut />
+						<onSelectItem />
+					</Hooks>
+				</Grid>
+				
+			</Container>
+
+
+			<!-- FICHE D'OBJET DU CONTENU DU CADEAU -->
+			
+			<Container>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="23" y="315" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Size>
+						<AbsDimension x="484" y="340" />
+					</Size>
+					<autoGrid>true</autoGrid>
+					<uri>[local.assets]storage_tx_bgTitle</uri>
+				</Texture>
+
+				<Container name="ctr_item">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="11" y="13" />
+						</Anchor>
+					</Anchors>
+				</Container>
+			</Container>
+
+
+
+
+
+			<!-- Texture tx_arrow-->
+
+			<Texture name="tx_arrow">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="530" y="300" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="25" y="40" />
+				</Size>
+				<uri>[local.assets]tx_flecheombre</uri>
+			</Texture>
+			
+			
+			
+			
+			
+			
+
+			<Container>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="575" y="70" />
+					</Anchor>
+				</Anchors>
+
+
+				<Texture>
+					<Size>
+						<AbsDimension x="450" y="585" />
+					</Size>
+					<uri>[local.assets]tx_blockBackground</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+
+
+
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="10" y="10" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="423" y="20" />
+					</Size>
+					<text>[ui.connection.whosGift]</text>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+				<!-- Grid gd_character_select-->
+
+				<Grid name="gd_character_select">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="11" y="77" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="417" y="468" />
+					</Size>
+					<slotWidth>391</slotWidth>
+					<slotHeight>78</slotHeight>
+					<rendererName>XmlUiGridRenderer</rendererName>
+					<rendererArgs>Ankama_Connection::giftCharacterSelectionItem,[colors.grid.line]</rendererArgs>
+					<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				</Grid>
+
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="7" y="47" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="435" y="529" />
+					</Size>
+					<uri>[local.assets]cadeau_tx_grille</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="98" y="50" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="215" y="20" />
+					</Size>
+					<text>[ui.common.name]</text>
+					<css>[local.css]normal.css</css>
+				</Label>
+
+				<Label>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="316" y="50" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="81" y="20" />
+					</Size>
+					<text>[ui.common.level]</text>
+					<css>[local.css]normal.css</css>
+					<cssClass>center</cssClass>
+				</Label>
+			</Container>
+
+		</Container>
+		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="299" y="937" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="678" y="52" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<!-- simpleButton btn_assign_gift-->
+
+		<simpleButton name="btn_assign_gift">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="642" y="939" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="269" y="44" />
+			</Size>
+			<label>[ui.connection.assignGift]</label>
+		</simpleButton>
+
+		<!-- simpleButton btn_not_now-->
+
+		<simpleButton name="btn_not_now">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="363" y="939" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="269" y="44" />
+			</Size>
+			<label>[ui.connection.notNow]</label>
+		</simpleButton>
+		
+		
+		<!-- Texture tx_giftPicture-->
+		
+		<!--Texture name="tx_giftPicture">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="78" y="99" />
+			</Size>
+			<uri>[local.illus]cadeau_tx_cadeau.png</uri>
+		</Texture-->
+		
+
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="112" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="999" y="423" />
+			</Size>
+			<uri>[local.bitmap]cadeau_tx_deco.png</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+	</Container>
+</Definition>
+

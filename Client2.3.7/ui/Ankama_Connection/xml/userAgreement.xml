@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition modal="true">
+	
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="mainCtr">	
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="920" y="789" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Texture tx_buttonBackground -->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="544" y="47" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+		<!-- Label lbl_title-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="600" y="35"/>
+			</Size>
+			<text>[ui.connection.legalAgreement]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- TextArea lbl_content-->
+
+		<TextArea name="lbl_content">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="80" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="860" y="680" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<useStyleSheet>true</useStyleSheet>
+			<hyperlinkEnabled>true</hyperlinkEnabled>			
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+		</TextArea>
+
+		
+
+		<!-- Button btn_refuse-->
+		
+		<simpleButton label="[ui.common.refuse]" name="btn_refuse">
+			<Size>
+				<AbsDimension x="200" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="-110" y="32" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+		<!-- Button btn_accept-->
+		
+		<simpleButton label="[ui.common.accept]" name="btn_accept">
+			<Size>
+				<AbsDimension x="200" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="110" y="32" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+	</Container>
+</Definition>
+

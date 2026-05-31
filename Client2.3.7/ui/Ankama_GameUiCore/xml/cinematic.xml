@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="false">
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+
+	<Container name="mainCtr">
+
+		<!-- VideoPlayer vplayer -->
+		
+		<VideoPlayer name="vplayer">
+			<Size>
+				<AbsDimension x="1280" y="890" />
+			</Size>
+		</VideoPlayer>
+		
+		<!-- Texture tx_loading_bg-->
+
+		<Texture name="tx_loading_bg">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="565" y="456" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="150" />
+			</Size>
+			<uri>[local.assets]Video_tx_carre</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- Texture tx_loading-->
+
+		<Texture name="tx_loading">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="610" y="481" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="158" y="158" />
+			</Size>
+			<uri>[local.assets]Video_tx_loading</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+		<!-- Label lb_loading -->
+		
+		<Label name="lb_loading" >
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="590" y="566" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="190" y="19" />
+			</Size>
+			<text>[ui.loadbar.loading]</text>
+			<css>[local.css]normal.css</css>
+			
+		</Label>
+	</Container>
+</Definition>

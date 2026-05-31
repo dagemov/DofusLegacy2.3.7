@@ -1,0 +1,15 @@
+<overrides>
+	<override target="ui.link.betaReport">ui.asia.link.betaReport</override>
+	<override target="ui.link.createAccount">ui.asia.link.createAccount</override>
+	<override target="ui.link.findPassword">ui.asia.link.findPassword</override>
+	<override target="ui.link.howToReport">ui.asia.link.howToReport</override>
+	<override target="ui.link.members">ui.asia.link.members</override>
+	<override target="ui.link.ogrinePortal">ui.asia.link.ogrinePortal</override>
+	<override target="ui.link.ogrinePortalLocal">ui.asia.link.ogrinePortalLocal</override>
+	<override target="ui.link.phishing">ui.asia.link.phishing</override>
+	<override target="ui.link.support">ui.asia.link.support</override>
+	<override target="ui.link.subscribe">ui.asia.link.subscribe</override>
+	<override target="ui.link.checklink">ui.asia.link.checklink</override>
+	<override target="ui.popup.accessDenied.banned">ui.asia.popup.accessDenied.banned</override>
+	<override target="ui.header.subscribe">ui.asia.header.subscribe</override>
+</overrides>

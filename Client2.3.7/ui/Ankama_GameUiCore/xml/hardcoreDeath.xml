@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+   </Constants>
+
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="525" y="385" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="130" y="82" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="241" y="241" />
+			</Size>
+			<uri>[local.assets]Heroique_ptx_GrosCraneBG</uri>
+		</Texture>
+
+
+		<!-- IMAGE DU PERSONNAGE -->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" point="BOTTOMLEFT" relativePoint="BOTTOMLEFT">
+					<AbsDimension x="30" y="-11" />
+				</Anchor>
+			</Anchors>
+			<!--Size>
+				<AbsDimension x="186" y="380" />
+			</Size-->
+			<uri>[local.illus]Heroique_tx_GameOver.png</uri>
+		</Texture>
+
+
+		<!-- TITRE GAME OVER AVEC LES CRANES DE CHAQUE COTE -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="170" y="25" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="24" y="24" />
+			</Size>
+			<uri>[local.assets]Heroique_ptx_pictoCrane</uri>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="194" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="244" y="35" />
+			</Size>
+			<text>[ui.common.gameover]</text>
+			<cssClass>center</cssClass>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="438" y="25" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="24" y="24" />
+			</Size>
+			<uri>[local.assets]Heroique_ptx_pictoCrane</uri>
+		</Texture>
+
+
+		<!-- TEXTE -->
+
+		<TextArea>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="175" y="65" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="292" />
+			</Size>
+			<text>[ui.gameuicore.hardcoreDeath]</text>
+			<css>[local.css]normal.css</css>
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+		</TextArea>
+
+
+		<!-- CROIX FERMER -->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+
+
+		<!-- BOUTONS OUI ET NON -->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="341" y="47" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+        <simpleButton label="[ui.common.yes]" name="btn_yes"   >
+			<Size>
+				<AbsDimension x="193" y="35" />
+			</Size>
+            <Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+            </Anchors>
+            <css>[local.css]button.css</css>
+            <Hooks>
+                <onRelease />
+            </Hooks>
+        </simpleButton>
+
+	</Container>
+</Definition>
+

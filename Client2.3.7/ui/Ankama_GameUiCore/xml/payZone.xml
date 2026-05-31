@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+   
+    <Import url="[config.mod.template.button]iconButton.xml" />
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+
+	<Container name="mainCtr" strata="TOP">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="46" y="78" />
+			</Anchor>
+		</Anchors>
+		<Size>
+			<RelDimension x="1" y="1" />
+		</Size>
+
+		
+		<!-- iconButton btn_padlock-->
+
+		<iconButton name="btn_padlock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1" y="1" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="55" y="85" />
+			</Size>
+			<uri>[local.assets]NonAbonnes_btn_cadenas</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</iconButton>
+		
+		<Container name="popupSubscrCtr">
+			<Size>
+				<RelDimension x="1" y="1" />
+			</Size>
+
+			<!--Texture tx_bg-->
+
+			<Container name="tx_bg">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="-46" y="-78" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<RelDimension x="1" y="1" />
+				</Size>
+				<bgColor>0x000000</bgColor>
+				<bgAlpha>0.3</bgAlpha>
+			</Container>
+
+			<!-- Texture tx_bgPopup-->
+
+			<Texture name="tx_bgPopup">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="264" y="219" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="658" y="334" />
+				</Size>
+				<uri>[local.assets]tx_decoBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+		        
+			<Texture>
+				<Anchors>
+					<Anchor relativeTo="tx_bgPopup" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="38" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="502" y="47" />
+				</Size>
+				<uri>[local.assets]tx_buttonBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+
+			<!-- Texture tx_decoTitre-->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="362" y="258" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="498" y="28" />
+				</Size>
+				<uri>[local.assets]NonAbonnes_tx_Deco</uri>
+			</Texture>
+
+			<!-- Texture tx_decoPopup-->
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="311" y="314" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="123" y="199" />
+				</Size>
+				<uri>[local.assets]NonAbonnes_tx_GrosCadenas</uri>
+			</Texture>
+
+			<!-- Label lbl_title-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="292" y="251" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="617" y="35" />
+				</Size>
+				<text>[ui.payzone.title]</text>
+				<css>[local.css]title.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+
+			<!-- Label texta_description-->
+
+			<TextArea>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="449" y="308" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="454" y="226" />
+				</Size>
+				<text>[ui.payzone.description]</text>
+				<css>[local.css]normal.css</css>
+				<html>true</html>
+			</TextArea>
+
+			<!-- simpleButton btn_subscription-->
+
+			<simpleButton name="btn_subscription" label="[ui.payzone.btn]"   >
+				<Anchors>
+					<Anchor relativeTo="tx_bgPopup" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="390" y="35" />
+				</Size>
+				<css>[local.css]button.css</css>
+				<cssClass>small</cssClass>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</simpleButton>
+
+			<!-- iconButton btn_close-->
+
+			<iconButton name="btn_close">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="872" y="219" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="36" />
+				</Size>
+				<uri>[local.assets]btn_cornerCross</uri>
+			</iconButton>
+		
+		
+
+		</Container>
+	</Container>
+</Definition>

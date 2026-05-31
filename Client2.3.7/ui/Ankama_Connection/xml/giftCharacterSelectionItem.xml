@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="giftCharacterItem">
+		<Button name="btn_character">
+			<Common>
+				<bgColor>0x000000</bgColor>
+				<bgAlpha>0</bgAlpha>
+				<Size>
+					<AbsDimension x="391" y="78" />
+				</Size>
+				
+				<!-- EntityDisplayer -->
+				<EntityDisplayer name="ed_avatar">
+					<useFade> false </useFade>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="18" y="3" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="49" y="71" />
+					</Size>
+				</EntityDisplayer>
+				
+				<!-- Label lbl_name -->
+				<Label name="lbl_name">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="85" y="28" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="215" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+				
+				<!-- Label lbl_level -->
+				<Label name="lbl_level">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="306" y="28" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="81" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>center</cssClass>
+				</Label>
+			</Common>
+			
+				
+			
+				<State type="SELECTED">
+					<SetProperties target="btn_character">
+						<bgColor>[colors.grid.selected]</bgColor>
+					</SetProperties>
+				</State>
+			
+				<State type="OVER">
+					<SetProperties target="btn_character">
+						<bgColor>[colors.grid.over]</bgColor>
+					</SetProperties>
+				</State>
+				
+			
+				<State type="SELECTED_OVER">
+					<SetProperties target="btn_character">
+						<bgColor>[colors.grid.selected]</bgColor>
+					</SetProperties>
+				</State>
+		</Button>	
+	</Container>
+</Definition>

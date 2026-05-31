@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+       
+       <Constant name="css_text" value="[local.css]normal.css" />
+   </Constants>
+
+	<Container name="mainNpcCtr">
+		
+		<visible>false</visible>
+			
+		<!-- Texture tx_npc-->
+		
+		<EntityDisplayer name="entityDisplayer_npc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="308" y="216" />
+			</Size>
+		</EntityDisplayer>
+		
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="204" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="500" y="10" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+
+		<!-- Texture tx_backgroundArrow-->
+
+		<Texture name="tx_backgroundArrow">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="199" y="187" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="32" y="22" />
+			</Size>
+			<uri>[local.assets]DialPNJ_tx_phylactere</uri>
+		</Texture>
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor relativeTo="tx_background">
+					<AbsDimension x="22" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="450" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Label lbl_hidden-->
+
+		<Label name="lbl_hidden">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="270" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="445" />
+			</Size>
+			<fixedHeight>false</fixedHeight>
+			<css>[local.css_text]</css>
+			<wordWrap>true</wordWrap>
+			<multiline>true</multiline>
+			<visible>false</visible>
+		</Label>
+
+		<!-- Label lbl_message-->
+
+		<Label name="lbl_message">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="270" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="445" />
+			</Size>
+			<fixedHeight>false</fixedHeight>
+			<css>[local.css_text]</css>
+			<wordWrap>true</wordWrap>
+			<multiline>true</multiline>
+		</Label>
+
+		<!-- Button btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor relativeTo="tx_background" point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+		
+		<!-- Container characterContainer-->
+
+		<Container name="repliesContainer">
+			<Anchors>
+				<Anchor relativeTo="lbl_message" relativePoint="BOTTOMLEFT">
+					<AbsDimension x="20" y="15" />
+				</Anchor>
+			</Anchors>
+			
+			
+			<Texture name="tx_over0">
+				<Anchors><Anchor><AbsDimension x="0" y="9" /></Anchor></Anchors>
+				<Size><AbsDimension x="7" y="10" /></Size>
+			</Texture>
+			<Texture name="tx_over1">
+				<Anchors><Anchor><AbsDimension x="0" y="9" /></Anchor></Anchors>
+				<Size><AbsDimension x="7" y="10" /></Size>
+			</Texture>
+			<Texture name="tx_over2">
+				<Anchors><Anchor><AbsDimension x="0" y="9" /></Anchor></Anchors>
+				<Size><AbsDimension x="7" y="10" /></Size>
+			</Texture>
+			<Texture name="tx_over3">
+				<Anchors><Anchor><AbsDimension x="0" y="9" /></Anchor></Anchors>
+				<Size><AbsDimension x="7" y="10" /></Size>
+			</Texture>
+			<Texture name="tx_over4">
+				<Anchors><Anchor><AbsDimension x="0" y="9" /></Anchor></Anchors>
+				<Size><AbsDimension x="7" y="10" /></Size>
+			</Texture>
+			
+			<!-- Button btn_rep0-->
+
+			<Button name="btn_rep0">
+				<Common>
+					<visible>false</visible>
+					<Texture name="tx_rep0">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="0" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="7" y="8" />
+						</Size>
+						<uri>[local.assets]DialPNJ_btn_petiteFleche</uri>
+					</Texture>
+					<Label name="lbl_rep0">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="12" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="415" />
+						</Size>
+						<fixedWidth>false</fixedWidth>
+						<css>[local.css_text]</css>
+						<wordWrap>true</wordWrap>
+						<multiline>true</multiline>
+					</Label>
+				</Common>
+			</Button>
+
+			<!-- Button btn_rep1-->
+
+			<Button name="btn_rep1">
+				<Common>
+					<visible>false</visible>
+					<Texture name="tx_rep1">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="0" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="7" y="8" />
+						</Size>
+						<uri>[local.assets]DialPNJ_btn_petiteFleche</uri>
+					</Texture>
+					<Label name="lbl_rep1">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="12" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="415" />
+						</Size>
+						<fixedHeight>false</fixedHeight>
+						<css>[local.css_text]</css>
+						<wordWrap>true</wordWrap>
+						<multiline>true</multiline>
+					</Label>
+				</Common>
+			</Button>
+
+			<!-- Button btn_rep2-->
+
+			<Button name="btn_rep2">
+				<Common>
+					<visible>false</visible>
+					<Texture name="tx_rep2">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="0" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="7" y="8" />
+						</Size>
+						<uri>[local.assets]DialPNJ_btn_petiteFleche</uri>
+					</Texture>
+					<Label name="lbl_rep2">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="12" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="415" />
+						</Size>
+						<fixedHeight>false</fixedHeight>
+						<css>[local.css_text]</css>
+						<wordWrap>true</wordWrap>
+						<multiline>true</multiline>
+					</Label>
+				</Common>
+			</Button>
+
+			<!-- Button btn_rep3-->
+
+			<Button name="btn_rep3">
+				<Common>
+					<visible>false</visible>
+					<Texture name="tx_rep3">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="0" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="7" y="8" />
+						</Size>
+						<uri>[local.assets]DialPNJ_btn_petiteFleche</uri>
+					</Texture>
+					<Label name="lbl_rep3">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="12" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="415" />
+						</Size>
+						<fixedHeight>false</fixedHeight>
+						<css>[local.css_text]</css>
+						<wordWrap>true</wordWrap>
+						<multiline>true</multiline>
+					</Label>
+				</Common>
+			</Button>
+
+			<!-- Button btn_rep4-->
+
+			<Button name="btn_rep4">
+				<Common>
+					<visible>false</visible>
+					<Texture name="tx_rep4">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="0" y="9" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="7" y="8" />
+						</Size>
+						<uri>[local.assets]DialPNJ_btn_petiteFleche</uri>
+					</Texture>
+					<Label name="lbl_rep4">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="12" y="0" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="415" />
+						</Size>
+						<fixedHeight>false</fixedHeight>
+						<css>[local.css_text]</css>
+						<wordWrap>true</wordWrap>
+						<multiline>true</multiline>
+					</Label>
+				</Common>
+			</Button>
+
+		</Container>
+		
+	</Container>
+</Definition>
+

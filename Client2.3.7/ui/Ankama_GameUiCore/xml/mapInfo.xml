@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+	<Constants>
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	<Container name="consoleMainContainer">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="15" y="15" />
+			</Anchor>
+		</Anchors>
+		
+		<Label name="info">
+			<fixedWidth>false</fixedWidth>
+			<css>[local.css]special.css</css>
+			<cssClass>coord</cssClass>
+		</Label>
+		
+		<Label name="coord">
+			<fixedWidth>false</fixedWidth>
+			<css>[local.css]special.css</css>
+			<cssClass>coord</cssClass>
+			<Anchors>
+				<Anchor relativeTo="info" relativePoint="BOTTOMLEFT">
+					<AbsDimesion x="0" y="7" />
+				</Anchor>
+			</Anchors>
+		</Label>
+	</Container>
+</Definition>

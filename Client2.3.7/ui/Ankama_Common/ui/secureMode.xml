@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition modal="true">
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="btn.css" value="[config.ui.skin]css/button.css" />
+		<Constant name="btn.file" value="[local.assets]btn_orange" />
+	</Constants>
+
+	<Container name="popCtr">
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+
+		<Size>
+			<AbsDimension x="700" y="600" />
+		</Size>
+
+		<mouseEnabled>true</mouseEnabled>
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+
+		<Container name="mainCtr">
+			<Size>
+				<AbsDimension x="700" y="600" />
+			</Size>
+			<Anchors>
+				<Anchor relativePoint="CENTER" point="CENTER" />
+			</Anchors>
+
+			<Texture name="tx_background" strata="LOW">
+				<Size>
+					<RelDimension x="1" y="1" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			</Texture>
+
+			<Label name="lbl_title">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="22" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="700" y="25" />
+				</Size>
+				<css>[local.css]title.css</css>
+				<cssClass>center</cssClass>
+				<verticalAlign>center</verticalAlign>
+			</Label>
+
+			<TextArea name="lbl_content">
+				<Anchors>
+					<Anchor relativeTo="lbl_title">
+						<AbsDimension x="7" y="40" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="680" y="400" />
+				</Size>
+				<multiline>true</multiline>
+				<css>[local.css]titlesmall.css</css>
+				<cssClass>justify</cssClass>
+			</TextArea>
+
+			<Container name="inputCtr">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="TOP">
+						<AbsDimension y="150"/>
+					</Anchor>
+				</Anchors>
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension y="35" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="354" y="36" />
+					</Size>
+					<uri>[local.assets]login_tx_inputBg</uri>
+				</Texture>
+				<Input name="input">
+					<Anchors>
+						<Anchor>
+							<AbsDimension y="38" x="4" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="340" y="30" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>dark</cssClass>
+				</Input>
+
+				<Label name="lbl_input">
+					<Size>
+						<AbsDimension x="300" y="25" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>bold</cssClass>
+					<mouseEnabled>true</mouseEnabled>
+					<mouseChildren>true</mouseChildren>
+				</Label>
+				
+			</Container>
+            
+            <Texture name="tx_loading">
+                <Anchors>
+                    <Anchor relativePoint="CENTER" point="CENTER">
+                        <AbsDimension y="-20" />
+                    </Anchor>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="50" y="50" />
+                </Size>
+                <uri>[local.assets]tx_loadingAnim</uri>
+            </Texture>
+            
+            <TextArea name="lbl_inputInfo">
+                <Size>
+                    <AbsDimension x="600" y="60" />
+                </Size>
+                <Anchors>
+                    <Anchor relativeTo="inputCtr" relativePoint="BOTTOM" point="TOP">
+                        <AbsDimension y="10" />
+                    </Anchor>
+                </Anchors>
+                <multiline>true</multiline>
+                <wordWrap>true</wordWrap>
+                <css>[local.css]normal.css</css>
+                <cssClass>center</cssClass>
+            </TextArea>
+
+			<simpleButton name="btn1">
+				<Size>
+					<AbsDimension x="400" y="35" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM">
+						<AbsDimension y="-50" />
+					</Anchor>
+				</Anchors>
+			</simpleButton>
+			<simpleButton name="btn2">
+				<Size>
+					<AbsDimension x="400" y="35" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM">
+						<AbsDimension y="-90" />
+					</Anchor>
+				</Anchors>
+			</simpleButton>
+
+			<simpleButton name="btn3">
+				<Size>
+					<AbsDimension x="400" y="35" />
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM">
+						<AbsDimension y="-130" />
+					</Anchor>
+				</Anchors>
+			</simpleButton>
+
+			<Label name="lbl_moreInfo">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+						<AbsDimension y="-20" x="-30" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="200" y="25" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>rightlink</cssClass>
+				<text>
+					<u>[ui.secureMode.moreInfo]</u>
+				</text>
+				<HandCursor>true</HandCursor>
+			</Label>
+		</Container>
+	</Container>
+</Definition>

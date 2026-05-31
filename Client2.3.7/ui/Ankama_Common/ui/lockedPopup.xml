@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition modal="true" usePropertiesCache="false">
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    <Import url="[config.mod.template]button/simpleButton.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="btn.css" value="[config.ui.skin]css/button.css" />
+		<Constant name="btn.file" value="[local.assets]btn_orange" />
+		<Constant name="bgDeco" value="[local.assets]tx_decoBackground" />
+	</Constants>
+	
+	<Container name="popCtr">
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+		
+		<Size>
+			<AbsDimension x="550" />
+		</Size>
+		
+		<mouseEnabled>true</mouseEnabled>
+		<shadowColor>[colors.ui.shadow]</shadowColor>	
+		
+		<Container>
+			<Size>
+				<RelDimension x="1" y="1"/>
+			</Size>
+			<Anchors>
+				<Anchor relativePoint="CENTER" point="CENTER" />
+			</Anchors>
+			
+			<Texture name="tx_background" strata="LOW">
+				<Size>
+					<RelDimension x="1" y="1"/>
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			</Texture>
+			
+			
+			<Label name="lbl_title">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="15" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="525" y="35"/>
+				</Size>
+				<css>[local.css]title.css</css>		
+				<cssClass>center</cssClass>		
+			</Label>
+			
+			<Label name="lbl_content">
+				<Anchors>
+					<Anchor relativeTo="lbl_title">
+						<AbsDimension x="7" y="50" />
+					</Anchor>
+					<Anchor relativePoint="BOTTOMRIGHT">
+						<AbsDimension x="-20" y="-55" />
+					</Anchor>
+				</Anchors>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+				<multiline>true</multiline>
+				<wordWrap>true</wordWrap>
+			</Label>
+			
+			
+			<Label name="lbl_titleDeco">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="13" y="32" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="525" y="35"/>
+				</Size>
+				<css>[local.css]title.css</css>		
+				<cssClass>center</cssClass>		
+			</Label>
+			
+			<Label name="lbl_contentDeco">
+				<Anchors>
+					<Anchor relativeTo="lbl_titleDeco">
+						<AbsDimension x="18" y="50" />
+					</Anchor>
+					<Anchor relativePoint="BOTTOMRIGHT">
+						<AbsDimension x="-20" y="-55" />
+					</Anchor>
+				</Anchors>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+				<multiline>true</multiline>
+				<wordWrap>true</wordWrap>
+			</Label>
+			
+			
+
+			<!-- simpleButton btn_ok -->
+
+			<simpleButton name="btn_ok" label="[ui.common.ok]"   >
+				<Anchors>
+					<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+						<AbsDimension x="0" y="-20" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="200" y="35" />
+				</Size>
+			</simpleButton>
+		</Container>
+	</Container>
+</Definition>
+

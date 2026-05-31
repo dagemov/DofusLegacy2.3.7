@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/iconButton.xml" />
+
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="btn.css" value="[config.ui.skin]css/button.css" />
+		<Constant name="btn.file" value="[local.assets]btn_orange" />
+   </Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="0" y="445" />
+			</Anchor>
+		</Anchors>
+		<visible>false</visible>
+		
+		<Container name="visibleCtr">
+			<visible>false</visible>
+			
+			<Container name="ctr_down">
+				<Texture>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]notification_tx_fondGris</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+				</Texture>
+				
+				<Label name="lbl_down">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="0" y="-6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="60" />
+					</Size>
+					<cssClass>center</cssClass>
+					<css>[local.css]normal.css</css>
+				</Label>
+			</Container>
+		
+			<Texture name="tx_background">
+				<Size>
+					<AbsDimension x="66" />
+				</Size>
+				<uri>[local.assets]tips_background</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Container name="ctr_text">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="61" y="19" />
+					</Anchor>
+				</Anchors>
+				<visible>false</visible>
+				<mouseEnabled>true</mouseEnabled>
+				
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="-56" />
+						</Anchor>
+					</Anchors>
+					<uri>[local.assets]tips_background2</uri>
+				</Texture>
+				
+				<Texture name="tx_background_message">
+					<Size>
+						<AbsDimension x="320" y="10" />
+					</Size>
+					<uri>[local.assets]tips_background3</uri>
+				</Texture>
+				
+				<Label name="lbl_message">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="5" y="5" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="300" />
+					</Size>
+					<multiline>true</multiline>
+					<wordWrap>true</wordWrap>
+					<cssClass>left</cssClass>
+					<css>[local.css]normal.css</css>
+					<useStyleSheet>true</useStyleSheet>
+					<hyperlinkEnabled>true</hyperlinkEnabled>
+				</Label>
+				
+				<iconButton name="btn_close">
+					<Size>
+						<AbsDimension x="15" y="15" />
+					</Size>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="306" y="12" />
+						</Anchor>
+					</Anchors>
+					<uri>[local.assets]tips_close</uri>
+				</iconButton>
+			</Container>
+			
+			<Container name="ctr_tipsList">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="7" y="22" />
+					</Anchor>
+				</Anchors>
+				
+				<Texture name="tips0">
+					<visible>false</visible>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]tips_icon0</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+					<buttonMode>true</buttonMode>
+					<useHandCursor>true</useHandCursor>
+				</Texture>
+				<Texture name="tips1">
+					<visible>false</visible>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]tips_icon0</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+					<buttonMode>true</buttonMode>
+					<useHandCursor>true</useHandCursor>
+				</Texture>
+				<Texture name="tips2">
+					<visible>false</visible>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]tips_icon0</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+					<buttonMode>true</buttonMode>
+					<useHandCursor>true</useHandCursor>
+				</Texture>
+				<Texture name="tips3">
+					<visible>false</visible>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]tips_icon0</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+					<buttonMode>true</buttonMode>
+					<useHandCursor>true</useHandCursor>
+				</Texture>
+				<Texture name="tips4">
+					<visible>false</visible>
+					<mouseEnabled>true</mouseEnabled>
+					<uri>[local.assets]tips_icon0</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+					<buttonMode>true</buttonMode>
+					<useHandCursor>true</useHandCursor>
+				</Texture>
+			</Container>
+			
+			<Container name="tipsListMask">
+				<Size>
+					<AbsDimension x="60" y="17" />
+				</Size>
+				<bgColor>0xFF00FF</bgColor>
+			</Container>
+		</Container>
+		
+		<iconButton name="btn_hide">
+			<visible>false</visible>
+			<uri>[local.assets]tips_btn_flecheGrand</uri>
+		</iconButton>
+		
+		<iconButton name="btn_show">
+			<visible>false</visible>
+			<uri>[local.assets]tips_btn_flechePetit</uri>
+		</iconButton>
+		
+		<Texture name="tx_effect1">
+			<gotoAndStop>1</gotoAndStop>
+			<visible>false</visible>
+			<uri>[local.assets]anim_boucle</uri>
+		</Texture>
+		
+		<Texture name="tx_effect2">
+			<gotoAndStop>41</gotoAndStop>
+			<uri>[local.assets]anim_paillette</uri>
+		</Texture>
+		
+	</Container>
+</Definition>

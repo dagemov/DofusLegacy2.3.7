@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/horizontalTab.xml" />
+
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="mount" value="[config.content.path]gfx/characteristics/mount.swf|" />
+   	</Constants>
+
+	<Container name="mainCtr">
+
+		<Texture>
+			<Size>
+				<AbsDimension x="380" y="616" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="18" y="58" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="344" y="183" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+				
+		<!-- Label lbl_title -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="325" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<text>[ui.common.ride]</text>
+		</Label>
+		
+		<EntityDisplayer name="tx_mount">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="81" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="108" y="128" />
+			</Size>
+		</EntityDisplayer>
+				
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="191" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>		
+
+		<!-- iconButton btn_changeName-->
+
+		<iconButton name="btn_changeName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="337" y="61" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_etc_square</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+		
+
+		<Label name="lbl_type">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="82" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="219" y="55" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<multiline>true</multiline>
+			<wordWrap>true</wordWrap>
+		</Label>
+
+
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="149" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.level]</text>
+		</Label>
+
+		<Label name="lbl_level">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="292" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="144" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="109" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.sex]</text>
+		</Label>
+
+		<Label name="lbl_sex">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="247" y="144" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="108" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="164" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="147" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.mountable]</text>
+		</Label>
+
+		<Label name="lbl_mountable">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="283" y="164" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="72" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="185" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="154" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.wild]</text>
+		</Label>
+
+		<Label name="lbl_wild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="291" y="185" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<Label name="lbl_xpTitle">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="207" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="140" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.giveXP]</text>
+		</Label>
+
+		<Label name="lbl_xp">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="280" y="207" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="52" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+		
+		<!-- iconButton btn_xp-->
+
+		<iconButton name="btn_xp">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="337" y="209" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_etc_square</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+		
+		
+		
+		
+		
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.mount]Dragodinde_tooltip_tx_pictoEnergie</uri>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="51" y="249" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="118" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.energy] :</text>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="272" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="145" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.experiment] :</text>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="296" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="145" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.tire] :</text>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="319" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="145" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.reproductions] :</text>
+		</Label>
+		
+		
+		
+		
+			
+		<Texture name="tx_progressBGEnergy">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="175" y="252" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="182" y="16" />
+			</Size>
+			<uri>[local.assets]tx_progressBarBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture name="tx_progressBarEnergy">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="176" y="253" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="14" />
+			</Size>
+			<uri>[local.assets]tx_progressBar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+
+
+		<Texture name="tx_progressBGXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="175" y="275" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="182" y="16" />
+			</Size>
+			<uri>[local.assets]tx_progressBarBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture name="tx_progressBarXP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="176" y="276" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="14" />
+			</Size>
+			<uri>[local.assets]tx_progressBar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+
+		<Texture name="tx_progressBGTired">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="175" y="299" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="182" y="16" />
+			</Size>
+			<uri>[local.assets]tx_progressBarBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture name="tx_progressBarTired">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="176" y="300" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="14" />
+			</Size>
+			<uri>[local.assets]tx_progressBar</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label name="lbl_nbReproductions">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="177" y="319" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="55" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lbl_reproduction">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="227" y="319" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="129" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+
+
+
+		<!-- ONGLET DES STATS, CAPACIT2S, EFFETS -->
+
+		<horizontalTab name="btn_stat">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="361" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="112" y="28" />
+			</Size>
+			<text>[ui.common.statistics]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_capacity">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="134" y="361" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="112" y="28" />
+			</Size>
+			<text>[ui.common.capacity]</text>
+		</horizontalTab>		
+		<horizontalTab name="btn_effect">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="245" y="361" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="112" y="28" />
+			</Size>
+			<text>[ui.common.effects]</text>
+		</horizontalTab>
+
+		
+		
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="387" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="336" y="161" />
+			</Size>
+			<uri>[local.assets]map_tx_bgList</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+
+		
+		 
+		<Container name="ctr_stat">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="405" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="324" y="131" />
+			</Size>
+
+			<!-- pictos de caracs -->
+			<Texture name="tx_love">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="1" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoAmour</uri>
+			</Texture>
+			<Texture name="tx_maturity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="24" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoMaturite</uri>
+			</Texture>
+			<Texture name="tx_stamina">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="47" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoEndurance</uri>
+			</Texture>
+			
+
+			<Label name="lbl_love">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="24" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.love] :</text>
+			</Label>
+			<Label name="lbl_maturity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="24" y="22" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.maturity] :</text>
+			</Label>
+			<Label name="lbl_stamina">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="24" y="44" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<text>[ui.common.stamina] :</text>
+			</Label>
+			
+			
+			<!-- JAUGES -->
+			
+			<Texture name="tx_progressBGLove">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="147" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="177" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			<Texture name="tx_progressBarLove">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="148" y="4" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Texture name="tx_progressBGMaturity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="147" y="25" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="177" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			<Texture name="tx_progressBarMaturity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="148" y="26" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Texture name="tx_progressBGStamina">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="147" y="48" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="177" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			<Texture name="tx_progressBarStamina">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="148" y="49" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="175" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			
+			
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="1" y="95" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="30" y="30" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoAgressivite</uri>
+			</Texture>				
+			
+			<Label name="lbl_serenity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="105" y="117" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="100" y="30" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<cssClass>center</cssClass>
+			</Label>
+			
+			<Texture name="tx_progressBGSerenity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="39" y="102" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="243" y="16" />
+				</Size>
+				<uri>[local.assets]tx_progressBarBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			<Texture name="tx_progressBarSerenity">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="40" y="103" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="241" y="14" />
+				</Size>
+				<uri>[local.assets]tx_progressBar</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="39" y="102" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="243" y="16" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_tx_Graduations</uri>
+			</Texture>
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="290" y="95" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="30" y="30" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoSerenite</uri>
+			</Texture>
+			
+						
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="71" y="76" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoEndurance</uri>
+			</Texture>
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="149" y="76" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoMaturite</uri>
+			</Texture>
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="227" y="76" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.mount]Dragodinde_tooltip_tx_pictoAmour</uri>
+			</Texture>
+
+			
+		
+		</Container>
+		
+		<Container name="ctr_capacity">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="409" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="328" y="106" />
+			</Size>
+			
+			<Label name="lbl_cap0">
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_cap1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="27" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_cap2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="54" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_cap3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="81" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+				
+		</Container>
+		
+		<Container name="ctr_effect">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="397" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="328" y="106" />
+			</Size>
+			
+			<Label name="lbl_effect0">
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_effect1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="25" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_effect2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="50" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_effect3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="75" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_effect4">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="100" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+			<Label name="lbl_effect5">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="125" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="326" y="20" />
+				</Size>
+				<css>[local.css]normal.css</css>
+			</Label>
+				
+		</Container>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- LES BOUTONS DU BAS -->
+		
+		<Container>
+		
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="21" y="560" />
+				</Anchor>
+			</Anchors>
+	
+			<!-- iconButton btn_mount-->
+	
+			<iconButton name="btn_mount">
+				<Size>
+					<AbsDimension x="147" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_MontreDescendre</uri>
+				<checkBox>true</checkBox>
+			</iconButton>
+			
+			
+			<!-- iconButton btn_feed-->
+
+			<iconButton name="btn_feed">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="151" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="34" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_Feed</uri>
+			</iconButton>
+			
+			<!-- iconButton btn_storage-->
+	
+			<iconButton name="btn_storage">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="188" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="34" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_Inventaire</uri>
+			</iconButton>
+	
+			<!-- iconButton btn_ancestor-->
+	
+			<iconButton name="btn_ancestors">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="225" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="34" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_Arbre</uri>
+			</iconButton>
+	
+			<!-- iconButton btn_sterilize-->
+	
+			<iconButton name="btn_sterilize">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="262" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="34" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_Castrer</uri>
+			</iconButton>
+	
+			<!-- iconButton btn_release-->
+	
+			<iconButton name="btn_release">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="305" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="34" y="34" />
+				</Size>
+				<uri>[local.assets]Dragodinde_tooltip_btn_Liberer</uri>
+			</iconButton>
+		
+		</Container>
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	</Container>
+</Definition>

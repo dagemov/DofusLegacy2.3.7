@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="126" y="45" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+		<Texture>
+			<Size>
+				<AbsDimension x="1028" y="787" />
+			</Size>
+			<uri>[local.assets]tx_generalBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="13" y="45" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1002" y="60" />
+			</Size>
+			<uri>[local.assets]tx_titleBackground</uri>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+			
+		<!-- Le titre de la fenêtre -->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="48" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="700" y="38" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Texture Texture_tx_decoration-->
+
+		<Texture name="Texture_tx_decoration">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="745" y="48" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="235" y="44" />
+			</Size>
+			<uri>[local.assets]Arbre_tx_deco</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="28" y="112" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="973" y="651" />
+			</Size>
+			<uri>[local.assets]Arbre_tx_background</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+
+		<!-- Label lbl_name-->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="425" y="722" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="172" y="20" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- LISTE DE DINDES -->
+
+		<Container>
+		
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="58" y="152" />
+				</Anchor>
+			</Anchors>
+			
+			<!-- EntityDisplayer d10-->
+	
+			<EntityDisplayer name="d10">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="346" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d9-->
+	
+			<EntityDisplayer name="d9">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="232" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d8-->
+	
+			<EntityDisplayer name="d8">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="114" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d7-->
+	
+			<EntityDisplayer name="d7">
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d1-->
+	
+			<EntityDisplayer name="d1">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="156" y="284" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="109" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d14-->
+	
+			<EntityDisplayer name="d14">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="807" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d13-->
+	
+			<EntityDisplayer name="d13">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="694" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d12-->
+	
+			<EntityDisplayer name="d12">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="575" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d11-->
+	
+			<EntityDisplayer name="d11">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="462" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="98" y="87" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d3-->
+	
+			<EntityDisplayer name="d3">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="50" y="137" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="110" y="98" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d4-->
+	
+			<EntityDisplayer name="d4">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="281" y="137" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="110" y="98" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d5-->
+	
+			<EntityDisplayer name="d5">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="512" y="137" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="110" y="98" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d6-->
+	
+			<EntityDisplayer name="d6">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="744" y="137" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="110" y="98" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d2-->
+	
+			<EntityDisplayer name="d2">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="617" y="284" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="109" />
+				</Size>
+			</EntityDisplayer>
+	
+			<!-- EntityDisplayer d0-->
+	
+			<EntityDisplayer name="d0">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="389" y="451" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="122" y="108" />
+				</Size>
+			</EntityDisplayer>
+			
+		</Container>
+		
+	</Container>
+</Definition>

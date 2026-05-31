@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+       	<Constant name="gridMenuCSS" value="[config.ui.skin]css/normal.css" />
+		<Constant name="illusUi" value="[config.content.path]gfx/illusUi/" />
+   	</Constants>
+
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="17" y="104" />
+			</Anchor>
+		</Anchors>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="31" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="171" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture name="tx_image">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="238" y="201" />
+			</Size>
+			<uri>[local.illusUi]SocialGuildePersonnalisation_tx_IlluPerco.png</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="14" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="290" y="20" />
+			</Size>
+			<text>[ui.social.guildTaxCharacteristics]</text>
+			<css>[local.gridMenuCSS]</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="415" y="27" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="83" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.gridMenuCSS]</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="713" y="27" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="83" y="20" />
+			</Size>
+			<text>[ui.common.level]</text>
+			<css>[local.gridMenuCSS]</css>
+		</Label>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="13" y="501" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="210" y="20" />
+			</Size>
+			<text>[ui.social.guildBonusPoints] :</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lbl_boostPoints">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="236" y="501" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="63" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- LISTE DES SORTS -->
+		
+		<Grid name="gd_spell">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="343" y="55" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="530" y="454" />
+			</Size>
+			<slotWidth>502</slotWidth>
+			<slotHeight>47</slotHeight>
+			<rendererName>com.ankamagames.berilia.components.gridRenderer::XmlUiGridRenderer</rendererName>
+			<rendererArgs>Ankama_Social::guildSpellItem,[colors.grid.line]</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+		</Grid>
+		
+		<!-- CARACTERISTIQUES -->
+		
+		<Container name="statsCtr">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="4" y="237" />
+				</Anchor>
+			</Anchors>
+			
+			<Grid name="gd_stat">
+				<Size>
+					<AbsDimension x="309" y="210" />
+				</Size>
+				<rendererName>InlineXmlGridRender</rendererName>
+				<rendererArgs>updateStatLine,[colors.grid.line]</rendererArgs>
+				<slotWidth>309</slotWidth>
+				<slotHeight>35</slotHeight>
+
+				<Container name="statItemCtr">
+					<Size>
+						<AbsDimension x="309" y="35" />
+					</Size>
+
+	
+					<Label name="lbl_title">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="9" y="5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="210" y="20" />
+						</Size>
+						<css>[local.css]normal.css</css>
+					</Label>
+	
+					<Label name="lbl_value">
+						<Anchors>
+							<Anchor>
+								<AbsDimension x="200" y="5" />
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="66" y="20" />
+						</Size>
+						<css>[local.css]normal.css</css>
+						<cssClass>right</cssClass>
+					</Label>
+				</Container>
+
+			</Grid>		
+		
+	
+			<iconButton name="ib_taxCollectorProspecting">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="275" y="78" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.assets]btn_plus_square</uri>
+				<autoGrid>false</autoGrid>
+				<visible>false</visible>
+			</iconButton>
+	
+			<iconButton name="ib_taxCollectorWisdom">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="275" y="112" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.assets]btn_plus_square</uri>
+				<autoGrid>false</autoGrid>
+				<visible>false</visible>
+			</iconButton>
+	
+			<iconButton name="ib_taxCollectorPods">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="275" y="148" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.assets]btn_plus_square</uri>
+				<autoGrid>false</autoGrid>
+				<visible>false</visible>
+			</iconButton>
+	
+			<iconButton name="ib_maxTaxCollectorsCount">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="275" y="184" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20" />
+				</Size>
+				<uri>[local.assets]btn_plus_square</uri>
+				<autoGrid>false</autoGrid>
+				<visible>false</visible>
+			</iconButton>
+		</Container>
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="24" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="885" y="515" />
+			</Size>
+			<uri>[local.assets]SocialGuildePersonnalisation_tx_grille</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+		
+	</Container>
+</Definition>

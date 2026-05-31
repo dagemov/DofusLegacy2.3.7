@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+	   <Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr" strata="TOP">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+				<AbsDimension x="0" y="230" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+		<Button name="btn_minimize">
+			<Common>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="66" y="17" />
+				</Size>
+
+				<radioGroup>minMaxRadio</radioGroup>
+				<radioMode>true</radioMode>
+
+				<Texture name="tx_button_minimize">
+					<Size>
+						<AbsDimension x="66" y="17" />
+					</Size>
+					<uri>[local.assets]tips_btn_flecheGrand</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</Common>
+
+			<State type="OVER">
+				<SetProperties target="tx_button_minimize">
+					<gotoAndStop>over</gotoAndStop>
+				</SetProperties>
+			</State>
+
+			<State type="PRESSED">
+				<SetProperties target="tx_button_minimize">
+					<gotoAndStop>pressed</gotoAndStop>
+				</SetProperties>
+			</State>
+
+			<State type="SELECTED">
+				<SetProperties target="tx_button_minimize">
+					<gotoAndStop>selected</gotoAndStop>
+				</SetProperties>
+			</State>
+		</Button>
+
+		<Button name="btn_maximize">
+			<Common>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="23" y="17" />
+				</Size>
+
+				<radioGroup>minMaxRadio</radioGroup>
+				<radioMode>true</radioMode>
+
+				<Texture name="tx_button_maximize">
+					<Size>
+						<AbsDimension x="23" y="17" />
+					</Size>
+					<uri>[local.assets]tips_btn_flechePetit</uri>
+					<autoGrid>true</autoGrid>
+				</Texture>
+
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</Common>
+
+			<State type="OVER">
+				<SetProperties target="tx_button_maximize">
+					<gotoAndStop>over</gotoAndStop>
+				</SetProperties>
+			</State>
+
+			<State type="PRESSED">
+				<SetProperties target="tx_button_maximize">
+					<gotoAndStop>pressed</gotoAndStop>
+				</SetProperties>
+			</State>
+
+			<State type="SELECTED">
+				<SetProperties target="tx_button_maximize">
+					<gotoAndStop>selected</gotoAndStop>
+				</SetProperties>
+			</State>
+		</Button>
+
+		<Container name="ctr_challenges">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="18" />
+				</Anchor>
+			</Anchors>
+			
+			<Texture name="tx_background_grid" strata="LOW">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="66" y="66" />
+				</Size>
+				<uri>[local.assets]Challenge_tx_background</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+		</Container>
+	</Container>
+</Definition>

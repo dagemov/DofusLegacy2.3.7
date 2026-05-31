@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition useCache="true">
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		
+		<Constant name="logo" value="[config.content.path]gfx/illusUi/logo_dofus.swf|tx_logo_" />
+	</Constants>
+	
+	<Container>
+		<Size>
+			<RelDimension x="1" y="1" />
+		</Size>
+
+		<bgColor>[colors.ui.bg.pregame]</bgColor>
+	
+		<Container name="mainHeadCtr">
+			<Size>
+				<AbsDimension x="1145" y="791" />
+			</Size>
+		
+			<Anchors>
+				<Anchor point="TOP" relativePoint="TOP" >
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+
+			<!-- Texture tx_background-->
+
+			<Texture name="tx_background">
+				<Size>
+					<AbsDimension x="1146" y="790" />
+				</Size>
+				<uri>[local.assets]tx_background</uri>
+			</Texture>
+				
+			<!-- Logo DOFUS texture -->
+			<EntityDisplayer strata="TOP" name="tx_logo">
+				<Anchors>
+					<Anchor relativeTo="tx_background" >
+						<AbsDimension x="454" y="-19" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="230" y="228" />
+				</Size>
+			</EntityDisplayer>
+			
+
+			<!-- Label lbl_pseudo-->
+
+			<Label name="lbl_pseudo">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="50" y="164" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="265" y="20" />
+				</Size>
+				<text>[ui.header.dofusPseudo] : </text>
+				<cssClass>dark</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_serveur-->
+
+			<Label name="lbl_server">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="363" y="164" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="237" y="20" />
+				</Size>
+				<text>[ui.header.server] : </text>
+				<cssClass>dark</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_abo-->
+
+			<Label name="lbl_abo">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="673" y="164" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="305" y="20" />
+				</Size>
+				<text>[ui.header.subscribeLeftTime] : </text>
+				<cssClass>dark</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+
+
+			<!-- Button btn_subscribe -->
+
+			<simpleButton label="[ui.header.subscribe]" name="btn_subscribe"   >
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="992" y="158" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="142" y="37" />
+				</Size>
+				<css>[local.css]button.css</css>
+				<cssClass>small</cssClass>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</simpleButton>
+
+		</Container>
+	</Container>
+</Definition>

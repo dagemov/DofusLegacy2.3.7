@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition usePropertiesCache="false">
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+       	<Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+
+	<Container name="mainCtr">
+		
+		<Size>
+            <AbsDimension x="804" y="842" />
+        </Size>
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT">
+				<AbsDimension x="40" y="-150" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Le personnage de gauche -->
+		
+		<EntityDisplayer name="playerLeftLook">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="6" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="165" y="200" />
+			</Size>
+		</EntityDisplayer>
+		
+		<!-- Le personnage de droite -->
+		
+		<EntityDisplayer name="playerRightLook">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="742" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="165" y="200" />
+			</Size>
+			<direction>3</direction>
+		</EntityDisplayer>
+		
+		<!-- Le fond de l'UI-->
+
+		<Texture name="tx_background">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="112" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="906" y="363" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<!-- Le nom du personnage de gauche -->
+
+		<Label name="lbl_leftPlayerName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="127" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="395" y="32" />
+			</Size>
+			<css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Le nom du personnage de droite -->
+
+		<Label name="lbl_rightPlayerName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="465" y="127" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="384" y="32" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+
+		<!-- La double flèche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="424" y="142" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="43" y="12" />
+			</Size>
+			<uri>[local.assets]doublearrow</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+		<!-- Le fond du haut de la grille de gauche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="26" y="169" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="45" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Le fond de la grille de gauche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="212" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="184" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Le fond du haut de la grille de droite -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="463" y="169" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="45" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Le fond de la grille de droite -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="463" y="212" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="420" y="184" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+
+		<!-- La texture de fond de l'input en haut a gauche -->
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="83" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="353" y="26" />
+			</Size>
+			<uri>[local.assets]tx_inputBackgroundDark</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- La texture de fond de l'input en haut a droite -->
+		
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="521" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="353" y="26" />
+			</Size>
+			<uri>[local.assets]tx_inputBackgroundDark</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+
+		<!-- Le fond des kamas de gauche ->
+
+		<Texture>
+			<Anchors>
+				<Anchor> 
+					<AbsDimension x="30" y="177" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Le fond des kamas de droite ->
+
+		<Texture>
+			<Anchors>
+				<Anchor> 
+					<AbsDimension x="468" y="177" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="50" />
+			</Size>
+			<uri>[local.assets]tx_slot</uri>
+			<autoGrid>true</autoGrid>
+		</Texture-->
+
+		<!-- La texture des kamas de gauche -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="53" y="192" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="35" y="30" />
+			</Size>
+			<uri>[local.assets]kamastack</uri>
+		</Texture>
+		
+		<!-- La texture des kamas de droite -->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="491" y="192" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="35" y="30" />
+			</Size>
+			<uri>[local.assets]kamastack</uri>
+		</Texture>
+
+
+
+		
+		<!-- Le "K" après le input -->
+		
+		<Label>
+            <Anchors>
+				<Anchor>
+					<AbsDimension x="405" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="23" y="20" />
+			</Size>
+			<text>K</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+		
+		<!-- Label de kama de gauche -->
+		
+		<Label name="input_kamaLeft">
+            <Anchors>
+				<Anchor>
+					<AbsDimension x="90" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+			<text>0</text>
+		</Label>
+		
+		<!-- Le "K" après le input -->
+		
+		<Label>
+            <Anchors>
+				<Anchor>
+					<AbsDimension x="843" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="23" y="20" />
+			</Size>
+			<text>K</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+		
+		<!-- Texte input de kama de droite -->
+
+		<Input name="input_kamaRight">
+            <Anchors>
+				<Anchor>
+					<AbsDimension x="528" y="179" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+			<text>0</text>
+		</Input>
+		
+		
+		<!-- Le texte "Kamas" de gauche ->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="85" y="175" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="301" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.kamas] :</text>
+		</Label>
+		
+		<!-- Le texte "Kamas" de droite ->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="523" y="175" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="301" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<text>[ui.common.kamas] :</text>
+		</Label-->
+		
+			
+		
+		
+		<!-- La grille de gauche -->
+
+		<Grid name="gd_left">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="34" y="225" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="402" y="160" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<slotWidth>52</slotWidth>
+			<slotHeight>52</slotHeight>
+			<scrollDisplay>always</scrollDisplay>
+			<rendererName>SlotGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<Hooks>
+				<onSelectItem />
+				<onItemRightClick />
+				<onItemRollOver />
+				<onItemRollOut />
+				<onRelease />
+			</Hooks>
+		</Grid>
+		
+		<!-- La grille de droite -->
+			
+		<Grid name="gd_right">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="472" y="225" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="402" y="160" />
+			</Size>
+			<autoSelect>false</autoSelect>
+			<slotWidth>52</slotWidth>
+			<slotHeight>52</slotHeight>
+			<scrollDisplay>always</scrollDisplay>
+			<rendererName>SlotGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<Hooks>
+				<onSelectItem />
+				<onItemRightClick />
+				<onItemRollOver />
+				<onItemRollOut />
+				<onRelease />
+			</Hooks>
+		</Grid>
+		
+		
+		
+		<Texture name="tx_gridLeft">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="169" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="423" y="228" />
+			</Size>
+			<uri>[local.assets]exchange_tx_grid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+        <Texture name="tx_gridRight">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="460" y="169" />
+				</Anchor>
+			</Anchors>
+        	<Size>
+				<AbsDimension x="423" y="228" />
+			</Size>
+			<uri>[local.assets]exchange_tx_grid</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+		
+		
+		<!-- La barre de poids (gauche) -->
+        <Texture name="tx_podsBar_left" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="135" y="400" />
+				</Anchor>
+			</Anchors>
+       		<Size>
+				<AbsDimension x="300" y="17" />
+			</Size>
+			<uri>[local.assets]inventaire_tx_jauge_poids</uri>
+		</Texture>
+		
+		<!-- La barre de poids (droite) -->
+        <Texture name="tx_podsBar_right" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="573" y="400" />
+				</Anchor>
+			</Anchors>
+        	<Size>
+				<AbsDimension x="300" y="17" />
+			</Size>
+			<uri>[local.assets]inventaire_tx_jauge_poids</uri>
+		</Texture>
+		
+		
+		
+		<Container name="ctr_itemBlock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="395" y="478" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="510" y="358" />
+			</Size>
+		
+			<Texture>
+				<Size>
+					<AbsDimension x="510" y="358" />
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+		
+		
+			<Container name="ctr_item">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="23" y="22" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="462" y="315" />
+				</Size>
+			</Container>
+
+		</Container>
+		
+		
+		
+		
+		<!-- La croix -->
+		
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="tx_background" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+        
+        <!-- Bouton "valider" -->
+
+		<simpleButton label="[ui.common.validation]" name="btn_validate"   >
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="114" y="425" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="330" y="32" />
+			</Size>
+		</simpleButton>
+		
+		<!-- Bouton "annuler" -->
+
+		<simpleButton label="[ui.common.cancel]" name="btn_cancel"   >
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="460" y="425" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="330" y="32" />
+			</Size>
+		</simpleButton>
+		
+	</Container>
+</Definition>

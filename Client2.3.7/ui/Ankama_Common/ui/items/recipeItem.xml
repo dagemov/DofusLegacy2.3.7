@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />
+	</Constants>
+
+	<Container name="mainCtr">
+		
+		<mouseEnabled>true</mouseEnabled>
+
+		<Texture>
+			<Size>
+				<AbsDimension x="385" y="100" />
+			</Size>
+			<uri>[local.bitmap]commonItemRecipes_tx_recipes_background.png</uri>
+			<autoGrid>false</autoGrid>
+		</Texture>
+
+
+		<!-- Texture slotCraftedItem-->
+
+		<Slot name="slotCraftedItem">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="8" y="3" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="44" />
+			</Size>
+		</Slot>
+
+
+		<!-- Label lblAbility-->
+
+		<Label name="lblAbility">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="161" y="23" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="220" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Label lblLevel-->
+
+		<Label name="lblLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="56" y="23" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="94" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lblName-->
+
+		<Label name="lblName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="56" y="2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="320" y="20" />
+			</Size>
+			<cssClass>bold</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+
+		<!-- Slot slot1-->
+
+		<Slot name="slot1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="16" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot2-->
+
+		<Slot name="slot2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="62" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot3-->
+
+		<Slot name="slot3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="108" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot4-->
+
+		<Slot name="slot4">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="154" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot5-->
+
+		<Slot name="slot5">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="201" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot6-->
+
+		<Slot name="slot6">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="247" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot7-->
+
+		<Slot name="slot7">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="293" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+
+		<!-- Slot slot8-->
+
+		<Slot name="slot8">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="339" y="56" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+			<css>[local.css]normal.css</css>
+		</Slot>
+	</Container>
+</Definition>
+

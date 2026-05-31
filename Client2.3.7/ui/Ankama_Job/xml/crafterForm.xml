@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />       
+       
+		<Constant name="alignment_uri" value="[config.content.path]gfx/alignments/wings.swf|Artisan_tx_bg" />
+   	</Constants>
+
+	<Container name="crafterFormCtr">	
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+
+		<!-- Texture tx_bg-->
+
+		<Texture name="tx_bg">
+			<Size>
+				<AbsDimension x="729" y="429" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Texture tx_bgLeft-->
+
+		<Texture name="tx_bgLeft">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="71" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="285" y="336" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Texture tx_bgRight3-->
+
+		<Texture name="tx_bgRight3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="320" y="289" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="386" y="119" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Texture tx_bgRight2-->
+
+		<Texture name="tx_bgRight2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="320" y="180" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="386" y="103" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Texture tx_bgRight1-->
+
+		<Texture name="tx_bgRight1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="320" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="386" y="103" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Texture tx_buttonBg-->
+
+		<Texture name="tx_buttonBg">
+			<Anchors>
+				<Anchor relativeTo="tx_bg" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="371" y="47" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+
+
+
+		<!-- Texture tx_bgDeco-->
+
+		<Texture name="tx_bgDeco">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="22" y="71" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="285" y="336" />
+			</Size>
+			<uri>[local.alignment_uri]0</uri>
+		</Texture>
+
+
+		<!-- EntityDisplayer entdis_character-->
+
+		<EntityDisplayer name="entdis_character">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="100" y="111" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="120" y="276" />
+			</Size>
+		</EntityDisplayer>
+		
+		
+
+		<!-- labelCheckBox btn_lucrative-->
+
+		<labelCheckBox name="btn_lucrative">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="334" y="321" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>244</labelWidth>
+			<labelHeight>20</labelHeight>
+			<uri>[local.assets]tx_light_checkbox</uri>
+			<text>[ui.craft.notFree]</text>
+			<css>[local.css]normal.css</css>
+		</labelCheckBox>
+
+		<!-- labelCheckBox btn_freeOnFailure-->
+
+		<labelCheckBox name="btn_freeOnFailure">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="344" y="340" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>244</labelWidth>
+			<labelHeight>20</labelHeight>
+			<uri>[local.assets]tx_light_checkbox</uri>
+			<text>[ui.craft.freeIfFailed]</text>
+			<css>[local.css]normal.css</css>
+		</labelCheckBox>
+
+		<!-- labelCheckBox btn_dontProvideComponent-->
+
+		<labelCheckBox name="btn_dontProvideComponent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="334" y="358" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>244</labelWidth>
+			<labelHeight>20</labelHeight>
+			<uri>[local.assets]tx_light_checkbox</uri>
+			<text>[ui.craft.ressourcesNeeded]</text>
+			<css>[local.css]normal.css</css>
+		</labelCheckBox>
+		
+		
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="33" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="496" y="35" />
+			</Size>
+			<text>[ui.craft.crafter]</text>
+			<css>[local.css]title.css</css>
+		</Label>
+		
+		
+		
+		
+		<!-- Label lbl_titleInfo-->
+
+		<Label name="lbl_titleInfo">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="334" y="77" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="354" y="22" />
+			</Size>
+			<text>[ui.login.news]</text>
+            <css>[local.css]titleSmall.css</css>
+		</Label>
+
+
+		<!-- Label lbl_name-->
+
+		<Label name="lbl_name">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="104" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="155" y="20" />
+			</Size>
+			<text>[ui.common.name]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_nameContent-->
+
+		<Label name="lbl_nameContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="505" y="104" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="185" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+  			<hyperlinkEnabled>true</hyperlinkEnabled>
+			<useStyleSheet>true</useStyleSheet>
+		</Label>
+
+		<!-- Label lbl_job-->
+
+		<Label name="lbl_job">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="155" y="20" />
+			</Size>
+			<text>[ui.craft.job]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_jobContent-->
+
+		<Label name="lbl_jobContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="505" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="185" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_level-->
+
+		<Label name="lbl_level">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="144" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="235" y="20" />
+			</Size>
+			<text>[ui.craft.jobLevel]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_levelContent-->
+
+		<Label name="lbl_levelContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="568" y="144" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="122" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		
+		
+		
+		<!-- Label lbl_titleLoc-->
+
+		<Label name="lbl_titleLoc">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="184" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="353" y="22" />
+			</Size>
+			<text>[ui.common.localisation]</text>
+            <css>[local.css]titleSmall.css</css>
+		</Label>
+		
+		
+
+		<!-- Label lbl_subareaContent-->
+
+		<Label name="lbl_subareaContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="358" y="214" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="332" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_crafting-->
+
+		<Label name="lbl_crafting">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="234" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="235" y="20" />
+			</Size>
+			<text>[ui.craft.nearCraftTable]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_craftingContent-->
+
+		<Label name="lbl_craftingContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="568" y="234" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="122" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_coord-->
+
+		<Label name="lbl_coord">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="254" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="235" y="20" />
+			</Size>
+			<text>[ui.common.coordinates]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_coordContent-->
+
+		<Label name="lbl_coordContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="568" y="254" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="122" y="20" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		
+		
+		
+		<!-- Label lbl_titleOptions-->
+
+		<Label name="lbl_titleOptions">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="293" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="358" y="21" />
+			</Size>
+			<text>[ui.craft.jobOptions]</text>
+            <css>[local.css]titleSmall.css</css>
+		</Label>
+		
+		<!-- Label lbl_nbComponent-->
+
+		<Label name="lbl_nbComponent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="333" y="379" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="338" y="19" />
+			</Size>
+			<text>[ui.craft.minItemInCraft]</text>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Label lbl_nbComponentContent-->
+
+		<Label name="lbl_nbComponentContent">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="525" y="379" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="165" y="19" />
+			</Size>
+            <cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+		<!-- Texture tx_inviBlock-->
+
+		<Texture name="tx_inviBlock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="320" y="286" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="386" y="119" />
+			</Size>
+			<uri>[local.assets]tx_invisible</uri>
+		</Texture>
+
+
+
+
+		<!-- simpleButton btn_mp-->
+
+		<simpleButton name="btn_mp" label="[ui.common.wMessage]"   >
+			<Size>
+				<AbsDimension x="194" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_bg" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>
+
+		<!-- simpleButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+	</Container>
+</Definition>
+
