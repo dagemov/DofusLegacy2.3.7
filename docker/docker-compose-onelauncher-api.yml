@@ -1,0 +1,47 @@
+services:
+  onelauncher-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.onelauncher-api
+    container_name: onelauncher-api
+    restart: unless-stopped
+    networks:
+      - red-emu2
+      - traefik_web
+    env_file:
+      - ../.env
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__SunshineAuth: >-
+        Server=db;Port=3306;Database=${MYSQL_DATABASE:-sunshine};
+        User ID=${MYSQL_APP_USER:-sunshine};Password=${MYSQL_APP_PASSWORD:-change-me-app};
+        Allow User Variables=true;TreatTinyAsBoolean=true
+      PackageStorage__RootPath: /packages
+      LauncherManifest__Packages__0__Url: >-
+        https://rollblack-legacy.onesv.online/api/files/V0.rar
+      Cors__AllowedOrigins__0: https://rollblack-legacy.onesv.online
+      ONELAUNCHER_CORS_ORIGINS: ${ONELAUNCHER_CORS_ORIGINS:-https://rollblack-legacy.onesv.online}
+    volumes:
+      - ../runtime/packages:/packages:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.routers.onelauncher-api.rule=Host(`rollblack-legacy.onesv.online`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.onelauncher-api.entrypoints=websecure"
+      - "traefik.http.routers.onelauncher-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.onelauncher-api.priority=100"
+      - "traefik.http.routers.onelauncher-api.service=onelauncher-api"
+      - "traefik.http.services.onelauncher-api.loadbalancer.server.port=8080"
+      - "traefik.http.routers.onelauncher-api-http.rule=Host(`rollblack-legacy.onesv.online`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.onelauncher-api-http.entrypoints=web"
+      - "traefik.http.routers.onelauncher-api-http.priority=100"
+      - "traefik.http.routers.onelauncher-api-http.middlewares=redirect-to-https"
+      - "traefik.http.routers.onelauncher-api-http.service=onelauncher-api"
+
+networks:
+  traefik_web:
+    external: true

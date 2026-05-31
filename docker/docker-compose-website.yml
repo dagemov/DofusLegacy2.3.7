@@ -1,0 +1,40 @@
+services:
+  website:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.website
+    container_name: rollblack-website
+    restart: unless-stopped
+    networks:
+      - red-emu2
+      - traefik_web
+    env_file:
+      - ../.env
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Production
+      Website__ApiBaseUrl: ${WEBSITE_API_BASE_URL:-http://onelauncher-api:8080}
+      Website__DiscordUrl: https://discord.gg/4MJ83yhdp
+      Website__LogoPath: /images/launcher-branding/logo-title.png
+      Website__FaviconPath: /images/launcher-branding/favicon.ico
+      Website__Eyebrow: OneLauncher
+    depends_on:
+      onelauncher-api:
+        condition: service_started
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.routers.rollblack.rule=Host(`rollblack-legacy.onesv.online`)"
+      - "traefik.http.routers.rollblack.priority=1"
+      - "traefik.http.routers.rollblack.entrypoints=websecure"
+      - "traefik.http.routers.rollblack.tls.certresolver=myresolver"
+      - "traefik.http.routers.rollblack.service=rollblack"
+      - "traefik.http.services.rollblack.loadbalancer.server.port=8080"
+      - "traefik.http.routers.rollblack-http.rule=Host(`rollblack-legacy.onesv.online`)"
+      - "traefik.http.routers.rollblack-http.entrypoints=web"
+      - "traefik.http.routers.rollblack-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+networks:
+  traefik_web:
+    external: true

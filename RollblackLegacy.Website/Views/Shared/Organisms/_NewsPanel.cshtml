@@ -1,0 +1,20 @@
+@model IReadOnlyList<NewsItemViewModel>
+
+<section class="launcher-panel launcher-panel--news">
+    <div class="section-heading">
+        <span class="section-heading__eyebrow">Noticias</span>
+        <h2 class="section-heading__title">Placeholder del sitio oficial</h2>
+    </div>
+
+    <div class="news-grid">
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Molecules/_LauncherStyleCard.cshtml", new LauncherCardViewModel
+            {
+                Eyebrow = item.Label,
+                Title = item.Title,
+                Description = item.Summary
+            })
+        }
+    </div>
+</section>

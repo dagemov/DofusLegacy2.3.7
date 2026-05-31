@@ -1,0 +1,11 @@
+@model ServerStatusViewModel
+
+<article class="status-card">
+    @await Html.PartialAsync("~/Views/Shared/Atoms/_Badge.cshtml", new BadgeViewModel
+    {
+        Label = $"{Model.Name}: {Model.State}",
+        Tone = Model.IsOnline ? "success" : "warning",
+        IconPath = Model.IsOnline ? "/images/status/server-on.png" : "/images/status/server-off.png"
+    })
+    <p class="status-card__summary">@Model.Summary</p>
+</article>

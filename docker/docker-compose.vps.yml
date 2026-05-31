@@ -1,0 +1,9 @@
+services:
+  db:
+    ports:
+      - "0.0.0.0:${MYSQL_PUBLISH_PORT:-3306}:3306"
+
+  sunshine:
+    ports:
+      - "0.0.0.0:${AUTH_PORT:-2450}:${AUTH_PORT:-2450}"
+      - "0.0.0.0:${WORLD_PORT:-5557}:${WORLD_PORT:-5557}"

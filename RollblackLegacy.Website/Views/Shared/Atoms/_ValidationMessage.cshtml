@@ -1,0 +1,10 @@
+@model string
+@{
+    ViewData.ModelState.TryGetValue(Model, out var entry);
+    var error = entry?.Errors.FirstOrDefault()?.ErrorMessage;
+}
+
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <span class="field-validation-error">@error</span>
+}

@@ -1,0 +1,21 @@
+@model LoginAccountPageViewModel
+@{
+    ViewData["Title"] = "Iniciar sesion";
+    ViewData["ActiveNav"] = "login";
+}
+
+<div class="page-stage">
+    <section class="page-panel" id="login-panel-shell">
+        <div class="page-panel__heading">
+            <span class="page-panel__eyebrow">@Model.Brand.Eyebrow</span>
+            <h1 class="page-panel__title">@Model.Title</h1>
+            <p class="page-panel__subtitle">@Model.Subtitle</p>
+        </div>
+
+        @await Html.PartialAsync("~/Views/Account/_LoginForm.cshtml", Model)
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

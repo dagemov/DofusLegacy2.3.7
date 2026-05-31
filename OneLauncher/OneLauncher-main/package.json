@@ -1,0 +1,71 @@
+{
+  "name": "1emu-launcher",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:windows": "electron-builder --windows",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "game-launcher",
+    "electron",
+    "updater"
+  ],
+  "author": "Maestro-Yaco",
+  "license": "ISC",
+  "description": "Updater para los servidores de Onesv.fun, que permite descargar y actualizar el cliente de juego.",
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "axios": "^1.8.4",
+    "electron-updater": "^6.1.1",
+    "extract-zip": "^2.0.1",
+    "fs-extra": "^11.3.0",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "electron": "^35.1.2",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.onesv.launcher",
+    "productName": "1EMU launcher",
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,     
+    "files": [
+      "main.js",
+      "preload.js",   
+      "renderer.js",
+      "config/**/*",
+      "services/**/*",
+      "index.html",
+      "styles.css",
+      "icons/**/*"
+    ],
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "icons/favicon.ico",
+      "uninstallerIcon": "icons/favicon.ico"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icons/favicon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icons/favicon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icons/favicon.png"
+    }
+  }
+}
