@@ -1,0 +1,187 @@
+﻿<Window 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Uplauncher.Main"
+        Title="Uplauncher" SizeChanged="Window_StateChanged" Height="294" Width="409" AllowsTransparency="True" WindowStartupLocation="CenterScreen" WindowStyle="None" Icon="../UI/updater.ico" Background="Transparent">
+    <Canvas x:Name="Canvas" Margin="36,64,59,49">
+        <Canvas.Resources>
+            <Style x:Key="NewsLogsListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0,0,0,4"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border Background="Transparent">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="RoundedImageProgressBarStyle" TargetType="{x:Type ProgressBar}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ProgressBar}">
+                            <Border CornerRadius="6" SnapsToDevicePixels="True">
+                                <Grid ClipToBounds="True">
+                                    <Border x:Name="PART_Track"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="6" />
+                                    <Border x:Name="PART_Indicator"
+                                            Background="{TemplateBinding Foreground}"
+                                            CornerRadius="6"
+                                            HorizontalAlignment="Left" />
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Canvas.Resources>
+
+        <Image x:Name="window" Source="../UI/win.png" Height="296" Width="409" HorizontalAlignment="Left" Canvas.Left="-36" VerticalAlignment="Top" Canvas.Top="-65"/>
+
+        <Button x:Name="closeButton" Content="" Width="15" Height="14" Click="Close_click" BorderBrush="Transparent" MouseEnter="closeButtonEnter" MouseLeave="closeButtonLeaver" PreviewMouseLeftButtonDown="closeButtonDown" PreviewMouseLeftButtonUp="closeButtonUp" Style="{StaticResource MyButton}" Canvas.Left="338" Canvas.Top="-58">
+            <Button.Background>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Frames/Close/1.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="reduceButton" Content="" Width="15" Height="14" Click="Reduce_click" Canvas.Left="320" Canvas.Top="-58" BorderBrush="Transparent" MouseEnter="reduceButtonEnter" MouseLeave="reduceButtonLeaver" PreviewMouseLeftButtonDown="reduceButtonDown" PreviewMouseLeftButtonUp="reduceButtonUp" Style="{StaticResource MyButton}">
+            <Button.Background>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Frames/Mini/1.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="langButton" Content="" Width="18" Height="13" Click="Lang_click" Canvas.Left="297" Canvas.Top="-58" BorderBrush="Transparent" Style="{StaticResource MyButton}">
+            <Button.Background>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Flags/FR_click.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+
+        <ListView x:Name="langList" Height="199" Canvas.Left="292" Canvas.Top="-40" Width="27" Panel.ZIndex="999" SelectionChanged="ListView_SelectionChanged" Background="#FF242424" BorderBrush="{x:Null}" Visibility="Hidden" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch" FontSize="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,2"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="23" Height="16">
+                        <Image Width="20" Height="13">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding NormalImage}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Source" Value="{Binding HoverImage}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
+                                            <Setter Property="Source" Value="{Binding HoverImage}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ProgressBar x:Name="progrees_bar" Height="12" Canvas.Left="-22" Canvas.Top="53" Width="380" BorderBrush="{x:Null}" Value="0" Maximum="100" Visibility="Hidden" Style="{StaticResource RoundedImageProgressBarStyle}">
+            <ProgressBar.Background>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Download/DL_0.png" Stretch="Fill"/>
+            </ProgressBar.Background>
+            <ProgressBar.Foreground>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Download/DL_1.png" Stretch="Fill"/>
+            </ProgressBar.Foreground>
+        </ProgressBar>
+
+        <Label x:Name="textState" HorizontalContentAlignment="Center" BorderBrush="Transparent" Canvas.Left="29" Content="" Canvas.Top="48" Width="253" Foreground="#FF1B120A" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="lblUpdatePercentage" HorizontalContentAlignment="Center" BorderBrush="Transparent" Height="18" Canvas.Left="330" Content="0%" Canvas.Top="49" Width="34" Foreground="White" FontSize="7" Visibility="Hidden"/>
+
+        <Button x:Name="playButton" Width="59" Height="58" Click="Play_click" Canvas.Left="298" Canvas.Top="89" MouseEnter="playButtonEnter" MouseLeave="playButtonLeaver" PreviewMouseLeftButtonDown="playButtonDown" PreviewMouseLeftButtonUp="playButtonUp" Style="{StaticResource MyButton}" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Button.Background>
+                <ImageBrush ImageSource="../UI/Play/1_OFF.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="VersionCHKButton" Content="" Width="20" Height="20" Canvas.Left="318" Canvas.Top="186" BorderBrush="Transparent" MouseLeave="VersionCHKButtonLeaver" Style="{StaticResource MyButton}" MouseEnter="VersionCHKButtonEnter" PreviewMouseLeftButtonDown="VersionCHKButtonDown" PreviewMouseLeftButtonUp="VersionCHKButtonUp" Click="VersionCHKButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Visible" IsHitTestVisible="False">
+            <Button.Background>
+                <ImageBrush ImageSource="/Uplauncher;component/UI/Frames/Set/2.png" Stretch="Fill"/>
+            </Button.Background>
+        </Button>
+       
+
+        <Button x:Name="newsTabButton" Width="56" Height="19" Canvas.Left="0" Canvas.Top="74" Click="NewsTabButton_Click" Style="{StaticResource MyButton}" BorderBrush="Transparent" Background="Transparent" Panel.ZIndex="2">
+            <Grid>
+                <Image x:Name="newsTabImage" Source="/Uplauncher;component/UI/Frames/Window/2.png" Stretch="Fill" Margin="-9,4,9,0"/>
+                <TextBlock Text="News" FontFamily="Arial Black" FontSize="8" Foreground="#FF2F2418" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,7,0,0"/>
+            </Grid>
+        </Button>
+        <Button x:Name="logsTabButton" Width="56" Height="19" Canvas.Left="58.66" Canvas.Top="74" Click="LogsTabButton_Click" Style="{StaticResource MyButton}" BorderBrush="Transparent" Background="Transparent" Panel.ZIndex="1">
+            <Grid>
+                <Image x:Name="logsTabImage" Source="/Uplauncher;component/UI/Frames/Window/1.png" Stretch="Fill" Margin="-10,4,10,0"/>
+                <TextBlock Text="Logs" FontFamily="Arial Black" FontSize="8" Foreground="#FF2F2418" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,7,0,0"/>
+            </Grid>
+        </Button>
+        <Border x:Name="newsLogsContainer" Canvas.Left="-18" Canvas.Top="93" Width="305" Height="127" CornerRadius="9" Background="#B4928A84" BorderBrush="#FFC0B9B0" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="97*"/>
+                    <ColumnDefinition Width="196*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="newsList" Background="Transparent" BorderThickness="0" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemContainerStyle="{StaticResource NewsLogsListBoxItemStyle}" MouseDoubleClick="newsList_MouseDoubleClick" Grid.ColumnSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#2AFFFFFF" Padding="4,3" Margin="0,0,0,3" CornerRadius="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="24"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding LogoImage}" Width="18" Height="18" Margin="2,2,4,0" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Title}" Foreground="White" FontWeight="Bold" FontSize="10" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Summary}" Foreground="#FFF6EAC8" FontSize="9" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                        <TextBlock Text="{Binding DateText}" Foreground="#FFE9E1C5" FontSize="9" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox x:Name="logsList" Visibility="Collapsed" Background="Transparent" BorderThickness="0" Foreground="#FFE7D7B0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" HorizontalContentAlignment="Stretch" ItemContainerStyle="{StaticResource NewsLogsListBoxItemStyle}" Grid.ColumnSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="0" Margin="0">
+                                <TextBlock Text="{Binding Message}" Foreground="#FFE7D7B0" FontSize="11" TextWrapping="WrapWithOverflow" TextAlignment="Left" MaxWidth="275" Margin="2,0,2,4"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <Grid x:Name="grid" Width="720" Canvas.Left="18" Canvas.Top="436">
+            <StackPanel x:Name="sp" HorizontalAlignment="Center" Orientation="Horizontal" Width="Auto"/>
+        </Grid>
+    </Canvas>
+</Window>

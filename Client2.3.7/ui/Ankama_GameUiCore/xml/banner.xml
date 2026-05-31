@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+	
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="artworks_uri" value="[config.content.path]gfx/artworks/" />
+		<Constant name="minimaps_uri" value="[config.content.path]gfx/miniMaps/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+		
+		<Constant name="acceptDrop_uri" value="[config.ui.skin]bitmap/acceptDrop.png" />
+		<Constant name="refuseDrop_uri" value="[config.ui.skin]bitmap/refuseDrop.png" />
+				
+		<Constant name="frame0" value="[local.assets]banner_tx_XPFrame" />
+		<Constant name="frame1" value="[local.assets]banner_tx_guildXPFrame" />
+		<Constant name="frame2" value="[local.assets]banner_tx_mountXPFrame" />
+		<Constant name="frame3" value="[local.assets]banner_tx_honourFrame" />
+		<Constant name="frame4" value="[local.assets]banner_tx_podsFrame" />
+		<Constant name="frame5" value="[local.assets]banner_tx_jobXPFrame" />
+		
+		<Constant name="ready" value="[ui.banner.ready] " />
+	</Constants>
+	
+	<Container name="tooltipRoleplayPlacer">
+		<Anchors>
+			<Anchor relativeTo="mainCtr" relativePoint="TOPRIGHT">
+				<AbsDimension x="-8" y="-13" />
+			</Anchor>
+		</Anchors>
+	</Container>
+	
+	<Container name="tooltipFightPlacer">
+		<Anchors>
+			<Anchor relativeTo="mainCtr" relativePoint="TOPRIGHT">
+				<AbsDimension x="-8" y="-118" />
+			</Anchor>
+		</Anchors>
+	</Container>
+	
+	<Container name="mainCtr">
+		<Anchors>
+			<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" />
+		</Anchors>
+		<Size>
+			<AbsDimension x="1284" y="163" />
+		</Size>
+		
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="1284" y="154" />
+			</Size>
+			<bgColor>0</bgColor>
+			<bgAlpha>0</bgAlpha>
+		</Container>
+
+		<!-- Texture tx_bandeaubasfond-->
+
+		<Texture name="tx_bannerBackground">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1" y="0" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]banner_tx_background</uri>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+		
+		
+		
+		
+		<!-- Button btn_exit pour les conventions ->
+
+		<Button name="btn_exit">
+			<Common>			
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT">
+						<AbsDimension x="-40" y="-1000" />
+					</Anchor>
+				</Anchors>
+				<Texture name="btn_exit_tx">
+					<Size>
+						<AbsDimension x="28" y="28" />
+					</Size>
+					<uri>[local.assets]btn_fermer</uri>
+				</Texture>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</Common>		
+			<State type="OVER">
+				<SetProperties target="btn_exit_tx">
+					<gotoAndStop>over</gotoAndStop>
+				</SetProperties>
+			</State>
+			<State type="PRESSED">
+				<SetProperties target="btn_exit_tx">
+					<gotoAndStop>pressed</gotoAndStop>
+				</SetProperties>
+			</State>
+		</Button-->
+		
+		
+		
+		<!-- Texture _tx_fondPA-->
+		
+		<StateContainer name="papmBackground">
+			<Common>
+				<Texture name="tx_paBackground">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="719" y="83" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="42" y="37" />
+					</Size>
+					<uri>[local.assets]banner_tx_fondPA</uri>
+					<Hooks>
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</Texture>
+				<Texture name="tx_pmBackground">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="705" y="120" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="46" y="40" />
+					</Size>
+					<uri>[local.assets]banner_tx_fondPM</uri>
+					<Hooks>
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</Texture>
+
+				<Label name="lbl_pa">
+					<Anchors>
+						<Anchor relativeTo="tx_paBackground">
+							<AbsDimension x="2" y="7" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="20" />
+					</Size>
+					<css>[local.css]special.css</css>
+					<cssClass>papm</cssClass>
+				</Label>
+				<Label name="lbl_pm">
+					<Anchors>
+						<Anchor relativeTo="tx_pmBackground">
+							<AbsDimension x="10" y="6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="20" />
+					</Size>
+					<css>[local.css]special.css</css>
+					<cssClass>papm</cssClass>
+				</Label>
+			</Common>
+			<State type="DISABLED">
+				<SetProperties target="tx_pmBackground">
+					<gotoAndStop>disabled</gotoAndStop>
+				</SetProperties>
+				<SetProperties target="tx_paBackground">
+					<gotoAndStop>disabled</gotoAndStop>
+				</SetProperties>
+				<SetProperties target="lbl_pa">
+					<cssClass>papmdisabled</cssClass>
+				</SetProperties>
+				<SetProperties target="lbl_pm">
+					<cssClass>papmdisabled</cssClass>
+				</SetProperties>
+			</State>
+		</StateContainer>
+
+		<!-- Texture _tx_pdvFrame-->
+
+		<Texture name="tx_pdvFrame">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="706" y="19" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="64" y="62" />
+			</Size>
+			<uri>[local.assets]banner_tx_PDVFrame</uri>
+			<Hooks>
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</Texture>
+
+		<!-- Label lbl_PDV-->
+
+		<Label name="lbl_pdv">
+			<Anchors>
+				<Anchor relativeTo="tx_pdvFrame">
+					<AbsDimension x="-5" y="13" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="70" y="30" />
+			</Size>
+			<css>[local.css]special.css</css>
+			<cssClass>pdv</cssClass>
+		</Label>
+
+		<Label name="lbl_pdvTop">
+			<Anchors>
+				<Anchor relativeTo="tx_pdvFrame">
+					<AbsDimension x="-5" y="6" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="70" y="30" />
+			</Size>
+			<css>[local.css]special.css</css>
+			<cssClass>pdvsmall</cssClass>
+		</Label>
+		<Label name="lbl_pdvBottom">
+			<Anchors>
+				<Anchor relativeTo="tx_pdvFrame">
+					<AbsDimension x="-5" y="28" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="70" y="30" />
+			</Size>
+			<css>[local.css]special.css</css>
+			<cssClass>pdvsmall</cssClass>
+		</Label>
+		
+
+		<!-- Label lbl_time-->
+
+		<Label name="lbl_time">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="602" y="50" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="74" y="62" />
+			</Size>
+			<css>[local.css]special.css</css>
+			<cssClass>countdown</cssClass>
+		</Label>
+
+		<!-- Button btn_leave-->
+
+		<iconButton name="btn_leave">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="546" y="126" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="26" y="26" />
+			</Size>
+			<uri>[local.assets]banner_btn_abandonner</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_leave-->
+
+		<iconButton name="btn_viewFights">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="546" y="126" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="26" y="26" />
+			</Size>
+			<uri>[local.assets]banner_btn_voircombat</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+
+
+		<!-- Button btn_pointCell-->
+		<iconButton name="btn_pointCell">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="533" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_montrer</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_invimode-->
+		
+		<iconButton name="btn_invimode">
+			<checkBox>true</checkBox>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="532" y="64" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_masquer</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_witness-->
+		
+		<iconButton name="btn_witness">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="539" y="35" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_oeil</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_help-->
+		
+		<iconButton name="btn_help">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="539" y="35" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_sos</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_lockparty-->
+		
+		<iconButton name="btn_lockparty">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="582" y="-5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_groupe</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- iconButton btn_lock-->
+
+		<iconButton name="btn_lock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="556" y="11" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+			<uri>[local.assets]banner_btn_verrouiller</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Texture tx_timeFrame-->
+
+		<Texture name="tx_timeFrame">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="565" y="12" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="150" />
+			</Size>
+			<uri>[local.assets]banner_tx_timeFrame</uri>
+		</Texture>
+
+		<!-- Texture tx_xpFrame-->
+
+		<Texture name="tx_xpFrame">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="565" y="12" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="150" y="150" />
+			</Size>
+			<uri>[local.assets]banner_tx_XPFrame</uri>
+		</Texture>
+
+
+
+
+		<!-- Button btn_FlecheHaut-->
+		
+		<iconButton name="btn_upArrow">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1245" y="47" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="19" y="11" />
+			</Size>
+			<uri>[local.assets]sb_flechehaut</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Label lbl_itemsNumber-->
+
+		<Label name="lbl_itemsNumber">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1233" y="61" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="35" y="22" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>center</cssClass>
+		</Label>
+
+		<!-- Button btn_FlecheBas-->
+
+		<iconButton name="btn_downArrow">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1245" y="93" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="19" y="11" />
+			</Size>
+			<uri>[local.assets]sb_flechebas</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_tabSpell-->
+
+		<iconButton name="btn_tabSpells">
+			<radioGroup>tabGroup</radioGroup>
+			<radioMode>true</radioMode>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1178" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="27" />
+			</Size>
+			<uri>[local.assets]banner_btn_tabSpells</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_tabItems-->
+
+		<iconButton name="btn_tabItems">
+			<radioGroup>tabGroup</radioGroup>
+			<radioMode>true</radioMode>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1220" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="27" />
+			</Size>
+			<uri>[local.assets]banner_btn_tabItems</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+
+
+
+
+
+		<!-- Button btn_character-->
+
+		<iconButton name="btn_character">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="753" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_carac</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_spell-->
+
+		<iconButton name="btn_spell">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="791" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_spell</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_items-->
+
+		<iconButton name="btn_items">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="829" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_bag</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_quests-->
+
+		<iconButton name="btn_quests">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="867" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_book</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+
+		<!-- Button btn_map-->
+
+		<iconButton name="btn_map">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="905" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_map</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_friends-->
+
+		<iconButton name="btn_friends">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="943" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_friend</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Button btn_friends-->
+
+		<iconButton name="btn_guild">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="981" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_guild</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- iconButton btn_teamSearch-->
+
+		<iconButton name="btn_teamSearch">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1021" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_teamSearch</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- iconButton btn_conquest-->
+
+		<iconButton name="btn_conquest">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1059" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_conquest</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- iconButton btn_web-->
+
+		<iconButton name="btn_web">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1097" y="124" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="42" />
+			</Size>
+			<uri>[local.assets]btn_ogrine</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+				
+						
+		<!-- iconButton btn_moreBtn -->
+
+		<iconButton name="btn_moreBtn">	
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="1145" y="142" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]btn_plus_square</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+		
+		<!-- Grid gd_spellitemotes -->
+		
+		<Grid name="gd_spellitemotes" strata="TOP">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="769" y="29" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="471" y="91" />
+			</Size>
+			<rendererName>SlotGridRenderer</rendererName>
+			<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,,,[local.css]normal.css</rendererArgs>
+			<slotWidth>44</slotWidth>
+			<slotHeight>44</slotHeight>
+			<scrollDisplay>none</scrollDisplay>
+			<autoSelect>false</autoSelect>
+			<Hooks>
+				<onSelectItem />
+				<onItemRollOver />
+				<onItemRollOut />
+				<onItemRightClick />
+			</Hooks>
+		</Grid>
+		
+		
+				
+		<Container name="ctr_artwork">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="576" y="22" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="128" y="128" />
+			</Size>
+
+			<!-- Texture tx_artwork-->
+
+			<Texture name="tx_artwork">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="2" y="2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="124" y="124" />
+				</Size>
+			</Texture>
+
+			<!-- EntityDisplayer ed_ColoredArtwork-->
+
+			<EntityDisplayer name="ed_coloredArtwork">
+				<Size>
+					<AbsDimension x="128" y="128" />
+				</Size>
+			</EntityDisplayer>
+			
+			<Hooks>
+				<onRelease />
+				<onRightClick />
+			</Hooks>
+				
+		</Container>
+		
+		
+		<!-- Texture tx_centerLight-->
+
+		<Texture name="tx_centerLight">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="576" y="22" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="128" y="128" />
+			</Size>
+			<uri>[local.assets]banner_tx_refletHublot</uri>
+			
+			<Hooks>
+				<onRelease />
+				<onRightClick />
+			</Hooks>
+			<cacheAsBitmap>true</cacheAsBitmap>
+		</Texture>
+		
+		
+		<Container name="ctr_clock">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="576" y="22" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="128" y="128" />
+			</Size>
+
+			<!-- Texture tx_clockBg-->
+
+			<Texture name="tx_clockBg">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="2" y="2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="126" y="126" />
+				</Size>
+				<uri>[local.assets]banner_tx_clockBg</uri>
+			</Texture>
+
+			<!-- Texture tx_minuteHand-->
+
+			<Texture name="tx_minuteHand">
+				<Anchors>
+					<Anchor relativeTo="tx_clockBg">
+						<AbsDimension x="63" y="63" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="18" y="49" />
+				</Size>
+				<uri>[local.assets]banner_tx_minuteHand</uri>
+			</Texture>
+
+			<!-- Texture tx_hourHand-->
+
+			<Texture name="tx_hourHand">
+				<Anchors>
+					<Anchor relativeTo="tx_clockBg">
+						<AbsDimension x="63" y="63" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="18" y="39" />
+				</Size>
+				<uri>[local.assets]banner_tx_hourHand</uri>
+			</Texture>
+
+			<Hooks>
+				<onRelease />
+				<onRightClick />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+						
+		</Container>
+
+		
+		<!--MiniMapViewer miniMap -->
+		<MiniMapViewer name="miniMap">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="577" y="23" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="127" y="127" />
+			</Size>	
+			<Hooks>
+				<onRelease />
+				<onRightClick />
+			</Hooks>
+		</MiniMapViewer>
+		
+		
+		<!-- Button btn_skipTurn-->
+
+		<iconButton name="btn_skipTurn">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="589" y="119" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="102" y="31" />
+			</Size>
+			<uri>[local.assets]banner_btn_passer</uri>
+			<Hooks>
+				<onRelease />
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+		</iconButton>
+				
+		<!-- Button btn_ready-->
+
+		<Button name="btn_ready">
+			<Common>
+				<checkBox>true</checkBox>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="589" y="119" />
+					</Anchor>
+				</Anchors>
+				<Texture name="btn_ready_tx">
+					<Size>
+						<AbsDimension x="102" y="31" />
+					</Size>
+					<uri>[local.assets]banner_btn_pret</uri>
+				</Texture>
+				<Label name="lbl_ready">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="0" y="-1" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="102" y="22" />
+					</Size>
+					<text>[ui.banner.ready]</text>
+					<css>[local.css]button.css</css>
+				</Label>
+				<Hooks>
+					<onRelease />
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</Common>		
+			<State type="OVER">
+				<SetProperties target="btn_ready_tx">
+					<gotoAndStop>over</gotoAndStop>
+				</SetProperties>
+			</State>
+			<State type="PRESSED">
+				<SetProperties target="btn_ready_tx">
+					<gotoAndStop>pressed</gotoAndStop>
+				</SetProperties>
+			</State>
+			<State type="SELECTED">
+				<SetProperties target="btn_ready_tx">
+					<gotoAndStop>selected</gotoAndStop>
+				</SetProperties>
+			</State>	
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_ready_tx">
+					<gotoAndStop>selected_over</gotoAndStop>
+				</SetProperties>
+			</State>
+			<State type="SELECTED_PRESSED">
+				<SetProperties target="btn_ready_tx">
+					<gotoAndStop>selected_pressed</gotoAndStop>
+				</SetProperties>
+			</State>
+		</Button>
+		
+		
+				
+		<!-- Texture tx_show-->
+
+		<Texture name="tx_show">
+			<Anchors>
+				<Anchor relativeTo="btn_skipTurn">
+					<AbsDimension x="-60" y="-95" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="107" y="106" />
+			</Size>
+			<uri>[local.assets]tx_showArrow</uri>
+		</Texture>
+		
+	</Container>
+	
+			
+	<Container name="ctr_moreBtn">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="897" y="0" />
+			</Anchor>
+		</Anchors>
+		<Size>
+			<AbsDimension x="254" y="215" />
+		</Size>
+		
+		<borderColor>[colors.contextmenu.border]</borderColor>
+		<bgCornerRadius>8</bgCornerRadius>
+		<bgAlpha>[colors.contextmenu.bg.alpha]</bgAlpha>
+		<bgColor>[colors.contextmenu.bg]</bgColor>
+		<shadowColor>[colors.contextmenu.shadow]</shadowColor>
+		
+		<visible>false</visible>
+		
+		<Grid name="gd_btns">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="250" y="215" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateBtnLine</rendererArgs>
+			<slotWidth>250</slotWidth>
+			<slotHeight>43</slotHeight>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+
+			<!-- Container décrivant une ligne de la grille -->
+			<Container>
+				<Size>
+					<AbsDimension x="250" y="43" />
+				</Size>
+
+				<Button name="btn_btn">
+					<Common>
+						<Size>
+							<AbsDimension x="250" y="43" />
+						</Size>
+						<radioMode>true</radioMode>
+
+						<Texture>
+							<Size>
+								<AbsDimension x="250" y="43" />
+							</Size>
+							<bgColor>0</bgColor>
+							<bgAlpha>0</bgAlpha>
+						</Texture>
+
+						<Texture name="tx_btnSkin">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="2" y="1" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="40" y="42" />
+							</Size>
+						</Texture>
+
+						<Label name="lbl_btnName">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="47" y="10" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="200" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+					</Common>
+
+					<State type="OVER">
+						<SetProperties target="btn_btn">
+							<bgColor>[colors.contextmenu.over]</bgColor>
+						</SetProperties>
+					</State>
+					<State type="SELECTED_OVER">
+						<SetProperties target="btn_btn">
+							<bgColor>[colors.contextmenu.over]</bgColor>
+						</SetProperties>
+					</State>
+				</Button>
+			</Container>
+		</Grid>
+	</Container>
+</Definition>

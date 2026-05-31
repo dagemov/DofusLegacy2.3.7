@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="heads" value="[config.content.path]gfx/heads/SmallHead_" />
+   </Constants>
+
+	<Container name="mainCtr">
+		<Button name="btn_item">
+			<Common>
+				<Size>
+					<AbsDimension x="335" y="32" />
+				</Size>
+				<checkBox>true</checkBox>
+				<mouseChildren>false</mouseChildren>
+			
+				<Texture>
+					<Size>
+						<AbsDimension x="335" y="32" />
+					</Size>
+					<bgColor>0</bgColor>
+					<bgAlpha>0</bgAlpha>
+				</Texture>
+				
+				<!-- Texture tx_icon-->
+				
+				<Texture name="tx_icon_back">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="16" y="1" />
+						</Anchor>
+					</Anchors>
+					<uri>[local.assets]tx_pictoDinde_color1</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+				</Texture>
+				
+				<Texture name="tx_icon_up">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="16" y="1" />
+						</Anchor>
+					</Anchors>
+					<uri>[local.assets]tx_pictoDinde_color2</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+				</Texture>
+
+				<Texture name="tx_icon">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="16" y="1" />
+						</Anchor>
+					</Anchors>
+					<uri>[local.assets]tx_pictoDinde_trait</uri>
+					<cacheAsBitmap>true</cacheAsBitmap>
+				</Texture>
+				
+				<!-- Texture tx_sex-->
+		
+				<Texture name="tx_sex">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="66" y="1" />
+						</Anchor>
+					</Anchors>
+				</Texture>
+		
+				<!-- Label lbl_name-->
+		
+				<Label name="lbl_name">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="108" y="5" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="183" y="21" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+		
+				<!-- Label lbl_level-->
+		
+				<Label name="lbl_level">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="288" y="5" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="50" y="21" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Label>
+				
+			</Common>	
+			
+			<Hooks>
+				<onRollOver />
+				<onRollOut />
+			</Hooks>
+			
+			<State type="OVER">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.over]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="DISABLED">
+			</State>
+			<State type="SELECTED">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			<State type="SELECTED_OVER">
+				<SetProperties target="btn_item">
+					<bgColor>[colors.grid.selected]</bgColor>
+				</SetProperties>
+			</State>
+			
+		</Button>
+	</Container>
+</Definition>

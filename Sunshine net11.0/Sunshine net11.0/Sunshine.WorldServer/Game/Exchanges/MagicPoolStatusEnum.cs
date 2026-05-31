@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sunshine.WorldServer.Game.Exchanges
+{
+    public enum MagicPoolStatusEnum
+    {
+        UNMODIFIED = 1,
+        INCREASED = 2,
+        DECREASED = 3,
+    }
+}

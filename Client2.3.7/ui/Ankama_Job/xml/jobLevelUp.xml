@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+    <Import url="[config.mod.template.button]simpleButton.xml" />
+    <Import url="[config.mod.template.button]iconButton.xml" />
+
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		
+		<Texture>
+			<Size>
+				<AbsDimension x="550" y="200" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+			<mouseEnabled>true</mouseEnabled>
+		</Texture>
+
+		<!-- simpleButton btnOk-->
+
+		<simpleButton name="btn_ok">
+			<Anchors>
+				<Anchor relativePoint="TOP" point="TOP">
+					<AbsDimension x="0" y="150" />
+				</Anchor>
+			</Anchors>			
+			<Size>
+				<AbsDimension x="122" y="30" />
+			</Size>
+			<label>[ui.common.ok]</label>
+		</simpleButton>
+
+		<!-- Label lblTitle -->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="500" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.popup.information]</text>
+		</Label>
+
+		<!-- Label lblDescription-->
+
+		<Label name="lbl_description">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="25" y="65" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="500" y="70" />
+			</Size>
+			<wordWrap>true</wordWrap>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+			<verticalAlign>center</verticalAlign>
+		</Label>
+
+		
+		
+		<!-- BOUTON DE FERMETURE -->
+		
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+	</Container>
+</Definition>

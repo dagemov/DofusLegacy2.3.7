@@ -1,0 +1,39 @@
+p {
+	font-family: Verdana;
+	font-size: 17px;
+	color: #514a3c;
+	text-align: left;
+	font-weight: bold;
+}
+
+#cssClass {
+	font-family: Verdana;
+	font-size: 17px;
+	color: #514a3c;
+	text-align: left;
+	font-weight: bold;
+}
+
+red {
+	font-family: Verdana;
+	font-size: 17px;
+	color: #8c0101;
+	text-align: left;
+	font-weight: bold;
+}
+
+green {
+	font-family: Verdana;
+	font-size: 17px;
+	color: #077d01;
+	text-align: left;
+	font-weight: bold;
+}
+
+blue {
+	font-family: Verdana;
+	font-size: 17px;
+	color: #226196;
+	text-align: left;
+	font-weight: bold;
+}

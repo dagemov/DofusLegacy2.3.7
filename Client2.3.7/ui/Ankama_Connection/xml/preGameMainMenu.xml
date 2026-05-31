@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+   <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   </Constants>
+
+	<Container name="mainCtr">
+		
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		
+		<Texture>
+			<Size>
+				<AbsDimension x="380" y="304" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="13" y="15" />
+				</Anchor>
+				<Anchor relativePoint="TOPRIGHT">
+					<AbsDimension x="-12" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="355" y="35"/>
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.common.mainMenu]</text>
+		</Label>
+
+		<!-- iconButton btnClose-->
+
+		<iconButton name="btnClose">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+        	<uri>[local.assets]btn_cornerCross</uri>
+		</iconButton>
+
+		<!-- simpleButton btnOptions-->
+
+		<simpleButton name="btnOptions">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="63" y="84" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="251" y="30" />
+			</Size>
+			<label>[ui.common.options]</label>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+		</simpleButton>
+
+		<!-- simpleButton btnDisconnect-->
+
+		<simpleButton name="btnDisconnect">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="63" y="128" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="251" y="30" />
+			</Size>
+			<label>[ui.common.disconnect]</label>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+		</simpleButton>
+
+		<!-- simpleButton btnQuitGame-->
+
+		<simpleButton name="btnQuitGame">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="63" y="172" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="251" y="30" />
+			</Size>
+			<label>[ui.common.quitGame]</label>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+		</simpleButton>
+
+		<!-- simpleButton btnCancel-->
+
+		<simpleButton name="btnCancel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="63" y="242" />
+				</Anchor>
+			</Anchors>
+			<uri>[local.assets]btn_orange</uri>
+			
+			<Size>
+				<AbsDimension x="251" y="30" />
+			</Size>
+			<label>[ui.common.cancel]</label>
+			<css>[local.css]button.css</css>
+			<cssClass>small</cssClass>
+		</simpleButton>
+
+	</Container>
+</Definition>
+

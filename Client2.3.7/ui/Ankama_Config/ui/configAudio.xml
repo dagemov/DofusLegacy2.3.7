@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+    <Import url="mod://Ankama_Config/ui/template/configCheckbox.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template.button]checkBox.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+	<Container name="configAudioCtr">
+	
+		
+		<!-- Texture tx_bgForeground-->
+
+		<Texture name="tx_bgForeground">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="400" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>	
+	
+		<!-- Container useless mais un peu qd mm, sert à placer les checkbox -->
+
+		<Container name="lbl_useless1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="10" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+		
+		<configCheckbox name="btn_activateSounds" text="[ui.option.mute]" uri="[local.assets]tx_light_checkbox" />
+				
+		<Container name="soundOptionCtr">
+			
+			
+			<!--
+				MUSIQUE
+			-->
+			
+					
+			<!-- Label lbl_music -->
+	
+			<Label name="lbl_music">
+				<Anchors>
+					<Anchor relativeTo="btn_activateSounds">
+						<AbsDimension x="20" y="40" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="550" y="20" />
+				</Size>
+				<text>[ui.option.musics]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+	
+			<!-- iconButton btn_musicVolume1-->
+	
+			<iconButton name="btn_musicVolume1">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="580" y="9" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="13" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>musicVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom01</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_musicVolume2-->
+	
+			<iconButton name="btn_musicVolume2">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="595" y="6" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="16" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>musicVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom02</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_musicVolume3-->
+	
+			<iconButton name="btn_musicVolume3">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="610" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="19" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>musicVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom03</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_musicVolume4-->
+	
+			<iconButton name="btn_musicVolume4">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="625" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="22" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>musicVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom04</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_musicVolume5-->
+	
+			<iconButton name="btn_musicVolume5">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="640" y="-2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="24" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>musicVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom05</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- checkBox btn_musicMute-->
+	
+			<checkBox name="btn_musicMute">
+				<Anchors>
+					<Anchor relativeTo="lbl_music">
+						<AbsDimension x="680" y="-2" />
+					</Anchor>
+				</Anchors>
+				<uri>[local.assets]Sound_btn_pictoMusique</uri>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</checkBox>
+	
+	
+			<!--
+				SONS
+			-->
+			
+	
+			<!-- Label lbl_sound -->
+	
+			<Label name="lbl_sound">
+				<Anchors>
+					<Anchor relativeTo="btn_activateSounds">
+						<AbsDimension x="20" y="70" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="550" y="20" />
+				</Size>
+				<text>[ui.option.sounds]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+	
+			<!-- iconButton btn_soundVolume1-->
+	
+			<iconButton name="btn_soundVolume1">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="580" y="9" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="13" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>soundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom01</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_soundVolume2-->
+	
+			<iconButton name="btn_soundVolume2">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="595" y="6" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="16" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>soundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom02</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_soundVolume3-->
+	
+			<iconButton name="btn_soundVolume3">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="610" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="19" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>soundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom03</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_soundVolume4-->
+	
+			<iconButton name="btn_soundVolume4">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="625" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="22" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>soundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom04</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_soundVolume5-->
+	
+			<iconButton name="btn_soundVolume5">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="640" y="-2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="24" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>soundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom05</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- checkBox btn_soundMute-->
+	
+			<checkBox name="btn_soundMute">
+				<Anchors>
+					<Anchor relativeTo="lbl_sound">
+						<AbsDimension x="680" y="-2" />
+					</Anchor>
+				</Anchors>
+				<uri>[local.assets]Sound_btn_pictoSon</uri>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</checkBox>
+			
+			
+			
+			
+			<!--
+			  SONS D'AMBIANCE 
+			-->
+			
+			
+					
+			<!-- Label lbl_ambientSound -->
+	
+			<Label name="lbl_ambientSound">
+				<Anchors>
+					<Anchor relativeTo="btn_activateSounds">
+						<AbsDimension x="20" y="100" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="550" y="20" />
+				</Size>
+				<text>[ui.option.environment]</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+	
+	
+			<!-- iconButton btn_ambientSoundVolume1-->
+	
+			<iconButton name="btn_ambientSoundVolume1">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="580" y="9" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="13" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>aSoundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom01</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_ambientSoundVolume2-->
+	
+			<iconButton name="btn_ambientSoundVolume2">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="595" y="6" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="16" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>aSoundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom02</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_ambientSoundVolume3-->
+	
+			<iconButton name="btn_ambientSoundVolume3">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="610" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="19" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>aSoundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom03</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_ambientSoundVolume4-->
+	
+			<iconButton name="btn_ambientSoundVolume4">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="625" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="22" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>aSoundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom04</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- iconButton btn_ambientSoundVolume5-->
+	
+			<iconButton name="btn_ambientSoundVolume5">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="640" y="-2" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="13" y="24" />
+				</Size>
+				<radioMode>true</radioMode>
+				<radioGroup>aSoundVolumeGroup</radioGroup>
+				<uri>[local.assets]btn_zoom05</uri>
+				<autoGrid>false</autoGrid>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+	
+			<!-- checkBox btn_ambientSoundMute-->
+	
+			<checkBox name="btn_ambientSoundMute">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="680" y="-2" />
+					</Anchor>
+				</Anchors>
+				<uri>[local.assets]Sound_btn_pictoAmbiance</uri>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<Hooks>
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</checkBox>
+			
+			
+			
+			<!-- Container useless mais un peu qd mm, sert à placer les checkbox -->
+	
+			<Container name="lbl_useless">
+				<Anchors>
+					<Anchor relativeTo="lbl_ambientSound">
+						<AbsDimension x="0" y="40" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="10" />
+				</Size>
+			</Container>
+	
+			<configCheckbox name="btn_playSoundForGuildMessage" text="[ui.option.guildMessageSound]" uri="[local.assets]tx_light_checkbox"/>
+			<configCheckbox name="btn_playSoundAtTurnStart" text="[ui.option.startTurnSound]" uri="[local.assets]tx_light_checkbox" />
+			<configCheckbox name="btn_infiniteLoopMusics" text="[ui.option.infiniteLoopMusics]" uri="[local.assets]tx_light_checkbox" />
+			
+			
+			<TextArea name="lbl_updater">
+				<Anchors>
+					<Anchor relativeTo="btn_infiniteLoopMusics">
+						<AbsDimension x="0" y="50" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="730" y="90" />
+				</Size>
+				<css>[local.css]normal.css</css>
+				<scrollCss>[local.css]scrollBar.css</scrollCss>
+				<hideScroll>true</hideScroll>
+			</TextArea>
+		</Container>
+	</Container>
+</Definition>

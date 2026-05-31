@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition>
+	<Import url="[config.mod.template.button]horizontalTab.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+
+		<Constant name="illus_uri" value="[config.content.path]gfx/illus/" />
+		
+		<Constant name="status_0" value="[ui.server.state.unknown]" />
+		<Constant name="status_1" value="[ui.server.state.offline]" />
+		<Constant name="status_2" value="[ui.server.state.starting]" />
+		<Constant name="status_3" value="[ui.server.state.online]" />
+		<Constant name="status_4" value="[ui.server.state.nojoin]" />
+		<Constant name="status_5" value="[ui.server.state.saving]" />
+		<Constant name="status_6" value="[ui.server.state.stoping]" />
+		<Constant name="status_7" value="[ui.server.state.full]" />		
+		
+		<Constant name="rules_0" value="[ui.server.rules.0]" />
+		<Constant name="rules_1" value="[ui.server.rules.1]" />
+	</Constants>
+	
+	<Container>
+		<Size>
+			<AbsDimension x="525" y="379" />
+		</Size>
+
+
+		<!-- Texture tx_serverPic-->
+
+		<Texture name="tx_serverPic">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="4" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="125" y="173" />
+			</Size>
+			<uri>[local.illus_uri]assets.swf|illu_0</uri>
+			<visible>false</visible>
+		</Texture>
+
+		<!-- Texture tx_maskIllu->
+
+		<Texture name="tx_maskIllu">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="2" y="4" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="129" y="172" />
+			</Size>
+			<uri>[local.assets]SelectionServeur_tx_maskIllu</uri>
+		</Texture-->
+
+
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="140" y="4" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="386" y="172" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+
+		<Container>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="153" y="11" />
+				</Anchor>
+			</Anchors>
+
+			<!-- Label lbl_name-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="1" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="200" y="20" />
+				</Size>
+				<text>[ui.common.name] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_nameText-->
+
+			<Label name="lbl_nameText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="53" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="300" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_community-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="44" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="201" y="20" />
+				</Size>
+				<text>[ui.sersel.community] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_communityText-->
+
+			<Label name="lbl_communityText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="64" y="44" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="290" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_population-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="66" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="201" y="20" />
+				</Size>
+				<text>[ui.sersel.population] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_populationText-->
+
+			<Label name="lbl_populationText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="64" y="66" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="290" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_type-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="88" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="201" y="20" />
+				</Size>
+				<text>[ui.sersel.type] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_typeText-->
+
+			<Label name="lbl_typeText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="64" y="88" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="290" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_state-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="110" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="201" y="20" />
+				</Size>
+				<text>[ui.sersel.state] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_stateText-->
+
+			<Label name="lbl_stateText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="64" y="110" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="290" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_date-->
+
+			<Label>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="8" y="132" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="201" y="20" />
+				</Size>
+				<text>[ui.sersel.date] :</text>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+			<!-- Label lbl_dateText-->
+
+			<Label name="lbl_dateText">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="64" y="132" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="290" y="20" />
+				</Size>
+				<cssClass>right</cssClass>
+				<css>[local.css]normal.css</css>
+			</Label>
+
+		</Container>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="214" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="525" y="170" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground_squaredCorner</uri>
+		</Texture>
+
+		<!-- Button btn_story-->
+
+		<horizontalTab name="btn_story">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="187" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.common.description]</text>
+		</horizontalTab>
+
+
+
+		<!-- Button btn_rules-->
+
+		<horizontalTab name="btn_rules">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="180" y="187" />
+				</Anchor>
+			</Anchors>
+			<text>[ui.sersel.rules]</text>
+		</horizontalTab>
+
+
+
+		<!-- Label texta_info-->
+
+		<TextArea name="texta_info">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="224" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="482" y="138" />
+			</Size>			
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+			<css>[local.css]normal.css</css>
+		</TextArea>
+		
+	</Container>
+</Definition>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+    <Import url="mod://Ankama_Config/ui/template/configCheckbox.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+	<Container name="configUiCtr">
+		
+		
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="0" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="20" />
+			</Size>
+			<text>[ui.option.worldOption]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+		<!-- Texture tx_bgForeground1-->
+
+		<Texture name="tx_bgForeground1">
+			<Anchors>
+				<Anchor relativeTo="lbl_title1">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="145" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title2">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground1">
+					<AbsDimension x="0" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="20" />
+			</Size>
+			<text>[ui.option.fightOptions]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground2-->
+
+		<Texture name="tx_bgForeground2">
+			<Anchors>
+				<Anchor relativeTo="lbl_title2">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="295" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<!-- Label title -->
+
+		<Label name="lbl_title3">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" relativeTo="tx_bgForeground2">
+					<AbsDimension x="0" y="20" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="750" y="20" />
+			</Size>
+			<text>[ui.option.miscellaneousOption]</text>
+			<css>[local.css]titleSmall.css</css>
+		</Label>
+		
+
+		<!-- Texture tx_bgForeground3-->
+
+		<Texture name="tx_bgForeground3">
+			<Anchors>
+				<Anchor relativeTo="lbl_title3">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="780" y="70" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		
+		
+		<!-- PARTIE 1 OPTIONS DU MONDE -->
+		
+
+		<!-- Container useless mais un peu qd mm, sert ? placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground1">
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+
+		<configCheckbox name="btn_alwaysShowGrid" text="[ui.option.displayGrid]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_transparentOverlayMode" text="[ui.option.transparentOverlayMode]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showMapCoordinates" text="[ui.option.mapInfo]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showInsideAutoZoom" text="[ui.option.insideAutoZoom]" uri="[local.assets]tx_light_checkbox" />
+
+			
+		
+		
+		<!-- PARTIE 2 OPTIONS DE COMBAT -->
+		
+		
+		
+		<!-- Container useless mais un peu qd mm, sert ? placer les checkbox -->
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground2">
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+		
+		<configCheckbox name="btn_showEntityInfos" text="[ui.option.entityInfos]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_showUSedPaPm" text="[ui.option.showUsedPaPm]" uri="[local.assets]tx_light_checkbox"/>
+		<configCheckbox name="btn_showMovementRange" text="[ui.option.entitiesMove]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showLineOfSight" text="[ui.option.lineOfSight]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_remindTurn" text="[ui.option.remindTurn]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_showGlowOverTarget" text="[ui.option.showGlowOverTarget]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_cellSelectionOnly" text="[ui.option.fightTargetMode]" uri="[local.assets]tx_light_checkbox" />	
+		<configCheckbox name="btn_orderFighters" text="[ui.option.orderFighters]" uri="[local.assets]tx_light_checkbox" />	
+		<configCheckbox name="btn_showAlignmentWings" text="[ui.option.showAlignmentWings]" uri="[local.assets]tx_light_checkbox" />	
+			
+			
+			
+			
+		<!-- PARTIE 3 OPTIONS DE NOTIFICATION (CHAT) -->
+		
+		<Container name="lbl_useless3">
+			<Anchors>
+				<Anchor relativeTo="tx_bgForeground3">
+					<AbsDimension x="20" y="0" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="10" />
+			</Size>
+		</Container>
+		
+		<!--configCheckbox name="btn_warnWhenFriendOrGuildMemberLvlUp" text="[ui.social.warnWhenFriendOrGuildMemberLvlUp]" uri="[local.assets]tx_light_checkbox" />
+		<configCheckbox name="btn_warnWhenFriendIsOnline" text="[ui.social.warnWhenFriendsComeOnline]" uri="[local.assets]tx_light_checkbox" /-->
+		
+		<labelCheckBox name="btn_warnWhenFriendOrGuildMemberLvlUp">
+			<Anchors>
+				<Anchor relativeTo="lbl_useless3">
+					<AbsDimension x="0" y="10" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>505</labelWidth>
+			<labelHeight>19</labelHeight>
+			<text>[ui.social.warnWhenFriendOrGuildMemberLvlUp]</text>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+			<selected>false</selected>
+		</labelCheckBox>
+		
+		
+		<labelCheckBox name="btn_warnWhenFriendIsOnline">
+			<Anchors>
+				<Anchor relativeTo="lbl_useless3">
+					<AbsDimension x="0" y="35" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>505</labelWidth>
+			<labelHeight>19</labelHeight>
+			<text>[ui.social.warnWhenFriendsComeOnline]</text>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+			<selected>false</selected>
+		</labelCheckBox>
+		
+	</Container>
+</Definition>
+

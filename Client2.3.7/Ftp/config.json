@@ -1,0 +1,9 @@
+{
+	"name": "Dofus",
+	"version": 1,
+	"dofus_path": "Dofus.exe",
+	"link": {
+		"site": "https://sunshine-dofus.com/",
+		"forum": "https://sunshine-dofus.com/"
+	}
+}

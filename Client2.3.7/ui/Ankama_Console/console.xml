@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+    
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+    <Constants>
+        <Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+    </Constants>
+    
+    <Container name="mainContainer">
+    
+        <Container name="redimCtr">
+            <bgColor>0x999999</bgColor>
+            <bgAlpha>0.4</bgAlpha>
+        </Container>
+        
+        <Container name="consoleMainContainer">
+            
+            <bgColor>0x333333</bgColor>
+            
+            <!-- Container récupérant le clic pour déplacer l'interface -->
+            <Container name="topBar">
+                <bgColor>0x111111</bgColor>
+            </Container>
+            
+            <!-- Groupe de boutton -->
+            
+            <iconButton name="btnReduce">
+                <uri>mod://Ankama_Console/assets.swf|btn_reduce</uri>
+            </iconButton>
+            
+            <iconButton name="btnExtend">
+                <uri>mod://Ankama_Console/assets.swf|btn_extend</uri>
+            </iconButton>
+            
+            <iconButton name="btnClose">
+                <uri>mod://Ankama_Console/assets.swf|btn_close</uri>
+            </iconButton>
+            
+            <iconButton name="btnClear">
+                <uri>mod://Ankama_Console/assets.swf|btn_bean</uri>
+            </iconButton>
+            
+            <iconButton name="btnMenu">
+                <Size>
+                    <AbsDimension x="20" y="20" />
+                </Size>
+                <uri>mod://Ankama_Console/assets.swf|btn_menu</uri>
+            </iconButton>
+            
+            <Label name="lblInfo">
+                <text></text>
+                <css>[local.css]console.css</css>
+            </Label>
+            
+            <!-- Texte de la console elle meme -->
+            <TextArea name="taConsole">
+                <scrollCss>[local.css]scrollBar.css</scrollCss>
+                <css>[local.css]console.css</css>
+                <selectable>true</selectable>
+                <html>true</html>
+            </TextArea>
+            
+             <!-- Input pour les commandes -->
+            <Input name="tiCmd">
+                <css>[local.css]consoleInput.css</css>
+                <bgCornerRadius>6</bgCornerRadius>
+                <bgColor>0x555555</bgColor>
+                <focusEventHandlerPriority>false</focusEventHandlerPriority>
+                <useHandCursor>true</useHandCursor>
+            </Input>
+            
+        </Container>
+    </Container>
+</Definition>

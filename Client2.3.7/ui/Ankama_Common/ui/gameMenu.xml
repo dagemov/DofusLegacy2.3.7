@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition giveFocus="false" transmitFocus="false">
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+	</Constants>
+	
+	<Container>
+		<Anchors>
+			<Anchor relativePoint="TOPRIGHT" point="TOPRIGHT" />
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Texture tx_bg-->
+
+		<Texture name="tx_bg">
+			<Size>
+				<AbsDimension x="121" y="32" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_menuBackground</uri>
+		</Texture>
+		
+		
+		<!-- simpleButton btn_abo -->
+
+		<iconButton name="btn_abo">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="42" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_Star_square</uri>
+        </iconButton>
+
+		<!-- simpleButton btn_options -->
+
+		<iconButton name="btn_options">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="66" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_option_square</uri>
+        </iconButton>
+
+		<!-- simpleButton btn_menu -->
+
+		<iconButton name="btn_menu">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="93" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_cross_square</uri>
+        </iconButton>
+		
+	</Container>
+</Definition>

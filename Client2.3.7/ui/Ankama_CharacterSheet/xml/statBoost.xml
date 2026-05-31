@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true" usePropertiesCache="false">
+
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       <Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="picto_uri" value="[config.content.path]gfx/characteristics/characteristics.swf|" />
+   	</Constants>
+
+	<Container name="mainCtr">
+        <Size>
+            <AbsDimension x="525" y="344" />
+        </Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" />
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+
+
+		<!-- Texture tx_background-->
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="525" y="307" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+		</Texture>
+
+		<!-- Texture tx_buttonBackground -->
+
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="432" y="47" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+		</Texture>
+
+
+
+		<!-- Label lbl_title-->
+
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="404" y="35" />
+			</Size>
+            <css>[local.css]title.css</css>
+		</Label>
+
+		<!-- Texture tx_statPicto-->
+
+		<Texture name="tx_statPicto">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="440" y="23" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="30" y="30" />
+			</Size>
+		</Texture>
+
+
+
+
+		<!-- Texture tx_bg1-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="60" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="483" y="41" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+		<!-- Label lbl_capitalTitle-->
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="31" y="69" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="409" y="19" />
+			</Size>
+            <css>[local.css]normal.css</css>
+            <text>[ui.charaSheet.boostPoints] :</text>
+		</Label>
+
+		<!-- Label lbl_capital-->
+
+		<Label name="lbl_capital">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="389" y="69" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="105" y="22" />
+			</Size>
+			<cssClass>boldright</cssClass>
+            <css>[local.css]normal.css</css>
+		</Label>
+		
+		
+
+
+		<!-- Texture tx_bg2-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="110" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="483" y="57" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+
+		<!-- iconButton btn_less-->
+
+		<iconButton name="btn_less">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="31" y="122" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]btn_minus_square</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</iconButton>
+
+		<!-- iconButton btn_more-->
+
+		<iconButton name="btn_more">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="52" y="122" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="18" y="18" />
+			</Size>
+			<uri>[local.assets]btn_plus_square</uri>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</iconButton>
+
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="76" y="120" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="44" y="22" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_inputBackground</uri>
+		</Texture>
+
+		<Input name="inp_pointsValue">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="77" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="36" y="22" />
+			</Size>
+			<cssClass>right</cssClass>
+			<css>[local.css]normal.css</css>
+			<restrict>0-9</restrict>
+		</Input>
+		
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="127" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="103" y="21" />
+			</Size>
+            <css>[local.css]normal.css</css>
+            <text>[ui.common.points]</text>
+		</Label>
+		
+		
+		<!-- Texture tx_fleche1-->
+
+		<Texture>
+			<Anchors><Anchor><AbsDimension x="230" y="125" /></Anchor></Anchors>
+			<Size><AbsDimension x="26" y="14" /></Size>
+			<uri>[local.assets]tx_darkArrow</uri>
+		</Texture>
+		
+		
+		<Label name="lbl_statAdd">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="267" y="118" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Texture tx_fleche2-->
+
+		<Texture>
+			<Anchors><Anchor><AbsDimension x="230" y="147" /></Anchor></Anchors>
+			<Size><AbsDimension x="26" y="14" /></Size>
+			<uri>[local.assets]tx_darkArrow</uri>
+		</Texture>
+		
+		<Label name="lbl_statTotal">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="267" y="140" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="180" y="21" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+
+
+
+
+
+
+		<!-- Texture tx_bg3-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="166" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="483" y="118" />
+			</Size>
+			<autoGrid>true</autoGrid>
+			<uri>[local.assets]tx_blockBackground</uri>
+		</Texture>
+
+
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="31" y="173" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="455" y="22" />
+			</Size>
+            <css>[local.css]normal.css</css>
+            <text>[ui.charaSheet.ratio] :</text>
+		</Label>
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="37" y="211" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="72" y="22" />
+			</Size>
+			<cssClass>center</cssClass>
+            <css>[local.css]normal.css</css>
+            <text>[ui.charaSheet.floor]</text>
+		</Label>
+		
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="36" y="240" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="73" y="22" />
+			</Size>
+			<cssClass>center</cssClass>
+            <css>[local.css]normal.css</css>
+            <text>[ui.common.cost]</text>
+		</Label>
+		
+
+		<!-- Texture tx_gridColor-->
+
+		<Texture name="tx_gridColor">
+			<Size>
+				<AbsDimension x="70" y="65" />
+			</Size>
+			<uri>[local.assets]FichePerso_tx_orange</uri>
+		</Texture>
+
+
+		
+		<Label name="lbl_floor1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="110" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_floor2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="181" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_floor3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="252" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_floor4">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="324" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_floor5">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="396" y="210" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+
+
+		
+		<Label name="lbl_cost1">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="110" y="241" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_cost2">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="181" y="241" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_cost3">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="252" y="241" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_cost4">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="324" y="241" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+		
+		<Label name="lbl_cost5">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="396" y="241" />
+				</Anchor>
+			</Anchors>
+			<Size><AbsDimension x="70" y="22" /></Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+
+
+		<!-- Texture tx_gridForeground-->
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="34" y="202" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="457" y="69" />
+			</Size>
+			<uri>[local.assets]FichePerso_tx_grillePaliers</uri>
+		</Texture>
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+		<!-- Button btn_valid-->
+
+		<simpleButton label="[ui.common.validation]" name="btn_valid"   >
+			<Size>
+				<AbsDimension x="236" y="35" />
+			</Size>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<css>[local.css]button.css</css>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</simpleButton>		
+
+
+		<!-- iconButton btn_close-->
+
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+
+		
+		
+	</Container>
+</Definition>
+

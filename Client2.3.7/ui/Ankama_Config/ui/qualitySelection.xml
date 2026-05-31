@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition modal="true">
+	<Import url="[config.mod.template]button/simpleButton.xml" />
+	<Import url="[config.mod.template]button/iconButton.xml" />
+	<Import url="[config.mod.template]button/labelCheckBox.xml" />
+	
+  	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+       
+       	<Constant name="quality0_anim" value="[local.illus]tx_qualityAnimations.swf|tx_qualityLow1" />
+       	<Constant name="quality1_anim" value="[local.illus]tx_qualityAnimations.swf|tx_qualityMedium1" />
+       	<Constant name="quality2_anim" value="[local.illus]tx_qualityAnimations.swf|tx_qualityHigh1" />
+       	<Constant name="quality0_wait" value="[local.illus]tx_qualityAnimations.swf|tx_qualityLow0" />
+       	<Constant name="quality1_wait" value="[local.illus]tx_qualityAnimations.swf|tx_qualityMedium0" />
+       	<Constant name="quality2_wait" value="[local.illus]tx_qualityAnimations.swf|tx_qualityHigh0" />
+   	</Constants>
+
+	<Container name="qualityCtr">
+		<Anchors>
+			<Anchor>
+				<AbsDimension x="220" y="260" />
+			</Anchor>
+		</Anchors>
+		
+		<mouseEnabled>true</mouseEnabled>
+			
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="844" y="556" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="40" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="752" y="35" />
+			</Size>
+			<css>[local.css]title.css</css>
+			<cssClass>center</cssClass>
+			<text>[ui.option.quality.titleSelection]</text>
+		</Label>
+		
+		<iconButton name="btn_close">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="tx_background" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+		
+		
+		
+		<!-- Grid grid_quality-->
+
+		<Grid name="grid_quality">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="31" y="62" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="810" y="443" />
+			</Size>
+			<rendererName>InlineXmlGridRender</rendererName>
+			<rendererArgs>updateQualitySlot</rendererArgs>
+			<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+			<slotWidth>246</slotWidth>
+			<slotHeight>443</slotHeight>
+			<Hooks>
+				<onSelectItem />
+				<onItemRollOver />
+				<onItemRollOut />
+			</Hooks>
+			
+			<Container>
+				<Size>
+					<AbsDimension x="246" y="443" />
+				</Size>
+				<Button>
+					<Common>
+
+						<Label name="lbl_title">
+							<Size>
+								<AbsDimension x="246" y="20" />
+							</Size>
+							<css>[local.css]titleSmall.css</css>
+							<cssClass>center</cssClass>
+						</Label>		
+
+						<!-- Fonds -->
+
+						<Texture>
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="0" y="28" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="246" y="415" />
+							</Size>
+							<uri>[local.assets]tx_qualityStreet</uri>
+							<autoGrid>true</autoGrid>
+						</Texture>
+
+						<!-- Deco -->
+
+						<Texture name="tx_decoQuality">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="20" y="48" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="206" y="206" />
+							</Size>
+						</Texture>
+						<EntityDisplayer name="ed_decoQuality">
+							<Size>
+								<AbsDimension x="70" y="70" />
+							</Size>
+						</EntityDisplayer>
+
+
+						<Label>
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="19" y="260" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="211" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+							<cssClass>center</cssClass>
+							<text>[ui.option.quality.configRequired]</text>
+						</Label>
+
+						<Texture>
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="24" y="294" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="30" y="30" />
+							</Size>
+							<uri>[local.assets]tx_processor</uri>
+						</Texture>
+						<Label name="lbl_processor">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="56" y="296" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="171" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+
+						<Texture>
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="24" y="325" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="30" y="30" />
+							</Size>
+							<uri>[local.assets]tx_ram</uri>
+						</Texture>
+						<Label name="lbl_ram">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="56" y="327" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="171" y="20" />
+							</Size>
+							<css>[local.css]normal.css</css>
+						</Label>
+
+						<!-- Ombre -->
+
+						<Texture name="tx_qualityShadow">
+							<Anchors>
+								<Anchor>
+									<AbsDimension x="0" y="28" />
+								</Anchor>
+							</Anchors>
+							<Size>
+								<AbsDimension x="246" y="414" />
+							</Size>
+							<uri>[local.assets]tx_qualityShadow</uri>
+						</Texture>
+					</Common>
+				</Button>
+
+				<simpleButton label="[ui.common.select]" name="btn_quality" >
+					<Size>
+						<AbsDimension x="206" y="39" />
+					</Size>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="19" y="372" />
+						</Anchor>
+					</Anchors>
+				</simpleButton>
+			</Container>
+		</Grid>
+		
+		
+				
+							
+		<labelCheckBox name="btn_dontaskmeagain">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="44" y="513" />
+				</Anchor>
+			</Anchors>
+			<labelWidth>770</labelWidth>
+			<labelHeight>23</labelHeight>
+			<labelPosX>16</labelPosX>
+			<text>[ui.common.neverAskAgain]</text>
+			<Hooks>
+				<onRelease />
+			</Hooks>
+		</labelCheckBox>
+
+		
+		
+	</Container>
+</Definition>
+

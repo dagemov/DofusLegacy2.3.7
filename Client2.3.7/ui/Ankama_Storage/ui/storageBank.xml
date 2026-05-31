@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition usePropertiesCache="false">
+ 
+	<Import url="[config.mod.template.button]iconButton.xml" />
+    
+    <Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+        <Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="illus" value="[config.content.path]gfx/illusUi/" />
+		<Constant name="bitmap" value="[config.ui.skin]bitmap/" />	
+	</Constants>
+    
+	<Container name="mainCtr">
+        <Size>
+            <AbsDimension x="297" y="724" />
+        </Size>
+        
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Container qui contient tous les objets communs à toutes les interfaces d'inventaire  -->
+		<Container name="commonCtr">
+			<!--Size>
+				<AbsDimension x="332" y="520" />
+			</Size-->
+			<mouseEnabled>true</mouseEnabled>
+
+			<!--  Container qui contient la partie 'haute' de l'interface. -->
+			<!--  C'est la partie qui ne change pas dans toutes les interfaces (excepté le déplacement en Y)  -->
+
+			<!-- Le personnage -->
+
+			<EntityDisplayer name="playerLook" strata="LOW">
+				<direction>3</direction>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="122" y="-100" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="165" y="200" />
+				</Size>
+			</EntityDisplayer>
+
+			<!-- background -->
+			<!-- Il sera amené à s'agrandir ou se réduire selon les différentes interfaces -->
+			<Texture name="txBackground" strata="LOW">
+				<Size>
+					<AbsDimension x="297" y="724" />
+				</Size>
+				<autoGrid>true</autoGrid>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<shadowColor>[colors.ui.shadow]</shadowColor>
+			</Texture>
+
+			<!-- Title -->
+			<Label name="lblTitle">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="16" y="15" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="256" y="35" />
+				</Size>
+				<css>[local.css]title.css</css>
+				<text>[ui.common.inventory]</text>
+			</Label>
+
+
+
+			<!-- background 2 -->
+			 <Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="19" y="60" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="260" y="618" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+			<!-- Filter and search button -->
+
+			<ComboBox name="cbFilter" strata="TOP">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="25" y="100" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="218" y="25" />
+				</Size>
+				<autoSelect>false</autoSelect>
+				<buttonTexture>[local.assets]btn_combobox</buttonTexture>
+				<listTexture>[local.assets]tx_combobox</listTexture>
+				<rendererArgs>[local.css]normal.css,,,[colors.grid.over],[colors.grid.selected]</rendererArgs>;
+				<scrollBarCss>[local.css]scrollBar.css</scrollBarCss>
+			</ComboBox>
+
+			<Container name="searchCtr">
+				<visible>false</visible>
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="25" y="100" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Size>
+						<AbsDimension x="218" y="25" />
+					</Size>
+					<autoGrid>true</autoGrid>
+					<uri>[local.assets]tx_inputBackgroundDark</uri>
+				</Texture>
+
+				<Input name="searchInput">
+					<Size>
+						<AbsDimension x="218" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+				</Input>
+			</Container>
+
+			 <iconButton name="btnSearch">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="247" y="100" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="25" y="25" />
+				</Size>
+				<checkBox>true</checkBox>
+				<uri>[local.assets]btn_recherche</uri>
+			</iconButton>
+
+			<!-- Storage grid -->
+			<Grid name="grid">
+	            <Anchors> 
+	                <Anchor>
+	                    <AbsDimension x="25" y="134" />
+	                </Anchor>
+	            </Anchors>
+	            <Size>
+	                <AbsDimension x="243" y="508" />
+	            </Size>
+				<verticalScrollbarCss>[local.css]scrollBar.css</verticalScrollbarCss>
+				<slotWidth>52</slotWidth>
+				<slotHeight>52</slotHeight>
+				<scrollDisplay>always</scrollDisplay>
+				<rendererName>SlotGridRenderer</rendererName>
+				<rendererArgs>[local.bitmap]emptySlot.png,[local.bitmap]over.png,[local.bitmap]selected.png,[local.bitmap]acceptDrop.png,[local.bitmap]refuseDrop.png,[local.css]normal.css</rendererArgs>
+			</Grid>
+
+			<!-- foreground grid -->
+			 <Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="18" y="60" />
+					</Anchor>
+				</Anchors>
+	            <Size>
+	                <AbsDimension x="262" y="618" />
+	            </Size>
+				<uri>[local.assets]storage_tx_gridLine</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+			<!-- Uniquement utilisé dans l'interface de bank -->
+			<iconButton name="btnMoveAll">
+				<Anchors> 
+					<Anchor>
+						<AbsDimension x="248" y="70" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="21" y="21" />
+				</Size>
+				<checkBox>false</checkBox>
+				<uri>[local.assets]InventaireDragodinde_btn_vider</uri>
+				<Hooks>
+					<onRelease />
+					<onRollOver />
+					<onRollOut />
+				</Hooks>
+			</iconButton>
+
+			<!-- La barre de poids -->
+			 <Texture name="txWeightBar">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="21" y="685" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="255" y="18" />
+				</Size>
+				<uri>[local.assets]inventaire_tx_jauge_poids</uri>
+			</Texture>
+
+			<!-- Kamas -->
+			<Container name="kamaCtr">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="26" y="650" />
+					</Anchor>
+				</Anchors>
+
+				<Texture>
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="4" y="6" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="20" y="15" />
+					</Size>
+					<uri>[local.assets]tx_kama</uri>
+				</Texture>
+
+				<Label name="lblKama">
+					<Anchors> 
+						<Anchor>
+							<AbsDimension x="24" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="193" y="20" />
+					</Size>
+					<css>[local.css]normal.css</css>
+					<cssClass>right</cssClass>
+					<text>[ui.common.kamas]</text>
+				</Label>
+			</Container>
+
+			<iconButton name="btnClose">
+				<Anchors>
+					<Anchor relativeTo="txBackground" point="TOPRIGHT" relativePoint="TOPRIGHT" />
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="36" />
+				</Size>
+				<uri>[local.assets]btn_cornerCross</uri>
+			</iconButton>
+
+
+
+			<!-- Filter's buttons -->
+			
+			<Container name="filterCtr">
+				<Anchors>
+	        		<Anchor>
+	        			<AbsDimension x="20" y="65" />
+	        		</Anchor>
+	        	</Anchors>
+
+				<iconButton strata="LOW" name="btnAll">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="20" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_all</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnEquipable">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="60" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_weapons</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnConsumables">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="100" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_potions</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnRessources">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="140" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_resources</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+
+				<iconButton strata="LOW" name="btnQuest">
+					<Anchors>
+						<Anchor>
+							<AbsDimension x="180" y="0" />
+						</Anchor>
+					</Anchors>
+					<Size>
+						<AbsDimension x="30" y="30" />
+					</Size>
+					<radioGroup>filterStock</radioGroup>
+					<radioMode>true</radioMode>
+					<uri>[local.assets]btn_keys</uri>
+					<Hooks>
+						<onRelease />
+						<onRollOver />
+						<onRollOut />
+					</Hooks>
+				</iconButton>
+			</Container>
+
+		</Container>
+			
+        
+        <!-- ICONE -->
+        
+        <Texture name="tx_icon">
+        	<Anchors>
+        		<Anchor>
+        			<AbsDimension x="20" y="-104" />
+        		</Anchor>
+        	</Anchors>
+            <uri>[local.illus]Illus_marchands.swf|Marchand_tx_Illus_png</uri>
+        </Texture>
+        
+        <EntityDisplayer name="entityDisplayer">
+        	<Anchors>
+        		<Anchor>
+        			<AbsDimension x="20" y="-94" />
+        		</Anchor>
+        	</Anchors>
+			<Size>
+				<AbsDimension x="100" y="100" />
+			</Size>
+			<visible>false</visible>
+		</EntityDisplayer>
+        
+	</Container>
+</Definition>
+

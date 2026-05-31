@@ -1,0 +1,11 @@
+.git
+.gitignore
+Client2.3.7/
+Uplauncher net11.0/
+runtime/
+database/
+docs/
+scripts/
+config/
+**/bin/
+**/obj/

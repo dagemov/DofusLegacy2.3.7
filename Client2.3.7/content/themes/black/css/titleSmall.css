@@ -1,0 +1,64 @@
+p {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: left;
+}
+right {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: right;
+}
+center {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: center;
+}
+justify {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: justify;
+}
+darkcenterbig {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #4E280A;
+	text-align: center;
+}
+dark {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #4E280A;
+	text-align: left;
+}
+
+light {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: left;
+}
+lightright {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #e0eeff;
+	text-align: right;
+}
+
+/* Classes servant � l'affichage des objets speciaux */
+
+itemset {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #feb336;
+	text-align: left;
+}
+itemetheral {
+	font-family: Tahoma;
+	font-size: 20px;
+	color: #8ab7ee;
+	text-align: left;
+}

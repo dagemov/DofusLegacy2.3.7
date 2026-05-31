@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+   	<Constants>
+		<Constant name="houses" value="[config.content.path]gfx/houses/" />
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+   	</Constants>
+
+	<Container name="mainCtr">
+		<Size>
+            <AbsDimension x="511" y="348" />
+        </Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" >
+				<AbsDimension x="0" y="-70" />
+			</Anchor>
+		</Anchors>
+		<mouseEnabled>true</mouseEnabled>
+		
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+
+		<Texture name="tx_background">
+			<Size>
+				<AbsDimension x="511" y="308" />
+			</Size>
+			<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="23" y="63" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="468" y="192" />
+			</Size>
+			<uri>[local.assets]tx_blockBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Titre -->
+		<Label name="lbl_title">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="20" y="15" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="471" y="35" />
+			</Size>
+			<cssClass>center</cssClass>
+			<css>[local.css]title.css</css>
+		</Label>
+		
+
+		<Texture name="tx_illusBg">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="30" y="71" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="176" y="176" />
+			</Size>
+			<uri>[local.assets]tx_darkBg</uri>
+		</Texture>
+		
+		<Texture name="tx_houseIcon">
+			<Anchors>
+				<Anchor relativePoint="BOTTOMLEFT" point="BOTTOMLEFT" relativeTo="tx_illusBg" >
+					<AbsDimension x="2" y="-2" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="172" y="261" />
+			</Size>
+		</Texture>
+
+		<Label>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="210" y="261" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="146" y="22" />
+			</Size>
+			<text>[ui.common.price] :</text>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Label>
+
+		<!-- Fond champs de saisi -->
+		<Texture>
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="360" y="262" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="131" y="25" />
+			</Size>
+			<uri>[local.assets]tx_inputBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+		<!-- Champs de saisi du prix -->
+		<Input name="inputPrice">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="362" y="262" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="124" y="25" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<cssClass>right</cssClass>
+		</Input>
+		
+
+		<!-- Nom du propriétaire de la maison -->
+		<Label name="lblOwnerName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="221" y="70" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="259" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<!-- Description de la maison -->
+		<TextArea name="lblHouseInfo">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="221" y="100" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="259" y="150" />
+			</Size>
+			<css>[local.css]normal.css</css>
+			<scrollCss>[local.css]scrollBar.css</scrollCss>
+			<hideScroll>true</hideScroll>
+		</TextArea>
+		
+		
+		
+				
+		<!-- Bouton de fermeture de la fenêtre -->
+		<iconButton name="btnClose">
+			<Anchors>
+				<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" />
+			</Anchors>
+			<Size>
+				<AbsDimension x="57" y="36" />
+			</Size>
+			<uri>[local.assets]btn_cornerCross</uri>
+        </iconButton>
+        
+        
+				        
+				        
+		<Texture>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="38" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="472" y="42" />
+			</Size>
+			<uri>[local.assets]tx_buttonBackground</uri>
+			<autoGrid>true</autoGrid>
+		</Texture>
+
+
+		<Container>
+			<Anchors>
+				<Anchor relativeTo="tx_background" relativePoint="BOTTOM" point="BOTTOM">
+					<AbsDimension x="0" y="30" />
+				</Anchor>
+			</Anchors>
+			<!-- Button btn_valid-->
+
+			<simpleButton label="[ui.common.validation]" name="btnValidate"   >
+				<Size>
+					<AbsDimension x="120" y="31" />
+				</Size>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="240" y="0" />
+					</Anchor>
+				</Anchors>
+
+			</simpleButton>				
+
+			<!-- Bouton Annulation de la vente -->
+
+			<simpleButton label="[ui.common.cancelTheSale]" name="btnCancelTheSale"   >
+				<Size>
+					<AbsDimension x="230" y="31" />
+				</Size>
+			</simpleButton>	
+		</Container>
+	</Container>
+</Definition>

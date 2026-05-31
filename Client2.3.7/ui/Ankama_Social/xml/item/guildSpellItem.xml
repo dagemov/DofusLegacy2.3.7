@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+	
+    <Import url="[config.mod.template]button/iconButton.xml" />
+    
+	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+
+	<Container name="mainCtr">
+	
+		<Slot name="slot_icon">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="11" y="4" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="40" y="40" />
+			</Size>
+			<allowDrag>false</allowDrag>
+		</Slot>
+
+		<Label name="lbl_spellName">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="72" y="12" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="270" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<Label name="lbl_spellLevel">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="369" y="12" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="87" y="20" />
+			</Size>
+			<css>[local.css]normal.css</css>
+		</Label>
+
+		<iconButton name="btn_spellUpgrade">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="470" y="14" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="20" y="20" />
+			</Size>
+			<uri>[local.assets]btn_plus_square</uri>
+			<autoGrid>false</autoGrid>
+		</iconButton>
+		
+	</Container>
+</Definition>

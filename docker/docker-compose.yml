@@ -1,0 +1,61 @@
+name: sunshine-emu
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: sunshine-db
+    restart: unless-stopped
+    networks:
+      - red-emu2
+    env_file:
+      - ../.env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-sunshine}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me-root}
+      MYSQL_USER: ${MYSQL_APP_USER:-sunshine}
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:-change-me-app}
+    volumes:
+      - ../database/sunshine.sql:/docker-entrypoint-initdb.d/01-sunshine.sql:ro
+      - ./mariadb/init/02-remote-grants.sh:/docker-entrypoint-initdb.d/02-remote-grants.sh:ro
+      - ./mariadb/conf.d/99-remote.cnf:/etc/mysql/mariadb.conf.d/99-remote.cnf:ro
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  sunshine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: sunshine-server
+    restart: unless-stopped
+    networks:
+      - red-emu2
+    env_file:
+      - ../.env
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-sunshine}
+      MYSQL_APP_USER: ${MYSQL_APP_USER:-sunshine}
+      MYSQL_APP_PASSWORD: ${MYSQL_APP_PASSWORD:-change-me-app}
+      AUTH_PORT: ${AUTH_PORT:-2450}
+      WORLD_PORT: ${WORLD_PORT:-5557}
+      PROTOCOL_VERSION: ${PROTOCOL_VERSION:-1375}
+      WORLD_PUBLIC_HOST: ${WORLD_PUBLIC_HOST:-127.0.0.1}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../runtime:/app/runtime:ro
+
+networks:
+  red-emu2:
+    name: red-emu2
+    driver: bridge
+
+volumes:
+  db_data:

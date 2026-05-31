@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Definition>
+   	<Constants>
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+       	<Constant name="css" value="[config.ui.skin]css/" />
+		
+				
+		<Constant name="over_uri" value="[config.ui.skin]bitmap/over.png" />
+		<Constant name="selected_uri" value="[config.ui.skin]bitmap/selected.png" />
+		<Constant name="acceptDrop_uri" value="[config.ui.skin]bitmap/acceptDrop.png" />
+		<Constant name="refuseDrop_uri" value="[config.ui.skin]bitmap/refuseDrop.png" />
+   	</Constants>
+
+	<Import url="[config.mod.template.button]simpleButton.xml" />
+	<Import url="[config.mod.template.button]iconButton.xml" />
+	
+	<Container name="mainCtr">
+		<mouseEnabled>true</mouseEnabled>
+		
+		<!-- Fenêtre des slots -->
+		<Container name="ctr_ingredients">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="419" y="165" />
+				</Anchor>
+			</Anchors>
+	
+			<!-- Textures de la fenêtre des slots -->
+			<Texture>
+				<Size>
+					<AbsDimension x="529" y="181" />
+				</Size>
+				<uri>[local.assets]tx_generalBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="22" y="20" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="486" y="143" />
+				</Size>
+				<uri>[local.assets]tx_blockBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<Label name="lbl_title">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="27" y="18" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="450" y="25" />
+				</Size>
+				<css>[local.css]titleSmall.css</css>
+			</Label>
+			
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="28" y="51" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="474" y="101" />
+				</Size>
+				<uri>[local.assets]tx_commonGridLine</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+			
+			<EntityDisplayer name="ed_playedCharacter">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="376" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="115" y="148" />
+				</Size>
+			</EntityDisplayer>
+			
+	
+			<!-- Slots de la fenêtre des ingrédients -->
+			<Container name="ctn_slots">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="168" y="80" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="190" y="55" />
+				</Size>
+
+				<!-- NOTE : Les slots des ingrédients sont créés dynamiquement en AS 
+					 pour switcher sur la forgemagie/réparation -->
+
+			</Container>
+			
+			<iconButton name="btn_close">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="57" y="36" />
+				</Size>
+				<uri>[local.assets]btn_cornerCross</uri>
+	        </iconButton>
+		</Container>
+
+
+		<!-- FENETRE DES OBJETS CREES -->
+		<Container name="objectCtr">
+			<Anchors>
+				<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="ctr_ingredients">
+					<AbsDimension x="0" y="15" />
+				</Anchor>
+			</Anchors>
+
+			<Size>
+				<AbsDimension x="529" y="358" />
+			</Size>
+			<Texture>
+				<Size>
+					<AbsDimension x="529" y="358" />
+				</Size>
+				<uri>[local.assets]tx_generalBackgroundWithTitle</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+
+
+			<Container name="ctr_item">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="32" y="22" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="462" y="315" />
+				</Size>
+			</Container>
+		</Container>
+		
+		<!-- Flèche orange de mise en valeur du résultat -->
+		<Container name="ctn_arrow">
+			<Anchors>
+				<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="ctr_ingredients">
+					<AbsDimension x="0" y="5" />
+				</Anchor>
+			</Anchors>
+			<Size>
+				<AbsDimension x="50" y="32" />
+			</Size>
+
+			<!-- Flèche orange -->
+			<Texture>
+				<Size>
+					<AbsDimension x="50" y="32" />
+				</Size>
+				<uri>[local.assets]Craft_tx_BackgroundFlecheOrange</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="6" y="3" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="40" y="25" />
+				</Size>
+				<uri>[local.assets]Craft_tx_FlecheOrange</uri>
+				<autoGrid>false</autoGrid>
+			</Texture>
+		</Container>
+		
+		<!-- Fenêtre des boutons -->
+		<Container>
+			<Anchors>
+				<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="objectCtr">
+					<AbsDimension x="0" y="5" />
+				</Anchor>
+			</Anchors>
+			<Texture>
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="0" y="0" />
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="529" y="127" />
+				</Size>
+				<uri>[local.assets]tx_generalBackground</uri>
+				<autoGrid>true</autoGrid>
+			</Texture>
+	
+			<!-- boutons de confirmation -->
+			<simpleButton name="btn_mergeAll">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="20" y="17" />
+					</Anchor>
+				</Anchors>
+				
+				<Size>
+					<AbsDimension x="236" y="44" />
+				</Size>
+				<label>[ui.common.mergeAll]</label>
+				<uri>[local.assets]btn_orange</uri>
+				<css>[local.css]button.css</css>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</simpleButton>
+
+			<simpleButton name="btn_mergeOnce">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="271" y="17" />
+					</Anchor>
+				</Anchors>
+				
+				<Size>
+					<AbsDimension x="236" y="44" />
+				</Size>
+				<label>[ui.common.merge]</label>
+				<uri>[local.assets]btn_orange</uri>
+				<css>[local.css]button.css</css>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</simpleButton>
+
+			<simpleButton name="btn_stop">
+				<Anchors>
+					<Anchor>
+						<AbsDimension x="20" y="64" />
+					</Anchor>
+				</Anchors>
+				
+				<Size>
+					<AbsDimension x="487" y="44" />
+				</Size>
+				<label>[ui.common.stop]</label>
+				<uri>[local.assets]btn_orange</uri>
+				<css>[local.css]button.css</css>
+				<Hooks>
+					<onRelease />
+				</Hooks>
+			</simpleButton>
+
+		</Container>
+	</Container>
+</Definition>
+

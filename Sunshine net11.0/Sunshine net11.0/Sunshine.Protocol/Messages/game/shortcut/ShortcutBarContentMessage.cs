@@ -1,0 +1,99 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 10/13/2017 02:19:06
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Sunshine.Protocol.IO;
+using Sunshine.Protocol.Types;
+
+namespace Sunshine.Protocol.Messages
+{
+
+public class ShortcutBarContentMessage : Message
+{
+
+public const uint Id = 6231;
+public override uint MessageId
+{
+    get { return Id; }
+}
+
+public sbyte barType;
+        public IEnumerable<Types.Shortcut> shortcuts;
+        
+
+public ShortcutBarContentMessage()
+{
+}
+
+public ShortcutBarContentMessage(sbyte barType, IEnumerable<Types.Shortcut> shortcuts)
+        {
+            this.barType = barType;
+            this.shortcuts = shortcuts;
+        }
+        
+
+public override void Serialize(IDataWriter writer)
+{
+
+writer.WriteSByte(barType);
+            var shortcuts_before = writer.Position;
+            var shortcuts_count = 0;
+            writer.WriteUShort(0);
+            foreach (var entry in shortcuts ?? System.Linq.Enumerable.Empty<Types.Shortcut>())
+            {
+                 if (entry == null)
+                     continue;
+                 writer.WriteShort(entry.TypeId);
+                 entry.Serialize(writer);
+                 shortcuts_count++;
+            }
+            var shortcuts_after = writer.Position;
+            writer.Seek((int)shortcuts_before);
+            writer.WriteUShort((ushort)shortcuts_count);
+            writer.Seek((int)shortcuts_after);
+
+            
+
+}
+
+public override void Deserialize(IDataReader reader)
+{
+
+barType = reader.ReadSByte();
+            if (barType < 0)
+                throw new Exception("Forbidden value on barType = " + barType + ", it doesn't respect the following condition : barType < 0");
+            var limit = reader.ReadUShort();
+            var shortcuts_ = new Types.Shortcut[limit];
+            for (int i = 0; i < limit; i++)
+            {
+                 shortcuts_[i] = Types.ProtocolTypeManager.GetInstance<Types.Shortcut>(reader.ReadShort());
+                 shortcuts_[i].Deserialize(reader);
+            }
+            shortcuts = shortcuts_;
+            
+
+}
+
+
+}
+
+
+}
