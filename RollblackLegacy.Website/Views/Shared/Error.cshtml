@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="error-stage">
+    <div class="container-xl">
+        <div class="launcher-panel error-panel">
+            <span class="section-heading__eyebrow">Algo salio mal</span>
+            <h1 class="section-heading__title">No pudimos completar la accion</h1>
+            <p class="error-panel__message">La web oculto el detalle tecnico para no exponer informacion sensible. Reintenta la operacion o vuelve al inicio.</p>
+            @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
+            {
+                Label = "Volver al inicio",
+                Href = "/",
+                Variant = "primary"
+            })
+        </div>
+    </div>
+</section>

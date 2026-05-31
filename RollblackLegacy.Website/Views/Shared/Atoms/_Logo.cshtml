@@ -1,0 +1,10 @@
+@model BrandIdentityViewModel
+
+<a class="brandmark" href="/" aria-label="@Model.Name">
+    <img src="@Model.FaviconPath" alt="" class="brandmark__icon" width="32" height="32" />
+    <span class="brandmark__copy">
+        <span class="brandmark__eyebrow">@Model.Eyebrow</span>
+        <strong class="brandmark__name">@Model.Name</strong>
+        <small>@Model.Tagline</small>
+    </span>
+</a>

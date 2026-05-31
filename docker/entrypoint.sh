@@ -21,9 +21,11 @@ fi
 
 cat > /app/Config.xml <<EOF
 # Sunshine configuration generated from environment
-AuthIp=0.0.0.0
+AuthBindIp=0.0.0.0
+AuthIp=${WORLD_PUBLIC_HOST:-127.0.0.1}
 AuthPort=${AUTH_PORT:-2450}
-WorldIp=0.0.0.0
+WorldBindIp=0.0.0.0
+WorldIp=${WORLD_PUBLIC_HOST:-127.0.0.1}
 WorldPort=${WORLD_PORT:-5557}
 ProtocolVersion=${PROTOCOL_VERSION:-1375}
 
@@ -75,8 +77,8 @@ if [ -n "${MYSQL_APP_PASSWORD:-}" ] && [ -n "${MYSQL_APP_USER:-}" ]; then
   if mysql \
     -h"${MYSQL_HOST:-db}" \
     -P"${MYSQL_PORT:-3306}" \
-    -u"${MYSQL_APP_USER}" \
-    -p"${MYSQL_APP_PASSWORD}" \
+    -u"root" \
+    -p"${MYSQL_ROOT_PASSWORD}" \
     "${MYSQL_DATABASE:-sunshine}" \
     -e "UPDATE worlds SET Address='${WORLD_PUBLIC_HOST:-127.0.0.1}', Port=${WORLD_PORT:-5557} WHERE Id=18;" >/dev/null 2>&1; then
     log "[entrypoint] worlds.Id=18 synchronized with WORLD_PUBLIC_HOST=${WORLD_PUBLIC_HOST:-127.0.0.1}."

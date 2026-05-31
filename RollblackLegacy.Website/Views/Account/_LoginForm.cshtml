@@ -1,0 +1,50 @@
+@model LoginAccountPageViewModel
+
+<form asp-controller="Account"
+      asp-action="Login"
+      method="post"
+      class="register-form"
+      hx-post="/account/login"
+      hx-target="#login-panel-shell"
+      hx-swap="outerHTML">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="register-form__summary"></div>
+
+    @if (Model.Result is { Succeeded: false })
+    {
+        <div class="register-form__alert" role="alert">
+            <strong>@Model.Result.Title</strong>
+            <p>@Model.Result.Message</p>
+        </div>
+    }
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.Form.Username),
+        FieldId = "login-username",
+        Label = "Usuario",
+        Type = "text",
+        Value = Model.Form.Username,
+        Placeholder = "rollblackhero",
+        AutoComplete = "username"
+    })
+
+    @await Html.PartialAsync("~/Views/Shared/Molecules/_RegisterFormField.cshtml", new RegisterFormFieldViewModel
+    {
+        FieldName = nameof(Model.Form.Password),
+        FieldId = "login-password",
+        Label = "Contrasena",
+        Type = "password",
+        AutoComplete = "current-password"
+    })
+
+    <button type="submit" class="rl-btn rl-btn--primary register-form__submit">
+        <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+        Iniciar sesion
+    </button>
+
+    <p class="page-card__text">
+        ¿No tienes cuenta? <a href="/account/register" style="color: var(--ol-primary-strong); font-weight: 700;">Registrate aqui</a>
+    </p>
+</form>

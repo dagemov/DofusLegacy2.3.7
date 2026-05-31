@@ -1,0 +1,30 @@
+@model RegisterFormFieldViewModel
+@{
+    var attributes = new Dictionary<string, object?>
+    {
+        ["class"] = "form-control rl-input",
+        ["id"] = Model.FieldId,
+        ["type"] = Model.Type,
+        ["placeholder"] = Model.Placeholder,
+        ["autocomplete"] = Model.AutoComplete
+    };
+
+    if (!string.IsNullOrWhiteSpace(Model.HxGet))
+        attributes["hx-get"] = Model.HxGet;
+
+    if (!string.IsNullOrWhiteSpace(Model.HxTrigger))
+        attributes["hx-trigger"] = Model.HxTrigger;
+
+    if (!string.IsNullOrWhiteSpace(Model.HxTarget))
+        attributes["hx-target"] = Model.HxTarget;
+}
+
+<div class="register-field">
+    <label class="register-field__label" for="@Model.FieldId">@Model.Label</label>
+    @Html.TextBox(Model.FieldName, Model.Type == "password" ? null : Model.Value, attributes)
+    @if (!string.IsNullOrWhiteSpace(Model.HelpText))
+    {
+        <p class="register-field__help">@Model.HelpText</p>
+    }
+    @await Html.PartialAsync("~/Views/Shared/Atoms/_ValidationMessage.cshtml", Model.FieldName)
+</div>

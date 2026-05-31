@@ -32,6 +32,8 @@
     <entry key="ui">[config.content.path]ui/</entry>
     <entry key="mod.path">./ui/</entry>
     <entry key="theme.path">./content/themes/</entry>
+    <!-- Tema UI activo: dofus1 (clásico) o black (oscuro). Debe coincidir con colors.xml del tema. -->
+    <entry key="ui.skin">[config.theme.path]dofus1/</entry>
     <entry key="gfx.path">[config.content.path]gfx/</entry>
     <entry key="script.path">[config.content.path]scripts/</entry>
     <entry key="data.path.root">[config.root.path]data/</entry>
@@ -42,8 +44,8 @@
     <entry key="connection.useSniffer" type="Boolean">false</entry>
     <entry key="connection.snifferHost">127.0.0.1</entry>
     <entry key="connection.snifferPort" type="int">18001</entry>
-    <entry key="connection.host">194.99.21.223</entry>
-    <entry key="connection.port">446</entry>
+    <entry key="connection.host">174.138.35.107</entry>
+    <entry key="connection.port">2450</entry>
     <!--======================================================================-->
     <!--                  Constantes pour les interfaces                      -->
     <!--======================================================================-->
@@ -101,8 +103,8 @@
     <!--======================================================================-->
     <!--                   Constantes pour les langues                        -->
     <!--======================================================================-->
-    <entry key="lang.current">es</entry>
-    <entry key="binds.current">esES</entry>
+    <entry key="lang.current">fr</entry>
+    <entry key="binds.current">frFR</entry>
     <entry key="lang.usingIME">ja</entry>
     <!--======================================================================-->
     <!--                  Constantes pour les données                         -->
@@ -115,7 +117,7 @@
     <!--======================================================================-->
     <!--               Constantes pour les raccourcis clavier                 -->
     <!--======================================================================-->
-    <entry key="binds.current">esES</entry>
+    <entry key="binds.current">frFR</entry>
     <entry key="binds.path.root">[config.data.path.root]binds/</entry>
     <!--======================================================================-->
     <!--                 Constantes pour le moteur de rendu                   -->

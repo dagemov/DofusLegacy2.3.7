@@ -11,6 +11,11 @@
 *.sln.docstates
 *.env
 
+# SSH keys (never commit)
+SSH/
+*.pem
+*.ppk
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -314,6 +319,7 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
+RollblackLegacy.Website/runlogs/
 
 # Visual Studio 6 build log
 *.plg

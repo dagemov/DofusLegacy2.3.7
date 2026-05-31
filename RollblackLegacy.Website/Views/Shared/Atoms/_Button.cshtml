@@ -1,0 +1,24 @@
+@model ButtonAtomViewModel
+@if (Model.IsSubmit)
+{
+    <button class="rl-btn rl-btn--@Model.Variant" type="submit">
+        @if (!string.IsNullOrWhiteSpace(Model.Icon))
+        {
+            <i class="@Model.Icon rl-btn__icon" aria-hidden="true"></i>
+        }
+        <span>@Model.Label</span>
+    </button>
+}
+else
+{
+    <a class="rl-btn rl-btn--@Model.Variant"
+       href="@Model.Href"
+       target="@(Model.IsExternal ? "_blank" : null)"
+       rel="@(Model.IsExternal ? "noreferrer noopener" : null)">
+        @if (!string.IsNullOrWhiteSpace(Model.Icon))
+        {
+            <i class="@Model.Icon rl-btn__icon" aria-hidden="true"></i>
+        }
+        <span>@Model.Label</span>
+    </a>
+}

@@ -1,0 +1,30 @@
+@use "../abstracts/mixins" as *;
+@use "../abstracts/variables" as *;
+
+.launcher-panel {
+  @include panel-frame;
+  padding: 1.5rem;
+}
+
+.launcher-panel--news,
+.launcher-panel--stack {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.section-heading {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.section-heading__eyebrow {
+  color: $color-accent;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.section-heading__title {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+}

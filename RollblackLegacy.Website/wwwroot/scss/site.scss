@@ -1,0 +1,33 @@
+@use "abstracts/variables" as *;
+@use "abstracts/mixins";
+@use "base/reset";
+@use "base/typography";
+@use "components/buttons";
+@use "components/forms";
+@use "components/cards";
+@use "components/launcher-panels";
+@use "layout/header";
+@use "layout/footer";
+@use "layout/public-layout";
+@use "pages/home";
+@use "pages/register";
+@use "pages/login";
+
+.launcher-theme {
+    background-image: url("/images/launcher-branding/fondo.webp");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.brandmark__eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $color-accent;
+}
+
+.brandmark__icon {
+    border-radius: 8px;
+}

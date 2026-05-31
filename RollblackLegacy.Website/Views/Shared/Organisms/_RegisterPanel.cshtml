@@ -1,0 +1,44 @@
+@model RegisterAccountPageViewModel
+
+<div id="register-panel-shell" class="register-shell">
+    <aside class="launcher-panel register-shell__aside">
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Logo.cshtml", Model.Brand)
+
+        <div class="register-shell__copy">
+            <span class="section-heading__eyebrow">Cuenta del servidor</span>
+            <h1 class="section-heading__title">@Model.Title</h1>
+            <p class="register-shell__subtitle">@Model.Subtitle</p>
+        </div>
+
+        @await Html.PartialAsync("~/Views/Shared/Molecules/_LauncherStyleCard.cshtml", new LauncherCardViewModel
+        {
+            Eyebrow = "Seguridad",
+            Title = "Hash compatible con Sunshine",
+            Description = Model.SecurityHint,
+            Modifier = "launcher-card--warning"
+        })
+
+        @await Html.PartialAsync("~/Views/Shared/Molecules/_LauncherStyleCard.cshtml", new LauncherCardViewModel
+        {
+            Eyebrow = "Comunidad",
+            Title = "Discord Rollblack",
+            Description = "Unete al Discord del servidor y descarga el launcher OneLauncher para jugar con el mismo usuario.",
+            Modifier = "launcher-card--accent"
+        })
+
+        <p class="register-shell__community">
+            <a href="@Model.DiscordUrl" target="_blank" rel="noopener">Discord Rollblack</a>
+        </p>
+    </aside>
+
+    <section class="launcher-panel register-shell__main">
+        @if (Model.Result?.Succeeded == true)
+        {
+            @await Html.PartialAsync("~/Views/Account/_RegisterSuccess.cshtml", Model.Result)
+        }
+        else
+        {
+            @await Html.PartialAsync("~/Views/Account/_RegisterForm.cshtml", Model.Form)
+        }
+    </section>
+</div>
