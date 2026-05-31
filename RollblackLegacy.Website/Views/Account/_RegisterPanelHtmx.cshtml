@@ -1,21 +1,14 @@
-@model RegisterAccountPageViewModel
-
-<section class="page-panel" id="register-panel-shell">
-    <div class="page-panel__heading">
-        <span class="page-panel__eyebrow">@Model.Brand.Eyebrow</span>
-        <h1 class="page-panel__title">@Model.Title</h1>
-        <p class="page-panel__subtitle">@Model.Subtitle</p>
-    </div>
-
-    @if (Model.Result?.Succeeded == true)
-    {
-        @await Html.PartialAsync("~/Views/Account/_RegisterSuccess.cshtml", Model.Result)
-    }
-    else
-    {
-        <div class="register-form-shell">
-            <p class="page-card__text">@Model.SecurityHint</p>
-            @await Html.PartialAsync("~/Views/Account/_RegisterForm.cshtml", Model.Form)
-        </div>
-    }
-</section>
+@model RegisterAccountPageViewModel
+
+<section class="auth-panel auth-panel--compact" id="register-auth-panel">
+    @if (Model.Result?.Succeeded == true)
+    {
+        ViewData["LauncherDownloadUrl"] = Model.LauncherDownloadUrl;
+        ViewData["AdobeAirDownloadUrl"] = Model.AdobeAirDownloadUrl;
+        @await Html.PartialAsync("~/Views/Account/_RegisterSuccess.cshtml", Model.Result)
+    }
+    else
+    {
+        @await Html.PartialAsync("~/Views/Account/_RegisterForm.cshtml", Model.Form)
+    }
+</section>

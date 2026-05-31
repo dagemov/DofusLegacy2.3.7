@@ -13,4 +13,8 @@ public sealed class ButtonAtomViewModel
     public bool IsExternal { get; init; }
 
     public bool IsSubmit { get; init; }
+
+    public string? Size { get; init; }
+
+    public bool Glow { get; init; } = true;
 }

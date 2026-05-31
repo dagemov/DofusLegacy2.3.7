@@ -1,0 +1,26 @@
+@model AccountChipViewModel
+
+<div class="account-chip dropdown">
+    <button class="account-chip__toggle dropdown-toggle"
+            data-bs-display="static"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-label="Cuenta de @Model.DisplayName">
+        <img src="@Model.FacePath" alt="" class="account-chip__face" width="36" height="36" />
+        <span class="account-chip__name">@Model.DisplayName</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end account-chip__menu">
+        <li class="dropdown-header">@Model.Username</li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="account-chip__logout-form">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="dropdown-item account-chip__logout">
+                    <i class="fa-solid fa-right-from-bracket rl-icon" aria-hidden="true"></i>
+                    Cerrar sesion
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>

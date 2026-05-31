@@ -1,11 +1,8 @@
 @model LoginAccountPageViewModel
 
-<section class="page-panel" id="login-panel-shell">
-    <div class="page-panel__heading">
-        <span class="page-panel__eyebrow">@Model.Brand.Eyebrow</span>
-        <h1 class="page-panel__title">@Model.Title</h1>
-        <p class="page-panel__subtitle">@Model.Subtitle</p>
-    </div>
-
+<section class="auth-panel" id="login-auth-panel">
+    <span class="auth-panel__eyebrow">@Model.Brand.Eyebrow</span>
+    <h1 class="auth-panel__title">@Model.Title</h1>
+    <p class="auth-panel__subtitle">@Model.Subtitle</p>
     @await Html.PartialAsync("~/Views/Account/_LoginForm.cshtml", Model)
 </section>

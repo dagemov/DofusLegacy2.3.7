@@ -1,24 +1,58 @@
-@model ButtonAtomViewModel
-@if (Model.IsSubmit)
-{
-    <button class="rl-btn rl-btn--@Model.Variant" type="submit">
-        @if (!string.IsNullOrWhiteSpace(Model.Icon))
-        {
-            <i class="@Model.Icon rl-btn__icon" aria-hidden="true"></i>
-        }
-        <span>@Model.Label</span>
-    </button>
-}
-else
-{
-    <a class="rl-btn rl-btn--@Model.Variant"
-       href="@Model.Href"
-       target="@(Model.IsExternal ? "_blank" : null)"
-       rel="@(Model.IsExternal ? "noreferrer noopener" : null)">
-        @if (!string.IsNullOrWhiteSpace(Model.Icon))
-        {
-            <i class="@Model.Icon rl-btn__icon" aria-hidden="true"></i>
-        }
-        <span>@Model.Label</span>
-    </a>
-}
+@model ButtonAtomViewModel
+@{
+    var classes = new List<string> { "btn" };
+    switch (Model.Variant)
+    {
+        case "discord":
+            classes.Add("btn-discord");
+            break;
+        case "ghost":
+        case "secondary":
+            classes.Add("btn-secondary");
+            break;
+        default:
+            classes.Add("btn-primary");
+            if (Model.Glow)
+            {
+                classes.Add("btn-glow");
+            }
+            break;
+    }
+    if (Model.Size == "xl")
+    {
+        classes.Add("btn--xl");
+    }
+    string btnClass = string.Join(" ", classes);
+    bool useDiscordSvg = Model.Variant == "discord";
+}
+@if (Model.IsSubmit)
+{
+    <button class="@btnClass" type="submit">
+        @if (useDiscordSvg)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Atoms/_DiscordIcon.cshtml")
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Icon))
+        {
+            <i class="@Model.Icon" aria-hidden="true"></i>
+        }
+        <span>@Model.Label</span>
+    </button>
+}
+else
+{
+    <a class="@btnClass"
+       href="@Model.Href"
+       target="@(Model.IsExternal ? "_blank" : null)"
+       rel="@(Model.IsExternal ? "noreferrer noopener" : null)">
+        @if (useDiscordSvg)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Atoms/_DiscordIcon.cshtml")
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Icon))
+        {
+            <i class="@Model.Icon" aria-hidden="true"></i>
+        }
+        <span>@Model.Label</span>
+    </a>
+}

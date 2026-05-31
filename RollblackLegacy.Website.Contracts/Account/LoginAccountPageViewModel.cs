@@ -14,5 +14,7 @@ public sealed class LoginAccountPageViewModel
 
     public required string DiscordUrl { get; init; }
 
+    public string LauncherDownloadUrl { get; init; } = "#";
+
     public LoginAccountResultViewModel? Result { get; init; }
 }
