@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1.7
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["RollblackLegacy.Auth/", "RollblackLegacy.Auth/"]
+COPY ["OneLauncher/OneLauncher.Api/", "OneLauncher/OneLauncher.Api/"]
+
+WORKDIR /src/OneLauncher/OneLauncher.Api
+RUN dotnet restore "OneLauncher.Api.csproj"
+RUN dotnet publish "OneLauncher.Api.csproj" -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish/ ./
+
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+
+ENTRYPOINT ["dotnet", "OneLauncher.Api.dll"]

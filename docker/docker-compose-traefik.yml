@@ -1,0 +1,71 @@
+# docker-compose.yml (para el servicio Traefik)
+
+services:
+  traefik:
+    image: traefik:v2.11 # O v2.10 que usabas, o v3.0
+    container_name: traefik_proxy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"    # HTTP
+      - "443:443"  # HTTPS
+      # - "8080:8080" # Solo si quieres acceso directo al dashboard por HTTP (no recomendado)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Carpeta para guardar los certificados SSL, relativa al docker-compose.yml
+      - ./.letsencrypt:/letsencrypt
+    networks:
+      - traefik_web
+    command:
+      # --- API y Dashboard ---
+      - "--api.dashboard=true"
+      # - "--api.insecure=true" # No recomendado, usa el router seguro para el dashboard
+
+      # --- EntryPoints ---
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+
+      # --- Redirección HTTP a HTTPS Global en el EntryPoint 'web' ---
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+
+      # --- Proveedores ---
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_web"
+
+      # --- Certificate Resolver (Let's Encrypt) ---
+      - "--certificatesresolvers.myresolver.acme.email=1emu.fun@gmail.com" # ¡TU EMAIL!
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web" # Usa el entrypoint HTTP para el desafío
+
+      # --- Configuración de TLS para el EntryPoint 'websecure' ---
+      # 'myresolver' será el resolver por defecto para los routers en este entrypoint.
+      # Traefik solicitará certificados para los dominios específicos de cada router.
+      - "--entrypoints.websecure.http.tls=true"
+      - "--entrypoints.websecure.http.tls.certresolver=myresolver"
+      # YA NO se especifican 'tls.domains' aquí, para evitar pedir wildcard.
+
+      # --- Logging ---
+      - "--log.level=DEBUG" # Mantenlo en DEBUG mientras solucionas problemas, luego INFO.
+
+    labels:
+      # --- Router Seguro para el Dashboard de Traefik ---
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.1emu.fun`)"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      # 'tls.certresolver' es opcional aquí si 'myresolver' es el default para 'websecure',
+      # pero no hace daño ser explícito:
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver"
+      # Opcional: Autenticación básica para el dashboard
+      # - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$HASHEDPASSWORD$$"
+      # - "traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth"
+
+networks:
+  traefik_web:
+    name: traefik_web
+    external: true 

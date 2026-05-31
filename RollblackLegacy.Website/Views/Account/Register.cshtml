@@ -1,0 +1,31 @@
+@model RegisterAccountPageViewModel
+@{
+    ViewData["Title"] = "Registro";
+    ViewData["ActiveNav"] = "register";
+}
+
+<div class="page-stage">
+    <section class="page-panel" id="register-panel-shell">
+        <div class="page-panel__heading">
+            <span class="page-panel__eyebrow">@Model.Brand.Eyebrow</span>
+            <h1 class="page-panel__title">@Model.Title</h1>
+            <p class="page-panel__subtitle">@Model.Subtitle</p>
+        </div>
+
+        @if (Model.Result?.Succeeded == true)
+        {
+            @await Html.PartialAsync("~/Views/Account/_RegisterSuccess.cshtml", Model.Result)
+        }
+        else
+        {
+            <div class="register-form-shell">
+                <p class="page-card__text">@Model.SecurityHint</p>
+                @await Html.PartialAsync("~/Views/Account/_RegisterForm.cshtml", Model.Form)
+            </div>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,205 @@
+/* OneLauncher theme — tokens from OneLauncher-main/styles.css */
+:root {
+  --ol-background: #141310;
+  --ol-surface-low: #1c1b18;
+  --ol-surface: #211f1c;
+  --ol-surface-high: #2b2a27;
+  --ol-text: #e6e2dd;
+  --ol-muted: #ddc1b0;
+  --ol-outline: #564336;
+  --ol-primary: #ffb786;
+  --ol-primary-strong: #f48221;
+  --ol-primary-deep: #8f4a12;
+  --ol-sage: #cfe0b8;
+  --ol-danger: #ffb4ab;
+  --ol-font-display: "Bricolage Grotesque", "Segoe UI", sans-serif;
+  --ol-font-body: "Chivo", "Segoe UI", sans-serif;
+  --ol-radius-lg: 14px;
+  --ol-radius-md: 12px;
+  --ol-shadow-panel: 0 24px 60px rgba(0, 0, 0, 0.36);
+}
+
+body.site-launcher {
+  background:
+    linear-gradient(rgba(20, 19, 16, 0.82), rgba(20, 19, 16, 0.94)),
+    url("/images/launcher-branding/fondo.webp") center / cover fixed;
+  color: var(--ol-text);
+  font-family: var(--ol-font-body);
+  line-height: 1.65;
+}
+
+body.site-launcher h1,
+body.site-launcher h2,
+body.site-launcher h3,
+body.site-launcher h4,
+body.site-launcher h5,
+body.site-launcher h6 {
+  font-family: var(--ol-font-display);
+  letter-spacing: 0.02em;
+}
+
+body.site-launcher .site-shell__mist {
+  background: radial-gradient(circle at 20% 0%, rgba(244, 130, 33, 0.12), transparent 45%);
+  opacity: 0.9;
+}
+
+body.site-launcher .site-header__link {
+  color: var(--ol-muted);
+}
+
+body.site-launcher .site-header__link:hover,
+body.site-launcher .site-header__link:focus-visible,
+body.site-launcher .site-header__link--button:hover {
+  color: var(--ol-primary);
+}
+
+body.site-launcher .brandmark {
+  color: var(--ol-text);
+}
+
+body.site-launcher .brandmark__eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ol-primary);
+}
+
+body.site-launcher .brandmark__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  filter: drop-shadow(0 0 8px rgba(244, 130, 33, 0.35));
+}
+
+body.site-launcher .brandmark__name {
+  font-family: var(--ol-font-display);
+  font-size: 1.05rem;
+}
+
+body.site-launcher .brandmark small {
+  color: var(--ol-muted);
+}
+
+body.site-launcher .rl-btn--primary,
+body.site-launcher .register-form__submit,
+body.site-launcher .btn-primary {
+  background: linear-gradient(180deg, var(--ol-primary) 0%, var(--ol-primary-strong) 100%) !important;
+  border-color: var(--ol-primary-deep) !important;
+  color: #2b1404 !important;
+  box-shadow: 0 12px 28px rgba(244, 130, 33, 0.24);
+}
+
+body.site-launcher .rl-btn--secondary {
+  background: linear-gradient(180deg, var(--ol-surface-high) 0%, var(--ol-surface-low) 100%) !important;
+  border-color: var(--ol-outline) !important;
+  color: var(--ol-text) !important;
+}
+
+body.site-launcher .rl-btn--ghost {
+  background: rgba(33, 31, 28, 0.72) !important;
+  border-color: var(--ol-outline) !important;
+  color: var(--ol-muted) !important;
+}
+
+body.site-launcher .launcher-panel {
+  background: linear-gradient(180deg, rgba(43, 42, 39, 0.95), rgba(28, 27, 24, 0.98)) !important;
+  border: 1px solid var(--ol-outline) !important;
+  border-radius: var(--ol-radius-lg) !important;
+  box-shadow: var(--ol-shadow-panel);
+}
+
+body.site-launcher .section-heading__eyebrow,
+body.site-launcher .hero-panel__eyebrow,
+body.site-launcher .launcher-card__eyebrow {
+  color: var(--ol-primary) !important;
+}
+
+body.site-launcher .launcher-card {
+  background: rgba(28, 27, 24, 0.72);
+  border: 1px solid var(--ol-outline);
+  border-radius: var(--ol-radius-md);
+}
+
+body.site-launcher .launcher-card--accent {
+  box-shadow: inset 0 0 0 1px rgba(255, 183, 134, 0.2);
+}
+
+body.site-launcher .launcher-card__description,
+body.site-launcher .register-field__help,
+body.site-launcher .register-shell__subtitle,
+body.site-launcher .login-shell__subtitle,
+body.site-launcher .hero-panel__subtitle,
+body.site-launcher .status-card__summary {
+  color: var(--ol-muted) !important;
+}
+
+body.site-launcher .rl-input,
+body.site-launcher .register-form__input,
+body.site-launcher .form-control {
+  background: var(--ol-surface-low) !important;
+  border: 1px solid var(--ol-outline) !important;
+  border-radius: var(--ol-radius-md) !important;
+  color: var(--ol-text) !important;
+}
+
+body.site-launcher .rl-input:focus,
+body.site-launcher .form-control:focus {
+  border-color: var(--ol-primary-strong) !important;
+  box-shadow: 0 0 0 0.2rem rgba(244, 130, 33, 0.2) !important;
+}
+
+body.site-launcher .hero-panel__logo {
+  max-height: 120px;
+  width: auto;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45));
+}
+
+body.site-launcher .hero-panel__title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  color: var(--ol-text);
+}
+
+body.site-launcher .site-footer {
+  color: var(--ol-muted);
+  border-top: 1px solid var(--ol-outline);
+}
+
+body.site-launcher .rl-badge--success {
+  background: rgba(207, 224, 184, 0.16);
+  color: var(--ol-sage);
+}
+
+body.site-launcher .register-form__summary,
+body.site-launcher .field-validation-error {
+  color: var(--ol-danger) !important;
+}
+
+body.site-launcher .register-form__alert--danger {
+  border: 1px solid rgba(255, 180, 171, 0.4);
+  background: rgba(143, 74, 18, 0.2);
+  border-radius: var(--ol-radius-md);
+  padding: 0.75rem 1rem;
+}
+
+body.site-launcher.page-register .register-stage,
+body.site-launcher.page-login .login-stage {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+body.site-launcher .register-shell,
+body.site-launcher .login-shell {
+  gap: 1.25rem;
+}
+
+body.site-launcher .site-header__user {
+  color: var(--ol-primary);
+  font-weight: 600;
+}
+
+body.site-launcher .register-shell__community a,
+body.site-launcher .login-shell__footer-link a {
+  color: var(--ol-primary-strong);
+  font-weight: 600;
+}

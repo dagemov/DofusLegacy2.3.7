@@ -1,0 +1,6 @@
+@OneLauncher.Api_HostAddress = http://localhost:5074
+
+GET {{OneLauncher.Api_HostAddress}}/api/launcher/manifest
+Accept: application/json
+
+###

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DofusArcanlysUplauncher>
+	<ConfigurationCollection>
+
+		<!-- UPDATER ENTRIES -->
+		<Configuration Entry="VerUri" Value="https://www.retro-dofus.com/Uplauncher/patchfiles/ver" />
+		<Configuration Entry="FileBaseUri" Value="https://www.retro-dofus.com/Uplauncher/patchfiles/" />
+		<Configuration Entry="PackedVer" Value="true" />
+		<Configuration Entry="LocalVer" Value="./Data/Launcher/ver.rec" />
+		<Configuration Entry="LocalTempVer" Value="./Data/Launcher/ver.rec.temp" />
+		<Configuration Entry="VerInfoUri" Value="https://www.retro-dofus.com/Uplauncher/patchfiles/VerComp.dat" />
+		<Configuration Entry="PackedVerInfo" Value="true" />
+		<Configuration Entry="LocalVerInfo" Value="./Data/Launcher/VerInfo.rec" />
+		<Configuration Entry="LocalTempVerInfo" Value="./Data/Launcher/VerInfo.rec.temp" />
+		<!-- UPDATER END -->
+
+		<!-- DEBUG ENTRIES-->
+		<Configuration Entry="StatusToLog" Value="false" />
+		<!-- END DEBUG -->
+
+	</ConfigurationCollection>
+</DofusArcanlysUplauncher>

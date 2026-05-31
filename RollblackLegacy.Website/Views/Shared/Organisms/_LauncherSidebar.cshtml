@@ -1,0 +1,48 @@
+@model BrandIdentityViewModel
+@{
+    string activeNav = ViewData["ActiveNav"] as string ?? string.Empty;
+    string discordUrl = ViewData["DiscordUrl"] as string ?? "#";
+}
+
+<aside class="launcher-sidebar" aria-label="Navegacion principal">
+    <div class="launcher-sidebar__brand">
+        <img src="@Model.FaviconPath" alt="" class="launcher-sidebar__icon" width="40" height="40" />
+        <div class="launcher-sidebar__titles">
+            <span class="launcher-sidebar__eyebrow">@Model.Eyebrow</span>
+            <strong class="launcher-sidebar__name">@Model.Name</strong>
+            <span class="launcher-sidebar__tagline">@Model.Tagline</span>
+        </div>
+    </div>
+
+    <nav class="launcher-sidebar__nav">
+        <a href="/"
+           class="launcher-sidebar__link @(activeNav == "home" ? "is-active" : "")"
+           @(activeNav == "home" ? Html.Raw("aria-current=\"page\"") : null)>
+            <span class="launcher-sidebar__link-icon" aria-hidden="true">⌂</span>
+            <span>Inicio</span>
+        </a>
+        <a href="/account/register"
+           class="launcher-sidebar__link @(activeNav == "register" ? "is-active" : "")"
+           @(activeNav == "register" ? Html.Raw("aria-current=\"page\"") : null)>
+            <span class="launcher-sidebar__link-icon" aria-hidden="true">✦</span>
+            <span>Registro</span>
+        </a>
+    </nav>
+
+    <div class="launcher-sidebar__section">
+        <p class="launcher-sidebar__label">Comunidad</p>
+        <a href="@discordUrl" class="launcher-sidebar__link launcher-sidebar__link--external" target="_blank" rel="noopener">
+            <img src="/images/launcher-branding/discord.svg" alt="" class="launcher-sidebar__link-img" />
+            <span>Discord</span>
+        </a>
+    </div>
+
+    <div class="launcher-sidebar__server-card">
+        <div class="launcher-sidebar__server-head">
+            <span class="launcher-sidebar__server-dot" aria-hidden="true"></span>
+            <span>Estado del servidor</span>
+        </div>
+        <strong class="launcher-sidebar__server-status">Rollblack Legacy</strong>
+        <span class="launcher-sidebar__server-meta">Beta abierta · Private Server</span>
+    </div>
+</aside>
