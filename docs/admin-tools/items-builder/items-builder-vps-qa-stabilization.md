@@ -200,7 +200,7 @@ Angular-tools/Admin/RollblackLegacy.Admin.Api/appsettings.Development.local.json
 
 ### Fix aplicado
 
-Commit: `fix: stabilize items builder error handling` (pendiente de push)
+Commit: `2b79283 fix: stabilize items builder error handling`
 
 - **Angular:** `toAdminApiProblem()` evita duplicar título/detalle; lee `traceId` del cuerpo ProblemDetails; un solo panel en lista (`pageProblem`).
 - **Angular:** `api-problem-panel` no muestra detalle si es igual al título.

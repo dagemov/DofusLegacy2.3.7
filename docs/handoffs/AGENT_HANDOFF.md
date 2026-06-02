@@ -116,6 +116,8 @@ Phase 7 — Blazor Parity Corrective Audit — DONE (docs only, commit cbfb3d3)
 
 | Commit | Message |
 | --- | --- |
+| `2b79283` | `fix: stabilize items builder error handling` |
+| `98d106a` | `docs: add agent handoff for items builder phase 7` |
 | `727d2c6` | `feat: add item icon selector modal` |
 | `cbfb3d3` | `docs: audit item builder parity gaps with legacy blazor` |
 
