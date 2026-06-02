@@ -269,6 +269,7 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         return new ItemIconOptionDto(
             iconId,
             $"/assets/item-previews/by-icon/{iconId}.png",
+            "FOUND",
             "BY_ICON_PREVIEW",
             HasPreview: true,
             LinkedItemCount: 0,

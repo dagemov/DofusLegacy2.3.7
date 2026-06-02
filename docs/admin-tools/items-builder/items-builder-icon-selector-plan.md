@@ -1,8 +1,26 @@
-# Phase 7A Plan - Item Icon Selector Modal
+# Phase 7A - Item Icon Selector Modal (`DONE`)
 
 ## Goal
 
 Harden icon selection so operators stop relying on memory/manual IDs before continuing full Create/Edit parity work.
+
+## Implementation status
+
+- Status: `DONE` (`2026-06-02`)
+- Branch: `feature/items-builder-vps-qa-stabilization`
+- UI:
+  - Added `ItemIconSelectorModalComponent` in Create/Edit.
+  - Kept standalone selector route `/admin/items/icon-selector`.
+  - Added mini preview thumbnail in `/admin/items` list when preview path exists.
+- API:
+  - Confirmed existing endpoint `GET /api/admin/v1/item-icons`.
+  - Payload now includes:
+    - `IconId`
+    - `PreviewPath`
+    - `PreviewState`
+    - `LinkedItemCount`
+    - `SampleItemNames`
+    - (`Source` and `HasPreview` are kept as operational metadata)
 
 ## Audit findings that drive this phase
 
@@ -41,8 +59,9 @@ Harden icon selection so operators stop relying on memory/manual IDs before cont
 
 ## Acceptance criteria
 
-- Operator can select icon visually without leaving write page.
-- Selected icon updates preview immediately.
+- Operator can select icon visually in a Bootstrap modal without leaving write page.
+- Selected icon updates `IconId` and preview immediately.
+- `AppearanceId` stays untouched by icon selection.
 - Save result and warnings remain consistent with selected icon.
 - Duplicate flow does not accidentally reuse wrong icon due to stale selector state.
 

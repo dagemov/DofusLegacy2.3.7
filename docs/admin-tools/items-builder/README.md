@@ -13,7 +13,7 @@ Current checkpoint:
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
-- Phase 7A - Item Icon Selector Modal: `NEXT`
+- Phase 7A - Item Icon Selector Modal: `DONE`
 - Phase 7B - Item Effects/Characteristics Editor: `NEXT AFTER 7A`
 - Phase 7C - Item Form UX Polish: `NEXT AFTER 7B`
 - Phase 8 - Publish / QA Workflow: `PENDING`

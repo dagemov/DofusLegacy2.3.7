@@ -8,7 +8,7 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, forkJoin, of,
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
-import { ItemIconSelectorComponent } from './item-icon-selector.component';
+import { ItemIconSelectorModalComponent } from './item-icon-selector-modal.component';
 import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
@@ -57,7 +57,7 @@ type ItemWriteFieldName = keyof ItemWriteFormControls;
     ApiProblemPanelComponent,
     ItemPreviewCardComponent,
     ItemDiagnosticPanelComponent,
-    ItemIconSelectorComponent
+    ItemIconSelectorModalComponent
   ],
   templateUrl: './item-write-page.component.html',
   styleUrl: './item-write-page.component.scss'

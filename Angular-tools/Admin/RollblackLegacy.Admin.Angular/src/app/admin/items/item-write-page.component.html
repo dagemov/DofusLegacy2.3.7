@@ -216,7 +216,7 @@
               </div>
               <div class="d-flex flex-wrap gap-2 pt-2">
                 <button class="btn btn-sm btn-outline-primary" type="button" (click)="toggleIconSelector()">
-                  {{ isIconSelectorOpen ? 'Ocultar selector de iconos' : 'Elegir icono' }}
+                  {{ isIconSelectorOpen ? 'Cerrar modal de iconos' : 'Elegir icono (modal)' }}
                 </button>
                 <a
                   class="btn btn-sm btn-outline-secondary"
@@ -231,6 +231,7 @@
                   Ruta actual del preview:
                   <span class="font-monospace-soft">{{ currentPreviewPath }}</span>
                 </span>
+                <span class="d-block">IconId se actualiza por seleccion visual. AppearanceId no cambia automaticamente.</span>
               </div>
             </div>
 
@@ -260,34 +261,6 @@
               </select>
               <div class="form-text">
                 Campo diferido. Sigue visible para conservar el contrato futuro, pero sunshine.items aun no lo persiste de forma directa.
-              </div>
-            </div>
-
-            <div *ngIf="isIconSelectorOpen" class="col-12">
-              <div class="card border-0 icon-selector-inline-card">
-                <div class="card-body d-grid gap-3">
-                  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
-                    <div>
-                      <p class="text-uppercase small fw-semibold text-secondary mb-1">Selector embebido de iconos</p>
-                      <h4 class="h6 mb-0">Elige el icono de inventario y preview admin</h4>
-                    </div>
-                    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggleIconSelector()">
-                      Cerrar selector
-                    </button>
-                  </div>
-
-                  <div class="small text-secondary">
-                    <div>IconId controla el preview de inventario y admin.</div>
-                    <div>AppearanceId controla la apariencia equipada o runtime cuando aplica.</div>
-                    <div>ItemId es la identidad del item en base de datos.</div>
-                  </div>
-
-                  <app-item-icon-selector
-                    [embedded]="true"
-                    [initialIconId]="form.controls.iconId.value ?? null"
-                    [showSelectionPayload]="false"
-                    (iconSelected)="applySelectedIcon($event)"></app-item-icon-selector>
-                </div>
               </div>
             </div>
 
@@ -414,3 +387,10 @@
     </div>
   </div>
 </section>
+
+<app-item-icon-selector-modal
+  [isOpen]="isIconSelectorOpen"
+  [initialIconId]="form.controls.iconId.value ?? null"
+  (cancelled)="toggleIconSelector()"
+  (selected)="applySelectedIcon($event)">
+</app-item-icon-selector-modal>

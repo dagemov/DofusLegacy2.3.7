@@ -40,6 +40,7 @@ export interface ItemPagedResultDto<TItem> {
 export interface ItemIconOptionDto {
   iconId: number;
   previewPath?: string | null;
+  previewState: string;
   source: string;
   hasPreview: boolean;
   linkedItemCount?: number | null;

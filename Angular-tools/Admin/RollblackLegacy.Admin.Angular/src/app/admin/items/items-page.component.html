@@ -147,6 +147,7 @@
             <tr>
               <th>ItemId</th>
               <th>ResolvedName</th>
+              <th>Preview</th>
               <th>Tipo</th>
               <th>Nivel</th>
               <th>Set</th>
@@ -167,6 +168,14 @@
                   {{ item.resolvedName || 'Unnamed item' }}
                 </a>
                 <div class="small text-secondary">TypeId {{ item.typeId }}</div>
+              </td>
+              <td>
+                <ng-container *ngIf="item.previewState.resolvedPath || item.previewState.byIconPath as listPreviewPath; else noListPreview">
+                  <img class="item-list-preview" [src]="listPreviewPath" [alt]="'Icono item ' + item.itemId" />
+                </ng-container>
+                <ng-template #noListPreview>
+                  <span class="badge text-bg-light border">NO PNG</span>
+                </ng-template>
               </td>
               <td>{{ item.typeName || 'Tipo desconocido' }}</td>
               <td>{{ item.level }}</td>
@@ -204,7 +213,7 @@
             </tr>
 
             <tr *ngIf="!isLoadingList && result.items.length === 0">
-              <td colspan="10" class="text-center text-secondary py-4">
+              <td colspan="11" class="text-center text-secondary py-4">
                 No se encontraron items para los filtros seleccionados.
               </td>
             </tr>
