@@ -42,71 +42,36 @@ Operational rules:
 
 ## Current execution checkpoint
 
-- Phase 6 - Asset Pipeline: `DONE`
-- Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7A - Item Icon Selector: `DONE`
-- Phase 7 - Item Create/Edit: `DONE / LIVE`
-- Phase 8 - Publish / QA Workflow: `DONE`
-- Post-Phase 8 Stabilization / VPS Data / Assets / UX: `DONE`
-- Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
+- Phase 1 - Items Builder Audit: `DONE`
+- Phase 1.5 - Admin Clean Architecture Scaffold: `DONE`
+- Phase 2 - Items Builder Read-only API: `DONE / PARTIAL VALIDATED`
+- Phase 3 - Angular Items List/Detail: `DONE / PARTIAL VALIDATED`
+- Phase 4 - Diagnostics + Preview UI: `DONE`
+- Phase 5 - Live Data Workflow: `DONE`
+- Phase 6 - Asset Pipeline + PNG Preview: `DONE`
+- Phase 6.5A - Client Asset Intelligence Audit: `DONE`
+- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
+- Phase 7A - Item Icon Selector Modal: `NEXT`
+- Phase 7B - Item Effects/Characteristics Editor: `NEXT AFTER 7A`
+- Phase 7C - Item Form UX Polish: `NEXT AFTER 7B`
+- Phase 8 - Publish / QA Workflow: `PENDING`
 
-## Phase 7 completion checkpoint
-
-Validated on `2026-06-02` in the official repo:
-
-- backend write endpoints live:
-  - `POST /api/admin/v1/items`
-  - `PUT /api/admin/v1/items/{itemId}`
-  - `POST /api/admin/v1/items/{itemId}/duplicate`
-- Angular routes live:
-  - `/admin/items/new`
-  - `/admin/items/:itemId/edit`
-  - `/admin/items/:itemId/duplicate`
-- `ItemIconSelector` integrated into the write form
-- `ItemId != IconId != AppearanceId` stays explicit in API and UI
-- live DB smoke test completed for create, update, and duplicate with immediate cleanup of temporary rows
-- preview by `IconId` validated as `FOUND` for `IconId=1001`
-
-## Phase 8 completion checkpoint
+## Corrective audit status (Phase 7)
 
 Validated on `2026-06-02` in the official repo:
 
-- backend QA summary endpoint live:
-  - `GET /api/admin/v1/items/{itemId}/qa-summary`
-- item detail now exposes a `QA / Publish Readiness` panel
-- derived `READY_FOR_QA` vs `BLOCKED` status is visible without changing DB schema
-- manual QA checklist is visible and copyable with manual fallback
-- Sunshine QA command audited and documented:
-  - `.item add <itemId> <quantity> [CharacterName]`
-- explicit publish blockers remain visible:
-  - description publish deferred
-  - `IsVisible` persistence deferred
-  - real client publish disabled in this phase
+- Current write stack is functional but parity-incomplete versus legacy Blazor item editor.
+- Effects/characteristics editing is currently missing from Angular write flow.
+- Conditions are currently plain string and should remain operator-editable.
+- Preview and icon selection are present but need hardening before advanced write scope resumes.
+- Phase 7 remains paused until parity corrective slices (7A-7C) are completed.
 
-## What remains after Phase 8
+## Corrective phase references
 
-Items Builder is now at MVP completion for Admin-side CRUD and QA readiness.
-
-Still deferred to future publish-focused work:
-
-- real client publish
-- client i18n export/import
-- description payload management
-- `IsVisible` persistence
-- PNG upload workflow
-- weapon-specific workflow
-
-## Post-Phase 8 stabilization checkpoint
-
-Validated on `2026-06-02` in the official repo:
-
-- `GET /api/admin/v1/health/db` now exposes safe target fields for `host`, `port`, `user`, and `isRemote`
-- current working path is confirmed as `Angular -> local Admin API -> local Sunshine MySQL`
-- item-type options are confirmed to come from `Sunshine.Protocol/Enums/ItemTypeEnum.cs`, not from DB rows
-- item-set options are confirmed to come from `sunshine.items_sets`
-- shared Angular problem messaging is now more human and operator-facing in Spanish
-- a first controlled PNG import wave added `1002.png` through `1012.png` from the approved `amuletos_png` source
-- safe restart scripts were added for future World-only restarts, but live VPS validation is currently blocked by SSH `Permission denied (publickey)`
+- [Blazor parity audit](../admin-tools/items-builder/items-builder-blazor-parity-audit.md)
+- [Create/Edit gap analysis](../admin-tools/items-builder/items-builder-create-edit-gap-analysis.md)
+- [Phase 7A icon selector plan](../admin-tools/items-builder/items-builder-icon-selector-plan.md)
+- [Phase 7B effects editor plan](../admin-tools/items-builder/items-builder-effects-editor-plan.md)
 
 ## Items Builder doc set
 
@@ -125,6 +90,10 @@ Key references:
 - [Phase 7 create/edit](../admin-tools/items-builder/items-builder-create-edit-phase7.md)
 - [Phase 7 write contracts](../admin-tools/items-builder/items-builder-write-contracts-phase7.md)
 - [Phase 7 Angular workflow](../admin-tools/items-builder/items-builder-angular-create-edit-phase7.md)
+- [Blazor parity audit](../admin-tools/items-builder/items-builder-blazor-parity-audit.md)
+- [Create/Edit gap analysis](../admin-tools/items-builder/items-builder-create-edit-gap-analysis.md)
+- [Icon selector plan](../admin-tools/items-builder/items-builder-icon-selector-plan.md)
+- [Effects editor plan](../admin-tools/items-builder/items-builder-effects-editor-plan.md)
 - [Phase 8 publish and QA workflow](../admin-tools/items-builder/items-builder-publish-qa-phase8.md)
 - [Phase 8 QA checklist](../admin-tools/items-builder/items-builder-qa-checklist.md)
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
@@ -144,4 +113,8 @@ Key references:
 
 ## Immediate next branch
 
-After Phase 8, the next intended branch should target future client publish prerequisites or another admin module, not a reimplementation of Items CRUD.
+The next intended branch should execute the corrective parity order:
+
+1. Phase 7A icon selector modal hardening
+2. Phase 7B effects/characteristics editor
+3. Phase 7C form UX polish

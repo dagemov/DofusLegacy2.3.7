@@ -55,55 +55,37 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>Phase 6 - Asset Pipeline</td><td><code>DONE</code></td></tr>
-      <tr><td>Phase 6.5A - Item Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
-      <tr><td>Phase 7A - Item Icon Selector</td><td><code>DONE</code></td></tr>
-      <tr><td>Phase 7 - Item Create/Edit</td><td><code>DONE / LIVE</code></td></tr>
-      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>DONE</code></td></tr>
-      <tr><td>Post-Phase 8 Stabilization / VPS Data / Assets / UX</td><td><code>DONE</code></td></tr>
-      <tr><td>Items Builder MVP</td><td><code>DONE / CLIENT PUBLISH PENDING</code></td></tr>
+      <tr><td>Phase 1 - Items Builder Audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 1.5 - Admin Clean Architecture Scaffold</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 2 - Items Builder Read-only API</td><td><code>DONE / PARTIAL VALIDATED</code></td></tr>
+      <tr><td>Phase 3 - Angular Items List/Detail</td><td><code>DONE / PARTIAL VALIDATED</code></td></tr>
+      <tr><td>Phase 4 - Diagnostics + Preview UI</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 5 - Live Data Workflow</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 6 - Asset Pipeline + PNG Preview</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 6.5A - Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7 - Item Create/Edit</td><td><code>PAUSED / PARTIAL</code></td></tr>
+      <tr><td>Phase 7A - Item Icon Selector Modal</td><td><code>NEXT</code></td></tr>
+      <tr><td>Phase 7B - Item Effects/Characteristics Editor</td><td><code>NEXT AFTER 7A</code></td></tr>
+      <tr><td>Phase 7C - Item Form UX Polish</td><td><code>NEXT AFTER 7B</code></td></tr>
+      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>PENDING</code></td></tr>
     </tbody>
   </table>
 
-  <h2>Phase 7 completion checkpoint</h2>
+  <h2>Corrective audit status (Phase 7)</h2>
   <ul>
-    <li>Backend write endpoints are live for create, update, and duplicate.</li>
-    <li>Angular routes <code>/admin/items/new</code>, <code>/admin/items/:itemId/edit</code>, and <code>/admin/items/:itemId/duplicate</code> are live.</li>
-    <li><code>ItemIconSelector</code> is integrated into the write form.</li>
-    <li><code>ItemId != IconId != AppearanceId</code> stays explicit in API and UI.</li>
-    <li>Live DB smoke validation completed on <code>2026-06-02</code> with immediate cleanup of temporary rows.</li>
-    <li>Preview by <code>IconId=1001</code> validated as <code>FOUND</code>.</li>
+    <li>Current write stack is functional but parity-incomplete versus legacy Blazor item editor.</li>
+    <li>Effects/characteristics editing is currently missing from Angular write flow.</li>
+    <li>Conditions are currently plain string and should remain operator-editable.</li>
+    <li>Preview and icon selection are present but need hardening before advanced write scope resumes.</li>
+    <li>Phase 7 remains paused until parity corrective slices (7A-7C) are completed.</li>
   </ul>
 
-  <h2>Phase 8 completion checkpoint</h2>
+  <h2>Corrective phase references</h2>
   <ul>
-    <li>Backend QA summary endpoint is live at <code>GET /api/admin/v1/items/{itemId}/qa-summary</code>.</li>
-    <li>Item detail now exposes a <code>QA / Publish Readiness</code> panel.</li>
-    <li>Derived <code>READY_FOR_QA</code> vs <code>BLOCKED</code> status is visible without changing DB schema.</li>
-    <li>Manual QA checklist is visible and copyable with manual fallback.</li>
-    <li>Sunshine QA command is documented as <code>.item add &lt;itemId&gt; &lt;quantity&gt; [CharacterName]</code>.</li>
-    <li>Real client publish stays disabled in this phase by design.</li>
-  </ul>
-
-  <h2>What remains after Phase 8</h2>
-  <ul>
-    <li>Real client publish</li>
-    <li>Client i18n export/import</li>
-    <li>Description payload management</li>
-    <li><code>IsVisible</code> persistence</li>
-    <li>PNG upload workflow</li>
-    <li>Weapon-specific workflow</li>
-  </ul>
-
-  <h2>Post-Phase 8 stabilization checkpoint</h2>
-  <ul>
-    <li><code>GET /api/admin/v1/health/db</code> now exposes safe target fields for <code>host</code>, <code>port</code>, <code>user</code>, and <code>isRemote</code>.</li>
-    <li>The current working path is confirmed as <code>Angular -&gt; local Admin API -&gt; local Sunshine MySQL</code>.</li>
-    <li>Item-type options are confirmed to come from <code>Sunshine.Protocol/Enums/ItemTypeEnum.cs</code>, not from DB rows.</li>
-    <li>Item-set options are confirmed to come from <code>sunshine.items_sets</code>.</li>
-    <li>Shared Angular problem messaging is now more human and operator-facing in Spanish.</li>
-    <li>A first controlled PNG import wave added <code>1002.png</code> through <code>1012.png</code> from the approved <code>amuletos_png</code> source.</li>
-    <li>Safe restart scripts were added for future World-only restarts, but live VPS validation is currently blocked by SSH <code>Permission denied (publickey)</code>.</li>
+    <li><code>docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-icon-selector-plan.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-effects-editor-plan.md</code></li>
   </ul>
 
   <h2>References</h2>
@@ -117,7 +99,10 @@
     <li><code>docs/admin-tools/items-builder/items-builder-vps-qa-stabilization.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-options-loading-fix.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-png-import-plan.md</code></li>
-    <li><code>docs/infrastructure/vps-world-restart-flow.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-icon-selector-plan.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-effects-editor-plan.md</code></li>
   </ul>
 </body>
 </html>

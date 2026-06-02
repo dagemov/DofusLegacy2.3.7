@@ -12,11 +12,11 @@ Current checkpoint:
 
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7A - Item Icon Selector: `DONE`
-- Phase 7 - Item Create/Edit: `DONE / LIVE`
-- Phase 8 - Publish / QA Workflow: `DONE`
-- Post-Phase 8 Stabilization / VPS Data / Assets / UX: `DONE`
-- Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
+- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
+- Phase 7A - Item Icon Selector Modal: `NEXT`
+- Phase 7B - Item Effects/Characteristics Editor: `NEXT AFTER 7A`
+- Phase 7C - Item Form UX Polish: `NEXT AFTER 7B`
+- Phase 8 - Publish / QA Workflow: `PENDING`
 
 Operational DB target note:
 
@@ -57,6 +57,10 @@ Document index:
 - `items-builder-create-edit-phase7.md`
 - `items-builder-write-contracts-phase7.md`
 - `items-builder-angular-create-edit-phase7.md`
+- `items-builder-blazor-parity-audit.md`
+- `items-builder-create-edit-gap-analysis.md`
+- `items-builder-icon-selector-plan.md`
+- `items-builder-effects-editor-plan.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`

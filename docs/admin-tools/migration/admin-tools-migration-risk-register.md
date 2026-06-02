@@ -31,6 +31,9 @@
 | R25 | Manual in-game QA via `.item add` mutates live character inventory on a shared environment and leaves test items behind | 8 | High | Medium | document the exact command, restrict use to controlled QA characters, require cleanup discipline, and prefer disposable or local datasets for smoke passes | an operator gives experimental items to a real character and cannot easily roll back the inventory state |
 | R26 | Operators assume the Admin API is talking to the VPS when the current Angular proxy and `SunshineAdmin` actually point to local services | 8+ | High | Medium | expose safe `health/db` target fields (`host`, `port`, `user`, `isRemote`), document the current wiring, and confirm it before every remote-validation pass | browser data looks real but the team cannot tell whether it came from local MySQL or the VPS |
 | R27 | Team scripts for preview imports or world restarts are run in destructive mode without an audit pass first | 6+ | High | Medium | keep dry-run/report mode by default, block weapons and suspicious categories, require explicit restart confirmation, and never auto-restart the whole VPS | a large PNG batch lands in Git or a restart script bounces the wrong service |
+| R28 | Phase 7 is treated as complete while effects/characteristics editing is still missing, locking in a low-value CRUD and creating migration debt | 7 | High | High | keep Phase 7 as `PAUSED / PARTIAL`, complete 7A then 7B before resuming full Create/Edit claims, and track parity explicitly in docs | roadmap or release notes claim full parity while write contracts still omit effects payload |
+| R29 | Conditions handling is simplified into rigid presets and loses legacy operator flexibility for advanced criteria strings | 7B-7C | Medium | Medium | keep raw string editor path, add non-blocking validation hints instead of hard preset-only builder | operators can no longer input required criteria syntax used in production workflows |
+| R30 | Icon selector is considered "done" without enough preview-state guardrails, causing `IconId` mistakes during item creation | 7A | High | Medium | make icon selection/preview checks first-class before save, keep unresolved preview warnings visible, and preserve icon/appearance separation in UI | new items are saved with weak or wrong icon identity despite visual selector being present |
 
 ## Priority watchlist
 
@@ -63,3 +66,6 @@ Lowest-risk starting points:
 - No in-game `.item add` validation should be done on shared characters without an explicit cleanup path.
 - No remote-vs-local claim should be made without checking `GET /api/admin/v1/health/db`.
 - No preview-import or VPS-restart script should default to destructive execution.
+- No Create/Edit parity claim should be made until effects/characteristics editing is implemented and validated.
+- No conditions redesign should remove the raw operator string path without explicit approval.
+- No icon-selector milestone should close without preview-state warning and identity-safety checks.
