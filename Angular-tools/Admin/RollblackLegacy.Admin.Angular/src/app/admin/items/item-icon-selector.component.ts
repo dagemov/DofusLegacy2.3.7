@@ -1,9 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, NgZone, OnInit, Output, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  inject
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { catchError, finalize, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, of, switchMap } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemsFacade } from './data-access/items.facade';
@@ -26,7 +38,7 @@ const DEFAULT_ICON_PAGE_SIZE = 24;
   templateUrl: './item-icon-selector.component.html',
   styleUrl: './item-icon-selector.component.scss'
 })
-export class ItemIconSelectorComponent implements OnInit {
+export class ItemIconSelectorComponent implements OnInit, OnChanges {
   private readonly destroyRef = inject(DestroyRef);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -35,6 +47,9 @@ export class ItemIconSelectorComponent implements OnInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly brokenPreviewIds = new Set<number>();
 
+  @Input() embedded = false;
+  @Input() initialIconId: number | null = null;
+  @Input() showSelectionPayload = true;
   @Output() readonly iconSelected = new EventEmitter<ItemIconSelection>();
 
   protected filters: ItemIconSearchRequest = createEmptyItemIconSearchRequest();
@@ -46,15 +61,20 @@ export class ItemIconSelectorComponent implements OnInit {
   protected isLoading = false;
 
   ngOnInit(): void {
+    if (this.embedded) {
+      const initialRequest = normalizeItemIconSearchRequest({
+        ...createEmptyItemIconSearchRequest(),
+        iconId: this.initialIconId ?? undefined
+      });
+
+      this.filters = { ...initialRequest };
+      this.query = initialRequest;
+      this.loadIcons(initialRequest);
+      return;
+    }
+
     this.activatedRoute.queryParamMap
       .pipe(
-        tap(() => {
-          this.ngZone.run(() => {
-            this.isLoading = true;
-            this.problem = null;
-            this.refreshView();
-          });
-        }),
         switchMap((paramMap) => {
           const request = normalizeItemIconSearchRequest({
             search: normalizeOptionalText(paramMap.get('search') ?? undefined),
@@ -69,21 +89,7 @@ export class ItemIconSelectorComponent implements OnInit {
             this.refreshView();
           });
 
-          return this.itemsFacade.getItemIcons(request).pipe(
-            catchError((error: unknown) => {
-              this.ngZone.run(() => {
-                this.problem = toAdminApiProblem(error);
-                this.refreshView();
-              });
-              return of(createEmptyPagedResult<ItemIconOptionDto>(request.page, request.pageSize));
-            }),
-            finalize(() => {
-              this.ngZone.run(() => {
-                this.isLoading = false;
-                this.refreshView();
-              });
-            })
-          );
+          return this.queryIcons(request);
         }),
         takeUntilDestroyed(this.destroyRef)
       )
@@ -93,6 +99,27 @@ export class ItemIconSelectorComponent implements OnInit {
           this.refreshView();
         });
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.embedded || !changes['initialIconId'] || changes['initialIconId'].firstChange) {
+      return;
+    }
+
+    const currentIconId = normalizePositiveInt(changes['initialIconId'].currentValue);
+    if (this.filters.iconId === currentIconId) {
+      return;
+    }
+
+    const nextRequest = normalizeItemIconSearchRequest({
+      ...this.query,
+      iconId: currentIconId,
+      page: 1
+    });
+
+    this.filters = { ...nextRequest };
+    this.query = nextRequest;
+    this.loadIcons(nextRequest);
   }
 
   protected applyFilters(): void {
@@ -105,7 +132,10 @@ export class ItemIconSelectorComponent implements OnInit {
   }
 
   protected resetFilters(): void {
-    const nextRequest = createEmptyItemIconSearchRequest();
+    const nextRequest = normalizeItemIconSearchRequest({
+      ...createEmptyItemIconSearchRequest(),
+      iconId: this.embedded ? this.initialIconId ?? undefined : undefined
+    });
     this.filters = nextRequest;
     this.navigateWithQuery(nextRequest);
   }
@@ -169,6 +199,14 @@ export class ItemIconSelectorComponent implements OnInit {
 
   private navigateWithQuery(request: ItemIconSearchRequest): void {
     const normalized = normalizeItemIconSearchRequest(request);
+
+    if (this.embedded) {
+      this.query = normalized;
+      this.filters = { ...normalized };
+      this.loadIcons(normalized);
+      return;
+    }
+
     const queryParams: Record<string, string | number> = {
       page: normalized.page,
       pageSize: normalized.pageSize
@@ -186,6 +224,40 @@ export class ItemIconSelectorComponent implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams
     });
+  }
+
+  private loadIcons(request: ItemIconSearchRequest): void {
+    this.query = request;
+    this.problem = null;
+    this.isLoading = true;
+    this.refreshView();
+
+    this.queryIcons(request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        this.ngZone.run(() => {
+          this.result = result;
+          this.refreshView();
+        });
+      });
+  }
+
+  private queryIcons(request: ItemIconSearchRequest) {
+    return this.itemsFacade.getItemIcons(request).pipe(
+      catchError((error: unknown) => {
+        this.ngZone.run(() => {
+          this.problem = toAdminApiProblem(error);
+          this.refreshView();
+        });
+        return of(createEmptyPagedResult<ItemIconOptionDto>(request.page, request.pageSize));
+      }),
+      finalize(() => {
+        this.ngZone.run(() => {
+          this.isLoading = false;
+          this.refreshView();
+        });
+      })
+    );
   }
 
   private refreshView(): void {

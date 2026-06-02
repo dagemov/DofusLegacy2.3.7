@@ -1,12 +1,11 @@
 # Items Builder Docs
 
-This folder consolidates all Items Builder planning and exploratory phase documentation into the official repo.
+This folder consolidates the official Items Builder roadmap, audits, contracts, and implementation notes into the official repo.
 
 Important status note:
 
-- some phase documents below were originally written from external exploratory branches
-- those documents are kept as reference history only
-- their implementation claims are not the accepted baseline in this repo until the work is replayed here
+- older phase documents may still mention exploratory history
+- the accepted baseline is the code and docs now present in `C:\Users\Hombr\source\repos\DofusLegacy2.3.7`
 - the official current roadmap state is defined by [admin-tools-migration-master-plan.md](../../roadmap/admin-tools-migration-master-plan.md)
 
 Current checkpoint:
@@ -14,7 +13,8 @@ Current checkpoint:
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7A - Item Icon Selector: `DONE`
-- Phase 7 - Item Create/Edit: `NEXT`
+- Phase 7 - Item Create/Edit: `DONE / LIVE`
+- Phase 8 - Publish / QA Workflow: `NEXT`
 
 Admin Angular canonical location:
 

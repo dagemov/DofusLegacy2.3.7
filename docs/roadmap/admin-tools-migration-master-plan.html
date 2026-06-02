@@ -58,25 +58,26 @@
       <tr><td>Phase 6 - Asset Pipeline</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 6.5A - Item Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7A - Item Icon Selector</td><td><code>DONE</code></td></tr>
-      <tr><td>Phase 7 - Item Create/Edit</td><td><code>NEXT</code></td></tr>
+      <tr><td>Phase 7 - Item Create/Edit</td><td><code>DONE / LIVE</code></td></tr>
+      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>NEXT</code></td></tr>
     </tbody>
   </table>
 
-  <h2>Why Phase 7 is paused</h2>
+  <h2>Phase 7 completion checkpoint</h2>
   <ul>
-    <li>The official repo and doc structure had diverged from the exploratory worktree history.</li>
-    <li>The repo needed one in-place roadmap and one in-place doc hierarchy first.</li>
-    <li>The next safer step is a narrow icon selector slice instead of resuming full write flow immediately.</li>
+    <li>Backend write endpoints are live for create, update, and duplicate.</li>
+    <li>Angular routes <code>/admin/items/new</code>, <code>/admin/items/:itemId/edit</code>, and <code>/admin/items/:itemId/duplicate</code> are live.</li>
+    <li><code>ItemIconSelector</code> is integrated into the write form.</li>
+    <li><code>ItemId != IconId != AppearanceId</code> stays explicit in API and UI.</li>
+    <li>Live DB smoke validation completed on <code>2026-06-02</code> with immediate cleanup of temporary rows.</li>
+    <li>Preview by <code>IconId=1001</code> validated as <code>FOUND</code>.</li>
   </ul>
 
-  <h2>Phase 7A - Item Icon Selector</h2>
-  <p>Implement the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes.</p>
-  <p>Must support preview PNG, <code>IconId</code>, search, selection, and the output contract <code>{ iconId, previewPath }</code>.</p>
-  <p>Current catalog: <code>/assets/item-previews/by-icon</code></p>
+  <h2>Phase 8 preview</h2>
+  <p>Next official scope: publish and QA workflow.</p>
   <ul>
-    <li>Backend endpoint: <code>GET /api/admin/v1/item-icons</code></li>
-    <li>Angular route: <code>/admin/items/icon-selector</code></li>
-    <li>Source of truth: curated PNG filenames from <code>Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/</code></li>
+    <li>Controlled handoff from saved admin rows to downstream client-facing validation.</li>
+    <li>Remaining deferred concerns: description publish, <code>IsVisible</code> persistence, PNG upload, and weapon-specific workflow.</li>
   </ul>
 
   <h2>References</h2>

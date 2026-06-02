@@ -45,49 +45,37 @@ Operational rules:
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7A - Item Icon Selector: `DONE`
-- Phase 7 - Item Create/Edit: `NEXT`
+- Phase 7 - Item Create/Edit: `DONE / LIVE`
+- Phase 8 - Publish / QA Workflow: `NEXT`
 
-## Why Phase 7 is paused
+## Phase 7 completion checkpoint
 
-- the official repo and doc structure had diverged from the exploratory worktree history
-- the repo needed one in-place roadmap and one in-place doc hierarchy first
-- the next safer step is a narrow icon selector slice instead of resuming full write flow immediately
+Validated on `2026-06-02` in the official repo:
 
-## Phase 7A - Item Icon Selector
+- backend write endpoints live:
+  - `POST /api/admin/v1/items`
+  - `PUT /api/admin/v1/items/{itemId}`
+  - `POST /api/admin/v1/items/{itemId}/duplicate`
+- Angular routes live:
+  - `/admin/items/new`
+  - `/admin/items/:itemId/edit`
+  - `/admin/items/:itemId/duplicate`
+- `ItemIconSelector` integrated into the write form
+- `ItemId != IconId != AppearanceId` stays explicit in API and UI
+- live DB smoke test completed for create, update, and duplicate with immediate cleanup of temporary rows
+- preview by `IconId` validated as `FOUND` for `IconId=1001`
 
-Goal:
+## Phase 8 preview
 
-- implement the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes
+Next official scope:
 
-Must support:
-
-- preview PNG
-- `IconId`
-- search
-- selection
-- output contract `{ iconId, previewPath }`
-
-Current catalog:
-
-- `/assets/item-previews/by-icon`
-
-Current implementation notes:
-
-- backend endpoint: `GET /api/admin/v1/item-icons`
-- Angular route: `/admin/items/icon-selector`
-- source of truth: curated PNG filenames from `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/`
-
-Out of scope:
-
-- full item create/edit
-- weapon audit
-- `44k` record audit
-- mass extractors
-- `SWF` extraction
-- `D2P` extraction
-- upload
-- publish
-- gameplay changes
+- publish and QA workflow
+- controlled handoff from saved admin rows to downstream client-facing validation
+- explicit documentation for what still remains deferred after Phase 7:
+  - description publish
+  - `IsVisible` persistence
+  - PNG upload
+  - weapon-specific workflow
 
 ## Items Builder doc set
 
@@ -103,6 +91,9 @@ Key references:
 - [Future client asset intelligence](../admin-tools/items-builder/items-builder-client-asset-intelligence-future.md)
 - [Phase 6.5A audit](../admin-tools/items-builder/items-client-asset-audit-phase6-5a.md)
 - [Phase 7A icon selector](../admin-tools/items-builder/items-builder-phase7a-item-icon-selector.md)
+- [Phase 7 create/edit](../admin-tools/items-builder/items-builder-create-edit-phase7.md)
+- [Phase 7 write contracts](../admin-tools/items-builder/items-builder-write-contracts-phase7.md)
+- [Phase 7 Angular workflow](../admin-tools/items-builder/items-builder-angular-create-edit-phase7.md)
 
 ## Cross-cutting Admin migration docs
 
@@ -115,6 +106,4 @@ Key references:
 
 ## Immediate next branch
 
-After this realignment, the next intended branch is:
-
-`feature/items-builder-icon-selector-phase7a`
+After Phase 7, the next intended branch targets the publish and QA slice for Items Builder.

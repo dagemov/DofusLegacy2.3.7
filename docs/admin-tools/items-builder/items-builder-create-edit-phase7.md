@@ -1,58 +1,97 @@
 # Items Builder Create/Edit Phase 7
 
-> Status correction on `2026-06-02`: `Phase 7` is now `PAUSED` in the official roadmap. This document is preserved as exploratory reference only and must not be treated as the accepted baseline in `C:\Users\Hombr\source\repos\DofusLegacy2.3.7`.
-
 ## Snapshot
 
 - Date: `2026-06-02`
 - Branch: `feature/items-builder-create-edit-phase7`
-- Base branch: `feature/items-builder-asset-pipeline-phase6`
-- Scope type: exploratory write-slice reference, currently paused in the official roadmap
-- Previous branch baseline: `9e32ac6 feat: add items builder preview asset pipeline`
+- Base branch: `feature/items-builder-icon-selector-phase7a`
+- Workspace:
+  - `Angular-tools/Admin/RollblackLegacy.Admin.Api`
+  - `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+- Status: `DONE / LIVE`
+- Next phase: `Phase 8 - Publish / QA Workflow`
 
 ## Goal
 
-Describe the previously explored writable Items Builder slice so it can be revisited later after the official repo is realigned.
+Implement official create, edit, and duplicate workflows for non-weapon items inside the official repo while keeping the identity rule explicit:
+
+```txt
+ItemId != IconId != AppearanceId
+```
 
 Phase 7 scope:
 
 - create item
 - edit item
 - duplicate item
-- keep `ItemId`, `IconId`, and `AppearanceId` visibly and contractually separate
 - preview by `IconId` before save
-- surface `409`, `422`, `500`, and `traceId`
+- integrate `ItemIconSelector`
+- surface `422`, `409`, `500`, and `traceId`
 
 Still out of scope:
 
 - PNG upload
-- SWF or client publish
-- effects editor
-- weapon writes
-- mass import
+- client publish
+- full effects editor
+- vendor or set editors
+- weapon writes in `items_weapons`
+- mass asset import
 
-## Sunshine write constraints confirmed
+## Write schema audit
 
-The current `sunshine` schema forced a narrow write slice:
+Validated against local `sunshine` on `2026-06-02`.
 
-- `items.Id` is **not** `AUTO_INCREMENT`
-- `items.DescriptionId` is allocated from the same table, not a separate text table
-- `items` uses `MyISAM`
-- `items_weapons` is separate from `items`
-- weapon `TypeId` values must be rejected in Phase 7
-- `Description` and `IsVisible` are contract fields now, but not directly persisted by `sunshine.items`
+### Table identity
 
-Practical result:
+- Table: `sunshine.items`
+- Primary key: `Id`
+- Engine: `MyISAM`
+- `AUTO_INCREMENT`: `NO`
 
-- create and duplicate allocate `MAX(Id) + 1`
-- create and duplicate allocate `MAX(DescriptionId) + 1`
-- edit keeps the same `ItemId`
-- duplicate creates a new `ItemId` and a new `DescriptionId`
-- brand-new rows use safe defaults for unsupported runtime columns
+### Relevant columns
+
+| Column | Type | Null | Notes |
+| --- | --- | --- | --- |
+| `Id` | `int(11)` | `NO` | Runtime item identity |
+| `Weight` | `int(10) unsigned` | `NO` | Persisted directly |
+| `Name` | `mediumtext` | `NO` | Phase 7 `ResolvedName` maps here |
+| `TypeId` | `int(10) unsigned` | `NO` | Weapon `TypeId` values blocked |
+| `DescriptionId` | `int(10) unsigned` | `NO` | Allocated internally, not free text |
+| `IconId` | `int(11)` | `NO` | Inventory/admin preview identity |
+| `Level` | `int(10) unsigned` | `NO` | Persisted directly |
+| `Cursed` | `tinyint(4)` | `NO` | Safe default on create |
+| `UseAnimationId` | `int(11)` | `NO` | Safe default on create |
+| `Usable` | `tinyint(4)` | `NO` | Persisted directly |
+| `Targetable` | `tinyint(4)` | `NO` | Persisted directly |
+| `Price` | `float(16,2)` | `NO` | Persisted directly |
+| `TwoHanded` | `tinyint(4)` | `NO` | Persisted directly |
+| `Etheral` | `tinyint(4)` | `NO` | Persisted directly |
+| `ItemSetId` | `int(11)` | `NO` | `-1` when no set is linked |
+| `Criteria` | `mediumtext` | `YES` | Phase 7 writes normalized conditions |
+| `HideEffects` | `tinyint(4)` | `NO` | Safe default on create |
+| `AppearanceId` | `int(10) unsigned` | `NO` | Equipped/runtime appearance identity |
+| `RecipeIdsCSV` | `mediumtext` | `NO` | Safe default on create |
+| `FavoriteSubAreasCSV` | `mediumtext` | `NO` | Safe default on create |
+| `BonusIsSecret` | `tinyint(4)` | `NO` | Safe default on create |
+| `FavoriteSubAreasBonus` | `int(11)` | `NO` | Safe default on create |
+| `Effects` | `longtext` | `YES` | Create defaults to `0000` |
+
+### Related tables
+
+- `sunshine.items_sets`
+- `sunshine.items_weapons`
+
+### Practical write consequences
+
+- `Id` must be allocated manually as `MAX(Id) + 1`
+- `DescriptionId` must be allocated manually as `MAX(DescriptionId) + 1`
+- `Description` free text is accepted by the API contract but not persisted yet
+- `IsVisible` is accepted by the API contract but `sunshine.items` has no direct column for it
+- weapon creation remains blocked because weapon specifics live outside `items`
 
 ## Implemented backend
 
-Endpoints now implemented:
+Endpoints:
 
 - `POST /api/admin/v1/items`
 - `PUT /api/admin/v1/items/{itemId}`
@@ -62,15 +101,24 @@ Endpoints now implemented:
 Implementation notes:
 
 - controllers stay thin
-- write logic lives in `ItemsAdminWriteService`
+- write orchestration lives in `ItemsAdminWriteService`
 - SQL stays in `ItemsAdminWriteRepository`
-- `422` now returns field errors plus `traceId`
-- `409` is reserved for generated-id conflicts
+- `ValidationProblemDetails.errors` are returned for field-level Angular rendering
+- `traceId` is always included
 - preview lookup for the write form is intentionally by `IconId`
+
+### Placeholder configuration fix
+
+Phase 7 also fixed a real scaffold bug in `AdminDatabaseOptions`:
+
+- before: any password containing `change-me` was treated as placeholder
+- now: only an exact placeholder password of `change-me` is treated as non-usable
+
+That change was required so a legitimate local secret such as `change-me-app` could be used without lying that the DB was `not_configured`.
 
 ## Implemented Angular
 
-Routes now implemented:
+Routes:
 
 - `/admin/items/new`
 - `/admin/items/:itemId/edit`
@@ -78,63 +126,81 @@ Routes now implemented:
 
 UI outcomes:
 
-- list page now exposes `Create item` and `Edit` entry points
-- detail page now exposes `Edit item` and `Duplicate item`
+- list page exposes `Create item` and `Edit`
+- detail page exposes `Edit item` and `Duplicate item`
 - write form keeps the identity rule visible
-- edit and duplicate preload the current runtime row
-- preview card is reused and resolves from the current form `IconId`
-- diagnostics panel is reused for operator-facing advisories and backend warnings
-- `ProblemDetails` panel shows `traceId` and field-level errors
+- preview updates from the current form `IconId`
+- embedded `ItemIconSelector` can assign `IconId`
+- `Cancel` returns to list or source detail
+- successful save redirects to the detail route
 
 ## Validation performed
 
-Build validation:
+### Build validation
 
 - `dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln"`: `OK`
 - `npm run build`: `OK`
 
-Safe API validation:
+### Live API validation
 
-- `POST /api/admin/v1/items` with invalid payload: controlled `422`
-- `PUT /api/admin/v1/items/39` with invalid weapon type: controlled `422`
-- `POST /api/admin/v1/items/39/duplicate` with invalid weapon type: controlled `422`
-- all three now return:
-  - `traceId`
-  - `errors.resolvedName`
-  - `errors.typeId`
+Validated against the real local DB on `2026-06-02`:
 
-Browser validation:
+- `GET /api/admin/v1/health/db`: `ok`
+- `POST /api/admin/v1/items`: real create succeeded
+- `PUT /api/admin/v1/items/{newItemId}`: real update succeeded
+- `POST /api/admin/v1/items/39/duplicate`: real duplicate succeeded
+- `POST /api/admin/v1/items` invalid payload: controlled `422`
 
-- `/admin/items`: create and edit entry points visible
-- `/admin/items/new`: create shell, advisory warnings, and preview card visible
-- `/admin/items/39/edit`: form preloaded from live data, preview resolved by `IconId=1001`
-- `/admin/items/39/duplicate`: duplicate shell preloaded and explicit new-identity advisory visible
+Validated ids:
 
-## Validation intentionally not performed
+- create produced temporary `ItemId 12616`, `DescriptionId 50090`
+- update confirmed the same `ItemId 12616`
+- duplicate from `ItemId 39` produced temporary `ItemId 12617`, `DescriptionId 50091`
 
-No successful mutating write was executed against the current database during this phase.
+Validated data outcomes:
 
-Reason:
+- created detail loaded successfully
+- edited detail reflected updated `ResolvedName`, `Level`, `Weight`, and `Price`
+- duplicated detail loaded successfully
+- `previewState` resolved as `FOUND` by `IconId=1001`
+- invalid create returned `errors.resolvedName`, `errors.level`, `errors.weight`, `errors.price`, `errors.iconId`, `errors.appearanceId`, and `errors.typeId`
 
-- the current environment can reach a live-like Sunshine runtime
-- `items` is `MyISAM`
-- no rollback-safe delete path exists yet for a smoke-test row
-- leaving junk rows behind for validation was not acceptable
+### Cleanup validation
 
-Status consequence:
+Because `sunshine.items` is `MyISAM`, the validation run cleaned up the two temporary rows immediately after the smoke test.
 
-- implementation: `DONE`
-- destructive happy-path smoke test: `DEFERRED`
-- overall phase sign-off: `PARTIAL / safe validation only`
+Cleanup verified:
 
-## Remaining follow-up
+- temporary `ItemId 12616`: removed
+- temporary `ItemId 12617`: removed
+- both ids return `404` after cleanup
 
-Before this phase can resume officially:
+### Browser validation
 
-1. complete `Phase 7A - Item Icon Selector`
-2. replay accepted write contracts inside the official repo baseline
-3. run one approved happy-path create test on a disposable or backed-up Sunshine dataset
-4. confirm operator workflow around deferred `Description` and `IsVisible`
+Validated in the official Angular app:
+
+- `/admin/items/new`
+  - loads type and set options from live sources
+  - embedded icon selector opens
+  - selecting `1001.png` updates `IconId` to `1001`
+  - preview switches to `FOUND`
+- `/admin/items/39/edit`
+  - preloads live item data
+  - keeps `ItemId 39` fixed
+  - shows preview resolved by `IconId=1001`
+- `/admin/items/39/duplicate`
+  - preloads the source item
+  - explains that a new `ItemId` and `DescriptionId` will be allocated
+
+## Remaining constraints
+
+Phase 7 intentionally does not do:
+
+- direct persistence of free-text `Description`
+- direct persistence of `IsVisible`
+- PNG upload
+- publish to client assets or i18n
+- weapon writes
 
 ## Expected commit
 

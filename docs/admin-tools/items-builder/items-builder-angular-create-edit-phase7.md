@@ -1,13 +1,11 @@
 # Items Builder Angular Create/Edit Phase 7
 
-> Status correction on `2026-06-02`: `Phase 7` is now `PAUSED` in the official roadmap. This document is preserved as exploratory reference only and must not be treated as the accepted baseline in `C:\Users\Hombr\source\repos\DofusLegacy2.3.7`.
-
 ## Snapshot
 
 - Date: `2026-06-02`
 - Branch: `feature/items-builder-create-edit-phase7`
-- Workspace: `src/Admin/RollblackLegacy.Admin.Angular`
-- Scope type: exploratory writable form workflow, currently paused in the official roadmap
+- Workspace: `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+- Status: `DONE / LIVE`
 
 ## Routes
 
@@ -17,14 +15,14 @@ Implemented:
 - `/admin/items/:itemId/edit`
 - `/admin/items/:itemId/duplicate`
 
-Entry points now visible from:
+Entry points visible from:
 
 - `/admin/items`
 - `/admin/items/:itemId`
 
 ## Main component
 
-Phase 7 adds:
+Phase 7 uses:
 
 ```txt
 src/app/admin/items/item-write-page.component.ts
@@ -48,12 +46,13 @@ Still reused instead of reinvented:
 - `api-problem-panel.component.ts`
 - `item-preview-card.component.ts`
 - `item-diagnostic-panel.component.ts`
+- `item-icon-selector.component.ts`
 
 Reason:
 
-- keep the controller/service contract honest
+- keep the controller and service contract honest
 - keep `traceId` handling identical
-- keep preview/debug behavior consistent with read-only detail
+- keep preview and diagnostics behavior consistent with the read-only slice
 
 ## Frontend behavior
 
@@ -67,6 +66,26 @@ Implemented:
 - show backend warnings after save
 - show `ValidationProblemDetails.errors` by field
 - show `traceId` when backend rejects the request
+- redirect to detail after successful save
+- preserve form values on failure
+- provide `Cancel`
+
+## ItemIconSelector integration
+
+The write form now embeds the selector instead of forcing blind `IconId` entry.
+
+Supported flow:
+
+- operator clicks `Choose icon`
+- embedded selector opens
+- operator selects a PNG-backed icon
+- form updates `IconId`
+- preview refreshes immediately
+- current logical preview path is shown
+
+The selector also still supports the full route:
+
+- `/admin/items/icon-selector`
 
 ## Important UX rules
 
@@ -78,28 +97,42 @@ Implemented:
 
 ## Browser validation outcome
 
-Validated visually:
+Validated visually in the official Angular app:
 
-- list page shows `Create item`
-- list rows show `Edit`
-- detail page shows `Edit item` and `Duplicate item`
-- edit route preloads `itemId=39`
-- duplicate route preloads `itemId=39`
-- preview for `IconId=1001` renders as `FOUND`
+- `/admin/items/new`
+  - route loads from the official repo workspace
+  - embedded icon selector opens
+  - selecting `1001.png` updates `IconId` to `1001`
+  - preview switches to `FOUND`
+  - current preview path shows `/assets/item-previews/by-icon/1001.png`
+- `/admin/items/39/edit`
+  - live data preloads successfully
+  - `ResolvedName` is populated
+  - `TypeId=1` and `IconId=1001` stay visible
+  - preview renders as `FOUND`
+- `/admin/items/39/duplicate`
+  - source data preloads successfully
+  - duplicate advisory explains new identities
+  - preview stays resolved by `IconId`
 
-Known limitation during browser automation:
+## Validation split
 
-- the in-app browser runtime in this session could inspect routes reliably, but text entry automation was limited by its clipboard/input bridge
-- because of that, live browser validation focused on route load, preloaded values, preview state, and advisory rendering
-- actual payload rejection was validated safely through direct HTTP calls instead
+Browser validation focused on:
+
+- route load
+- live data preload
+- icon selection behavior
+- preview state rendering
+- diagnostics rendering
+
+Actual create, update, and duplicate mutations were validated through the live Admin API with immediate cleanup, not through browser submit automation, to keep the smoke test controlled and reversible.
 
 ## Deferred follow-up
 
 Still for later:
 
-- `Phase 7A - Item Icon Selector`
-- successful destructive smoke test on a safe DB copy
+- publish workflow
 - manual PNG upload
-- description publish flow
+- `Description` publish flow
 - `IsVisible` persistence strategy
 - weapon-specific workflow

@@ -2,18 +2,20 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, finalize, forkJoin, of, switchMap } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
+import { ItemIconSelectorComponent } from './item-icon-selector.component';
 import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
   AdminOptionDto,
   AdminWarningLike,
   ItemDetailDto,
+  ItemIconSelection,
   ItemPreviewStateDto,
   ItemWriteBundle,
   ItemWriteMode,
@@ -54,7 +56,8 @@ type ItemWriteFieldName = keyof ItemWriteFormControls;
     RouterLink,
     ApiProblemPanelComponent,
     ItemPreviewCardComponent,
-    ItemDiagnosticPanelComponent
+    ItemDiagnosticPanelComponent,
+    ItemIconSelectorComponent
   ],
   templateUrl: './item-write-page.component.html',
   styleUrl: './item-write-page.component.scss'
@@ -62,6 +65,7 @@ type ItemWriteFieldName = keyof ItemWriteFormControls;
 export class ItemWritePageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly itemsFacade = inject(ItemsFacade);
   private readonly ngZone = inject(NgZone);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
@@ -102,6 +106,8 @@ export class ItemWritePageComponent implements OnInit {
   protected isLoading = false;
   protected isSaving = false;
   protected isLoadingPreview = false;
+  protected isIconSelectorOpen = false;
+  protected selectedIconPreviewPath: string | null = null;
 
   ngOnInit(): void {
     this.form.controls.iconId.valueChanges
@@ -252,6 +258,10 @@ export class ItemWritePageComponent implements OnInit {
     return this.isLoading || this.isSaving || this.typeOptions.length === 0;
   }
 
+  protected get currentPreviewPath(): string | null {
+    return this.previewState.resolvedPath || this.selectedIconPreviewPath;
+  }
+
   protected submit(): void {
     this.hasTriedSubmit = true;
     this.form.markAllAsTouched();
@@ -297,8 +307,16 @@ export class ItemWritePageComponent implements OnInit {
         this.ngZone.run(() => {
           this.saveResult = result;
           this.previewState = result.previewState;
+          this.selectedIconPreviewPath = result.previewState.resolvedPath || result.previewState.byIconPath || null;
           this.advisoryWarnings = result.warnings;
           this.refreshView();
+        });
+
+        void this.router.navigate(['/admin/items', result.itemId], {
+          queryParams: {
+            saved: 1,
+            writeOperation: result.operation
+          }
         });
       });
   }
@@ -307,6 +325,28 @@ export class ItemWritePageComponent implements OnInit {
     this.clearWriteFeedback();
     this.applyFormState(this.sourceDetail);
     void this.refreshPreviewState();
+  }
+
+  protected cancel(): void {
+    if (this.sourceItemId) {
+      void this.router.navigate(['/admin/items', this.sourceItemId]);
+      return;
+    }
+
+    void this.router.navigate(['/admin/items']);
+  }
+
+  protected toggleIconSelector(): void {
+    this.isIconSelectorOpen = !this.isIconSelectorOpen;
+    this.refreshView();
+  }
+
+  protected applySelectedIcon(selection: ItemIconSelection): void {
+    this.selectedIconPreviewPath = selection.previewPath;
+    this.form.controls.iconId.setValue(selection.iconId);
+    this.form.controls.iconId.markAsDirty();
+    this.isIconSelectorOpen = false;
+    this.refreshView();
   }
 
   protected resolveSetName(setId: number | null | undefined): string {
@@ -369,7 +409,7 @@ export class ItemWritePageComponent implements OnInit {
     return forkJoin({
       sourceDetail: sourceItemId ? this.itemsFacade.getItem(sourceItemId) : of(null),
       typeOptions: this.itemsFacade.ensureTypeOptions(),
-      itemSetOptions: this.itemsFacade.ensureItemSetOptions()
+      itemSetOptions: this.itemsFacade.ensureItemSetOptions().pipe(catchError(() => of([])))
     });
   }
 
@@ -421,6 +461,8 @@ export class ItemWritePageComponent implements OnInit {
     this.form.markAsPristine();
     this.form.markAsUntouched();
     this.hasTriedSubmit = false;
+    this.isIconSelectorOpen = false;
+    this.selectedIconPreviewPath = null;
     this.advisoryWarnings = this.buildAdvisoryWarnings();
     this.refreshView();
   }
@@ -466,6 +508,7 @@ export class ItemWritePageComponent implements OnInit {
 
     if (iconId === null || iconId === undefined || iconId < 0) {
       this.previewState = createUnknownPreviewState();
+      this.selectedIconPreviewPath = null;
       this.advisoryWarnings = this.buildAdvisoryWarnings();
       this.refreshView();
       return;
@@ -473,6 +516,7 @@ export class ItemWritePageComponent implements OnInit {
 
     if (iconId === 0) {
       this.previewState = createUnknownPreviewState();
+      this.selectedIconPreviewPath = null;
       this.advisoryWarnings = this.buildAdvisoryWarnings();
       this.refreshView();
       return;
@@ -493,6 +537,7 @@ export class ItemWritePageComponent implements OnInit {
 
             const problem = toAdminApiProblem(error);
             this.previewState = createUnknownPreviewState();
+            this.selectedIconPreviewPath = null;
             this.saveProblem = this.saveProblem ?? (problem.status && problem.status >= 500 ? problem : null);
             this.refreshView();
           });
@@ -517,6 +562,7 @@ export class ItemWritePageComponent implements OnInit {
           }
 
           this.previewState = previewState;
+          this.selectedIconPreviewPath = previewState.resolvedPath || previewState.byIconPath || null;
           this.advisoryWarnings = this.buildAdvisoryWarnings();
           this.refreshView();
         });

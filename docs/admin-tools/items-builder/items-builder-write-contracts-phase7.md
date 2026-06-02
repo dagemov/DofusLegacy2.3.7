@@ -1,10 +1,8 @@
 # Items Builder Write Contracts Phase 7
 
-> Status correction on `2026-06-02`: `Phase 7` is now `PAUSED` in the official roadmap. This contract remains reference material only until write work resumes inside the official repo.
-
 ## Purpose
 
-Freeze the minimum write contract used by Phase 7 create, edit, and duplicate without pretending that every field already persists all the way into the client.
+Freeze the official write contract used by Phase 7 create, edit, and duplicate inside the official repo without pretending that every future publish concern already persists all the way into the client.
 
 ## Request payload
 
@@ -83,7 +81,7 @@ Phase 7 warning policy:
 
 ## Validation rules
 
-Server-side rules currently enforced:
+Server-side rules enforced:
 
 - `resolvedName` required
 - `typeId` must resolve to a known item type
@@ -98,18 +96,18 @@ Server-side rules currently enforced:
 
 ## Error contract
 
-Write failures use `ProblemDetails` / `ValidationProblemDetails`.
+Write failures use `ProblemDetails` or `ValidationProblemDetails`.
 
 Phase 7 guarantees:
 
 - `400` for invalid route/query shape
-- `404` for missing source item on edit/duplicate
+- `404` for missing source item on edit or duplicate
 - `409` for generated-id conflicts
 - `422` for write payload validation
 - `500` for configuration or DB failures
 - `traceId` always exposed
 
-Field errors now serialize correctly for Angular via:
+Field errors serialize for Angular through:
 
 ```txt
 errors.resolvedName
@@ -170,6 +168,17 @@ For brand-new rows, Phase 7 create uses controlled defaults for unsupported colu
 - `FavoriteSubAreasBonus = 0`
 - `Effects = "0000"`
 
+## Local configuration note
+
+The development guard only treats an exact password of `change-me` as placeholder.
+
+That means:
+
+- `Password=change-me` -> blocked as `not_configured`
+- `Password=change-me-app` -> treated as a usable local secret
+
+This avoids false negatives in local DB validation while still protecting the example config committed to Git.
+
 ## Explicit non-goals
 
 Not part of Phase 7:
@@ -178,4 +187,4 @@ Not part of Phase 7:
 - text publish to client i18n
 - PNG upload
 - client pack publish
-- SWF/D2P extraction
+- SWF or D2P extraction
