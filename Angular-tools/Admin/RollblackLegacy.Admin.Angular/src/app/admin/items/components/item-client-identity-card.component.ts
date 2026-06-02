@@ -38,12 +38,12 @@ export class ItemClientIdentityCardComponent {
   protected copyLabel(field: string): string {
     switch (this.copyState.get(field)) {
       case 'copied':
-        return 'Copied';
+        return 'Copiado';
       case 'manual':
       case 'unavailable':
         return 'Manual';
       default:
-        return 'Copy';
+        return 'Copiar';
     }
   }
 
@@ -52,7 +52,7 @@ export class ItemClientIdentityCardComponent {
     return status === 'manual' || status === 'unavailable';
   }
 
-  protected displayValue(value: number | string | null | undefined, fallback = 'Unavailable'): string {
+  protected displayValue(value: number | string | null | undefined, fallback = 'No disponible'): string {
     return value === null || value === undefined || value === '' ? fallback : `${value}`;
   }
 

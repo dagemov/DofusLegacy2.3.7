@@ -149,8 +149,8 @@ export class ItemWritePageComponent implements OnInit {
           if ((nextMode === 'edit' || nextMode === 'duplicate') && !nextSourceItemId) {
             this.ngZone.run(() => {
               this.loadProblem = {
-                title: 'Invalid item id',
-                detail: 'Edit and duplicate routes require a positive item id.',
+                title: 'ItemId inválido',
+                detail: 'Las rutas de editar y duplicar requieren un ItemId positivo.',
                 status: 400
               };
               this.isLoading = false;
@@ -197,49 +197,49 @@ export class ItemWritePageComponent implements OnInit {
   protected get pageEyebrow(): string {
     switch (this.mode) {
       case 'edit':
-        return 'Items Builder / Edit';
+        return 'Items Builder / Editar';
       case 'duplicate':
-        return 'Items Builder / Duplicate';
+        return 'Items Builder / Duplicar';
       default:
-        return 'Items Builder / Create';
+        return 'Items Builder / Crear';
     }
   }
 
   protected get pageTitle(): string {
     switch (this.mode) {
       case 'edit':
-        return 'Edit item';
+        return 'Editar item';
       case 'duplicate':
-        return 'Duplicate item';
+        return 'Duplicar item';
       default:
-        return 'Create item';
+        return 'Crear item';
     }
   }
 
   protected get pageDescription(): string {
     switch (this.mode) {
       case 'edit':
-        return 'Update the supported sunshine.items fields while keeping ItemId fixed and previewing by IconId.';
+        return 'Actualiza los campos soportados de sunshine.items manteniendo fijo el ItemId y previsualizando por IconId.';
       case 'duplicate':
-        return 'Create a new item from an existing template without reusing the source ItemId or DescriptionId.';
+        return 'Crea un nuevo item desde una plantilla existente sin reutilizar el ItemId ni el DescriptionId de origen.';
       default:
-        return 'Create a new non-weapon item row in sunshine.items with explicit identity fields and preview by IconId.';
+        return 'Crea una nueva fila no-weapon en sunshine.items con campos de identidad explícitos y preview por IconId.';
     }
   }
 
   protected get submitLabel(): string {
     switch (this.mode) {
       case 'edit':
-        return 'Save changes';
+        return 'Guardar cambios';
       case 'duplicate':
-        return 'Duplicate item';
+        return 'Duplicar item';
       default:
-        return 'Create item';
+        return 'Crear item';
     }
   }
 
   protected get resetLabel(): string {
-    return this.mode === 'create' ? 'Clear form' : 'Reset to source';
+    return this.mode === 'create' ? 'Limpiar formulario' : 'Restablecer desde origen';
   }
 
   protected get previewContextItemId(): number | null {
@@ -351,7 +351,7 @@ export class ItemWritePageComponent implements OnInit {
 
   protected resolveSetName(setId: number | null | undefined): string {
     if (!setId) {
-      return 'No set';
+      return 'Sin set';
     }
 
     const option = this.itemSetOptions.find((entry) => entry.value === setId);
@@ -375,30 +375,30 @@ export class ItemWritePageComponent implements OnInit {
     if (control.hasError('required')) {
       switch (fieldName) {
         case 'resolvedName':
-          return 'ResolvedName is required.';
+          return 'El nombre visible del item es obligatorio.';
         case 'typeId':
-          return 'TypeId is required.';
+          return 'Debes seleccionar un tipo de item.';
         case 'level':
-          return 'Level is required.';
+          return 'El nivel es obligatorio.';
         default:
-          return 'This field is required.';
+          return 'Este campo es obligatorio.';
       }
     }
 
     if (control.hasError('min')) {
       switch (fieldName) {
         case 'level':
-          return 'Level must be greater than or equal to 1.';
+          return 'El nivel debe ser mayor o igual a 1.';
         case 'weight':
-          return 'Weight must be greater than or equal to 0.';
+          return 'El peso debe ser mayor o igual a 0.';
         case 'price':
-          return 'Price must be greater than or equal to 0.';
+          return 'El precio debe ser mayor o igual a 0.';
         case 'iconId':
-          return 'IconId must be greater than or equal to 0.';
+          return 'El IconId debe ser mayor o igual a 0.';
         case 'appearanceId':
-          return 'AppearanceId must be greater than or equal to 0.';
+          return 'El AppearanceId debe ser mayor o igual a 0.';
         default:
-          return 'This value is below the supported minimum.';
+          return 'Este valor está por debajo del mínimo soportado.';
       }
     }
 
@@ -575,19 +575,19 @@ export class ItemWritePageComponent implements OnInit {
       {
         code: 'IDENTITY_RULE_REMINDER',
         severity: 'info',
-        message: 'ItemId, IconId, and AppearanceId stay separate. Preview is resolved by IconId in the write form.',
+        message: 'ItemId, IconId y AppearanceId siguen separados. El preview del formulario se resuelve por IconId.',
         field: null
       },
       {
         code: 'DESCRIPTION_NOT_PERSISTED',
         severity: 'warning',
-        message: 'Description is accepted in the contract for future publish flow, but Phase 7 does not persist client text yet.',
+        message: 'Description existe en el contrato para el publish futuro, pero todavía no persiste texto de cliente.',
         field: 'description'
       },
       {
         code: 'IS_VISIBLE_NOT_PERSISTED',
         severity: 'info',
-        message: 'IsVisible is tracked in the form for future workflow alignment, but sunshine.items has no direct column for it yet.',
+        message: 'IsVisible se mantiene en el formulario para el workflow futuro, pero sunshine.items todavía no tiene una columna directa.',
         field: 'isVisible'
       }
     ];
@@ -596,7 +596,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'NO_ITEM_SET',
         severity: 'info',
-        message: 'This item will be saved without an item set link.',
+        message: 'Este item se guardará sin vínculo a un item set.',
         field: 'setId'
       });
     }
@@ -605,7 +605,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'ICON_ID_ZERO',
         severity: 'warning',
-        message: 'IconId <= 0 means preview and client identity will remain weak until a valid client icon is assigned.',
+        message: 'Un IconId <= 0 deja débil la identidad cliente y el preview hasta asignar un icono válido.',
         field: 'iconId'
       });
     }
@@ -614,7 +614,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'APPEARANCE_ID_ZERO',
         severity: 'info',
-        message: 'AppearanceId <= 0 is allowed, but equipped look identity will stay unresolved.',
+        message: 'AppearanceId <= 0 está permitido, pero la apariencia equipada quedará sin resolver.',
         field: 'appearanceId'
       });
     }
@@ -623,7 +623,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'PREVIEW_NOT_RESOLVED',
         severity: 'warning',
-        message: 'No preview PNG is currently resolved for this IconId. Save is still allowed.',
+        message: 'Todavía no hay un PNG resuelto para este IconId. Guardar sigue permitido.',
         field: 'iconId'
       });
     }
@@ -632,7 +632,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'DUPLICATE_ALLOCATES_NEW_IDENTITIES',
         severity: 'info',
-        message: `Duplicating item #${this.sourceItemId} will allocate a new ItemId and a new DescriptionId on save.`,
+        message: `Duplicar el item #${this.sourceItemId} asignará un nuevo ItemId y un nuevo DescriptionId al guardar.`,
         field: null
       });
     }
@@ -641,7 +641,7 @@ export class ItemWritePageComponent implements OnInit {
       warnings.push({
         code: 'EDIT_KEEPS_ITEM_ID',
         severity: 'info',
-        message: `Editing item #${this.sourceItemId} keeps the same ItemId. Preview is still evaluated by the current IconId in the form.`,
+        message: `Editar el item #${this.sourceItemId} conserva el mismo ItemId. El preview sigue evaluándose por el IconId actual del formulario.`,
         field: null
       });
     }

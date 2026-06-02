@@ -3,9 +3,9 @@
     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
       <div>
         <p class="text-uppercase small fw-semibold text-secondary mb-1">QA / Publish Readiness</p>
-        <h3 class="h5 mb-1">Derived workflow status</h3>
+        <h3 class="h5 mb-1">Estado derivado del workflow</h3>
         <p class="text-secondary mb-0">
-          Virtual readiness summary only. This phase does not publish client data or mutate workflow fields.
+          Resumen virtual de readiness. Esta fase no publica datos de cliente ni muta campos de workflow.
         </p>
       </div>
 
@@ -17,40 +17,40 @@
     <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
 
     <div *ngIf="isLoading" class="alert alert-light border mb-0">
-      Building QA readiness summary...
+      Armando resumen de QA readiness...
     </div>
 
     <ng-container *ngIf="qaSummary">
       <div class="row g-3">
         <div class="col-6">
           <div class="qa-metric">
-            <span class="qa-metric__label">Can QA</span>
+            <span class="qa-metric__label">Puede QA</span>
             <strong [class.text-success]="qaSummary.canQa" [class.text-danger]="!qaSummary.canQa">
-              {{ qaSummary.canQa ? 'Yes' : 'No' }}
+              {{ qaSummary.canQa ? 'Si' : 'No' }}
             </strong>
           </div>
         </div>
         <div class="col-6">
           <div class="qa-metric">
-            <span class="qa-metric__label">Can publish</span>
+            <span class="qa-metric__label">Puede publicar</span>
             <strong [class.text-success]="qaSummary.canPublish" [class.text-danger]="!qaSummary.canPublish">
-              {{ qaSummary.canPublish ? 'Yes' : 'No' }}
+              {{ qaSummary.canPublish ? 'Si' : 'No' }}
             </strong>
           </div>
         </div>
         <div class="col-6">
           <div class="qa-metric">
-            <span class="qa-metric__label">Preview readiness</span>
+            <span class="qa-metric__label">Estado de preview</span>
             <strong [class.text-success]="previewReady" [class.text-danger]="!previewReady">
-              {{ previewReady ? 'Ready' : 'Blocked' }}
+              {{ previewReady ? 'Listo' : 'Bloqueado' }}
             </strong>
           </div>
         </div>
         <div class="col-6">
           <div class="qa-metric">
-            <span class="qa-metric__label">Identity readiness</span>
+            <span class="qa-metric__label">Estado de identidad</span>
             <strong [class.text-success]="identityReady" [class.text-danger]="!identityReady">
-              {{ identityReady ? 'Ready' : 'Review' }}
+              {{ identityReady ? 'Listo' : 'Revisar' }}
             </strong>
           </div>
         </div>
@@ -64,32 +64,32 @@
       </div>
 
       <div>
-        <p class="fw-semibold mb-2">Blocking reasons</p>
+        <p class="fw-semibold mb-2">Motivos de bloqueo</p>
         <ul *ngIf="qaSummary.blockingReasons.length > 0; else noBlockers" class="mb-0 ps-3">
           <li *ngFor="let reason of qaSummary.blockingReasons" class="mb-2">{{ reason }}</li>
         </ul>
         <ng-template #noBlockers>
           <div class="alert alert-success border mb-0">
-            No derived blockers were found for QA. Publish still stays disabled in this phase by design.
+            No se detectaron bloqueos derivados para QA. Publish sigue deshabilitado por diseno en esta fase.
           </div>
         </ng-template>
       </div>
 
       <div>
-        <p class="fw-semibold mb-2">Recommended manual checks</p>
+        <p class="fw-semibold mb-2">Checks manuales recomendados</p>
         <ol class="mb-0 ps-3">
           <li *ngFor="let check of qaSummary.recommendedChecks" class="mb-2">{{ check }}</li>
         </ol>
       </div>
 
       <div class="alert alert-warning border mb-0">
-        <strong>Mark ready for QA</strong> stays disabled in Phase 8 because there is no persisted workflow field in
+        <strong>Marcar listo para QA</strong> sigue deshabilitado porque no existe un campo persistido de workflow en
         <span class="font-monospace-soft">sunshine.items</span> yet.
       </div>
 
       <div class="d-flex flex-wrap gap-2">
         <button type="button" class="btn btn-secondary" disabled>
-          Mark ready for QA
+          Marcar listo para QA
         </button>
         <button
           type="button"
@@ -99,14 +99,14 @@
           {{ copyChecklistLabel }}
         </button>
         <a *ngIf="itemId" class="btn btn-outline-secondary" [routerLink]="['/admin/items', itemId]">
-          Open item detail
+          Abrir detalle del item
         </a>
       </div>
 
       <p *ngIf="clipboardHint" class="small text-secondary mb-0">{{ clipboardHint }}</p>
 
       <div *ngIf="showManualChecklist" class="alert alert-light border mb-0">
-        <p class="fw-semibold mb-2">Manual copy fallback</p>
+        <p class="fw-semibold mb-2">Fallback de copia manual</p>
         <pre class="manual-checklist mb-0">{{ manualChecklistText }}</pre>
       </div>
     </ng-container>

@@ -4,4 +4,8 @@ public sealed record AdminDatabaseHealthProbeResult(
     string Status,
     string Database,
     string Message,
-    DateTimeOffset CheckedAtUtc);
+    DateTimeOffset CheckedAtUtc,
+    string? Host,
+    int? Port,
+    string? User,
+    bool? IsRemote);

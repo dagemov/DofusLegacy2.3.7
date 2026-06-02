@@ -60,6 +60,7 @@
       <tr><td>Phase 7A - Item Icon Selector</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7 - Item Create/Edit</td><td><code>DONE / LIVE</code></td></tr>
       <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>DONE</code></td></tr>
+      <tr><td>Post-Phase 8 Stabilization / VPS Data / Assets / UX</td><td><code>DONE</code></td></tr>
       <tr><td>Items Builder MVP</td><td><code>DONE / CLIENT PUBLISH PENDING</code></td></tr>
     </tbody>
   </table>
@@ -94,6 +95,17 @@
     <li>Weapon-specific workflow</li>
   </ul>
 
+  <h2>Post-Phase 8 stabilization checkpoint</h2>
+  <ul>
+    <li><code>GET /api/admin/v1/health/db</code> now exposes safe target fields for <code>host</code>, <code>port</code>, <code>user</code>, and <code>isRemote</code>.</li>
+    <li>The current working path is confirmed as <code>Angular -&gt; local Admin API -&gt; local Sunshine MySQL</code>.</li>
+    <li>Item-type options are confirmed to come from <code>Sunshine.Protocol/Enums/ItemTypeEnum.cs</code>, not from DB rows.</li>
+    <li>Item-set options are confirmed to come from <code>sunshine.items_sets</code>.</li>
+    <li>Shared Angular problem messaging is now more human and operator-facing in Spanish.</li>
+    <li>A first controlled PNG import wave added <code>1002.png</code> through <code>1012.png</code> from the approved <code>amuletos_png</code> source.</li>
+    <li>Safe restart scripts were added for future World-only restarts, but live VPS validation is currently blocked by SSH <code>Permission denied (publickey)</code>.</li>
+  </ul>
+
   <h2>References</h2>
   <ul>
     <li><code>docs/admin-tools/items-builder/</code></li>
@@ -102,6 +114,10 @@
     <li><code>docs/admin-tools/items-builder/items-builder-publish-qa-phase8.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-qa-checklist.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-future-client-publish.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-vps-qa-stabilization.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-options-loading-fix.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-png-import-plan.md</code></li>
+    <li><code>docs/infrastructure/vps-world-restart-flow.md</code></li>
   </ul>
 </body>
 </html>

@@ -300,15 +300,32 @@ export function toAdminApiProblem(error: unknown): AdminApiProblem {
       error.error && typeof error.error === 'object'
         ? (error.error as Partial<AdminApiProblem>)
         : undefined;
+    const isNetworkFailure = error.status === 0;
+    const isHttp200ParseFailure =
+      error.status === 200 &&
+      (error.error instanceof Error ||
+        (!!error.message && error.message.toLowerCase().includes('parsing')));
 
     return {
       type: payload?.type,
-      title: payload?.title || error.statusText || 'Admin API request failed',
+      title:
+        payload?.title ||
+        (isNetworkFailure
+          ? 'No se pudo conectar con el Admin API.'
+          : isHttp200ParseFailure
+            ? 'La respuesta del servidor no tiene el formato esperado.'
+            : 'No se pudo completar la solicitud.'),
       status: payload?.status ?? error.status,
       detail:
         payload?.detail ||
+        (isNetworkFailure
+          ? 'Verifica que el Admin API esté levantado y que el proxy apunte a la URL correcta.'
+          : undefined) ||
+        (isHttp200ParseFailure
+          ? 'La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse correctamente.'
+          : undefined) ||
         (typeof error.error === 'string' ? error.error : undefined) ||
-        'The request could not be completed.',
+        'No se pudo completar la solicitud.',
       instance: payload?.instance,
       traceId: readTraceId(payload),
       errors: readValidationErrors(payload)
@@ -317,14 +334,14 @@ export function toAdminApiProblem(error: unknown): AdminApiProblem {
 
   if (error instanceof Error) {
     return {
-      title: 'Unexpected client error',
+      title: 'Error inesperado del cliente',
       detail: error.message
     };
   }
 
   return {
-    title: 'Unexpected client error',
-    detail: 'The request failed before a problem payload could be parsed.'
+    title: 'Error inesperado del cliente',
+    detail: 'La solicitud falló antes de poder interpretar una respuesta del servidor.'
   };
 }
 

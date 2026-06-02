@@ -1,16 +1,16 @@
 <section class="d-grid gap-4">
   <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
     <div>
-      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Back to items</a>
-      <h2 class="h4 mb-1">Item detail</h2>
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
+      <h2 class="h4 mb-1">Detalle de item</h2>
       <p class="text-secondary mb-0">
-        Operator-facing runtime detail, explicit identity projection, preview state, and diagnostics before entering the write flow.
+        Vista operativa de runtime, identidad explicita, estado de preview y diagnosticos antes de entrar al flujo de escritura.
       </p>
     </div>
 
     <div class="d-flex flex-column align-items-lg-end gap-2">
       <div class="alert admin-rule-banner py-2 px-3 mb-0">
-        <strong>Identity rule:</strong>
+        <strong>Regla de identidad:</strong>
         <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
       </div>
       <div *ngIf="itemId" class="d-flex flex-wrap gap-2 justify-content-lg-end">
@@ -18,11 +18,11 @@
           class="btn btn-outline-secondary"
           [routerLink]="['/admin/items/icon-selector']"
           [queryParams]="{ iconId: detail?.iconId ?? resolvedIdentity?.iconId ?? null }">
-          Open icon selector
+          Abrir selector de iconos
         </a>
-        <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Edit item</a>
+        <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Editar item</a>
         <a class="btn btn-outline-primary" [routerLink]="['/admin/items', itemId, 'duplicate']">
-          Duplicate item
+          Duplicar item
         </a>
       </div>
     </div>
@@ -31,7 +31,7 @@
   <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
 
   <div *ngIf="isLoading" class="card admin-card border-0">
-    <div class="card-body text-secondary">Loading item detail...</div>
+    <div class="card-body text-secondary">Cargando detalle del item...</div>
   </div>
 
   <div *ngIf="itemId" class="row g-4">
@@ -68,9 +68,9 @@
           <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-3">
             <div>
               <p class="text-uppercase small fw-semibold text-secondary mb-1">Effects</p>
-              <h3 class="h5 mb-0">Read-only effect projection</h3>
+              <h3 class="h5 mb-0">Proyeccion read-only de efectos</h3>
             </div>
-            <span class="text-secondary small">{{ detail?.effects?.length ?? 0 }} effect(s)</span>
+            <span class="text-secondary small">{{ detail?.effects?.length ?? 0 }} efecto(s)</span>
           </div>
 
           <div *ngIf="detail; else effectsUnavailable" class="table-responsive">
@@ -81,7 +81,7 @@
                   <th>DiceNum</th>
                   <th>DiceSide</th>
                   <th>Value</th>
-                  <th>Description</th>
+                  <th>Descripcion</th>
                 </tr>
               </thead>
               <tbody>
@@ -94,7 +94,7 @@
                 </tr>
                 <tr *ngIf="detail.effects.length === 0">
                   <td colspan="5" class="text-center text-secondary py-4">
-                    No effects were returned for this item.
+                    No se devolvieron efectos para este item.
                   </td>
                 </tr>
               </tbody>
@@ -103,7 +103,7 @@
 
           <ng-template #effectsUnavailable>
             <div class="alert alert-light border mb-0">
-              Effect projection will appear once runtime detail is available from the Admin API.
+              La proyeccion de efectos aparecera cuando el Admin API pueda resolver el detalle runtime.
             </div>
           </ng-template>
         </div>

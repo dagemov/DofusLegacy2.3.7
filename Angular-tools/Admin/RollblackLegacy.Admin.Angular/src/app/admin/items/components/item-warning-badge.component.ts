@@ -22,6 +22,13 @@ export class ItemWarningBadgeComponent {
   }
 
   protected get label(): string {
-    return (this.severity || 'info').toUpperCase();
+    switch ((this.severity || 'info').toLowerCase()) {
+      case 'warning':
+        return 'ALERTA';
+      case 'error':
+        return 'ERROR';
+      default:
+        return 'INFO';
+    }
   }
 }

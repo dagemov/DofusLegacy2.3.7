@@ -2,14 +2,14 @@
   <div class="card-body d-grid gap-4">
     <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between">
       <div>
-        <p class="text-uppercase small fw-semibold text-secondary mb-1">Runtime item data</p>
-        <h3 class="h4 mb-1">{{ detail?.resolvedName || 'Runtime detail unavailable' }}</h3>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Datos runtime del item</p>
+        <h3 class="h4 mb-1">{{ detail?.resolvedName || 'Detalle runtime no disponible' }}</h3>
         <p class="text-secondary mb-0">
-          Runtime DB projection kept separate from client metadata and manual assets.
+          La proyeccion de base runtime se mantiene separada de la metadata cliente y de los assets manuales.
         </p>
       </div>
       <div class="runtime-note rounded-3 px-3 py-2">
-        <div class="small text-uppercase fw-semibold mb-1">Identity separation</div>
+        <div class="small text-uppercase fw-semibold mb-1">Separacion de identidad</div>
         <div class="font-monospace-soft">ItemId != IconId != AppearanceId</div>
       </div>
     </div>
@@ -21,7 +21,7 @@
             <div>
               <div class="detail-label">ItemId</div>
               <div class="font-monospace-soft fs-5">
-                {{ displayValue(detail?.itemId ?? routeItemId, 'Unknown') }}
+                {{ displayValue(detail?.itemId ?? routeItemId, 'Desconocido') }}
               </div>
             </div>
             <button
@@ -32,9 +32,9 @@
               {{ copyLabel('itemId') }}
             </button>
           </div>
-          <div class="small text-secondary mt-2">Stable runtime template identifier.</div>
+          <div class="small text-secondary mt-2">Identificador estable de plantilla runtime.</div>
           <div *ngIf="shouldShowManualValue('itemId')" class="small text-secondary mt-2">
-            Manual copy value: <span class="font-monospace-soft">{{ displayValue(detail?.itemId ?? routeItemId, 'Unknown') }}</span>
+            Valor para copia manual: <span class="font-monospace-soft">{{ displayValue(detail?.itemId ?? routeItemId, 'Desconocido') }}</span>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@
           <div class="d-flex align-items-start justify-content-between gap-2">
             <div>
               <div class="detail-label">IconId</div>
-              <div class="font-monospace-soft fs-5">{{ displayValue(detail?.iconId, 'Unavailable') }}</div>
+              <div class="font-monospace-soft fs-5">{{ displayValue(detail?.iconId, 'No disponible') }}</div>
             </div>
             <button
               type="button"
@@ -54,9 +54,9 @@
               {{ copyLabel('iconId') }}
             </button>
           </div>
-          <div class="small text-secondary mt-2">Client icon reference, not the item template id.</div>
+          <div class="small text-secondary mt-2">Referencia de icono cliente, no el ItemId.</div>
           <div *ngIf="shouldShowManualValue('iconId')" class="small text-secondary mt-2">
-            Manual copy value: <span class="font-monospace-soft">{{ displayValue(detail?.iconId, 'Unavailable') }}</span>
+            Valor para copia manual: <span class="font-monospace-soft">{{ displayValue(detail?.iconId, 'No disponible') }}</span>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
             <div>
               <div class="detail-label">AppearanceId</div>
               <div class="font-monospace-soft fs-5">
-                {{ displayValue(detail?.appearanceId, 'Unavailable') }}
+                {{ displayValue(detail?.appearanceId, 'No disponible') }}
               </div>
             </div>
             <button
@@ -78,9 +78,9 @@
               {{ copyLabel('appearanceId') }}
             </button>
           </div>
-          <div class="small text-secondary mt-2">Appearance or look mapping used by the client.</div>
+          <div class="small text-secondary mt-2">Apariencia o look usado por el cliente.</div>
           <div *ngIf="shouldShowManualValue('appearanceId')" class="small text-secondary mt-2">
-            Manual copy value: <span class="font-monospace-soft">{{ displayValue(detail?.appearanceId, 'Unavailable') }}</span>
+            Valor para copia manual: <span class="font-monospace-soft">{{ displayValue(detail?.appearanceId, 'No disponible') }}</span>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
     <div *ngIf="detail; else runtimeUnavailable" class="row g-3">
       <div class="col-6 col-md-4">
         <div class="detail-label">Type</div>
-        <div>{{ detail.typeName || 'Unknown type' }}</div>
+        <div>{{ detail.typeName || 'Tipo desconocido' }}</div>
         <div class="small text-secondary">TypeId {{ detail.typeId }}</div>
       </div>
       <div class="col-6 col-md-4">
@@ -99,7 +99,7 @@
       <div class="col-12 col-md-4">
         <div class="detail-label">Set</div>
         <div>{{ setName }}</div>
-        <div *ngIf="detail.set" class="small text-secondary">State {{ detail.set.state }}</div>
+        <div *ngIf="detail.set" class="small text-secondary">Estado {{ detail.set.state }}</div>
       </div>
       <div class="col-6 col-md-4">
         <div class="detail-label">DescriptionId</div>
@@ -114,7 +114,7 @@
         <div>{{ detail.price | number: '1.0-2' }}</div>
       </div>
       <div class="col-12">
-        <div class="detail-label">Runtime flags</div>
+        <div class="detail-label">Flags runtime</div>
         <div class="d-flex flex-wrap gap-2">
           <span class="badge" [class.text-bg-success]="detail.usable" [class.text-bg-secondary]="!detail.usable">
             Usable
@@ -129,29 +129,29 @@
             class="badge"
             [class.text-bg-success]="detail.twoHanded"
             [class.text-bg-secondary]="!detail.twoHanded">
-            TwoHanded
+            Dos manos
           </span>
           <span
             class="badge"
             [class.text-bg-warning]="detail.etheral"
             [class.text-bg-secondary]="!detail.etheral">
-            Etheral
+            Etereo
           </span>
         </div>
       </div>
       <div class="col-12">
-        <div class="detail-label">Criteria</div>
-        <div>{{ detail.criteria || 'No criteria' }}</div>
+        <div class="detail-label">Criterios</div>
+        <div>{{ detail.criteria || 'Sin criterios' }}</div>
       </div>
       <div class="col-12">
-        <div class="detail-label">Description</div>
-        <div>{{ detail.description || 'Client description text not resolved yet.' }}</div>
+        <div class="detail-label">Descripcion</div>
+        <div>{{ detail.description || 'El texto de descripcion cliente aun no esta resuelto.' }}</div>
       </div>
     </div>
 
     <ng-template #runtimeUnavailable>
       <div class="alert alert-light border mb-0">
-        Runtime detail is unavailable until the Admin API can resolve this item from Sunshine.
+        El detalle runtime no esta disponible hasta que el Admin API pueda resolver este item desde Sunshine.
       </div>
     </ng-template>
 

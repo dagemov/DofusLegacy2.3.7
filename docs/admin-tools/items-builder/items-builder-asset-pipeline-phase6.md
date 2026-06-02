@@ -135,7 +135,11 @@ Exact note:
 
 ## Next step
 
-Phase 7 stays paused while the repo structure is corrected and the icon-selector slice is defined inside the official repo.
+Follow-up after Phase 6:
+
+- Phase 7A icon selector is now complete
+- the first post-Phase 8 controlled import wave added `1002.png` through `1012.png`
+- see [items-builder-png-import-plan.md](./items-builder-png-import-plan.md) for the approved import rules and reports
 
 Related future note:
 

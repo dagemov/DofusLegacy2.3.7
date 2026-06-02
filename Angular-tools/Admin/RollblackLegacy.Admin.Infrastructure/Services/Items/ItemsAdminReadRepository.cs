@@ -103,7 +103,7 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         return new AdminPagedItemsReadModel(totalCount, items);
     }
 
-    public Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(
+    public async Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(
         ItemIconSearchRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -112,11 +112,11 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
 
         if (!Directory.Exists(iconRoot))
         {
-            return Task.FromResult(new ItemPagedResultDto<ItemIconOptionDto>(
+            return new ItemPagedResultDto<ItemIconOptionDto>(
                 request.Page,
                 request.PageSize,
                 0,
-                []));
+                []);
         }
 
         var options = Directory
@@ -136,11 +136,31 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
             .Take(request.PageSize)
             .ToList();
 
-        return Task.FromResult(new ItemPagedResultDto<ItemIconOptionDto>(
+        var metadataByIconId = await TryLoadIconMetadataAsync(
+            paged.Select(x => x.IconId).ToArray(),
+            cancellationToken);
+
+        var hydrated = paged
+            .Select(option =>
+            {
+                if (!metadataByIconId.TryGetValue(option.IconId, out var metadata))
+                {
+                    return option;
+                }
+
+                return option with
+                {
+                    LinkedItemCount = metadata.LinkedItemCount,
+                    SampleItemNames = metadata.SampleItemNames
+                };
+            })
+            .ToList();
+
+        return new ItemPagedResultDto<ItemIconOptionDto>(
             request.Page,
             request.PageSize,
             totalCount,
-            paged));
+            hydrated);
     }
 
     public async Task<AdminItemDetailReadModel?> GetByIdAsync(int itemId, CancellationToken cancellationToken = default)
@@ -265,6 +285,50 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         return option.SampleItemNames.Any(name => name.Contains(search, StringComparison.OrdinalIgnoreCase));
     }
 
+    private async Task<Dictionary<int, ItemIconMetadata>> TryLoadIconMetadataAsync(
+        IReadOnlyCollection<int> iconIds,
+        CancellationToken cancellationToken)
+    {
+        if (iconIds.Count == 0)
+        {
+            return [];
+        }
+
+        const string sql = """
+            SELECT
+                IconId,
+                COUNT(*) AS LinkedItemCount,
+                GROUP_CONCAT(Name ORDER BY Level ASC SEPARATOR '||') AS SampleNames
+            FROM items
+            WHERE IconId IN @IconIds
+            GROUP BY IconId;
+            """;
+
+        try
+        {
+            await using var connection = await _connectionFactory.CreateOpenConnectionAsync(cancellationToken);
+            var rows = await connection.QueryAsync<ItemIconMetadataRow>(new CommandDefinition(
+                sql,
+                new { IconIds = iconIds.ToArray() },
+                cancellationToken: cancellationToken));
+
+            return rows.ToDictionary(
+                row => row.IconId,
+                row => new ItemIconMetadata(
+                    row.LinkedItemCount,
+                    row.SampleNames?
+                        .Split("||", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Where(name => !string.IsNullOrWhiteSpace(name))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .Take(3)
+                        .ToArray() ?? []));
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
     private sealed class ItemListRow
     {
         public int ItemId { get; set; }
@@ -327,4 +391,17 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
 
         public string Label { get; set; } = string.Empty;
     }
+
+    private sealed class ItemIconMetadataRow
+    {
+        public int IconId { get; set; }
+
+        public int LinkedItemCount { get; set; }
+
+        public string? SampleNames { get; set; }
+    }
+
+    private sealed record ItemIconMetadata(
+        int LinkedItemCount,
+        IReadOnlyList<string> SampleItemNames);
 }

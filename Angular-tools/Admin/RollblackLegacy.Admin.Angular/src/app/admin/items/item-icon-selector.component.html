@@ -3,16 +3,16 @@
     <div class="card-body">
       <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-start">
         <div>
-          <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Back to items</a>
+          <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
           <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Phase 7A</p>
-          <h2 class="h4 mb-2">Item icon selector</h2>
+          <h2 class="h4 mb-2">Selector visual de iconos</h2>
           <p class="text-secondary mb-0">
-            Search curated previews, validate the visual icon, and emit an <span class="font-monospace-soft">IconId</span>
-            selection without touching DB or write workflows.
+            Busca previews curados, valida el icono visual y emite una seleccion de <span class="font-monospace-soft">IconId</span>
+            sin tocar la DB ni ejecutar escrituras.
           </p>
         </div>
         <div class="alert admin-rule-banner py-2 px-3 mb-0">
-          <strong>Identity rule:</strong>
+          <strong>Regla de identidad:</strong>
           <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
         </div>
       </div>
@@ -23,13 +23,13 @@
     <div class="card-body">
       <form class="row g-3" (ngSubmit)="applyFilters()">
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="search">Search</label>
+          <label class="form-label" for="search">Buscar</label>
           <input
             id="search"
             name="search"
             [(ngModel)]="filters.search"
             class="form-control"
-            placeholder="Search by IconId text or future client labels" />
+            placeholder="Buscar por IconId o por etiquetas futuras del cliente" />
         </div>
 
         <div class="col-6 col-lg-3">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-6 col-lg-3">
-          <label class="form-label" for="pageSize">Page size</label>
+          <label class="form-label" for="pageSize">Tamano de pagina</label>
           <select
             id="pageSize"
             name="pageSize"
@@ -59,8 +59,8 @@
         </div>
 
         <div class="col-12 d-flex flex-wrap gap-2">
-          <button class="btn btn-primary" type="submit" [disabled]="isLoading">Apply filters</button>
-          <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()">Reset</button>
+          <button class="btn btn-primary" type="submit" [disabled]="isLoading">Aplicar filtros</button>
+          <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()">Limpiar</button>
         </div>
       </form>
     </div>
@@ -70,7 +70,7 @@
 
   <div *ngIf="showSelectionPayload && selectedIcon" class="card admin-card border-0">
     <div class="card-body">
-      <p class="text-uppercase small fw-semibold text-secondary mb-2">Selection payload</p>
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Payload de seleccion</p>
       <div class="selection-payload">
         <div><strong>iconId:</strong> <span class="font-monospace-soft">{{ selectedIcon.iconId }}</span></div>
         <div>
@@ -85,16 +85,16 @@
     <div class="card-body">
       <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center mb-3">
         <div>
-          <h3 class="h5 mb-1">Curated icon catalog</h3>
+          <h3 class="h5 mb-1">Catalogo curado de iconos</h3>
           <p class="text-secondary mb-0">
-            {{ result.totalCount }} icon(s), page {{ result.page }} of {{ totalPages }}.
+            {{ result.totalCount }} icono(s), pagina {{ result.page }} de {{ totalPages }}.
           </p>
         </div>
-        <div *ngIf="isLoading" class="text-secondary small">Loading icon catalog...</div>
+        <div *ngIf="isLoading" class="text-secondary small">Cargando catalogo de iconos...</div>
       </div>
 
       <div *ngIf="!isLoading && result.items.length === 0" class="alert alert-light border mb-0">
-        No curated icons matched the current filters.
+        No hay iconos curados para los filtros actuales.
       </div>
 
       <div *ngIf="result.items.length > 0" class="row g-3">
@@ -122,31 +122,31 @@
                   <strong class="font-monospace-soft">{{ option.iconId }}</strong>
                 </div>
                 <div class="d-flex justify-content-between gap-2">
-                  <span class="text-secondary">Source</span>
-                  <span class="font-monospace-soft small">{{ option.source }}</span>
+                    <span class="text-secondary">Origen</span>
+                    <span class="font-monospace-soft small">{{ option.source }}</span>
+                  </div>
+                  <div class="d-flex justify-content-between gap-2">
+                    <span class="text-secondary">Tiene preview</span>
+                    <span [class.text-success]="option.hasPreview" [class.text-secondary]="!option.hasPreview">
+                      {{ option.hasPreview ? 'Si' : 'No' }}
+                    </span>
+                  </div>
+                  <div class="d-flex justify-content-between gap-2">
+                    <span class="text-secondary">Items vinculados</span>
+                    <span>{{ option.linkedItemCount ?? 0 }}</span>
+                  </div>
                 </div>
-                <div class="d-flex justify-content-between gap-2">
-                  <span class="text-secondary">Has preview</span>
-                  <span [class.text-success]="option.hasPreview" [class.text-secondary]="!option.hasPreview">
-                    {{ option.hasPreview ? 'Yes' : 'No' }}
-                  </span>
-                </div>
-                <div class="d-flex justify-content-between gap-2">
-                  <span class="text-secondary">Linked items</span>
-                  <span>{{ option.linkedItemCount ?? 0 }}</span>
-                </div>
-              </div>
 
               <div class="small text-secondary">
-                <strong>Sample item names:</strong>
+                <strong>Nombres de muestra:</strong>
                 <span *ngIf="option.sampleItemNames.length > 0; else noSamples">
                   {{ option.sampleItemNames.join(', ') }}
                 </span>
-                <ng-template #noSamples>not available yet</ng-template>
+                <ng-template #noSamples>todavia no disponible</ng-template>
               </div>
 
               <button class="btn btn-primary" type="button" (click)="selectIcon(option)">
-                Select
+                Seleccionar
               </button>
             </div>
           </div>
@@ -159,11 +159,11 @@
           type="button"
           (click)="goToPage(result.page - 1)"
           [disabled]="!hasPreviousPage || isLoading">
-          Previous
+          Anterior
         </button>
 
         <p class="mb-0 text-secondary small">
-          Current source: <span class="font-monospace-soft">/assets/item-previews/by-icon</span>
+          Fuente actual: <span class="font-monospace-soft">/assets/item-previews/by-icon</span>
         </p>
 
         <button
@@ -171,7 +171,7 @@
           type="button"
           (click)="goToPage(result.page + 1)"
           [disabled]="!hasNextPage || isLoading">
-          Next
+          Siguiente
         </button>
       </div>
     </div>

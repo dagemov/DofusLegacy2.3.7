@@ -13,7 +13,7 @@ import { ClipboardCopyStatus, copyTextToClipboard, getClipboardSupportInfo } fro
 export class ItemRuntimeSummaryCardComponent {
   @Input() detail: ItemDetailDto | null = null;
   @Input() routeItemId: number | null = null;
-  @Input() setName = 'No set';
+  @Input() setName = 'Sin set';
 
   protected readonly clipboardSupport = getClipboardSupportInfo();
   protected readonly copyState = new Map<string, ClipboardCopyStatus>();
@@ -39,12 +39,12 @@ export class ItemRuntimeSummaryCardComponent {
   protected copyLabel(field: string): string {
     switch (this.copyState.get(field)) {
       case 'copied':
-        return 'Copied';
+        return 'Copiado';
       case 'manual':
       case 'unavailable':
         return 'Manual';
       default:
-        return 'Copy';
+        return 'Copiar';
     }
   }
 
@@ -53,7 +53,7 @@ export class ItemRuntimeSummaryCardComponent {
     return status === 'manual' || status === 'unavailable';
   }
 
-  protected displayValue(value: number | string | null | undefined, fallback = 'Unavailable'): string {
+  protected displayValue(value: number | string | null | undefined, fallback = 'No disponible'): string {
     return value === null || value === undefined || value === '' ? fallback : `${value}`;
   }
 

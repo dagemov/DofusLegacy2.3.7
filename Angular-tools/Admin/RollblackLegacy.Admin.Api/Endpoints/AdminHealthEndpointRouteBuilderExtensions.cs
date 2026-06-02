@@ -23,7 +23,11 @@ public static class AdminHealthEndpointRouteBuilderExtensions
                 ServiceName,
                 result.Database,
                 result.Message,
-                result.CheckedAtUtc));
+                result.CheckedAtUtc,
+                result.Host,
+                result.Port,
+                result.User,
+                result.IsRemote));
         });
 
         return endpoints;

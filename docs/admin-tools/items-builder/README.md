@@ -15,6 +15,7 @@ Current checkpoint:
 - Phase 7A - Item Icon Selector: `DONE`
 - Phase 7 - Item Create/Edit: `DONE / LIVE`
 - Phase 8 - Publish / QA Workflow: `DONE`
+- Post-Phase 8 Stabilization / VPS Data / Assets / UX: `DONE`
 - Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
 
 Admin Angular canonical location:
@@ -54,3 +55,6 @@ Document index:
 - `items-builder-publish-qa-phase8.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`
+- `items-builder-vps-qa-stabilization.md`
+- `items-builder-options-loading-fix.md`
+- `items-builder-png-import-plan.md`

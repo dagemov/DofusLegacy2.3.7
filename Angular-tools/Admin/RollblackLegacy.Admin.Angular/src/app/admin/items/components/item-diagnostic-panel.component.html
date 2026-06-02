@@ -2,17 +2,17 @@
   <div class="card-body d-grid gap-3">
     <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center">
       <div>
-        <p class="text-uppercase small fw-semibold text-secondary mb-1">Diagnostics</p>
-        <h3 class="h5 mb-1">Identity warnings</h3>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Diagnosticos</p>
+        <h3 class="h5 mb-1">Warnings de identidad</h3>
         <p class="text-secondary mb-0">
-          Read-only diagnostics only. No automatic correction or write flow is active here.
+          Diagnostico solo de lectura. Aqui no se activa ninguna correccion automatica ni escritura.
         </p>
       </div>
       <span class="badge text-bg-light border">{{ resolvedWarnings.length }} warning(s)</span>
     </div>
 
     <div *ngIf="!hasWarnings" class="alert alert-success-subtle border mb-0">
-      No identity warnings detected.
+      No se detectaron warnings de identidad.
     </div>
 
     <div *ngIf="hasWarnings" class="d-grid gap-3">

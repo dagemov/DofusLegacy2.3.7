@@ -3,22 +3,22 @@
     <div class="card-body">
       <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-start">
         <div>
-          <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / List + Write launchpad</p>
-          <h2 class="h4 mb-2">List, diagnostics, and write entry points</h2>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Lista y accesos de escritura</p>
+          <h2 class="h4 mb-2">Catalogo, diagnosticos y accesos de trabajo</h2>
           <p class="text-secondary mb-0">
-            Search the Sunshine item catalog without SQL, surface client identity risks, and branch into the safe create/edit workflow.
+            Consulta el catalogo de Sunshine sin SQL, revisa riesgos de identidad cliente y entra al flujo seguro de crear o editar.
           </p>
         </div>
         <div class="d-flex flex-column align-items-lg-end gap-2">
           <div class="alert admin-rule-banner py-2 px-3 mb-0">
-            <strong>Identity rule:</strong>
+            <strong>Regla de identidad:</strong>
             <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
           </div>
           <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
             <a class="btn btn-outline-primary" routerLink="/admin/items/icon-selector">
-              Open icon selector
+              Abrir selector de iconos
             </a>
-            <a class="btn btn-primary" routerLink="/admin/items/new">Create item</a>
+            <a class="btn btn-primary" routerLink="/admin/items/new">Crear item</a>
           </div>
         </div>
       </div>
@@ -29,13 +29,13 @@
     <div class="card-body">
       <form class="row g-3" (ngSubmit)="applyFilters()">
         <div class="col-12 col-xl-4">
-          <label class="form-label" for="search">Search</label>
+          <label class="form-label" for="search">Buscar</label>
           <input
             id="search"
             name="search"
             [(ngModel)]="filters.search"
             class="form-control"
-            placeholder="Name, description hint, or free text" />
+            placeholder="Nombre, pista de descripcion o texto libre" />
         </div>
 
         <div class="col-6 col-md-3 col-xl-2">
@@ -63,13 +63,13 @@
         </div>
 
         <div class="col-12 col-md-6 col-xl-2">
-          <label class="form-label" for="typeId">Type</label>
+          <label class="form-label" for="typeId">Tipo</label>
           <select
             id="typeId"
             name="typeId"
             [(ngModel)]="filters.typeId"
             class="form-select">
-            <option [ngValue]="undefined">All types</option>
+            <option [ngValue]="undefined">Todos los tipos</option>
             <option *ngFor="let option of typeOptions" [ngValue]="option.value">
               {{ option.label }} ({{ option.value }})
             </option>
@@ -77,7 +77,7 @@
         </div>
 
         <div class="col-6 col-md-3 col-xl-1">
-          <label class="form-label" for="levelMin">Level min</label>
+          <label class="form-label" for="levelMin">Nivel minimo</label>
           <input
             id="levelMin"
             name="levelMin"
@@ -89,7 +89,7 @@
         </div>
 
         <div class="col-6 col-md-3 col-xl-1">
-          <label class="form-label" for="levelMax">Level max</label>
+          <label class="form-label" for="levelMax">Nivel maximo</label>
           <input
             id="levelMax"
             name="levelMax"
@@ -102,13 +102,13 @@
 
         <div class="col-12 d-flex flex-wrap gap-2">
           <button class="btn btn-primary" type="submit" [disabled]="isLoadingList">
-            Apply filters
+            Aplicar filtros
           </button>
           <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()">
-            Reset
+            Limpiar
           </button>
           <div class="ms-auto d-flex align-items-center gap-2">
-            <label class="form-label mb-0" for="pageSize">Page size</label>
+            <label class="form-label mb-0" for="pageSize">Tamano de pagina</label>
             <select
               id="pageSize"
               class="form-select form-select-sm"
@@ -132,13 +132,13 @@
     <div class="card-body">
       <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center mb-3">
         <div>
-          <h3 class="h5 mb-1">Item catalog</h3>
+          <h3 class="h5 mb-1">Catalogo de items</h3>
           <p class="text-secondary mb-0">
-            {{ result.totalCount }} result(s), page {{ result.page }} of {{ totalPages }}.
+            {{ result.totalCount }} resultado(s), pagina {{ result.page }} de {{ totalPages }}.
           </p>
         </div>
-        <div *ngIf="isLoadingList" class="text-secondary small">Loading items...</div>
-        <div *ngIf="isLoadingTypeOptions" class="text-secondary small">Loading type options...</div>
+        <div *ngIf="isLoadingList" class="text-secondary small">Cargando items...</div>
+        <div *ngIf="isLoadingTypeOptions" class="text-secondary small">Cargando tipos de item...</div>
       </div>
 
       <div class="table-responsive">
@@ -147,14 +147,14 @@
             <tr>
               <th>ItemId</th>
               <th>ResolvedName</th>
-              <th>Type</th>
-              <th>Level</th>
+              <th>Tipo</th>
+              <th>Nivel</th>
               <th>Set</th>
               <th>IconId</th>
               <th>AppearanceId</th>
               <th>PreviewState</th>
               <th>WarningCount</th>
-              <th class="text-end">Actions</th>
+              <th class="text-end">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -168,12 +168,12 @@
                 </a>
                 <div class="small text-secondary">TypeId {{ item.typeId }}</div>
               </td>
-              <td>{{ item.typeName || 'Unknown type' }}</td>
+              <td>{{ item.typeName || 'Tipo desconocido' }}</td>
               <td>{{ item.level }}</td>
               <td>
                 <span *ngIf="item.setId; else noSet">{{ item.setName || ('Set #' + item.setId) }}</span>
                 <ng-template #noSet>
-                  <span class="text-secondary">No set</span>
+                  <span class="text-secondary">Sin set</span>
                 </ng-template>
               </td>
               <td class="font-monospace-soft">{{ item.iconId }}</td>
@@ -194,10 +194,10 @@
               <td class="text-end">
                 <div class="d-inline-flex gap-2">
                   <a class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/items', item.itemId]">
-                    Detail
+                    Detalle
                   </a>
                   <a class="btn btn-sm btn-primary" [routerLink]="['/admin/items', item.itemId, 'edit']">
-                    Edit
+                    Editar
                   </a>
                 </div>
               </td>
@@ -205,7 +205,7 @@
 
             <tr *ngIf="!isLoadingList && result.items.length === 0">
               <td colspan="10" class="text-center text-secondary py-4">
-                No items were returned for the current filter set.
+                No se encontraron items para los filtros seleccionados.
               </td>
             </tr>
           </tbody>
@@ -218,11 +218,11 @@
           type="button"
           (click)="goToPage(result.page - 1)"
           [disabled]="!hasPreviousPage || isLoadingList">
-          Previous
+          Anterior
         </button>
 
         <p class="mb-0 text-secondary small">
-          Query keyset: <span class="font-monospace-soft">search, itemId, iconId, typeId, levelMin, levelMax</span>
+          Claves de busqueda: <span class="font-monospace-soft">search, itemId, iconId, typeId, levelMin, levelMax</span>
         </p>
 
         <button
@@ -230,7 +230,7 @@
           type="button"
           (click)="goToPage(result.page + 1)"
           [disabled]="!hasNextPage || isLoadingList">
-          Next
+          Siguiente
         </button>
       </div>
     </div>

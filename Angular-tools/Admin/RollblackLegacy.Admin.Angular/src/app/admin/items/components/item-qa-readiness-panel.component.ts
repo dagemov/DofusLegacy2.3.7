@@ -31,7 +31,15 @@ export class ItemQaReadinessPanelComponent {
   protected checklistCopyState: ClipboardCopyStatus | null = null;
 
   protected get workflowStateLabel(): string {
-    return (this.qaSummary?.workflowState || 'UNKNOWN').replace(/_/g, ' ');
+    const state = (this.qaSummary?.workflowState || 'UNKNOWN').toUpperCase();
+    switch (state) {
+      case 'READY_FOR_QA':
+        return 'LISTO PARA QA';
+      case 'BLOCKED':
+        return 'BLOQUEADO';
+      default:
+        return state.replace(/_/g, ' ');
+    }
   }
 
   protected get workflowBadgeClass(): string {
@@ -70,12 +78,12 @@ export class ItemQaReadinessPanelComponent {
   protected get copyChecklistLabel(): string {
     switch (this.checklistCopyState) {
       case 'copied':
-        return 'Checklist copied';
+        return 'Checklist copiado';
       case 'manual':
       case 'unavailable':
-        return 'Manual copy';
+        return 'Copia manual';
       default:
-        return 'Copy QA checklist';
+        return 'Copiar checklist QA';
     }
   }
 
@@ -123,16 +131,16 @@ export class ItemQaReadinessPanelComponent {
       `ItemId: ${this.qaSummary.itemId}`,
       `ResolvedName: ${this.qaSummary.resolvedName || 'Unavailable'}`,
       `WorkflowState: ${this.qaSummary.workflowState}`,
-      `CanQa: ${this.qaSummary.canQa ? 'YES' : 'NO'}`,
-      `CanPublish: ${this.qaSummary.canPublish ? 'YES' : 'NO'}`,
+      `CanQa: ${this.qaSummary.canQa ? 'SI' : 'NO'}`,
+      `CanPublish: ${this.qaSummary.canPublish ? 'SI' : 'NO'}`,
       `PreviewState: ${this.qaSummary.previewState.state}`,
       `IconId: ${this.qaSummary.iconId}`,
       `AppearanceId: ${this.qaSummary.appearanceId}`,
       '',
-      'Blocking reasons:',
+      'Razones de bloqueo:',
       blockers,
       '',
-      'Recommended checks:',
+      'Checks recomendados:',
       checks
     ].join('\n');
   }

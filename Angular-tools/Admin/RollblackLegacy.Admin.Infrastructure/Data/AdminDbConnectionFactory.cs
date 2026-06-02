@@ -19,7 +19,7 @@ public sealed class AdminDbConnectionFactory
         if (!_options.HasUsableConnectionString())
         {
             throw new AdminNotConfiguredException(
-                "SunshineAdmin connection string is missing or still using the placeholder password.");
+                "SunshineAdmin no está configurado o sigue usando el password placeholder.");
         }
 
         var connection = new MySqlConnection(_options.ConnectionString);

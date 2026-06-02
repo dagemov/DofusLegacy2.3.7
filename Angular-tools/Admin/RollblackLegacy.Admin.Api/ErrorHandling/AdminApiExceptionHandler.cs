@@ -33,7 +33,7 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
             AdminEntityNotFoundException notFound => new ProblemDetails
             {
                 Status = StatusCodes.Status404NotFound,
-                Title = "The requested admin resource was not found.",
+                Title = "No se encontró el recurso solicitado en Admin.",
                 Detail = notFound.Message,
                 Type = "https://httpstatuses.com/404",
             },
@@ -42,8 +42,8 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
             {
                 Status = validation.StatusCode,
                 Title = validation.StatusCode == StatusCodes.Status422UnprocessableEntity
-                    ? "The item write payload is invalid."
-                    : "The request is invalid.",
+                    ? "Los datos enviados para el item no son válidos."
+                    : "La solicitud no es válida.",
                 Detail = validation.Message,
                 Type = validation.StatusCode == StatusCodes.Status422UnprocessableEntity
                     ? "https://httpstatuses.com/422"
@@ -52,29 +52,29 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
             AdminConflictException conflict => new ProblemDetails
             {
                 Status = StatusCodes.Status409Conflict,
-                Title = "The admin write operation conflicted with current Sunshine data.",
+                Title = "La operación entró en conflicto con los datos actuales de Sunshine.",
                 Detail = conflict.Message,
                 Type = "https://httpstatuses.com/409",
             },
             AdminNotConfiguredException notConfigured => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "SunshineAdmin is not configured.",
+                Title = "SunshineAdmin no está configurado.",
                 Detail = notConfigured.Message,
                 Type = "https://httpstatuses.com/500",
             },
             MySqlException => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "The admin API could not reach the Sunshine database.",
-                Detail = "Check the SunshineAdmin connection string and database availability, then retry the request.",
+                Title = "No se pudo conectar con la base de datos Sunshine.",
+                Detail = "Verifica la conexión SunshineAdmin y la disponibilidad de la base de datos, luego intenta de nuevo.",
                 Type = "https://httpstatuses.com/500",
             },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "The admin API failed to process the request.",
-                Detail = "An unexpected error occurred. Retry with the reported traceId if the problem persists.",
+                Title = "El Admin API no pudo procesar la solicitud.",
+                Detail = "Ocurrió un error inesperado. Intenta de nuevo con el traceId informado si el problema persiste.",
                 Type = "https://httpstatuses.com/500",
             },
         };

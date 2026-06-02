@@ -5,4 +5,8 @@ public sealed record AdminDatabaseHealthResponse(
     string Service,
     string Database,
     string Message,
-    DateTimeOffset CheckedAtUtc);
+    DateTimeOffset CheckedAtUtc,
+    string? Host,
+    int? Port,
+    string? User,
+    bool? IsRemote);

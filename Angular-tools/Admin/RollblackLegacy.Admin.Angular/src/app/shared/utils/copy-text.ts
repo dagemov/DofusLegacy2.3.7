@@ -28,16 +28,16 @@ export function getClipboardSupportInfo(): ClipboardSupportInfo {
       canAttemptLegacyCopy,
       isSecureContext,
       helpText:
-        'Clipboard write is limited in this browser context. If the button cannot copy automatically, use the visible value for manual copy.'
+        'La escritura al portapapeles está limitada en este navegador. Si el botón no puede copiar automáticamente, usa el valor visible para copiar manualmente.'
     };
   }
 
-  return {
-    canUseNavigatorClipboard,
-    canAttemptLegacyCopy,
-    isSecureContext,
-    helpText:
-      'Clipboard write is unavailable in this browser context. Use the visible value for manual copy.'
+    return {
+      canUseNavigatorClipboard,
+      canAttemptLegacyCopy,
+      isSecureContext,
+      helpText:
+      'La escritura al portapapeles no está disponible en este navegador. Usa el valor visible para copiar manualmente.'
   };
 }
 

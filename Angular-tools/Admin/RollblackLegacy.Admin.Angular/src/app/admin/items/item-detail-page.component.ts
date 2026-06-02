@@ -68,8 +68,8 @@ export class ItemDetailPageComponent implements OnInit {
           if (!this.itemId) {
             this.ngZone.run(() => {
               this.problem = {
-                title: 'Invalid item id',
-                detail: 'The route parameter must be a positive integer.',
+                title: 'ItemId inválido',
+                detail: 'El parámetro de la ruta debe ser un entero positivo.',
                 status: 400
               };
               this.isLoading = false;
@@ -86,7 +86,7 @@ export class ItemDetailPageComponent implements OnInit {
 
   protected resolveSetName(detail: ItemDetailDto | null): string {
     if (!detail?.set) {
-      return 'No set';
+      return 'Sin set';
     }
 
     if (detail.set.setName) {

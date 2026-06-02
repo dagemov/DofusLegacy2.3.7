@@ -17,13 +17,19 @@ public sealed class MySqlAdminDatabaseHealthService : IAdminDatabaseHealthServic
 
     public async Task<AdminDatabaseHealthProbeResult> CheckAsync(CancellationToken cancellationToken = default)
     {
+        var target = _options.GetSafeConnectionTarget();
+
         if (!_options.HasUsableConnectionString())
         {
             return new AdminDatabaseHealthProbeResult(
                 "not_configured",
                 "sunshine",
-                "SunshineAdmin connection string is missing or still using the placeholder password.",
-                DateTimeOffset.UtcNow);
+                "SunshineAdmin no está configurado o sigue usando el password placeholder.",
+                DateTimeOffset.UtcNow,
+                target.Host,
+                target.Port,
+                target.User,
+                target.IsRemote);
         }
 
         try
@@ -37,8 +43,12 @@ public sealed class MySqlAdminDatabaseHealthService : IAdminDatabaseHealthServic
             return new AdminDatabaseHealthProbeResult(
                 "ok",
                 "sunshine",
-                "Connection probe completed successfully.",
-                DateTimeOffset.UtcNow);
+                "La conexión con la base de datos respondió correctamente.",
+                DateTimeOffset.UtcNow,
+                target.Host,
+                target.Port,
+                target.User,
+                target.IsRemote);
         }
         catch (Exception ex)
         {
@@ -46,7 +56,11 @@ public sealed class MySqlAdminDatabaseHealthService : IAdminDatabaseHealthServic
                 "error",
                 "sunshine",
                 ex.Message,
-                DateTimeOffset.UtcNow);
+                DateTimeOffset.UtcNow,
+                target.Host,
+                target.Port,
+                target.User,
+                target.IsRemote);
         }
     }
 }

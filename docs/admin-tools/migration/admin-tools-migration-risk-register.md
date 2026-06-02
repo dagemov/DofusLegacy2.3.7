@@ -29,6 +29,8 @@
 | R23 | The team resumes full `Create/Edit` before operators have a safe icon-selection flow, causing `IconId` mistakes and low-confidence writes | 7-7A | High | Medium | complete the icon selector slice first, keep `ItemId`, `IconId`, and `AppearanceId` visibly separate, and rely on curated preview evidence before reopening write scope | operators begin choosing icons from memory or Navicat alone during write flows |
 | R24 | Team members assume Phase 8 `READY_FOR_QA` means a persisted workflow state or real client publish approval when the status is only derived in Admin | 8 | High | Medium | keep the panel text explicit, document that `sunshine.items` has no workflow fields yet, disable publish actions, and require a separate future client-publish phase | someone treats the QA badge as proof that client metadata, i18n, or packaged assets were already published |
 | R25 | Manual in-game QA via `.item add` mutates live character inventory on a shared environment and leaves test items behind | 8 | High | Medium | document the exact command, restrict use to controlled QA characters, require cleanup discipline, and prefer disposable or local datasets for smoke passes | an operator gives experimental items to a real character and cannot easily roll back the inventory state |
+| R26 | Operators assume the Admin API is talking to the VPS when the current Angular proxy and `SunshineAdmin` actually point to local services | 8+ | High | Medium | expose safe `health/db` target fields (`host`, `port`, `user`, `isRemote`), document the current wiring, and confirm it before every remote-validation pass | browser data looks real but the team cannot tell whether it came from local MySQL or the VPS |
+| R27 | Team scripts for preview imports or world restarts are run in destructive mode without an audit pass first | 6+ | High | Medium | keep dry-run/report mode by default, block weapons and suspicious categories, require explicit restart confirmation, and never auto-restart the whole VPS | a large PNG batch lands in Git or a restart script bounces the wrong service |
 
 ## Priority watchlist
 
@@ -59,3 +61,5 @@ Lowest-risk starting points:
 - No new Admin phase should start in an external worktree unless that deviation is explicitly approved first.
 - No derived QA readiness badge should be treated as a persisted publish state until a dedicated workflow model exists.
 - No in-game `.item add` validation should be done on shared characters without an explicit cleanup path.
+- No remote-vs-local claim should be made without checking `GET /api/admin/v1/health/db`.
+- No preview-import or VPS-restart script should default to destructive execution.

@@ -6,7 +6,7 @@
 
 Define how item preview PNGs should be handled during the Angular + API migration without polluting the repo or confusing preview assets with client publish assets.
 
-As of `2026-06-01`, this document also reflects the first live curated preview seed delivered in Phase 6.
+As of `2026-06-02`, this document also reflects the first controlled import wave delivered during post-Phase 8 stabilization.
 
 ## Asset categories
 
@@ -115,6 +115,7 @@ Phase 6 live note:
 - the Angular detail page now consumes those candidate paths as operator-facing debug values
 - the UI now also shows `previewSource`, `resolvedPath`, and `fallbackUsed`
 - `itemId=39` is validated through curated seed `by-icon/1001.png`
+- first controlled follow-up import now includes `1002.png` through `1012.png` from `amuletos_png`
 - when the current host cannot reach a preview or no curated file exists, the UI shows a non-blocking placeholder instead of pretending the asset exists
 - the Phase 7 write form now reuses the same preview card, but drives it from the current `IconId` before save
 
@@ -177,3 +178,4 @@ Reference:
 - [items-builder-client-asset-intelligence-future.md](./items-builder-client-asset-intelligence-future.md)
 - [items-client-asset-audit-phase6-5a.md](./items-client-asset-audit-phase6-5a.md)
 - [items-builder-phase7a-item-icon-selector.md](./items-builder-phase7a-item-icon-selector.md)
+- [items-builder-png-import-plan.md](./items-builder-png-import-plan.md)

@@ -43,13 +43,13 @@ export class ItemPreviewCardComponent implements OnChanges {
   protected get previewMessage(): string {
     switch (this.resolvedState) {
       case 'FOUND':
-        return 'Preview resolved from the current logical asset paths.';
+        return 'El preview se resolvió desde las rutas lógicas actuales.';
       case 'MANUAL':
-        return 'A manual asset is expected to represent this item preview.';
+        return 'Se espera un asset manual para representar este preview.';
       case 'MISSING':
-        return 'No preview asset was resolved for this item yet.';
+        return 'Todavía no se resolvió ningún preview para este item.';
       default:
-        return 'Preview resolution is unavailable in the current environment.';
+        return 'La resolución del preview no está disponible en el entorno actual.';
     }
   }
 
@@ -64,11 +64,11 @@ export class ItemPreviewCardComponent implements OnChanges {
   protected get previewSourceLabel(): string {
     switch ((this.previewState?.previewSource || 'PLACEHOLDER').toUpperCase()) {
       case 'MANUAL':
-        return 'Manual asset';
+        return 'Asset manual';
       case 'BY_ITEM':
-        return 'By item path';
+        return 'Ruta por item';
       case 'BY_ICON':
-        return 'By icon path';
+        return 'Ruta por icono';
       default:
         return 'Placeholder';
     }
@@ -77,11 +77,11 @@ export class ItemPreviewCardComponent implements OnChanges {
   protected get fallbackLabel(): string {
     switch ((this.previewState?.fallbackUsed || 'PLACEHOLDER').toUpperCase()) {
       case 'NONE':
-        return 'None';
+        return 'Ninguno';
       case 'BY_ICON':
-        return 'IconId fallback';
+        return 'Fallback por IconId';
       default:
-        return 'Placeholder fallback';
+        return 'Fallback placeholder';
     }
   }
 
@@ -106,12 +106,12 @@ export class ItemPreviewCardComponent implements OnChanges {
   protected copyLabel(field: string): string {
     switch (this.copyState.get(field)) {
       case 'copied':
-        return 'Copied';
+        return 'Copiado';
       case 'manual':
       case 'unavailable':
         return 'Manual';
       default:
-        return 'Copy';
+        return 'Copiar';
     }
   }
 
@@ -125,7 +125,7 @@ export class ItemPreviewCardComponent implements OnChanges {
   }
 
   protected displayPath(value: string | null | undefined): string {
-    return value && value.trim().length > 0 ? value : 'Unavailable';
+    return value && value.trim().length > 0 ? value : 'No disponible';
   }
 
   protected onImageError(): void {

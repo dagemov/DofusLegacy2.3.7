@@ -47,6 +47,7 @@ Operational rules:
 - Phase 7A - Item Icon Selector: `DONE`
 - Phase 7 - Item Create/Edit: `DONE / LIVE`
 - Phase 8 - Publish / QA Workflow: `DONE`
+- Post-Phase 8 Stabilization / VPS Data / Assets / UX: `DONE`
 - Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
 
 ## Phase 7 completion checkpoint
@@ -95,6 +96,18 @@ Still deferred to future publish-focused work:
 - PNG upload workflow
 - weapon-specific workflow
 
+## Post-Phase 8 stabilization checkpoint
+
+Validated on `2026-06-02` in the official repo:
+
+- `GET /api/admin/v1/health/db` now exposes safe target fields for `host`, `port`, `user`, and `isRemote`
+- current working path is confirmed as `Angular -> local Admin API -> local Sunshine MySQL`
+- item-type options are confirmed to come from `Sunshine.Protocol/Enums/ItemTypeEnum.cs`, not from DB rows
+- item-set options are confirmed to come from `sunshine.items_sets`
+- shared Angular problem messaging is now more human and operator-facing in Spanish
+- a first controlled PNG import wave added `1002.png` through `1012.png` from the approved `amuletos_png` source
+- safe restart scripts were added for future World-only restarts, but live VPS validation is currently blocked by SSH `Permission denied (publickey)`
+
 ## Items Builder doc set
 
 Primary folder:
@@ -115,6 +128,10 @@ Key references:
 - [Phase 8 publish and QA workflow](../admin-tools/items-builder/items-builder-publish-qa-phase8.md)
 - [Phase 8 QA checklist](../admin-tools/items-builder/items-builder-qa-checklist.md)
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
+- [Post-Phase 8 stabilization](../admin-tools/items-builder/items-builder-vps-qa-stabilization.md)
+- [Options loading fix](../admin-tools/items-builder/items-builder-options-loading-fix.md)
+- [PNG import plan](../admin-tools/items-builder/items-builder-png-import-plan.md)
+- [VPS world restart flow](../infrastructure/vps-world-restart-flow.md)
 
 ## Cross-cutting Admin migration docs
 
