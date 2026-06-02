@@ -13,6 +13,8 @@ public interface IItemsAdminReadService
 
     Task<ItemClientIdentityDto> GetIdentityAsync(int itemId, CancellationToken cancellationToken = default);
 
+    Task<ItemQaSummaryDto> GetQaSummaryAsync(int itemId, CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<AdminOptionDto>> GetTypeOptionsAsync(CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<AdminOptionDto>> GetItemSetOptionsAsync(CancellationToken cancellationToken = default);

@@ -12,6 +12,7 @@ import {
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
+  ItemQaSummaryDto,
   ItemSearchRequest,
   ItemWriteRequest,
   ItemWriteResultDto
@@ -55,6 +56,10 @@ export class ItemsApi {
     return this.httpClient.get<ItemClientIdentityDto>(
       `${this.baseUrl}/items/${itemId}/identity`
     );
+  }
+
+  getItemQaSummary(itemId: number): Observable<ItemQaSummaryDto> {
+    return this.httpClient.get<ItemQaSummaryDto>(`${this.baseUrl}/items/${itemId}/qa-summary`);
   }
 
   getTypeOptions(): Observable<AdminOptionDto[]> {

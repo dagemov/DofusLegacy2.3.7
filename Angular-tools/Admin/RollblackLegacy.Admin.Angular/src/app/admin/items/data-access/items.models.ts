@@ -125,6 +125,22 @@ export interface ItemDetailDto {
   effects: ItemEffectDto[];
 }
 
+export interface ItemQaSummaryDto {
+  itemId: number;
+  resolvedName?: string | null;
+  type?: string | null;
+  level: number;
+  iconId: number;
+  appearanceId: number;
+  previewState: ItemPreviewStateDto;
+  warnings: ItemWarningDto[];
+  workflowState: string;
+  canQa: boolean;
+  canPublish: boolean;
+  blockingReasons: string[];
+  recommendedChecks: string[];
+}
+
 export type ItemWriteMode = 'create' | 'edit' | 'duplicate';
 
 export interface ItemWriteRequest {

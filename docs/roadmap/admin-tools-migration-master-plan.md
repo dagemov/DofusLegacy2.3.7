@@ -46,7 +46,8 @@ Operational rules:
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7A - Item Icon Selector: `DONE`
 - Phase 7 - Item Create/Edit: `DONE / LIVE`
-- Phase 8 - Publish / QA Workflow: `NEXT`
+- Phase 8 - Publish / QA Workflow: `DONE`
+- Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
 
 ## Phase 7 completion checkpoint
 
@@ -65,17 +66,34 @@ Validated on `2026-06-02` in the official repo:
 - live DB smoke test completed for create, update, and duplicate with immediate cleanup of temporary rows
 - preview by `IconId` validated as `FOUND` for `IconId=1001`
 
-## Phase 8 preview
+## Phase 8 completion checkpoint
 
-Next official scope:
+Validated on `2026-06-02` in the official repo:
 
-- publish and QA workflow
-- controlled handoff from saved admin rows to downstream client-facing validation
-- explicit documentation for what still remains deferred after Phase 7:
-  - description publish
-  - `IsVisible` persistence
-  - PNG upload
-  - weapon-specific workflow
+- backend QA summary endpoint live:
+  - `GET /api/admin/v1/items/{itemId}/qa-summary`
+- item detail now exposes a `QA / Publish Readiness` panel
+- derived `READY_FOR_QA` vs `BLOCKED` status is visible without changing DB schema
+- manual QA checklist is visible and copyable with manual fallback
+- Sunshine QA command audited and documented:
+  - `.item add <itemId> <quantity> [CharacterName]`
+- explicit publish blockers remain visible:
+  - description publish deferred
+  - `IsVisible` persistence deferred
+  - real client publish disabled in this phase
+
+## What remains after Phase 8
+
+Items Builder is now at MVP completion for Admin-side CRUD and QA readiness.
+
+Still deferred to future publish-focused work:
+
+- real client publish
+- client i18n export/import
+- description payload management
+- `IsVisible` persistence
+- PNG upload workflow
+- weapon-specific workflow
 
 ## Items Builder doc set
 
@@ -94,6 +112,9 @@ Key references:
 - [Phase 7 create/edit](../admin-tools/items-builder/items-builder-create-edit-phase7.md)
 - [Phase 7 write contracts](../admin-tools/items-builder/items-builder-write-contracts-phase7.md)
 - [Phase 7 Angular workflow](../admin-tools/items-builder/items-builder-angular-create-edit-phase7.md)
+- [Phase 8 publish and QA workflow](../admin-tools/items-builder/items-builder-publish-qa-phase8.md)
+- [Phase 8 QA checklist](../admin-tools/items-builder/items-builder-qa-checklist.md)
+- [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
 
 ## Cross-cutting Admin migration docs
 
@@ -106,4 +127,4 @@ Key references:
 
 ## Immediate next branch
 
-After Phase 7, the next intended branch targets the publish and QA slice for Items Builder.
+After Phase 8, the next intended branch should target future client publish prerequisites or another admin module, not a reimplementation of Items CRUD.

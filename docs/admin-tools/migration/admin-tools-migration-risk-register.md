@@ -27,6 +27,8 @@
 | R21 | A future SWF/i18n intelligence pass conflates inventory icon, equipped appearance, and multilingual names into one low-confidence mapping | 6.5-7 | High | Medium | document `IconId`, `AppearanceId`, `ClientNameId`, `NameEs`, and `NameEn` as separate fields first, treat extraction as a research lane before wiring it into CRUD flows | a future extractor starts claiming one field can substitute for all client identity surfaces |
 | R22 | Phase 7 create/duplicate writes rely on `MAX(Id)+1` and `MAX(DescriptionId)+1` against a `MyISAM` table, so concurrent writes or casual smoke tests can leave junk data or collide unexpectedly | 7 | High | Medium | keep generated-id logic behind the repository, reserve live happy-path validation for disposable or explicitly backed-up datasets, surface `409` clearly, and avoid ad-hoc operator smoke writes on shared DBs | the team wants to “just test create once” on a shared Sunshine runtime with no cleanup path |
 | R23 | The team resumes full `Create/Edit` before operators have a safe icon-selection flow, causing `IconId` mistakes and low-confidence writes | 7-7A | High | Medium | complete the icon selector slice first, keep `ItemId`, `IconId`, and `AppearanceId` visibly separate, and rely on curated preview evidence before reopening write scope | operators begin choosing icons from memory or Navicat alone during write flows |
+| R24 | Team members assume Phase 8 `READY_FOR_QA` means a persisted workflow state or real client publish approval when the status is only derived in Admin | 8 | High | Medium | keep the panel text explicit, document that `sunshine.items` has no workflow fields yet, disable publish actions, and require a separate future client-publish phase | someone treats the QA badge as proof that client metadata, i18n, or packaged assets were already published |
+| R25 | Manual in-game QA via `.item add` mutates live character inventory on a shared environment and leaves test items behind | 8 | High | Medium | document the exact command, restrict use to controlled QA characters, require cleanup discipline, and prefer disposable or local datasets for smoke passes | an operator gives experimental items to a real character and cannot easily roll back the inventory state |
 
 ## Priority watchlist
 
@@ -55,3 +57,5 @@ Lowest-risk starting points:
 - Operator copy/debug helpers must keep a visible manual fallback whenever clipboard APIs fail.
 - No mutating happy-path validation should be run on shared Sunshine data unless the row lifecycle and backup/cleanup path are explicit first.
 - No new Admin phase should start in an external worktree unless that deviation is explicitly approved first.
+- No derived QA readiness badge should be treated as a persisted publish state until a dedicated workflow model exists.
+- No in-game `.item add` validation should be done on shared characters without an explicit cleanup path.

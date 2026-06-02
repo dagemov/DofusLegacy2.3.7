@@ -66,6 +66,34 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         return BuildClientIdentity(item);
     }
 
+    public async Task<ItemQaSummaryDto> GetQaSummaryAsync(int itemId, CancellationToken cancellationToken = default)
+    {
+        var detail = await GetItemAsync(itemId, cancellationToken);
+
+        var qaBlockingReasons = BuildQaBlockingReasons(detail);
+        var publishBlockingReasons = BuildPublishBlockingReasons(detail);
+        var blockingReasons = qaBlockingReasons
+            .Concat(publishBlockingReasons)
+            .ToList();
+
+        var canQa = qaBlockingReasons.Count == 0;
+
+        return new ItemQaSummaryDto(
+            detail.ItemId,
+            detail.ResolvedName,
+            detail.TypeName,
+            detail.Level,
+            detail.IconId,
+            detail.AppearanceId,
+            detail.PreviewState,
+            detail.Warnings,
+            canQa ? "READY_FOR_QA" : "BLOCKED",
+            canQa,
+            CanPublish: false,
+            blockingReasons,
+            BuildRecommendedChecks(detail));
+    }
+
     public Task<IReadOnlyList<AdminOptionDto>> GetTypeOptionsAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetTypeOptionsAsync(cancellationToken);
@@ -247,6 +275,72 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         }
 
         return warnings;
+    }
+
+    private static IReadOnlyList<string> BuildQaBlockingReasons(ItemDetailDto detail)
+    {
+        var reasons = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(detail.ResolvedName))
+        {
+            reasons.Add("ResolvedName is missing. Assign a stable operator-facing name before QA.");
+        }
+
+        if (string.IsNullOrWhiteSpace(detail.TypeName))
+        {
+            reasons.Add("TypeId did not resolve to a known item type. Fix the item type before QA.");
+        }
+
+        if (detail.IconId <= 0)
+        {
+            reasons.Add("IconId is missing or invalid. QA should not start until the inventory preview identity is set.");
+        }
+
+        if (!IsPreviewReady(detail.PreviewState))
+        {
+            reasons.Add("Preview is not ready. Resolve a curated or manual preview before QA.");
+        }
+
+        return reasons;
+    }
+
+    private static IReadOnlyList<string> BuildPublishBlockingReasons(ItemDetailDto detail)
+    {
+        var reasons = new List<string>
+        {
+            "Real client publish is intentionally disabled in Phase 8. Use this panel for readiness only.",
+            "Description publish is still deferred because sunshine.items stores DescriptionId but not free-text client i18n payload.",
+            "IsVisible publish is still deferred because sunshine.items has no direct persistence field for it."
+        };
+
+        if (detail.AppearanceId <= 0)
+        {
+            reasons.Add("AppearanceId is not set. Equipped/runtime appearance QA will stay incomplete until it is confirmed.");
+        }
+
+        return reasons;
+    }
+
+    private static IReadOnlyList<string> BuildRecommendedChecks(ItemDetailDto detail)
+    {
+        return new List<string>
+        {
+            $"Confirm item identity in Admin: ItemId={detail.ItemId}, IconId={detail.IconId}, AppearanceId={detail.AppearanceId}.",
+            $"Confirm preview readiness: state={detail.PreviewState.State}, path={detail.PreviewState.ResolvedPath ?? detail.PreviewState.ByIconPath}.",
+            $"Confirm runtime fields: Type={detail.TypeName ?? detail.TypeId.ToString()}, Level={detail.Level}, Weight={detail.Weight}, Price={detail.Price}.",
+            "Confirm the row exists in sunshine.items with the expected Name, TypeId, Level, IconId, and AppearanceId values.",
+            $"Give the item in game using the Sunshine command `.item add {detail.ItemId} 1 <CharacterName>` if your operator role allows moderator commands.",
+            "Confirm the inventory icon, item name, and tooltip in game.",
+            "If the item is equipable, confirm equipped appearance, slot behavior, and effects in game.",
+            "Confirm the client does not error after receiving or equipping the item.",
+            "Capture the QA result and only hand off to future publish workflow once blockers are cleared."
+        };
+    }
+
+    private static bool IsPreviewReady(ItemPreviewStateDto previewState)
+    {
+        return string.Equals(previewState.State, "FOUND", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(previewState.State, "MANUAL", StringComparison.OrdinalIgnoreCase);
     }
 
     private static void ValidateRequest(ItemSearchRequest request)

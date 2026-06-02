@@ -2,15 +2,16 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { catchError, finalize, of, switchMap } from 'rxjs';
+import { catchError, finalize, of } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
+import { ItemQaReadinessPanelComponent } from './components/item-qa-readiness-panel.component';
 import { ItemRuntimeSummaryCardComponent } from './components/item-runtime-summary-card.component';
 import { ItemsFacade } from './data-access/items.facade';
-import { AdminApiProblem, AdminOptionDto, ItemClientIdentityDto, ItemDetailDto, toAdminApiProblem } from './data-access/items.models';
+import { AdminApiProblem, AdminOptionDto, ItemClientIdentityDto, ItemDetailDto, ItemQaSummaryDto, toAdminApiProblem } from './data-access/items.models';
 
 @Component({
   selector: 'app-item-detail-page',
@@ -21,7 +22,8 @@ import { AdminApiProblem, AdminOptionDto, ItemClientIdentityDto, ItemDetailDto, 
     ItemRuntimeSummaryCardComponent,
     ItemClientIdentityCardComponent,
     ItemPreviewCardComponent,
-    ItemDiagnosticPanelComponent
+    ItemDiagnosticPanelComponent,
+    ItemQaReadinessPanelComponent
   ],
   templateUrl: './item-detail-page.component.html',
   styleUrl: './item-detail-page.component.scss'
@@ -37,20 +39,29 @@ export class ItemDetailPageComponent implements OnInit {
   protected identity: ItemClientIdentityDto | null = null;
   protected itemSetOptions: AdminOptionDto[] = [];
   protected problem: AdminApiProblem | null = null;
+  protected qaSummary: ItemQaSummaryDto | null = null;
+  protected qaSummaryProblem: AdminApiProblem | null = null;
   protected isLoading = false;
+  protected isLoadingQaSummary = false;
   protected itemId: number | null = null;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
       .pipe(
-        switchMap((paramMap) => {
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((paramMap) => {
           const itemId = Number(paramMap.get('itemId'));
           this.ngZone.run(() => {
             this.itemId = Number.isInteger(itemId) && itemId > 0 ? itemId : null;
             this.problem = null;
             this.detail = null;
             this.identity = null;
+            this.qaSummary = null;
+            this.qaSummaryProblem = null;
+            this.itemSetOptions = [];
             this.isLoading = true;
+            this.isLoadingQaSummary = true;
             this.refreshView();
           });
 
@@ -62,40 +73,14 @@ export class ItemDetailPageComponent implements OnInit {
                 status: 400
               };
               this.isLoading = false;
+              this.isLoadingQaSummary = false;
               this.refreshView();
             });
-            return of(null);
+            return;
           }
 
-          return this.itemsFacade.getItemDetailBundle(this.itemId).pipe(
-            catchError((error: unknown) => {
-              this.ngZone.run(() => {
-                this.problem = toAdminApiProblem(error);
-                this.refreshView();
-              });
-              return of(null);
-            }),
-            finalize(() => {
-              this.ngZone.run(() => {
-                this.isLoading = false;
-                this.refreshView();
-              });
-            })
-          );
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((bundle) => {
-        if (!bundle) {
-          return;
-        }
-
-        this.ngZone.run(() => {
-          this.detail = bundle.detail;
-          this.identity = bundle.detail.clientIdentity ?? null;
-          this.itemSetOptions = bundle.itemSetOptions;
-          this.refreshView();
-        });
+          this.loadDetailBundle(this.itemId);
+          this.loadQaSummary(this.itemId);
       });
   }
 
@@ -114,6 +99,68 @@ export class ItemDetailPageComponent implements OnInit {
 
   protected get resolvedIdentity(): ItemClientIdentityDto | null {
     return this.identity ?? this.detail?.clientIdentity ?? null;
+  }
+
+  private loadDetailBundle(itemId: number): void {
+    this.itemsFacade.getItemDetailBundle(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.problem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoading = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((bundle) => {
+        if (!bundle) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.detail = bundle.detail;
+          this.identity = bundle.detail.clientIdentity ?? null;
+          this.itemSetOptions = bundle.itemSetOptions;
+          this.refreshView();
+        });
+      });
+  }
+
+  private loadQaSummary(itemId: number): void {
+    this.itemsFacade.getItemQaSummary(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.qaSummaryProblem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoadingQaSummary = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((qaSummary) => {
+        if (!qaSummary) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.qaSummary = qaSummary;
+          this.refreshView();
+        });
+      });
   }
 
   private refreshView(): void {

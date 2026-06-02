@@ -52,6 +52,17 @@ public sealed class ItemsAdminController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{itemId:int}/qa-summary")]
+    [ProducesResponseType(typeof(ItemQaSummaryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ItemQaSummaryDto>> GetQaSummary(
+        [FromRoute] int itemId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _itemsAdminReadService.GetQaSummaryAsync(itemId, cancellationToken);
+        return Ok(result);
+    }
+
     [HttpGet("preview-state")]
     [ProducesResponseType(typeof(ItemPreviewStateDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -59,7 +59,8 @@
       <tr><td>Phase 6.5A - Item Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7A - Item Icon Selector</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7 - Item Create/Edit</td><td><code>DONE / LIVE</code></td></tr>
-      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>NEXT</code></td></tr>
+      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>DONE</code></td></tr>
+      <tr><td>Items Builder MVP</td><td><code>DONE / CLIENT PUBLISH PENDING</code></td></tr>
     </tbody>
   </table>
 
@@ -73,11 +74,24 @@
     <li>Preview by <code>IconId=1001</code> validated as <code>FOUND</code>.</li>
   </ul>
 
-  <h2>Phase 8 preview</h2>
-  <p>Next official scope: publish and QA workflow.</p>
+  <h2>Phase 8 completion checkpoint</h2>
   <ul>
-    <li>Controlled handoff from saved admin rows to downstream client-facing validation.</li>
-    <li>Remaining deferred concerns: description publish, <code>IsVisible</code> persistence, PNG upload, and weapon-specific workflow.</li>
+    <li>Backend QA summary endpoint is live at <code>GET /api/admin/v1/items/{itemId}/qa-summary</code>.</li>
+    <li>Item detail now exposes a <code>QA / Publish Readiness</code> panel.</li>
+    <li>Derived <code>READY_FOR_QA</code> vs <code>BLOCKED</code> status is visible without changing DB schema.</li>
+    <li>Manual QA checklist is visible and copyable with manual fallback.</li>
+    <li>Sunshine QA command is documented as <code>.item add &lt;itemId&gt; &lt;quantity&gt; [CharacterName]</code>.</li>
+    <li>Real client publish stays disabled in this phase by design.</li>
+  </ul>
+
+  <h2>What remains after Phase 8</h2>
+  <ul>
+    <li>Real client publish</li>
+    <li>Client i18n export/import</li>
+    <li>Description payload management</li>
+    <li><code>IsVisible</code> persistence</li>
+    <li>PNG upload workflow</li>
+    <li>Weapon-specific workflow</li>
   </ul>
 
   <h2>References</h2>
@@ -85,6 +99,9 @@
     <li><code>docs/admin-tools/items-builder/</code></li>
     <li><code>docs/admin-tools/migration/</code></li>
     <li><code>docs/roadmap/admin-tools-migration-master-plan.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-publish-qa-phase8.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-qa-checklist.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-future-client-publish.md</code></li>
   </ul>
 </body>
 </html>

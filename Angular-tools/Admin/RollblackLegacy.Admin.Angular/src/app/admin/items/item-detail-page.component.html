@@ -52,6 +52,13 @@
         [iconId]="detail?.iconId ?? resolvedIdentity?.iconId ?? null"
         [previewState]="detail?.previewState ?? null"></app-item-preview-card>
 
+      <app-item-qa-readiness-panel
+        [itemId]="itemId"
+        [detail]="detail"
+        [qaSummary]="qaSummary"
+        [problem]="qaSummaryProblem"
+        [isLoading]="isLoadingQaSummary"></app-item-qa-readiness-panel>
+
       <app-item-diagnostic-panel [warnings]="detail?.warnings ?? []"></app-item-diagnostic-panel>
     </div>
 

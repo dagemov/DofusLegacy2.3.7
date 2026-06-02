@@ -1,0 +1,114 @@
+<div class="card admin-card border-0">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">QA / Publish Readiness</p>
+        <h3 class="h5 mb-1">Derived workflow status</h3>
+        <p class="text-secondary mb-0">
+          Virtual readiness summary only. This phase does not publish client data or mutate workflow fields.
+        </p>
+      </div>
+
+      <span class="badge rounded-pill" [ngClass]="workflowBadgeClass">
+        {{ workflowStateLabel }}
+      </span>
+    </div>
+
+    <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+    <div *ngIf="isLoading" class="alert alert-light border mb-0">
+      Building QA readiness summary...
+    </div>
+
+    <ng-container *ngIf="qaSummary">
+      <div class="row g-3">
+        <div class="col-6">
+          <div class="qa-metric">
+            <span class="qa-metric__label">Can QA</span>
+            <strong [class.text-success]="qaSummary.canQa" [class.text-danger]="!qaSummary.canQa">
+              {{ qaSummary.canQa ? 'Yes' : 'No' }}
+            </strong>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="qa-metric">
+            <span class="qa-metric__label">Can publish</span>
+            <strong [class.text-success]="qaSummary.canPublish" [class.text-danger]="!qaSummary.canPublish">
+              {{ qaSummary.canPublish ? 'Yes' : 'No' }}
+            </strong>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="qa-metric">
+            <span class="qa-metric__label">Preview readiness</span>
+            <strong [class.text-success]="previewReady" [class.text-danger]="!previewReady">
+              {{ previewReady ? 'Ready' : 'Blocked' }}
+            </strong>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="qa-metric">
+            <span class="qa-metric__label">Identity readiness</span>
+            <strong [class.text-success]="identityReady" [class.text-danger]="!identityReady">
+              {{ identityReady ? 'Ready' : 'Review' }}
+            </strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <span class="badge text-bg-light border">Warnings: {{ warningCount }}</span>
+        <span class="badge text-bg-light border">Preview: {{ qaSummary.previewState.state }}</span>
+        <span class="badge text-bg-light border">IconId: {{ qaSummary.iconId }}</span>
+        <span class="badge text-bg-light border">AppearanceId: {{ qaSummary.appearanceId }}</span>
+      </div>
+
+      <div>
+        <p class="fw-semibold mb-2">Blocking reasons</p>
+        <ul *ngIf="qaSummary.blockingReasons.length > 0; else noBlockers" class="mb-0 ps-3">
+          <li *ngFor="let reason of qaSummary.blockingReasons" class="mb-2">{{ reason }}</li>
+        </ul>
+        <ng-template #noBlockers>
+          <div class="alert alert-success border mb-0">
+            No derived blockers were found for QA. Publish still stays disabled in this phase by design.
+          </div>
+        </ng-template>
+      </div>
+
+      <div>
+        <p class="fw-semibold mb-2">Recommended manual checks</p>
+        <ol class="mb-0 ps-3">
+          <li *ngFor="let check of qaSummary.recommendedChecks" class="mb-2">{{ check }}</li>
+        </ol>
+      </div>
+
+      <div class="alert alert-warning border mb-0">
+        <strong>Mark ready for QA</strong> stays disabled in Phase 8 because there is no persisted workflow field in
+        <span class="font-monospace-soft">sunshine.items</span> yet.
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-secondary" disabled>
+          Mark ready for QA
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          [disabled]="!hasChecklist"
+          (click)="copyChecklist()">
+          {{ copyChecklistLabel }}
+        </button>
+        <a *ngIf="itemId" class="btn btn-outline-secondary" [routerLink]="['/admin/items', itemId]">
+          Open item detail
+        </a>
+      </div>
+
+      <p *ngIf="clipboardHint" class="small text-secondary mb-0">{{ clipboardHint }}</p>
+
+      <div *ngIf="showManualChecklist" class="alert alert-light border mb-0">
+        <p class="fw-semibold mb-2">Manual copy fallback</p>
+        <pre class="manual-checklist mb-0">{{ manualChecklistText }}</pre>
+      </div>
+    </ng-container>
+  </div>
+</div>

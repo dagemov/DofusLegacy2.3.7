@@ -14,7 +14,8 @@ Current checkpoint:
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7A - Item Icon Selector: `DONE`
 - Phase 7 - Item Create/Edit: `DONE / LIVE`
-- Phase 8 - Publish / QA Workflow: `NEXT`
+- Phase 8 - Publish / QA Workflow: `DONE`
+- Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
 
 Admin Angular canonical location:
 
@@ -50,3 +51,6 @@ Document index:
 - `items-builder-create-edit-phase7.md`
 - `items-builder-write-contracts-phase7.md`
 - `items-builder-angular-create-edit-phase7.md`
+- `items-builder-publish-qa-phase8.md`
+- `items-builder-qa-checklist.md`
+- `items-builder-future-client-publish.md`
