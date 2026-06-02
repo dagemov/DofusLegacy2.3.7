@@ -52,8 +52,9 @@ Operational rules:
 - Phase 6.5A - Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor: `NEXT AFTER 7A`
-- Phase 7C - Item Form UX Polish: `NEXT AFTER 7B`
+- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7C - Item Form UX Polish: `NEXT`
+- Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
 
 ## Corrective audit status (Phase 7)
@@ -61,7 +62,7 @@ Operational rules:
 Validated on `2026-06-02` in the official repo:
 
 - Current write stack is functional but parity-incomplete versus legacy Blazor item editor.
-- Effects/characteristics editing is currently missing from Angular write flow.
+- Effects/characteristics editing is available on `/admin/items/:id/edit` (Phase 7B); publish and advanced conditions remain deferred.
 - Conditions are currently plain string and should remain operator-editable.
 - Preview and icon selection are present but need hardening before advanced write scope resumes.
 - Phase 7 remains paused until parity corrective slices (7A-7C) are completed.
@@ -115,6 +116,6 @@ Key references:
 
 The next intended branch should execute the corrective parity order:
 
-1. Phase 7A icon selector modal hardening
-2. Phase 7B effects/characteristics editor
-3. Phase 7C form UX polish
+1. Phase 7C form UX polish
+2. Phase 7D client sprite preview extraction (documentation)
+3. Phase 8 publish / QA workflow

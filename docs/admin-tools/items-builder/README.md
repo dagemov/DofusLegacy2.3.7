@@ -12,10 +12,11 @@ Current checkpoint:
 
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
+- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor: `NEXT AFTER 7A`
-- Phase 7C - Item Form UX Polish: `NEXT AFTER 7B`
+- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7C - Item Form UX Polish: `NEXT`
+- Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
 
 Operational DB target note:
@@ -61,6 +62,8 @@ Document index:
 - `items-builder-create-edit-gap-analysis.md`
 - `items-builder-icon-selector-plan.md`
 - `items-builder-effects-editor-plan.md`
+- `items-builder-effects-serialization-audit.md`
+- `items-builder-effects-editor-phase7b.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`

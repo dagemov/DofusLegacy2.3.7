@@ -25,9 +25,13 @@ public static class AdminInfrastructureServiceCollectionExtensions
 
         services.AddScoped<AdminDbConnectionFactory>();
         services.AddSingleton<AdminProtocolCatalog>();
+        services.AddSingleton<IItemEffectsCodec, ItemEffectsCodecAdapter>();
+        services.AddSingleton<IItemEffectNameResolver, ItemEffectNameResolver>();
+        services.AddSingleton<IItemEffectsCharacteristicCatalog, ItemEffectsCharacteristicCatalog>();
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
+        services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();
 
         return services;

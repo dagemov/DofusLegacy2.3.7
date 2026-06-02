@@ -1,0 +1,103 @@
+<div class="card admin-card border-0">
+  <div class="card-body d-grid gap-3">
+    <div>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">Phase 7B</p>
+      <h3 class="h5 mb-1">Efectos y características</h3>
+      <p class="text-secondary small mb-0">
+        La serialización vive en el Admin API (formato ObjectEffect de Sunshine). Angular solo edita filas y envía DTOs.
+      </p>
+    </div>
+
+    <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
+    <app-api-problem-panel [problem]="saveProblem"></app-api-problem-panel>
+
+    <div *ngIf="isLoading" class="small text-secondary">Cargando efectos editables...</div>
+
+    <div *ngIf="!isLoading && editState" class="d-grid gap-3">
+      <div *ngIf="saveMessage" class="alert alert-success border-0 py-2 mb-0">{{ saveMessage }}</div>
+
+      <div *ngIf="warnings.length > 0" class="alert alert-warning border-0 py-2 mb-0">
+        <div class="fw-semibold mb-1">Advertencias del parser</div>
+        <ul class="mb-0 ps-3 small">
+          <li *ngFor="let warning of warnings">{{ warning }}</li>
+        </ul>
+      </div>
+
+      <div class="row g-2 align-items-end">
+        <div class="col-md-8">
+          <label class="form-label" for="characteristicSelect">Agregar característica</label>
+          <select id="characteristicSelect" class="form-select" [(ngModel)]="selectedEffectId">
+            <option [ngValue]="null">Elegir efecto soportado...</option>
+            <option *ngFor="let option of effectOptions" [ngValue]="option.effectId">
+              {{ option.group }} — {{ option.label }} ({{ option.effectId }})
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary w-100" type="button" (click)="addCharacteristic()" [disabled]="!selectedEffectId">
+            Agregar
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="rows.length === 0" class="alert alert-light border mb-0">
+        Este item no tiene efectos editables cargados. Puedes agregar AP/PM/stats desde el catálogo.
+      </div>
+
+      <div *ngFor="let group of groupedRows" class="effects-group">
+        <h4 class="h6 mb-2">{{ group.group }}</h4>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Efecto</th>
+                <th>Valores</th>
+                <th>Preview</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of group.rows">
+                <td>
+                  <div class="fw-semibold">{{ row.label }}</div>
+                  <div class="small text-secondary font-monospace-soft">
+                    id {{ row.effectId }} · tipo {{ row.serializationTypeId }}
+                    <span *ngIf="!row.isSupported" class="badge text-bg-warning ms-1">unsupported</span>
+                  </div>
+                </td>
+                <td>
+                  <ng-container *ngIf="row.isSupported && row.operatorMode === 'Integer'; else readonlyValues">
+                    <input
+                      class="form-control form-control-sm font-monospace-soft"
+                      type="number"
+                      min="0"
+                      [(ngModel)]="row.value"
+                      [disabled]="isSaving" />
+                  </ng-container>
+                  <ng-template #readonlyValues>
+                    <span class="small text-secondary">{{ row.previewText }}</span>
+                  </ng-template>
+                </td>
+                <td class="small">{{ row.previewText }}</td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeRow(row)" [disabled]="isSaving">
+                    Quitar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="button" (click)="saveEffects()" [disabled]="isSaving || isLoading">
+          Guardar efectos
+        </button>
+        <span class="small text-secondary align-self-center font-monospace-soft" *ngIf="editState.effectsHex">
+          hex: {{ editState.effectsHex | slice:0:24 }}<span *ngIf="editState.effectsHex.length > 24">...</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

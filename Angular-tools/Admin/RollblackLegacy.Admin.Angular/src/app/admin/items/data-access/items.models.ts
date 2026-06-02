@@ -197,6 +197,70 @@ export interface ItemWriteBundle {
   itemSetOptions: AdminOptionDto[];
 }
 
+export interface AdminEffectOptionDto {
+  effectId: number;
+  label: string;
+  protocolName: string;
+  group: string;
+  defaultSerializationTypeId: number;
+  operatorMode: string;
+  isCharacteristic: boolean;
+  isSupported: boolean;
+}
+
+export interface ItemEffectEditDto {
+  rowId: string;
+  serializationTypeId: number;
+  effectId: number;
+  label: string;
+  diceNum: number;
+  diceSide: number;
+  value: number;
+  minValue: number;
+  maxValue: number;
+  operatorMode: string;
+  group: string;
+  isCharacteristic: boolean;
+  isSupported: boolean;
+  warning?: string | null;
+  preservedEffectHex?: string | null;
+  previewText: string;
+}
+
+export interface ItemEffectsEditDto {
+  itemId: number;
+  effectsHex: string;
+  effects: ItemEffectEditDto[];
+  preservedSuffixHex?: string | null;
+  warnings: string[];
+  hasUnsupportedEffects: boolean;
+}
+
+export interface ItemEffectEditRowRequest {
+  rowId?: string | null;
+  serializationTypeId: number;
+  effectId: number;
+  diceNum: number;
+  diceSide: number;
+  value: number;
+  minValue: number;
+  maxValue: number;
+  preservedEffectHex?: string | null;
+}
+
+export interface ItemEffectsUpdateRequest {
+  effects: ItemEffectEditRowRequest[];
+  preservedSuffixHex?: string | null;
+  removedUnsupportedRowIds?: string[];
+}
+
+export interface ItemEffectsUpdateResultDto {
+  itemId: number;
+  effectsHex: string;
+  effects: ItemEffectEditDto[];
+  warnings: string[];
+}
+
 export function createEmptyItemSearchRequest(): ItemSearchRequest {
   return {
     page: 1,

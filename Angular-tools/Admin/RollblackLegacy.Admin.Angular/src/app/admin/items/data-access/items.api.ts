@@ -15,7 +15,11 @@ import {
   ItemQaSummaryDto,
   ItemSearchRequest,
   ItemWriteRequest,
-  ItemWriteResultDto
+  ItemWriteResultDto,
+  AdminEffectOptionDto,
+  ItemEffectsEditDto,
+  ItemEffectsUpdateRequest,
+  ItemEffectsUpdateResultDto
 } from './items.models';
 import { toItemQueryParams } from './items.queries';
 
@@ -99,5 +103,23 @@ export class ItemsApi {
       `${this.baseUrl}/items/${itemId}/duplicate`,
       request
     );
+  }
+
+  getItemEffectsEdit(itemId: number): Observable<ItemEffectsEditDto> {
+    return this.httpClient.get<ItemEffectsEditDto>(`${this.baseUrl}/items/${itemId}/effects/edit`);
+  }
+
+  updateItemEffects(
+    itemId: number,
+    request: ItemEffectsUpdateRequest
+  ): Observable<ItemEffectsUpdateResultDto> {
+    return this.httpClient.put<ItemEffectsUpdateResultDto>(
+      `${this.baseUrl}/items/${itemId}/effects`,
+      request
+    );
+  }
+
+  getItemEffectOptions(): Observable<AdminEffectOptionDto[]> {
+    return this.httpClient.get<AdminEffectOptionDto[]>(`${this.baseUrl}/item-effects/options`);
   }
 }

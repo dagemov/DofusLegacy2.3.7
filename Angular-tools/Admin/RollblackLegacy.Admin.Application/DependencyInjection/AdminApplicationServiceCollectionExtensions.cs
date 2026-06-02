@@ -10,6 +10,7 @@ public static class AdminApplicationServiceCollectionExtensions
     {
         services.AddScoped<IItemsAdminReadService, ItemsAdminReadService>();
         services.AddScoped<IItemsAdminWriteService, ItemsAdminWriteService>();
+        services.AddScoped<IItemEffectsAdminService, ItemEffectsAdminService>();
 
         return services;
     }

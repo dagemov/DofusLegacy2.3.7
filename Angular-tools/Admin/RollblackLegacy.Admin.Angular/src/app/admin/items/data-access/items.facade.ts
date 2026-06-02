@@ -14,7 +14,11 @@ import {
   ItemQaSummaryDto,
   ItemSearchRequest,
   ItemWriteRequest,
-  ItemWriteResultDto
+  ItemWriteResultDto,
+  AdminEffectOptionDto,
+  ItemEffectsEditDto,
+  ItemEffectsUpdateRequest,
+  ItemEffectsUpdateResultDto
 } from './items.models';
 import { ItemsApi } from './items.api';
 
@@ -103,5 +107,20 @@ export class ItemsFacade {
 
   duplicateItem(itemId: number, request: ItemWriteRequest): Observable<ItemWriteResultDto> {
     return this.itemsApi.duplicateItem(itemId, request);
+  }
+
+  getItemEffectsEdit(itemId: number): Observable<ItemEffectsEditDto> {
+    return this.itemsApi.getItemEffectsEdit(itemId);
+  }
+
+  updateItemEffects(
+    itemId: number,
+    request: ItemEffectsUpdateRequest
+  ): Observable<ItemEffectsUpdateResultDto> {
+    return this.itemsApi.updateItemEffects(itemId, request);
+  }
+
+  getItemEffectOptions(): Observable<AdminEffectOptionDto[]> {
+    return this.itemsApi.getItemEffectOptions();
   }
 }
