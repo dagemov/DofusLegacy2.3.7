@@ -1,0 +1,39 @@
+# Items Builder Docs
+
+This folder consolidates all Items Builder planning and exploratory phase documentation into the official repo.
+
+Important status note:
+
+- some phase documents below were originally written from external exploratory branches
+- those documents are kept as reference history only
+- their implementation claims are not the accepted baseline in this repo until the work is replayed here
+- the official current roadmap state is defined by [admin-tools-migration-master-plan.md](../../roadmap/admin-tools-migration-master-plan.md)
+
+Current checkpoint:
+
+- Phase 6 - Asset Pipeline: `DONE`
+- Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
+- Phase 7 - Item Create/Edit: `PAUSED`
+- Phase 7A - Item Icon Selector: `NEXT`
+
+Document index:
+
+- `items-builder-migration-phase1.md`
+- `items-builder-blazor-inventory.md`
+- `items-builder-target-contracts.md`
+- `items-builder-angular-plan.md`
+- `items-builder-asset-pipeline.md`
+- `items-builder-readonly-api-phase2.md`
+- `items-builder-angular-phase3.md`
+- `items-builder-diagnostics-preview-phase4.md`
+- `items-builder-live-data-phase5.md`
+- `items-builder-asset-inventory-phase6.md`
+- `items-builder-asset-pipeline-phase6.md`
+- `items-builder-client-asset-intelligence-future.md`
+- `items-client-asset-audit-phase6-5a.md`
+- `items-client-asset-source-inventory.md`
+- `items-client-i18n-audit.md`
+- `items-builder-phase7a-item-icon-selector.md`
+- `items-builder-create-edit-phase7.md`
+- `items-builder-write-contracts-phase7.md`
+- `items-builder-angular-create-edit-phase7.md`

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Tools Migration Master Plan</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 2rem auto; max-width: 900px; line-height: 1.5; color: #1f2933; }
+    h1, h2 { color: #102a43; }
+    code { background: #f0f4f8; padding: 0.1rem 0.3rem; border-radius: 4px; }
+    ul { padding-left: 1.25rem; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #d9e2ec; padding: 0.6rem; text-align: left; vertical-align: top; }
+    th { background: #f0f4f8; }
+  </style>
+</head>
+<body>
+  <h1>Admin Tools Migration Master Plan</h1>
+
+  <h2>Snapshot</h2>
+  <ul>
+    <li>Date: <code>2026-06-02</code></li>
+    <li>Official repo: <code>C:\Users\Hombr\source\repos\DofusLegacy2.3.7</code></li>
+    <li>Official solution: <code>Sunshine.sln</code></li>
+    <li>Official documentation roots: <code>docs/admin-tools</code>, <code>docs/roadmap</code>, <code>docs/website</code>, <code>docs/infrastructure</code>, <code>docs/combat</code></li>
+  </ul>
+
+  <h2>Repository rules</h2>
+  <ol>
+    <li>Use the official repo as the single source of truth.</li>
+    <li>Do not start new phases in external worktrees or parallel repos unless explicitly approved.</li>
+    <li>Keep new code inside <code>src/</code>.</li>
+    <li>Keep Admin work inside the existing <code>Sunshine.sln</code>.</li>
+    <li>Treat imported exploratory docs as reference, not as accepted code baseline.</li>
+  </ol>
+
+  <h2>Current execution checkpoint</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Phase 6 - Asset Pipeline</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 6.5A - Item Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7 - Item Create/Edit</td><td><code>PAUSED</code></td></tr>
+      <tr><td>Phase 7A - Item Icon Selector</td><td><code>NEXT</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Why Phase 7 is paused</h2>
+  <ul>
+    <li>The official repo and doc structure had diverged from the exploratory worktree history.</li>
+    <li>The repo needed one in-place roadmap and one in-place doc hierarchy first.</li>
+    <li>The next safer step is a narrow icon selector slice instead of resuming full write flow immediately.</li>
+  </ul>
+
+  <h2>Phase 7A - Item Icon Selector</h2>
+  <p>Define the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes.</p>
+  <p>Must support preview PNG, <code>IconId</code>, client-facing name when available, search, and selection.</p>
+  <p>Initial catalog: <code>/assets/item-previews/by-icon</code></p>
+
+  <h2>References</h2>
+  <ul>
+    <li><code>docs/admin-tools/items-builder/</code></li>
+    <li><code>docs/admin-tools/migration/</code></li>
+    <li><code>docs/roadmap/admin-tools-migration-master-plan.md</code></li>
+  </ul>
+</body>
+</html>
