@@ -307,28 +307,31 @@ export function toAdminApiProblem(error: unknown): AdminApiProblem {
       (error.error instanceof Error ||
         (!!error.message && error.message.toLowerCase().includes('parsing')));
 
+    const title =
+      normalizeProblemText(payload?.title) ||
+      (isNetworkFailure
+        ? 'No se pudo conectar con el Admin API.'
+        : isHttp200ParseFailure
+          ? 'La respuesta del servidor no tiene el formato esperado.'
+          : 'No se pudo completar la solicitud.');
+
+    const detail =
+      normalizeProblemText(payload?.detail) ||
+      (isNetworkFailure
+        ? 'Verifica que el Admin API esté levantado y que el proxy apunte a la URL correcta.'
+        : undefined) ||
+      (isHttp200ParseFailure
+        ? 'La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse correctamente.'
+        : undefined) ||
+      normalizeProblemText(typeof error.error === 'string' ? error.error : undefined);
+
     return {
       type: payload?.type,
-      title:
-        payload?.title ||
-        (isNetworkFailure
-          ? 'No se pudo conectar con el Admin API.'
-          : isHttp200ParseFailure
-            ? 'La respuesta del servidor no tiene el formato esperado.'
-            : 'No se pudo completar la solicitud.'),
+      title,
       status: payload?.status ?? error.status,
-      detail:
-        payload?.detail ||
-        (isNetworkFailure
-          ? 'Verifica que el Admin API esté levantado y que el proxy apunte a la URL correcta.'
-          : undefined) ||
-        (isHttp200ParseFailure
-          ? 'La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse correctamente.'
-          : undefined) ||
-        (typeof error.error === 'string' ? error.error : undefined) ||
-        'No se pudo completar la solicitud.',
+      detail: normalizeProblemDetail(title, detail),
       instance: payload?.instance,
-      traceId: readTraceId(payload),
+      traceId: readTraceId(payload, error),
       errors: readValidationErrors(payload)
     };
   }
@@ -382,9 +385,52 @@ function normalizeNonNegativeNumber(value: number | string | null | undefined): 
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
 }
 
-function readTraceId(payload: Partial<AdminApiProblem> | undefined): string | undefined {
-  const traceId = payload?.traceId;
-  return typeof traceId === 'string' && traceId.trim().length > 0 ? traceId : undefined;
+function normalizeProblemText(value: string | undefined): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+function normalizeProblemDetail(title: string, detail: string | undefined): string | undefined {
+  if (!detail) {
+    return undefined;
+  }
+
+  if (detail === title) {
+    return undefined;
+  }
+
+  if (
+    detail === 'No se pudo completar la solicitud.' &&
+    title === 'No se pudo completar la solicitud.'
+  ) {
+    return undefined;
+  }
+
+  return detail;
+}
+
+function readTraceId(
+  payload: Partial<AdminApiProblem> | undefined,
+  error?: HttpErrorResponse
+): string | undefined {
+  const fromPayload = payload?.traceId;
+  if (typeof fromPayload === 'string' && fromPayload.trim().length > 0) {
+    return fromPayload.trim();
+  }
+
+  const fromBody =
+    error?.error && typeof error.error === 'object'
+      ? (error.error as { traceId?: unknown }).traceId
+      : undefined;
+  if (typeof fromBody === 'string' && fromBody.trim().length > 0) {
+    return fromBody.trim();
+  }
+
+  return undefined;
 }
 
 function readValidationErrors(

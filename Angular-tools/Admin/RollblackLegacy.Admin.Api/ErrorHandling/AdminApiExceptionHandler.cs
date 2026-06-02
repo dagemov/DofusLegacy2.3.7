@@ -7,11 +7,29 @@ namespace RollblackLegacy.Admin.Api.ErrorHandling;
 
 public sealed class AdminApiExceptionHandler : IExceptionHandler
 {
+    private readonly ILogger<AdminApiExceptionHandler> _logger;
+    private readonly IHostEnvironment _hostEnvironment;
+
+    public AdminApiExceptionHandler(
+        ILogger<AdminApiExceptionHandler> logger,
+        IHostEnvironment hostEnvironment)
+    {
+        _logger = logger;
+        _hostEnvironment = hostEnvironment;
+    }
+
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
+        _logger.LogError(
+            exception,
+            "Admin API request failed. {Method} {Path} traceId={TraceId}",
+            httpContext.Request.Method,
+            httpContext.Request.Path,
+            httpContext.TraceIdentifier);
+
         var problemDetails = CreateProblemDetails(httpContext, exception);
 
         httpContext.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
@@ -26,7 +44,7 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
         return true;
     }
 
-    private static ProblemDetails CreateProblemDetails(HttpContext httpContext, Exception exception)
+    private ProblemDetails CreateProblemDetails(HttpContext httpContext, Exception exception)
     {
         ProblemDetails problemDetails = exception switch
         {
@@ -58,10 +76,10 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
             },
             AdminNotConfiguredException notConfigured => new ProblemDetails
             {
-                Status = StatusCodes.Status500InternalServerError,
+                Status = StatusCodes.Status503ServiceUnavailable,
                 Title = "SunshineAdmin no está configurado.",
                 Detail = notConfigured.Message,
-                Type = "https://httpstatuses.com/500",
+                Type = "https://httpstatuses.com/503",
             },
             MySqlException => new ProblemDetails
             {
@@ -74,12 +92,22 @@ public sealed class AdminApiExceptionHandler : IExceptionHandler
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "El Admin API no pudo procesar la solicitud.",
-                Detail = "Ocurrió un error inesperado. Intenta de nuevo con el traceId informado si el problema persiste.",
+                Detail = BuildUnexpectedFailureDetail(exception),
                 Type = "https://httpstatuses.com/500",
             },
         };
 
         problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
         return problemDetails;
+    }
+
+    private string BuildUnexpectedFailureDetail(Exception exception)
+    {
+        if (_hostEnvironment.IsDevelopment())
+        {
+            return exception.Message;
+        }
+
+        return "Ocurrió un error inesperado. Intenta de nuevo con el traceId informado si el problema persiste.";
     }
 }

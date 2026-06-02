@@ -145,6 +145,77 @@ Browser targets used in this phase:
 - `/admin/items/39/edit`
 - `/admin/items/icon-selector`
 
+## Error 500 diagnostic
+
+Fecha: `2026-06-02`  
+Rama: `feature/items-builder-vps-qa-stabilization`  
+Handoff previo commiteado: `98d106a docs: add agent handoff for items builder phase 7`
+
+### Pantalla afectada
+
+- Ruta por defecto de la app: `/admin/items` (redirección desde `/`)
+- También visible en cualquier pantalla que use `app-api-problem-panel` cuando el backend responde error sin `ProblemDetails` útil
+
+### Endpoints probados (Admin API en `http://localhost:5248`)
+
+| Endpoint | Status | Notas |
+| --- | --- | --- |
+| `GET /api/admin/v1/health` | 200 | Servicio vivo |
+| `GET /api/admin/v1/health/db` | 200 | Con `appsettings.Development.local.json` apunta a VPS `174.138.35.107` |
+| `GET /api/admin/v1/items?page=1&pageSize=20` | 200 | Catálogo remoto operativo en esta máquina |
+| `GET /api/admin/v1/items/39` | 200 | Detalle OK |
+| `GET /api/admin/v1/items/39/identity` | 200 | Identidad OK |
+| `GET /api/admin/v1/item-icons?page=1&pageSize=24` | 200 | Catálogo PNG OK |
+| `GET /api/admin/v1/items/types/options` | 200 | Sin DB (enum protocolo) |
+| `GET /api/admin/v1/item-sets/options` | 200 | Requiere DB |
+| `GET /api/admin/v1/items/preview-state?iconId=1001` | 200 | Preview OK |
+| `GET /api/admin/v1/items/39/qa-summary` | 200 | QA summary OK |
+
+### Causa del mensaje duplicado «No se pudo completar la solicitud»
+
+No era necesariamente dos fallos distintos. Había dos fuentes de duplicación en el cliente:
+
+1. **Título y detalle genéricos iguales** en `toAdminApiProblem()` cuando la respuesta HTTP no traía `application/problem+json` parseable (cuerpo vacío, HTML, proxy, etc.).
+2. **Dos paneles** en `items-page.component.html` (`lookupProblem` + `listProblem`) que podían mostrar el mismo error dos veces si fallaban catálogo y lookups.
+
+El panel `api-problem-panel` además repetía un detalle por defecto aunque el título ya fuera genérico.
+
+### Causas probables del HTTP 500 real
+
+| Causa | Síntoma | Comprobación |
+| --- | --- | --- |
+| `SunshineAdmin` con password placeholder exacto `change-me` y `AllowDevelopmentPlaceholderConnectionString=false` | `GET /items` falla; `GET /health/db` responde `not_configured` | Revisar `appsettings.Development.local.json` |
+| Admin API no levantado o proxy mal apuntado | Angular status `0`, no 500 | `ng serve` + `dotnet run` en puerto `5248` |
+| MySQL remoto caído / firewall | 500 con título «No se pudo conectar con la base de datos Sunshine» | `GET /health/db` → `status: error` |
+| Binarios Admin API desactualizados tras Phase 7A | 500 genérico en `item-icons` u otros | `dotnet build` completo y reiniciar API |
+
+Config observada en esta máquina:
+
+```txt
+Angular-tools/Admin/RollblackLegacy.Admin.Api/appsettings.Development.local.json
+→ Server=174.138.35.107; User=sunshine_remote; Password=change-me-remote
+```
+
+`change-me-remote` **no** se trata como placeholder (solo `change-me` exacto). Si el VPS exige otra clave, actualizar ese archivo local (no commitear).
+
+### Fix aplicado
+
+Commit: `fix: stabilize items builder error handling` (pendiente de push)
+
+- **Angular:** `toAdminApiProblem()` evita duplicar título/detalle; lee `traceId` del cuerpo ProblemDetails; un solo panel en lista (`pageProblem`).
+- **Angular:** `api-problem-panel` no muestra detalle si es igual al título.
+- **Admin API:** `AdminApiExceptionHandler` registra excepción con `traceId`; `AdminNotConfiguredException` pasa a **HTTP 503**; en Development el `detail` incluye `exception.Message` para diagnóstico.
+
+### Validación post-fix
+
+- `dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln"`
+- `npm run build` en `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+- Navegador: `/admin/items` debe mostrar un solo mensaje de error claro (con `traceId` si el API responde ProblemDetails) o catálogo si API+DB están OK
+
+### Phase 7B.0
+
+No iniciada. Este bloque solo cubre estabilización del error 500 / UX de errores.
+
 ## Related docs
 
 - [items-builder-options-loading-fix.md](./items-builder-options-loading-fix.md)

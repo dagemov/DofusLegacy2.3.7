@@ -162,6 +162,10 @@ export class ItemsPageComponent implements OnInit {
     return this.result.page < this.totalPages;
   }
 
+  protected get pageProblem(): AdminApiProblem | null {
+    return this.listProblem ?? this.lookupProblem;
+  }
+
   private loadTypeOptions(): void {
     this.isLoadingTypeOptions = true;
     this.lookupProblem = null;
