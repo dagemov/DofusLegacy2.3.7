@@ -18,6 +18,11 @@ Current checkpoint:
 - Post-Phase 8 Stabilization / VPS Data / Assets / UX: `DONE`
 - Items Builder MVP: `DONE / CLIENT PUBLISH PENDING`
 
+Operational DB target note:
+
+- the Admin API can point to `LOCAL_DB` or `VPS_DB` through `Angular-tools/Admin/RollblackLegacy.Admin.Api/appsettings.Development.local.json`
+- the switching workflow is documented in [vps-database-connection.md](../../infrastructure/vps-database-connection.md)
+
 Admin Angular canonical location:
 
 - `Angular-tools/Admin/RollblackLegacy.Admin.Angular`

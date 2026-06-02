@@ -11,6 +11,8 @@
 *.sln.docstates
 *.env
 appsettings.Development.local.json
+appsettings.Development.local.backup.json
+appsettings.Development.vps.local.json
 
 # SSH keys (never commit)
 SSH/
