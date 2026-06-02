@@ -302,26 +302,40 @@ export function toAdminApiProblem(error: unknown): AdminApiProblem {
         ? (error.error as Partial<AdminApiProblem>)
         : undefined;
     const isNetworkFailure = error.status === 0;
+    const responseText =
+      typeof error.error === 'string'
+        ? error.error
+        : typeof error.error === 'object' && error.error !== null && 'text' in error.error
+          ? String((error.error as { text?: unknown }).text ?? '')
+          : '';
+    const isHttp200HtmlResponse =
+      error.status === 200 && looksLikeHtmlDocument(responseText);
     const isHttp200ParseFailure =
       error.status === 200 &&
-      (error.error instanceof Error ||
+      (isHttp200HtmlResponse ||
+        error.error instanceof Error ||
         (!!error.message && error.message.toLowerCase().includes('parsing')));
 
     const title =
       normalizeProblemText(payload?.title) ||
       (isNetworkFailure
         ? 'No se pudo conectar con el Admin API.'
-        : isHttp200ParseFailure
-          ? 'La respuesta del servidor no tiene el formato esperado.'
-          : 'No se pudo completar la solicitud.');
+        : isHttp200HtmlResponse
+          ? 'El proxy de desarrollo no está enviando /api al Admin API.'
+          : isHttp200ParseFailure
+            ? 'La respuesta del servidor no tiene el formato esperado.'
+            : 'No se pudo completar la solicitud.');
 
     const detail =
       normalizeProblemText(payload?.detail) ||
       (isNetworkFailure
         ? 'Verifica que el Admin API esté levantado y que el proxy apunte a la URL correcta.'
         : undefined) ||
+      (isHttp200HtmlResponse
+        ? 'Se recibió HTML (index.html del dev server) en lugar de JSON. Usa npm start o ng serve con proxy.conf.json y confirma que RollblackLegacy.Admin.Api escucha en http://localhost:5248.'
+        : undefined) ||
       (isHttp200ParseFailure
-        ? 'La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse correctamente.'
+        ? 'La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse como JSON.'
         : undefined) ||
       normalizeProblemText(typeof error.error === 'string' ? error.error : undefined);
 
@@ -383,6 +397,15 @@ function normalizeNonNegativeNumber(value: number | string | null | undefined): 
 
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+}
+
+function looksLikeHtmlDocument(value: string): boolean {
+  const normalized = value.trimStart().toLowerCase();
+  return (
+    normalized.startsWith('<!doctype html') ||
+    normalized.startsWith('<html') ||
+    normalized.includes('<!doctype html')
+  );
 }
 
 function normalizeProblemText(value: string | undefined): string | undefined {

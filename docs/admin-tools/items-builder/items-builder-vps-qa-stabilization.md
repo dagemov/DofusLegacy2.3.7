@@ -216,6 +216,63 @@ Commit: `2b79283 fix: stabilize items builder error handling`
 
 No iniciada. Este bloque solo cubre estabilización del error 500 / UX de errores.
 
+## HTTP 200 non-JSON diagnostic
+
+Fecha: `2026-06-02`
+
+### Síntoma en UI
+
+```txt
+La respuesta del servidor no tiene el formato esperado.
+La solicitud respondió HTTP 200, pero el contenido no pudo interpretarse correctamente.
+```
+
+### Endpoint afectado
+
+Cualquier llamada bajo `/api/admin/v1/...` desde Angular en desarrollo, en especial:
+
+```txt
+GET /api/admin/v1/items?page=1&pageSize=20
+```
+
+Invocado por `ItemsApi.getItems()` → `ItemsFacade.getItems()` → `ItemsPageComponent` (ruta `/admin/items`).
+
+### Evidencia capturada
+
+| Origen | URL | Status | Content-Type | Body empieza con |
+| --- | --- | --- | --- | --- |
+| Admin API directo | `http://localhost:5248/api/admin/v1/items?page=1&pageSize=2` | 200 | `application/json` | `{"page":1,...}` |
+| Angular dev server **sin proxy** | `http://localhost:4200/api/admin/v1/items?page=1&pageSize=2` | 200 | `text/html` | `<!doctype html>` |
+| Angular dev server **con proxy** | `http://localhost:4201/api/admin/v1/items?page=1&pageSize=2` | 200 | `application/json` | `{"page":1,...}` |
+
+### Causa
+
+**Caso A — Proxy no activo.** Si se ejecuta `ng serve` sin `proxy.conf.json`, el dev server de Angular atiende `/api/...` y devuelve `index.html` (SPA) con HTTP 200. `HttpClient` no puede parsear HTML como JSON → error de “formato esperado”.
+
+`package.json` ya tenía `npm start` con `--proxy-config`, pero `angular.json` no declaraba `proxyConfig` en `serve.options`, así que `ng serve` a secas omitía el proxy.
+
+### Fix aplicado
+
+- `angular.json`: `serve.options.proxyConfig = "proxy.conf.json"` (proxy por defecto en todo `ng serve`).
+- `items.models.ts`: mensaje explícito cuando la respuesta 200 es HTML (proxy ausente).
+- `Program.cs`: `UseHttpsRedirection` solo fuera de Development (evita redirecciones raras en proxy local).
+
+### Validación
+
+1. Levantar API: `dotnet run` en `RollblackLegacy.Admin.Api`.
+2. Reiniciar Angular con `npm start` (o `ng serve` tras el cambio en `angular.json`).
+3. `Invoke-WebRequest http://localhost:4200/api/admin/v1/items?page=1&pageSize=2` debe devolver `application/json`, no `text/html`.
+4. Navegador: `/admin/items` carga el catálogo sin el error de formato.
+
+### Estrategia Blazor parity (recordatorio)
+
+```txt
+Blazor legacy → auditar comportamiento → reglas en Admin.Application/Infrastructure (C#)
+→ API JSON → Angular solo UX/DTOs
+```
+
+No portar serialización de effects a TypeScript. Phase 7B.0 sigue pendiente hasta cerrar este bloque.
+
 ## Related docs
 
 - [items-builder-options-loading-fix.md](./items-builder-options-loading-fix.md)

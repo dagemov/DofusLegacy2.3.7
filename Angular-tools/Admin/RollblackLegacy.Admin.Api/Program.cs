@@ -49,7 +49,11 @@ builder.Services.AddAdminInfrastructure(builder.Configuration);
 var app = builder.Build();
 
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 ConfigureAdminStaticAssetPath(
     AdminRepositoryPathResolver.ResolveAdminAngularItemPreviewsRoot(app.Environment.ContentRootPath),
     app,
