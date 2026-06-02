@@ -1,0 +1,128 @@
+<div class="card admin-card border-0 h-100">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Preview and manual asset</p>
+        <h3 class="h5 mb-1">Preview state</h3>
+        <p class="text-secondary mb-0">{{ previewMessage }}</p>
+      </div>
+      <div class="text-lg-end">
+        <span class="badge rounded-pill" [ngClass]="badgeClass">{{ resolvedState }}</span>
+      </div>
+    </div>
+
+    <div class="preview-frame rounded-4 p-3">
+      <img
+        *ngIf="canRenderImage && !imageLoadFailed"
+        class="preview-image img-fluid rounded-3"
+        [src]="previewImagePath!"
+        [alt]="'Preview for item ' + (routeItemId ?? 'unknown')"
+        (error)="onImageError()" />
+
+      <div *ngIf="!canRenderImage || imageLoadFailed" class="preview-placeholder text-center">
+        <div class="placeholder-title mb-2">{{ resolvedState }}</div>
+        <div class="small text-secondary">
+          <ng-container *ngIf="resolvedState === 'MISSING'">
+            No preview image is available yet for this item.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'MANUAL'">
+            A manual asset should exist, but the current host could not display it.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'UNKNOWN'">
+            The current environment can expose logical paths without validating an actual image file.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'FOUND' && imageLoadFailed">
+            A preview path was resolved, but the image is not reachable from the current Angular host.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'FOUND' && !imageLoadFailed && !canRenderImage">
+            A preview should exist, but no concrete path is available yet.
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="small text-secondary">
+      Route ItemId <span class="font-monospace-soft">{{ routeItemId ?? 'unknown' }}</span>
+      <span class="mx-2">|</span>
+      Runtime IconId <span class="font-monospace-soft">{{ iconId ?? 'unknown' }}</span>
+    </div>
+
+    <div class="row g-3 small">
+      <div class="col-md-4">
+        <div class="detail-label">Preview source</div>
+        <div>{{ previewSourceLabel }}</div>
+      </div>
+      <div class="col-md-4">
+        <div class="detail-label">Resolved path</div>
+        <div class="font-monospace-soft text-break">{{ displayPath(previewState?.resolvedPath) }}</div>
+      </div>
+      <div class="col-md-4">
+        <div class="detail-label">Fallback used</div>
+        <div>{{ fallbackLabel }}</div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-3 small">
+      <div class="path-row rounded-3 p-3">
+        <div class="d-flex align-items-start justify-content-between gap-2">
+          <div>
+            <div class="detail-label">By item path</div>
+            <div class="font-monospace-soft text-break">{{ displayPath(previewState?.byItemPath) }}</div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [disabled]="isCopyDisabled(previewState?.byItemPath)"
+            (click)="copyField('byItemPath', previewState?.byItemPath)">
+            {{ copyLabel('byItemPath') }}
+          </button>
+        </div>
+        <div *ngIf="shouldShowManualValue('byItemPath')" class="small text-secondary mt-2">
+          Manual copy value: <span class="font-monospace-soft">{{ displayPath(previewState?.byItemPath) }}</span>
+        </div>
+      </div>
+
+      <div class="path-row rounded-3 p-3">
+        <div class="d-flex align-items-start justify-content-between gap-2">
+          <div>
+            <div class="detail-label">By icon path</div>
+            <div class="font-monospace-soft text-break">{{ displayPath(previewState?.byIconPath) }}</div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [disabled]="isCopyDisabled(previewState?.byIconPath)"
+            (click)="copyField('byIconPath', previewState?.byIconPath)">
+            {{ copyLabel('byIconPath') }}
+          </button>
+        </div>
+        <div *ngIf="shouldShowManualValue('byIconPath')" class="small text-secondary mt-2">
+          Manual copy value: <span class="font-monospace-soft">{{ displayPath(previewState?.byIconPath) }}</span>
+        </div>
+      </div>
+
+      <div class="path-row rounded-3 p-3">
+        <div class="d-flex align-items-start justify-content-between gap-2">
+          <div>
+            <div class="detail-label">Manual path</div>
+            <div class="font-monospace-soft text-break">{{ displayPath(previewState?.manualPath) }}</div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [disabled]="isCopyDisabled(previewState?.manualPath)"
+            (click)="copyField('manualPath', previewState?.manualPath)">
+            {{ copyLabel('manualPath') }}
+          </button>
+        </div>
+        <div *ngIf="shouldShowManualValue('manualPath')" class="small text-secondary mt-2">
+          Manual copy value: <span class="font-monospace-soft">{{ displayPath(previewState?.manualPath) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="clipboardHint" class="small text-secondary">
+      {{ clipboardHint }}
+    </div>
+  </div>
+</div>

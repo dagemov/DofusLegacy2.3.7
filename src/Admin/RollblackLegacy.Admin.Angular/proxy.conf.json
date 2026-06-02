@@ -1,0 +1,17 @@
+{
+  "/api": {
+    "target": "http://127.0.0.1:5248",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/assets/item-previews": {
+    "target": "http://127.0.0.1:5248",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/manual-assets/items": {
+    "target": "http://127.0.0.1:5248",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

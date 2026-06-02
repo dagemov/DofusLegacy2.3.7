@@ -16,6 +16,18 @@ Current checkpoint:
 - Phase 7 - Item Create/Edit: `PAUSED`
 - Phase 7A - Item Icon Selector: `NEXT`
 
+Admin Angular canonical location:
+
+- `src/Admin/RollblackLegacy.Admin.Angular`
+
+Repository rules:
+
+- no se permite crear Angular Admin fuera del repo oficial
+- no se permite continuar fases funcionales desde worktrees externos
+- todo proyecto nuevo debe vivir bajo `src/`
+- todo documento debe vivir bajo `docs/`
+- si una herramienta no existe en el repo oficial, no se puede marcar como implementada
+
 Document index:
 
 - `items-builder-migration-phase1.md`

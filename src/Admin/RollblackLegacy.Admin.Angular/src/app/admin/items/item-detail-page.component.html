@@ -1,0 +1,100 @@
+<section class="d-grid gap-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Back to items</a>
+      <h2 class="h4 mb-1">Item detail</h2>
+      <p class="text-secondary mb-0">
+        Operator-facing runtime detail, explicit identity projection, preview state, and diagnostics before entering the write flow.
+      </p>
+    </div>
+
+    <div class="d-flex flex-column align-items-lg-end gap-2">
+      <div class="alert admin-rule-banner py-2 px-3 mb-0">
+        <strong>Identity rule:</strong>
+        <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
+      </div>
+      <div *ngIf="itemId" class="d-flex flex-wrap gap-2 justify-content-lg-end">
+        <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Edit item</a>
+        <a class="btn btn-outline-primary" [routerLink]="['/admin/items', itemId, 'duplicate']">
+          Duplicate item
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+  <div *ngIf="isLoading" class="card admin-card border-0">
+    <div class="card-body text-secondary">Loading item detail...</div>
+  </div>
+
+  <div *ngIf="itemId" class="row g-4">
+    <div class="col-12 col-xl-7">
+      <app-item-runtime-summary-card
+        [detail]="detail"
+        [routeItemId]="itemId"
+        [setName]="resolveSetName(detail)"></app-item-runtime-summary-card>
+    </div>
+
+    <div class="col-12 col-xl-5 d-grid gap-4">
+      <app-item-client-identity-card
+        [routeItemId]="itemId"
+        [identity]="resolvedIdentity"></app-item-client-identity-card>
+
+      <app-item-preview-card
+        [routeItemId]="itemId"
+        [iconId]="detail?.iconId ?? resolvedIdentity?.iconId ?? null"
+        [previewState]="detail?.previewState ?? null"></app-item-preview-card>
+
+      <app-item-diagnostic-panel [warnings]="detail?.warnings ?? []"></app-item-diagnostic-panel>
+    </div>
+
+    <div class="col-12">
+      <div class="card admin-card border-0">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Effects</p>
+              <h3 class="h5 mb-0">Read-only effect projection</h3>
+            </div>
+            <span class="text-secondary small">{{ detail?.effects?.length ?? 0 }} effect(s)</span>
+          </div>
+
+          <div *ngIf="detail; else effectsUnavailable" class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>EffectId</th>
+                  <th>DiceNum</th>
+                  <th>DiceSide</th>
+                  <th>Value</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let effect of detail.effects">
+                  <td class="font-monospace-soft">{{ effect.effectId }}</td>
+                  <td>{{ effect.diceNum }}</td>
+                  <td>{{ effect.diceSide }}</td>
+                  <td>{{ effect.value }}</td>
+                  <td>{{ effect.description }}</td>
+                </tr>
+                <tr *ngIf="detail.effects.length === 0">
+                  <td colspan="5" class="text-center text-secondary py-4">
+                    No effects were returned for this item.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <ng-template #effectsUnavailable>
+            <div class="alert alert-light border mb-0">
+              Effect projection will appear once runtime detail is available from the Admin API.
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,38 @@
+<div class="card admin-card border-0 h-100">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Diagnostics</p>
+        <h3 class="h5 mb-1">Identity warnings</h3>
+        <p class="text-secondary mb-0">
+          Read-only diagnostics only. No automatic correction or write flow is active here.
+        </p>
+      </div>
+      <span class="badge text-bg-light border">{{ resolvedWarnings.length }} warning(s)</span>
+    </div>
+
+    <div *ngIf="!hasWarnings" class="alert alert-success-subtle border mb-0">
+      No identity warnings detected.
+    </div>
+
+    <div *ngIf="hasWarnings" class="d-grid gap-3">
+      <div
+        *ngFor="let warning of resolvedWarnings; trackBy: trackByWarningCode"
+        class="rounded-3 p-3"
+        [ngClass]="warningCardClass(warning.severity)">
+        <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between">
+          <div class="d-grid gap-1">
+            <div class="fw-semibold font-monospace-soft">{{ warning.code }}</div>
+            <div class="text-secondary">{{ warning.message }}</div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 align-items-start">
+            <app-item-warning-badge [severity]="warning.severity"></app-item-warning-badge>
+            <span *ngIf="warning.field" class="badge text-bg-light border font-monospace-soft">
+              {{ warning.field }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

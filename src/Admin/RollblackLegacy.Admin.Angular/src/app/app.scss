@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(196, 140, 72, 0.18), transparent 32%),
+    linear-gradient(180deg, #f7f0e4 0%, #f3efe8 45%, #eef1f4 100%);
+}
+
+.app-shell__header {
+  background:
+    linear-gradient(135deg, rgba(49, 63, 84, 0.96), rgba(30, 39, 54, 0.92)),
+    #243140;
+  color: #f8f5ef;
+}
+
+.app-shell__eyebrow {
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #d8be8a;
+}
+
+.nav-link {
+  color: #d5e1ef;
+  border: 1px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: #fff4da;
+  border-color: rgba(216, 190, 138, 0.45);
+}
+
+.nav-link.active {
+  background: #d8be8a;
+  border-color: #d8be8a;
+  color: #2b3745;
+  font-weight: 600;
+}

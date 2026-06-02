@@ -1,0 +1,365 @@
+<section class="d-grid gap-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Back to items</a>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">{{ pageEyebrow }}</p>
+      <h2 class="h4 mb-1">{{ pageTitle }}</h2>
+      <p class="text-secondary mb-0">{{ pageDescription }}</p>
+    </div>
+
+    <div class="d-flex flex-column align-items-lg-end gap-2">
+      <div class="alert admin-rule-banner py-2 px-3 mb-0">
+        <strong>Identity rule:</strong>
+        <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+        <a
+          *ngIf="sourceItemId"
+          class="btn btn-sm btn-outline-secondary"
+          [routerLink]="['/admin/items', sourceItemId]">
+          Source detail
+        </a>
+        <a
+          *ngIf="saveResult"
+          class="btn btn-sm btn-outline-success"
+          [routerLink]="saveResult.detailPath">
+          Open saved detail
+        </a>
+        <a
+          *ngIf="saveResult"
+          class="btn btn-sm btn-success"
+          [routerLink]="['/admin/items', saveResult.itemId, 'edit']">
+          Continue editing
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="saveProblem"></app-api-problem-panel>
+
+  <div *ngIf="saveResult" class="alert alert-success border-0 shadow-sm mb-0">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+      <div>
+        <h3 class="h6 mb-1">Write operation completed</h3>
+        <p class="mb-1">
+          <strong>{{ saveResult.operation | titlecase }}</strong>
+          saved item
+          <span class="font-monospace-soft">{{ saveResult.itemId }}</span>
+          with runtime DescriptionId
+          <span class="font-monospace-soft">{{ saveResult.descriptionId }}</span>.
+        </p>
+        <p class="mb-0 small text-secondary">
+          Description text publish and IsVisible persistence still stay deferred in Phase 7 by design.
+        </p>
+      </div>
+      <div class="small text-secondary">
+        <div>Warnings returned: {{ saveResult.warnings.length }}</div>
+        <div>Detail path: <span class="font-monospace-soft">{{ saveResult.detailPath }}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="card admin-card border-0">
+    <div class="card-body text-secondary">Loading write context...</div>
+  </div>
+
+  <div *ngIf="!isLoading" class="row g-4">
+    <div class="col-12 col-xl-7">
+      <div class="card admin-card border-0">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-4">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Writable fields</p>
+              <h3 class="h5 mb-0">sunshine.items safe write slice</h3>
+            </div>
+            <span *ngIf="isSaving" class="text-secondary small">Saving changes...</span>
+          </div>
+
+          <form [formGroup]="form" class="row g-3" (ngSubmit)="submit()">
+            <div class="col-12">
+              <label class="form-label" for="resolvedName">ResolvedName</label>
+              <input
+                id="resolvedName"
+                class="form-control"
+                [class.is-invalid]="hasFieldIssue('resolvedName')"
+                formControlName="resolvedName"
+                maxlength="250"
+                placeholder="Petite Amulette du Hibou" />
+              <div *ngFor="let message of getFieldErrors('resolvedName')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('resolvedName').length && getLocalError('resolvedName')" class="invalid-feedback d-block">
+                {{ getLocalError('resolvedName') }}
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="description">Description</label>
+              <textarea
+                id="description"
+                class="form-control"
+                rows="3"
+                formControlName="description"
+                placeholder="Deferred free-text description for future publish flow"></textarea>
+              <div class="form-text">
+                Accepted in the contract now, but not persisted yet because sunshine.items only stores DescriptionId.
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="typeId">Type</label>
+              <select
+                id="typeId"
+                class="form-select"
+                [class.is-invalid]="hasFieldIssue('typeId')"
+                formControlName="typeId">
+                <option [ngValue]="null">Choose a type</option>
+                <option *ngFor="let option of typeOptions" [ngValue]="option.value">
+                  {{ option.label }} ({{ option.value }})
+                </option>
+              </select>
+              <div *ngFor="let message of getFieldErrors('typeId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('typeId').length && getLocalError('typeId')" class="invalid-feedback d-block">
+                {{ getLocalError('typeId') }}
+              </div>
+              <div class="form-text">
+                Weapon type ids remain blocked in Phase 7 because Sunshine stores them in <span class="font-monospace-soft">items_weapons</span>.
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="setId">Item set</label>
+              <select id="setId" class="form-select" formControlName="setId">
+                <option [ngValue]="null">No set</option>
+                <option *ngFor="let option of itemSetOptions" [ngValue]="option.value">
+                  {{ option.label }} ({{ option.value }})
+                </option>
+              </select>
+              <div *ngFor="let message of getFieldErrors('setId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label class="form-label" for="level">Level</label>
+              <input
+                id="level"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('level')"
+                formControlName="level"
+                type="number"
+                min="1" />
+              <div *ngFor="let message of getFieldErrors('level')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('level').length && getLocalError('level')" class="invalid-feedback d-block">
+                {{ getLocalError('level') }}
+              </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+              <label class="form-label" for="weight">Weight</label>
+              <input
+                id="weight"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('weight')"
+                formControlName="weight"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('weight')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('weight').length && getLocalError('weight')" class="invalid-feedback d-block">
+                {{ getLocalError('weight') }}
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="price">Price</label>
+              <input
+                id="price"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('price')"
+                formControlName="price"
+                type="number"
+                min="0"
+                step="0.01" />
+              <div *ngFor="let message of getFieldErrors('price')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('price').length && getLocalError('price')" class="invalid-feedback d-block">
+                {{ getLocalError('price') }}
+              </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="iconId">IconId</label>
+              <input
+                id="iconId"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('iconId')"
+                formControlName="iconId"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('iconId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('iconId').length && getLocalError('iconId')" class="invalid-feedback d-block">
+                {{ getLocalError('iconId') }}
+              </div>
+              <div class="form-text">Preview is resolved by IconId before save.</div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="appearanceId">AppearanceId</label>
+              <input
+                id="appearanceId"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('appearanceId')"
+                formControlName="appearanceId"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('appearanceId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('appearanceId').length && getLocalError('appearanceId')" class="invalid-feedback d-block">
+                {{ getLocalError('appearanceId') }}
+              </div>
+              <div class="form-text">Equipped look identity stays separate from inventory icon identity.</div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="isVisible">IsVisible</label>
+              <select id="isVisible" class="form-select" formControlName="isVisible">
+                <option [ngValue]="true">Visible</option>
+                <option [ngValue]="false">Hidden</option>
+              </select>
+              <div class="form-text">
+                Deferred field only. Phase 7 keeps it visible to preserve the future contract, but sunshine.items has no direct persistence for it yet.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="conditions">Conditions</label>
+              <textarea
+                id="conditions"
+                class="form-control font-monospace-soft"
+                rows="3"
+                formControlName="conditions"
+                placeholder="Blank input is normalized to literal 'null' on save"></textarea>
+            </div>
+
+            <div class="col-12">
+              <div class="card border-0 form-flags-card">
+                <div class="card-body">
+                  <p class="text-uppercase small fw-semibold text-secondary mb-3">Behavior flags</p>
+                  <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="usable" class="form-check-input" formControlName="usable" type="checkbox" />
+                        <label class="form-check-label" for="usable">Usable</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="targetable" class="form-check-input" formControlName="targetable" type="checkbox" />
+                        <label class="form-check-label" for="targetable">Targetable</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="twoHanded" class="form-check-input" formControlName="twoHanded" type="checkbox" />
+                        <label class="form-check-label" for="twoHanded">Two-handed</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="etheral" class="form-check-input" formControlName="etheral" type="checkbox" />
+                        <label class="form-check-label" for="etheral">Etheral</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap gap-2 pt-2">
+              <button class="btn btn-primary" type="submit" [disabled]="submitDisabled">
+                {{ submitLabel }}
+              </button>
+              <button class="btn btn-outline-secondary" type="button" (click)="resetForm()" [disabled]="isSaving">
+                {{ resetLabel }}
+              </button>
+              <a
+                *ngIf="sourceItemId"
+                class="btn btn-outline-primary"
+                [routerLink]="['/admin/items', sourceItemId]">
+                View source detail
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-5 d-grid gap-4">
+      <div *ngIf="sourceDetail" class="card admin-card border-0">
+        <div class="card-body d-grid gap-2">
+          <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Source snapshot</p>
+              <h3 class="h5 mb-0">
+                {{ mode === 'duplicate' ? 'Duplicate source' : 'Current persisted item' }}
+              </h3>
+            </div>
+            <span class="badge text-bg-light border font-monospace-soft">ItemId {{ sourceDetail.itemId }}</span>
+          </div>
+
+          <dl class="row mb-0 small source-snapshot">
+            <dt class="col-4">ResolvedName</dt>
+            <dd class="col-8">{{ sourceDetail.resolvedName || 'Unnamed item' }}</dd>
+
+            <dt class="col-4">Type</dt>
+            <dd class="col-8">{{ sourceDetail.typeName || ('TypeId ' + sourceDetail.typeId) }}</dd>
+
+            <dt class="col-4">Set</dt>
+            <dd class="col-8">{{ resolveSetName(sourceDetail.set?.setId ?? null) }}</dd>
+
+            <dt class="col-4">IconId</dt>
+            <dd class="col-8 font-monospace-soft">{{ sourceDetail.iconId }}</dd>
+
+            <dt class="col-4">AppearanceId</dt>
+            <dd class="col-8 font-monospace-soft">{{ sourceDetail.appearanceId }}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div *ngIf="isLoadingPreview" class="small text-secondary px-2">Refreshing preview by IconId...</div>
+
+      <app-item-preview-card
+        [routeItemId]="previewContextItemId"
+        [iconId]="previewIconId"
+        [previewState]="previewState"></app-item-preview-card>
+
+      <app-item-diagnostic-panel [warnings]="displayWarnings"></app-item-diagnostic-panel>
+
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-2 small">
+          <p class="text-uppercase small fw-semibold text-secondary mb-1">Phase 7 constraints</p>
+          <div>Create, edit, and duplicate target <span class="font-monospace-soft">sunshine.items</span> only.</div>
+          <div>Preview is evaluated from the current <span class="font-monospace-soft">IconId</span> before save.</div>
+          <div *ngIf="mode === 'edit'">Editing keeps the current <span class="font-monospace-soft">ItemId</span>.</div>
+          <div *ngIf="mode === 'duplicate'">
+            Duplicating allocates a new <span class="font-monospace-soft">ItemId</span> and a new
+            <span class="font-monospace-soft">DescriptionId</span>.
+          </div>
+          <div>Description publish, IsVisible persistence, PNG upload, and weapon writes remain out of scope.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

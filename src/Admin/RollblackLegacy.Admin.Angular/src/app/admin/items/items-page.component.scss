@@ -1,0 +1,19 @@
+.form-label {
+  font-weight: 600;
+}
+
+.table td,
+.table th {
+  white-space: nowrap;
+}
+
+.table td:nth-child(2) {
+  min-width: 18rem;
+  white-space: normal;
+}
+
+.alert.admin-rule-banner {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}

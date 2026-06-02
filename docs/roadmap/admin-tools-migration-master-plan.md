@@ -19,6 +19,22 @@
 3. Keep new code inside `src/`.
 4. Keep Admin work inside the existing `Sunshine.sln`.
 5. Treat exploratory docs imported from parallel branches as reference, not as accepted code baseline.
+6. Do not create `RollblackLegacy.Admin.Angular` outside the official repo.
+7. If a tool does not exist in the official repo, it cannot be marked as implemented.
+
+## Admin Angular canonical location
+
+The Admin Angular workspace now lives in the official repo at:
+
+`src/Admin/RollblackLegacy.Admin.Angular`
+
+Operational rules:
+
+- no se permite crear Angular Admin fuera del repo oficial
+- no se permite continuar fases funcionales desde worktrees externos
+- todo proyecto nuevo debe vivir bajo `src/`
+- todo documento debe vivir bajo `docs/`
+- si una herramienta no existe en el repo oficial, no se puede marcar como implementada
 
 ## Current execution checkpoint
 
