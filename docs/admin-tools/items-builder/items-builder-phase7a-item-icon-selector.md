@@ -3,12 +3,12 @@
 ## Snapshot
 
 - Date: `2026-06-02`
-- Status: `NEXT`
-- Scope type: design and planning before full Item `Create/Edit`
+- Status: `DONE`
+- Scope type: implementation slice before full Item `Create/Edit`
 
 ## Goal
 
-Define the first focused UI slice that helps operators choose the correct item icon before full write workflows resume.
+Deliver the first focused UI slice that helps operators choose the correct item icon before full write workflows resume.
 
 ## Why this comes before full Phase 7
 
@@ -17,46 +17,69 @@ Define the first focused UI slice that helps operators choose the correct item i
 - the current curated preview catalog already proves the `IconId -> PNG` path
 - this step is smaller and safer than reopening full item writes immediately
 
-## Component target
+## Canonical locations
 
-`ItemIconSelectorComponent`
+- Angular workspace: `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+- Admin API: `Angular-tools/Admin/RollblackLegacy.Admin.Api`
+- Admin contracts/application/infrastructure/domain: `Angular-tools/Admin/`
 
-## Minimum responsibilities
+## Implemented slice
+
+Backend:
+
+- `GET /api/admin/v1/item-icons`
+- query params: `search`, `iconId`, `page`, `pageSize`
+- source: curated preview PNG catalog under `/assets/item-previews/by-icon`
+
+Frontend:
+
+- route: `/admin/items/icon-selector`
+- component: `ItemIconSelectorComponent`
+- entry points:
+  - `/admin/items`
+  - `/admin/items/:itemId`
+
+## Responsibilities
 
 - render preview PNG when available
 - show `IconId`
-- show client-facing name when available
-- support search
-- support selection
+- support search text and direct `iconId` filter
+- support visual selection without touching DB
+- emit `{ iconId, previewPath }` for future Phase 7 reuse
 - keep `ItemId != IconId != AppearanceId` explicit in the surrounding UX
 
-## Initial catalog source
+## Current catalog source
 
-Use the existing preview catalog under:
+Use the curated preview catalog under:
 
 ```txt
 /assets/item-previews/by-icon
 ```
 
-Initial expectations:
+Current expectations:
 
-- the component may start from a small curated manifest
+- the component starts from a small curated manifest discovered from PNG filenames
 - the first pass does not need the entire client catalog
 - placeholders are acceptable for icons not yet curated
+- `LinkedItemCount` and `SampleItemNames` remain honest fallback data for now
 
-## Inputs and outputs
+## Output contract
 
-Inputs:
+```ts
+{
+  iconId: number;
+  previewPath: string | null;
+}
+```
 
-- current selected `IconId`
-- optional search text
-- optional client name lookup data
+This output is intentionally small so Phase 7 can reuse the selector inside `Create`, `Edit`, and `Duplicate` without reimplementing icon lookup logic in Angular.
 
-Outputs:
+## Validation status
 
-- selected `IconId`
-- selected preview path
-- selected client label metadata if available
+- `1001.png` is discoverable in the current curated catalog
+- the selector is read-only and does not touch DB
+- API errors keep `traceId` visible through the shared problem panel
+- missing previews still show a placeholder instead of faking data
 
 ## Out of scope
 
@@ -70,10 +93,10 @@ Outputs:
 - publish
 - gameplay changes
 
-## Suggested follow-up branch
+## Next phase handoff
 
-`feature/items-builder-icon-selector-phase7a`
+After this slice, the next functional target remains:
 
-## Expected commit
+`Phase 7 - Item Create/Edit`
 
-`docs: define item icon selector phase`
+That phase should consume the selector result instead of asking operators to type `IconId` manually.

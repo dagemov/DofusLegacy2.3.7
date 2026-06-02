@@ -13,18 +13,19 @@ Current checkpoint:
 
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7 - Item Create/Edit: `PAUSED`
-- Phase 7A - Item Icon Selector: `NEXT`
+- Phase 7A - Item Icon Selector: `DONE`
+- Phase 7 - Item Create/Edit: `NEXT`
 
 Admin Angular canonical location:
 
-- `src/Admin/RollblackLegacy.Admin.Angular`
+- `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+- Admin backend projects for this migration also live under `Angular-tools/Admin/`
 
 Repository rules:
 
 - no se permite crear Angular Admin fuera del repo oficial
 - no se permite continuar fases funcionales desde worktrees externos
-- todo proyecto nuevo debe vivir bajo `src/`
+- los proyectos Admin de esta migracion deben vivir bajo `Angular-tools/Admin/`
 - todo documento debe vivir bajo `docs/`
 - si una herramienta no existe en el repo oficial, no se puede marcar como implementada
 

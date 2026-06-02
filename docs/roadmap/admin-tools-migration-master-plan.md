@@ -16,7 +16,7 @@
 
 1. Use `C:\Users\Hombr\source\repos\DofusLegacy2.3.7` as the single source of truth.
 2. Do not start new phases in external worktrees or parallel repos unless explicitly approved.
-3. Keep new code inside `src/`.
+3. Keep new Admin code inside `Angular-tools/Admin/`.
 4. Keep Admin work inside the existing `Sunshine.sln`.
 5. Treat exploratory docs imported from parallel branches as reference, not as accepted code baseline.
 6. Do not create `RollblackLegacy.Admin.Angular` outside the official repo.
@@ -26,13 +26,17 @@
 
 The Admin Angular workspace now lives in the official repo at:
 
-`src/Admin/RollblackLegacy.Admin.Angular`
+`Angular-tools/Admin/RollblackLegacy.Admin.Angular`
+
+The Admin API, Application, Contracts, Domain, and Infrastructure projects for this migration also live under:
+
+`Angular-tools/Admin/`
 
 Operational rules:
 
 - no se permite crear Angular Admin fuera del repo oficial
 - no se permite continuar fases funcionales desde worktrees externos
-- todo proyecto nuevo debe vivir bajo `src/`
+- los proyectos Admin de esta migracion deben vivir bajo `Angular-tools/Admin/`
 - todo documento debe vivir bajo `docs/`
 - si una herramienta no existe en el repo oficial, no se puede marcar como implementada
 
@@ -40,8 +44,8 @@ Operational rules:
 
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7 - Item Create/Edit: `PAUSED`
-- Phase 7A - Item Icon Selector: `NEXT`
+- Phase 7A - Item Icon Selector: `DONE`
+- Phase 7 - Item Create/Edit: `NEXT`
 
 ## Why Phase 7 is paused
 
@@ -53,19 +57,25 @@ Operational rules:
 
 Goal:
 
-- define the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes
+- implement the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes
 
 Must support:
 
 - preview PNG
 - `IconId`
-- client-facing name when available
 - search
 - selection
+- output contract `{ iconId, previewPath }`
 
-Initial catalog:
+Current catalog:
 
 - `/assets/item-previews/by-icon`
+
+Current implementation notes:
+
+- backend endpoint: `GET /api/admin/v1/item-icons`
+- Angular route: `/admin/items/icon-selector`
+- source of truth: curated PNG filenames from `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/`
 
 Out of scope:
 

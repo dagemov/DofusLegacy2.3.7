@@ -28,7 +28,7 @@
   <ol>
     <li>Use the official repo as the single source of truth.</li>
     <li>Do not start new phases in external worktrees or parallel repos unless explicitly approved.</li>
-    <li>Keep new code inside <code>src/</code>.</li>
+    <li>Keep new Admin code inside <code>Angular-tools/Admin/</code>.</li>
     <li>Keep Admin work inside the existing <code>Sunshine.sln</code>.</li>
     <li>Treat imported exploratory docs as reference, not as accepted code baseline.</li>
     <li>Do not create <code>RollblackLegacy.Admin.Angular</code> outside the official repo.</li>
@@ -36,11 +36,12 @@
   </ol>
 
   <h2>Admin Angular canonical location</h2>
-  <p>The Admin Angular workspace now lives in the official repo at <code>src/Admin/RollblackLegacy.Admin.Angular</code>.</p>
+  <p>The Admin Angular workspace now lives in the official repo at <code>Angular-tools/Admin/RollblackLegacy.Admin.Angular</code>.</p>
+  <p>The Admin API, Application, Contracts, Domain, and Infrastructure projects for this migration also live under <code>Angular-tools/Admin/</code>.</p>
   <ul>
     <li>No se permite crear Angular Admin fuera del repo oficial.</li>
     <li>No se permite continuar fases funcionales desde worktrees externos.</li>
-    <li>Todo proyecto nuevo debe vivir bajo <code>src/</code>.</li>
+    <li>Los proyectos Admin de esta migracion deben vivir bajo <code>Angular-tools/Admin/</code>.</li>
     <li>Todo documento debe vivir bajo <code>docs/</code>.</li>
     <li>Si una herramienta no existe en el repo oficial, no se puede marcar como implementada.</li>
   </ul>
@@ -56,8 +57,8 @@
     <tbody>
       <tr><td>Phase 6 - Asset Pipeline</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 6.5A - Item Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
-      <tr><td>Phase 7 - Item Create/Edit</td><td><code>PAUSED</code></td></tr>
-      <tr><td>Phase 7A - Item Icon Selector</td><td><code>NEXT</code></td></tr>
+      <tr><td>Phase 7A - Item Icon Selector</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7 - Item Create/Edit</td><td><code>NEXT</code></td></tr>
     </tbody>
   </table>
 
@@ -69,9 +70,14 @@
   </ul>
 
   <h2>Phase 7A - Item Icon Selector</h2>
-  <p>Define the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes.</p>
-  <p>Must support preview PNG, <code>IconId</code>, client-facing name when available, search, and selection.</p>
-  <p>Initial catalog: <code>/assets/item-previews/by-icon</code></p>
+  <p>Implement the icon-picking UI slice that lets operators search and choose previewable icons before full create/edit resumes.</p>
+  <p>Must support preview PNG, <code>IconId</code>, search, selection, and the output contract <code>{ iconId, previewPath }</code>.</p>
+  <p>Current catalog: <code>/assets/item-previews/by-icon</code></p>
+  <ul>
+    <li>Backend endpoint: <code>GET /api/admin/v1/item-icons</code></li>
+    <li>Angular route: <code>/admin/items/icon-selector</code></li>
+    <li>Source of truth: curated PNG filenames from <code>Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/</code></li>
+  </ul>
 
   <h2>References</h2>
   <ul>
