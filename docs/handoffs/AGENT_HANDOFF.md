@@ -1,53 +1,44 @@
-# Agent Handoff - Admin Tools Migration / Client Identity Audit Tool
+# Agent Handoff - Client Identity Audit Tool
 
 Generated: `2026-06-03`
 
-Read this file before starting any implementation work.
+Leer este archivo antes de cualquier implementación.
 
-## Mandatory handoff rule
+## Regla obligatoria
 
-Do not continue implementing if this handoff was not produced or is clearly outdated.
+No continuar implementación si este handoff no existe o está desactualizado.
 
-The next agent must:
+El siguiente agente debe:
 
-1. read the latest handoff first
-2. confirm repo, branch, phase, and last commit
-3. only then continue implementation
+1. leer este handoff completo
+2. confirmar repo, branch, fase y último commit
+3. solo después continuar
 
-If the current agent is getting close to the paid token or rate-limit threshold, stop before the last stretch and update this file first.
+Si el presupuesto operativo entra en el último `15%`, detener implementación, actualizar este archivo, hacer commit `docs: update agent handoff` y terminar la sesión.
 
-Working rule for future agents:
-
-- when remaining budget feels low, around the last `15%`, stop implementation
-- update `docs/handoffs/AGENT_HANDOFF.md`
-- record exact state, validations, risks, and next action
-- only then end the turn
-
-## Repository
-
-Official repo only:
+## Repo oficial
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
 ```
 
-No external worktrees.
-No parallel repos.
-No implementation outside the official repo.
+Sin worktrees externos.
+Sin repos paralelos.
+Sin implementación fuera del repo oficial.
 
-## Current branch
+## Rama actual
 
 ```txt
-feature/client-identity-audit-tool-phase1
+feature/client-identity-admin-layer-phase2
 ```
 
-## Real Admin stack
+## Stack Admin real
 
 ```txt
 Angular-tools/Admin/
 ```
 
-Canonical paths:
+Rutas canónicas:
 
 ```txt
 Angular-tools/Admin/RollblackLegacy.Admin.Angular
@@ -58,162 +49,173 @@ Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure
 Angular-tools/Admin/RollblackLegacy.Admin.Domain
 ```
 
-Do not use `src/Admin/`.
+No usar `src/Admin/`.
 
-## Current roadmap snapshot
+## Estado del roadmap
 
-Items Builder:
+Macro 1:
 
 ```txt
-Phase 1: DONE
-Phase 1.5: DONE
-Phase 2: DONE
-Phase 3: DONE
-Phase 4: DONE
-Phase 5: DONE
-Phase 6: DONE
-Phase 6.5A: DONE
-Phase 7A: DONE
-Phase 7B: DONE
-Phase 7C: DONE
-Phase 7D: DOCS DONE
-Phase 8: DONE
+Phase 1 DONE
+Phase 1.5 DONE
+Phase 2 DONE
+Phase 3 DONE
+Phase 4 DONE
+Phase 5 DONE
+Phase 6 DONE
+Phase 6.5A DONE
+Phase 7A DONE
+Phase 7B DONE
+Phase 7C DONE
+Phase 7D DOCS DONE
+Phase 8 DONE
 ```
 
-Additional macros:
+Macros siguientes:
 
 ```txt
-Macro 2 - Client Identity Audit Tool: IN_PROGRESS (Phase 1 DONE)
+Macro 2 - Client Identity Audit Tool: IN_PROGRESS (Phase 1 DONE, Phase 2 DONE)
 Macro 3 - Sprite Preview Pipeline: PENDING
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
 
-## Latest relevant commits
+## Últimos commits relevantes
 
 ```txt
+2a7c402 feat: expose client identity audit through admin api
+2a7c402 promueve la tool Phase 1 a capa reusable de Application + Infrastructure + Admin API
 c606976 feat: add client identity audit runtime scaffold
 d122434 feat: add client identity audit tool scaffold
 944ff0c docs: update agent handoff
-8ffdfa6 docs: complete phase 8 publication workflow
-00fdfbf feat: add item publication diagnostics
 ```
 
-## Exact current phase
+## Fase exacta actual
 
-We are here:
+Estamos aquí:
 
 ```txt
 Macro 2 - Client Identity Audit Tool
-Phase 1 - plan + scaffold read-only
+Phase 2 - Admin API reusable read-only layer
 Status: CLOSED
 ```
 
-## What Phase 1 delivered
+## Qué entregó Phase 2
 
 Closed scope:
 
 ```txt
-1. read-only scaffold under infrastructure/scripts/ClientIdentityAudit
-2. DB lookup from sunshine.items
-3. D2O lookup for Items, ItemTypes, ItemSets, Appearances
-4. D2I lookup for i18n_es and i18n_en
-5. control-case report for 7754, 12616, 12617, 39
-6. roadmap and docs for Macro 2 updated
+1. contratos read-only bajo RollblackLegacy.Admin.Contracts/ClientIdentity
+2. servicio reusable bajo Application/Services/ClientIdentity
+3. repository DB read-only contra sunshine.items
+4. source reader D2O/D2I read-only con cache
+5. endpoints GET /api/admin/v1/client-identity/items/{itemId}
+6. endpoint GET /api/admin/v1/client-identity/items/check?ids=...
+7. publication-status ya reutiliza la misma auditoría
+8. la tool CLI ClientIdentityAudit quedó como wrapper/report writer
 ```
 
-## Tool delivered
+## Archivos nuevos o clave
 
-Path:
+Backend reusable:
 
 ```txt
-infrastructure/scripts/ClientIdentityAudit
+Angular-tools/Admin/RollblackLegacy.Admin.Api/Controllers/ClientIdentityAdminController.cs
+Angular-tools/Admin/RollblackLegacy.Admin.Application/Abstractions/ClientIdentity/
+Angular-tools/Admin/RollblackLegacy.Admin.Application/Models/ClientIdentity/
+Angular-tools/Admin/RollblackLegacy.Admin.Application/Services/ClientIdentity/ClientItemIdentityReadService.cs
+Angular-tools/Admin/RollblackLegacy.Admin.Contracts/ClientIdentity/
+Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Configuration/AdminClientIdentityOptions.cs
+Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Services/ClientIdentity/
 ```
 
-Files:
+CLI:
 
 ```txt
-infrastructure/scripts/ClientIdentityAudit/.gitignore
 infrastructure/scripts/ClientIdentityAudit/ClientIdentityAudit.csproj
 infrastructure/scripts/ClientIdentityAudit/Program.cs
 ```
 
-Solution integration:
-
-```txt
-Sunshine net11.0/Sunshine net11.0/Sunshine.sln
-```
-
-## Phase 1 validation performed
-
-Builds:
-
-```txt
-dotnet build "Infrastructure/scripts/ClientIdentityAudit/ClientIdentityAudit.csproj" -> OK
-dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" -> OK
-```
-
-Tool run validated:
-
-```txt
-dotnet run --project "Infrastructure/scripts/ClientIdentityAudit/ClientIdentityAudit.csproj" -- --items 7754,12616,12617,39 --output "docs/admin-tools/client-identity/client-identity-item-check-report.md"
-```
-
-## Control-case outcomes
-
-```txt
-7754  -> CLIENT_KNOWN / SAFE_EXISTING_TEMPLATE
-12616 -> CLIENT_UNKNOWN / NEEDS_CLIENT_PATCH / APPEARANCE_UNKNOWN
-12617 -> CLIENT_UNKNOWN / NEEDS_CLIENT_PATCH
-39    -> CLIENT_KNOWN / SAFE_EXISTING_TEMPLATE / preview by IconId=1001
-```
-
-Important validated facts:
-
-```txt
-7754 exists in Items.d2o
-12616 does not exist in Items.d2o
-12617 does not exist in Items.d2o
-DescriptionId 50090 resolves in ES and EN
-DescriptionId 50091 resolves in ES and EN
-IconId alone still does not publish a template
-```
-
-## D2I format note
-
-Important discovery for future work:
-
-```txt
-The current client's i18n_es.d2i and i18n_en.d2i use a simple index map:
-id -> offset
-```
-
-This Phase 1 scaffold does not mutate D2I.
-It only reads string offsets in read-only mode.
-
-## Current documentary baseline
-
-New or updated docs that matter now:
+Docs:
 
 ```txt
 docs/admin-tools/client-identity/README.md
-docs/admin-tools/client-identity/client-identity-audit-tool-phase1.md
-docs/admin-tools/client-identity/client-identity-source-map.md
+docs/admin-tools/client-identity/client-identity-admin-layer-phase2.md
+docs/admin-tools/client-identity/client-identity-api-contracts.md
 docs/admin-tools/client-identity/client-identity-item-check-report.md
 docs/roadmap/admin-tools-migration-master-plan.md
 docs/roadmap/admin-tools-migration-master-plan.html
 ```
 
-## Dirty files that are not yours
+## Validación ejecutada
 
-Do not revert or stage:
+Builds:
+
+```txt
+dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" -> OK
+dotnet run --project "Infrastructure/scripts/ClientIdentityAudit/ClientIdentityAudit.csproj" -- --items 7754,12616,12617,39 --output "docs/admin-tools/client-identity/client-identity-item-check-report.md" -> OK
+```
+
+Smoke test API ejecutado localmente:
+
+```txt
+GET /api/admin/v1/health -> OK
+GET /api/admin/v1/client-identity/items/7754 -> OK
+GET /api/admin/v1/client-identity/items/12617 -> OK
+GET /api/admin/v1/client-identity/items/check?ids=7754,12616,12617,39 -> OK
+GET /api/admin/v1/items/7754/publication-status -> OK
+GET /api/admin/v1/items/12617/publication-status -> OK
+```
+
+La API local usada para smoke test ya quedó apagada al cerrar la validación.
+
+## Casos de control actuales
+
+```txt
+7754  -> SAFE_EXISTING_TEMPLATE / CLIENT_KNOWN / ICON_PREVIEW_MISSING
+12616 -> CLIENT_UNKNOWN / NEEDS_CLIENT_PATCH / ICON_PREVIEW_FOUND / APPEARANCE_UNKNOWN
+12617 -> CLIENT_UNKNOWN / NEEDS_CLIENT_PATCH / ICON_PREVIEW_MISSING
+39    -> SAFE_EXISTING_TEMPLATE / CLIENT_KNOWN / ICON_PREVIEW_FOUND
+```
+
+Hechos validados:
+
+```txt
+7754 existe en Items.d2o
+12616 no existe en Items.d2o
+12617 no existe en Items.d2o
+DescriptionId 50090 resuelve en ES y EN
+DescriptionId 50091 resuelve en ES y EN
+IconId solo no publica un template cliente
+publication-status ya usa la auditoría reusable, no una lógica aparte
+```
+
+## Prohibiciones activas
+
+```txt
+crear worktrees externos
+crear repos paralelos
+tocar client files en write mode
+modificar d2o/d2i/d2p
+auditar armas
+recorrer 44k registros
+tocar gameplay
+escribir producción sin backup
+commitear secretos
+copiar bin/obj/node_modules/dist/logs/artifacts
+arrancar Macro 3 antes de cerrar Macro 2
+```
+
+## Archivos ajenos que no son tuyos
+
+No revertir ni stagear:
 
 ```txt
 Sunshine net11.0/Sunshine net11.0/Sunshine.MySql/Database/Managers/WorldServerManager.cs
 ```
 
-Also leave local untracked files alone:
+También dejar intactos los locales no trackeados:
 
 ```txt
 Client2.3.7/cliente.rar
@@ -224,39 +226,23 @@ config/Database.runtime.backup.xml
 config/Database.team.xml
 ```
 
-## Absolute prohibitions
+## Siguiente acción exacta
+
+Si eres el siguiente agente:
 
 ```txt
-create external worktrees
-create parallel repos
-touch client files in write mode
-modify d2o/d2i/d2p
-audit weapons
-scan 44k records
-touch gameplay
-write to production without backup
-commit secrets
-copy bin/obj/node_modules/dist/logs/artifacts
-start Macro 3 before Macro 2 is closed
+1. Lee este handoff completo.
+2. Confirma branch = feature/client-identity-admin-layer-phase2.
+3. Confirma último commit = 2a7c402 o más nuevo.
+4. No abras Macro 3 todavía.
+5. Arranca Macro 2 / Phase 3 solamente si el usuario la pide explícitamente.
 ```
 
-## Exact next action
-
-If you are the next agent, do this first:
+Siguiente paso técnico recomendado:
 
 ```txt
-1. Read this handoff completely.
-2. Confirm branch = feature/client-identity-audit-tool-phase1.
-3. Confirm last commit = c606976 or newer.
-4. Start Macro 2 Phase 2 only.
-```
-
-Then:
-
-```txt
-promote the read-only scaffold into a reusable service layer
-keep it read-only
-do not add UI yet unless explicitly requested
-extend audit depth without touching client files in write mode
-update this handoff again if the turn gets close to the final 15% of budget
+Macro 2 / Phase 3
+exponer esta auditoría en Angular como pantalla read-only
+sin tocar Client2.3.7 en write mode
+sin abrir Sprite Preview Pipeline todavía
 ```
