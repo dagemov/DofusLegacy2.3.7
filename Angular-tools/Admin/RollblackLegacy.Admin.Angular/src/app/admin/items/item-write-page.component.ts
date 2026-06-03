@@ -283,6 +283,20 @@ export class ItemWritePageComponent implements OnInit {
     );
   }
 
+  protected get normalizedConditionsPreview(): string {
+    const value = this.form.controls.conditions.value?.trim() ?? '';
+    return value.length > 0 ? value : 'null';
+  }
+
+  protected get conditionsHelpText(): string {
+    const value = this.form.controls.conditions.value?.trim() ?? '';
+    if (value.length === 0) {
+      return 'Si lo dejas vacio, el Admin API lo normaliza al literal null al guardar.';
+    }
+
+    return 'La cadena se enviara tal cual. En esta fase no hay parser frontend ni validacion de reglas de gameplay.';
+  }
+
   protected submit(): void {
     this.hasTriedSubmit = true;
     this.form.markAllAsTouched();

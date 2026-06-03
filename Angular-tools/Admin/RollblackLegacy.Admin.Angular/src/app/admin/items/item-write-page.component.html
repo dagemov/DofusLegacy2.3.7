@@ -248,9 +248,21 @@
               <textarea
                 id="conditions"
                 class="form-control font-monospace-soft"
-                rows="3"
+                rows="5"
                 formControlName="conditions"
+                spellcheck="false"
                 placeholder="Si lo dejas vacio se normaliza al literal 'null' al guardar"></textarea>
+              <div class="form-text">{{ conditionsHelpText }}</div>
+              <div class="conditions-helper rounded-3 p-3 mt-2 small">
+                <div class="fw-semibold mb-2">Ayuda contextual</div>
+                <div>Criteria sigue siendo una cadena libre para mantener compatibilidad con el flujo legacy.</div>
+                <div>No hay presets ni parser Angular en Phase 7C.</div>
+                <div>Puedes pegar expresiones ya validadas por el equipo sin que el formulario las reescriba.</div>
+                <div>
+                  Payload normalizado actual:
+                  <span class="font-monospace-soft">{{ normalizedConditionsPreview }}</span>
+                </div>
+              </div>
             </div>
 
             <div class="col-12">
