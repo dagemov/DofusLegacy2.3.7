@@ -35,6 +35,8 @@
 | R29 | Conditions handling is simplified into rigid presets and loses legacy operator flexibility for advanced criteria strings | 7B-7C | Medium | Medium | keep raw string editor path, add non-blocking validation hints instead of hard preset-only builder | operators can no longer input required criteria syntax used in production workflows |
 | R30 | Icon selector is considered "done" without enough preview-state guardrails, causing `IconId` mistakes during item creation | 7A | High | Medium | make icon selection/preview checks first-class before save, keep unresolved preview warnings visible, and preserve icon/appearance separation in UI | new items are saved with weak or wrong icon identity despite visual selector being present |
 | R31 | Closing Phase 7A without backend/contract parity on icon payload fields causes modal/frontend drift (`PreviewState`, counts, samples) in later refactors | 7A-7B | Medium | Medium | lock `item-icons` payload contract now, keep Angular model aligned with contracts, and validate build for both Angular and .NET on every selector change | selector UI compiles but silently loses metadata fields needed by operators |
+| R32 | Offline SQL grants into `characters_items` can be overwritten if the target character is still connected and World later saves its in-memory inventory snapshot | QA / live item rollout | High | Medium | apply inventory grant only while the target characters are offline or during a controlled World stop/restart window; keep restore SQL ready before apply | a live player logs out after the SQL grant and the new row disappears or inventory state becomes inconsistent |
+| R33 | VPS restart flow is blocked by missing SSH key or agent access, leaving DB patches applied without the controlled World reload needed for the new template to be visible in runtime | QA / live item rollout | High | Medium | verify SSH access before live apply, keep DB scripts staged but unapplied when restart cannot be executed, and never fake a successful restart in docs | `ssh root@174.138.35.107` returns `Permission denied (publickey)` or the documented key path is missing |
 
 ## Priority watchlist
 
@@ -70,3 +72,5 @@ Lowest-risk starting points:
 - No Create/Edit parity claim should be made until effects/characteristics editing is implemented and validated.
 - No conditions redesign should remove the raw operator string path without explicit approval.
 - No icon-selector milestone should close without preview-state warning and identity-safety checks.
+- No offline inventory grant should be applied while the target characters may still be online.
+- No live DB patch that depends on a World reload should be marked complete until SSH restart access is real and validated.

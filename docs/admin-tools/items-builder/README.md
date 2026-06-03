@@ -37,6 +37,13 @@ Repository rules:
 - todo documento debe vivir bajo `docs/`
 - si una herramienta no existe en el repo oficial, no se puede marcar como implementada
 
+Live Dofus Tester rollout note:
+
+- the audited `Dofus Tester` template/grant flow is documented in `dofus-tester-item-creation.md`
+- reversible SQL scripts live in `infrastructure/sql/items/`
+- current live blocker: controlled VPS restart is still blocked by `Permission denied (publickey)` from this workstation
+- do not apply the inventory grant while target characters may still be online
+
 Document index:
 
 - `items-builder-migration-phase1.md`
@@ -73,3 +80,4 @@ Document index:
 - `items-builder-vps-qa-stabilization.md`
 - `items-builder-options-loading-fix.md`
 - `items-builder-png-import-plan.md`
+- `dofus-tester-item-creation.md`
