@@ -24,7 +24,7 @@ Current checkpoint:
 - Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
 - Stabilization Gate (build lock, VPS DB, warnings): `PASSED` (see `items-builder-stabilization-gate-before-7c.md`)
 - Phase 7C - Item Form UX Polish: `NEXT` (authorized after gate)
-- Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
+- Phase 7D - Client Sprite Preview Extraction: `DOCUMENTED / IMPLEMENTATION PENDING`
 - Phase 8 - Publish / QA Workflow: `PENDING`
 - Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
 
@@ -84,6 +84,9 @@ Document index:
 - `items-client-asset-source-inventory.md`
 - `items-client-i18n-audit.md`
 - `items-builder-phase7a-item-icon-selector.md`
+- `items-client-sprite-preview-extraction-plan.md`
+- `items-client-appearance-mapping-audit.md`
+- `items-client-jpexs-ffdec-notes.md`
 - `items-builder-create-edit-phase7.md`
 - `items-builder-write-contracts-phase7.md`
 - `items-builder-angular-create-edit-phase7.md`

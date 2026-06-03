@@ -69,7 +69,7 @@ Operational rules:
 - Phase 7B - Item Effects/Characteristics Editor (Blazor functional port): `DONE`
 - Stabilization Gate (pre-7C: build lock, VPS DB, warnings): `DONE`
 - Phase 7C - Item Form UX Polish: `NEXT`
-- Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
+- Phase 7D - Client Sprite Preview Extraction: `DOCUMENTED / IMPLEMENTATION PENDING`
 - Phase 8 - Publish / QA Workflow: `PENDING`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
 
@@ -109,6 +109,9 @@ Key references:
 - [Future client asset intelligence](../admin-tools/items-builder/items-builder-client-asset-intelligence-future.md)
 - [Phase 6.5A audit](../admin-tools/items-builder/items-client-asset-audit-phase6-5a.md)
 - [Phase 7A icon selector](../admin-tools/items-builder/items-builder-phase7a-item-icon-selector.md)
+- [Phase 7D sprite preview extraction plan](../admin-tools/items-builder/items-client-sprite-preview-extraction-plan.md)
+- [Phase 7D appearance mapping audit](../admin-tools/items-builder/items-client-appearance-mapping-audit.md)
+- [Phase 7D JPEXS / FFDec notes](../admin-tools/items-builder/items-client-jpexs-ffdec-notes.md)
 - [Phase 7 create/edit](../admin-tools/items-builder/items-builder-create-edit-phase7.md)
 - [Phase 7 write contracts](../admin-tools/items-builder/items-builder-write-contracts-phase7.md)
 - [Phase 7 Angular workflow](../admin-tools/items-builder/items-builder-angular-create-edit-phase7.md)
@@ -145,6 +148,6 @@ Key references:
 The next intended branch should execute the corrective parity order:
 
 1. Phase 7C form UX polish
-2. Phase 7D client sprite preview extraction (documentation)
+2. Phase 7D client sprite preview extraction implementation slice
 3. Phase 8 publish / QA workflow
 4. Client publication audit/tooling for real custom template shipment
