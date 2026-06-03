@@ -52,7 +52,7 @@ Operational rules:
 - Phase 6.5A - Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7B - Item Effects/Characteristics Editor (Blazor functional port): `DONE`
 - Phase 7C - Item Form UX Polish: `NEXT`
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
@@ -69,6 +69,8 @@ Validated on `2026-06-02` in the official repo:
 
 ## Corrective phase references
 
+- [Blazor functional port map](../admin-tools/items-builder/blazor-functional-port-map.md)
+- [Items functional port Phase 7B](../admin-tools/items-builder/items-functional-port-phase7b.md)
 - [Blazor parity audit](../admin-tools/items-builder/items-builder-blazor-parity-audit.md)
 - [Create/Edit gap analysis](../admin-tools/items-builder/items-builder-create-edit-gap-analysis.md)
 - [Phase 7A icon selector plan](../admin-tools/items-builder/items-builder-icon-selector-plan.md)

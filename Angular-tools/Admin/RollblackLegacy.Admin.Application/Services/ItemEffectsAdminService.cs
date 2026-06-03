@@ -136,9 +136,6 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
     {
         var protocolName = _effectNameResolver.GetEffectName(entry.EffectId);
         var isCharacteristic = _catalog.IsCharacteristic(entry.EffectId);
-        var group = entry.IsSupported
-            ? _catalog.GetGroup(entry.EffectId)
-            : "Other / unsupported";
 
         var operatorMode = entry.SerializationTypeId switch
         {
@@ -150,6 +147,9 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
         };
 
         var label = _catalog.GetCharacteristicLabel(entry.EffectId) ?? protocolName;
+        var group = entry.IsSupported
+            ? _catalog.GetGroup(entry.EffectId)
+            : "Other / unsupported";
 
         return new ItemEffectEditDto(
             RowId: entry.PreservedEffectHex is not null

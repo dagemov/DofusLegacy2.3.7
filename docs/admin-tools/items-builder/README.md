@@ -14,7 +14,7 @@ Current checkpoint:
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
 - Phase 7C - Item Form UX Polish: `NEXT`
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
@@ -64,6 +64,9 @@ Document index:
 - `items-builder-effects-editor-plan.md`
 - `items-builder-effects-serialization-audit.md`
 - `items-builder-effects-editor-phase7b.md`
+- `blazor-functional-port-map.md`
+- `items-functional-port-phase7b.md`
+- `items-effects-port-map.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`
