@@ -25,11 +25,11 @@ Spells / glifos / mapas          →  después de Items Phase 8
 | A.3 | Inventario `rollback-web-functional-inventory.md` | **DONE** |
 | A.4 | Mapas de porte (`items-functional-port-map`, effects map) | **DONE** |
 | A.5 | Roadmap + risk register actualizados | **DONE** (este doc set) |
-| A.6 | Commits `chore:` + `docs:` | **IN PROGRESS** |
-| A.7 | Builds `dotnet` + `npm run build` | **NEXT** |
+| A.6 | Commits `chore:` + `docs:` | **DONE** (`c277a44`) |
+| A.7 | Builds `dotnet` + `npm run build` | **DONE** (2026-06-02) |
 | A.8 | QA manual item 12616 (AP/PM/Vitalidad + icono) | **PENDING** |
 
-**→ Estamos en subfase A.6 de A.8** (cierre documentación + commits + validación).
+**→ Estamos en subfase A.8 de A.8** (QA manual; import + docs + builds cerrados).
 
 ---
 
