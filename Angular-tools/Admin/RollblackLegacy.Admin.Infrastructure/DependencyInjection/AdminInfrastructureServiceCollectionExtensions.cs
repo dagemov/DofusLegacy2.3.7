@@ -22,12 +22,18 @@ public static class AdminInfrastructureServiceCollectionExtensions
             options.AllowDevelopmentPlaceholderConnectionString = configuration
                 .GetValue<bool>("AdminDatabase:AllowDevelopmentPlaceholderConnectionString");
         });
+        services.Configure<AdminClientPublicationOptions>(options =>
+        {
+            options.ClientRootPath = configuration
+                .GetValue<string>("AdminClientPublication:ClientRootPath") ?? string.Empty;
+        });
 
         services.AddScoped<AdminDbConnectionFactory>();
         services.AddSingleton<AdminProtocolCatalog>();
         services.AddSingleton<IItemEffectsCodec, ItemEffectsCodecAdapter>();
         services.AddSingleton<IItemEffectNameResolver, ItemEffectNameResolver>();
         services.AddSingleton<IItemEffectsCharacteristicCatalog, ItemEffectsCharacteristicCatalog>();
+        services.AddSingleton<IItemClientPublicationInspector, FileSystemItemClientPublicationInspector>();
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();

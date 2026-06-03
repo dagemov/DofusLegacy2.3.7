@@ -142,6 +142,26 @@ export interface ItemQaSummaryDto {
   recommendedChecks: string[];
 }
 
+export interface ItemPublicationStatusDto {
+  itemId: number;
+  resolvedName?: string | null;
+  iconId: number;
+  appearanceId: number;
+  previewState: ItemPreviewStateDto;
+  visibilityState: string;
+  clientTemplateState: string;
+  publicationState: string;
+  clientKnown: boolean;
+  published: boolean;
+  needsClientPatch: boolean;
+  needsAsset: boolean;
+  needsQa: boolean;
+  clientRootPath?: string | null;
+  itemsD2oPath?: string | null;
+  reasons: string[];
+  recommendedActions: string[];
+}
+
 export type ItemWriteMode = 'create' | 'edit' | 'duplicate';
 
 export interface ItemWriteRequest {

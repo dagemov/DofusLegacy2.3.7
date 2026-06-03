@@ -1,0 +1,35 @@
+.chip-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.status-chip {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 1rem;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem;
+}
+
+.status-chip__label {
+  color: var(--bs-secondary-color);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.status-chip--on {
+  background: rgba(25, 135, 84, 0.08);
+  border-color: rgba(25, 135, 84, 0.2);
+}
+
+.status-chip--off {
+  background: rgba(220, 53, 69, 0.06);
+  border-color: rgba(220, 53, 69, 0.18);
+}
+
+.status-box {
+  background: rgba(248, 249, 250, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.9rem 1rem;
+}

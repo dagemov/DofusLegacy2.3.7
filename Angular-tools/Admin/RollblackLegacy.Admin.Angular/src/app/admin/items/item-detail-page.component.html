@@ -20,6 +20,9 @@
           [queryParams]="{ iconId: detail?.iconId ?? resolvedIdentity?.iconId ?? null }">
           Abrir selector de iconos
         </a>
+        <a class="btn btn-outline-secondary" [routerLink]="['/admin/items', itemId, 'publication-status']">
+          Publication Status
+        </a>
         <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Editar item</a>
         <a class="btn btn-outline-primary" [routerLink]="['/admin/items', itemId, 'duplicate']">
           Duplicar item

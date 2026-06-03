@@ -10,13 +10,16 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 {
     private readonly IItemsAdminReadRepository _repository;
     private readonly IItemPreviewStateResolver _previewStateResolver;
+    private readonly IItemClientPublicationInspector _itemClientPublicationInspector;
 
     public ItemsAdminReadService(
         IItemsAdminReadRepository repository,
-        IItemPreviewStateResolver previewStateResolver)
+        IItemPreviewStateResolver previewStateResolver,
+        IItemClientPublicationInspector itemClientPublicationInspector)
     {
         _repository = repository;
         _previewStateResolver = previewStateResolver;
+        _itemClientPublicationInspector = itemClientPublicationInspector;
     }
 
     public async Task<ItemPagedResultDto<ItemListItemDto>> SearchAsync(
@@ -92,6 +95,57 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             CanPublish: false,
             blockingReasons,
             BuildRecommendedChecks(detail));
+    }
+
+    public async Task<ItemPublicationStatusDto> GetPublicationStatusAsync(int itemId, CancellationToken cancellationToken = default)
+    {
+        var detail = await GetItemAsync(itemId, cancellationToken);
+        var clientAudit = await _itemClientPublicationInspector.InspectAsync(itemId, cancellationToken);
+        var qaBlockingReasons = BuildQaBlockingReasons(detail);
+        var needsQa = qaBlockingReasons.Count > 0;
+        var needsAsset = !IsPreviewReady(detail.PreviewState);
+
+        var clientTemplateState = clientAudit.ClientDataAvailable
+            ? clientAudit.TemplateKnown
+                ? "CLIENT_KNOWN"
+                : "CLIENT_UNKNOWN"
+            : "CLIENT_DATA_UNAVAILABLE";
+
+        var publicationState = clientAudit.ClientDataAvailable
+            ? clientAudit.TemplateKnown
+                ? "PUBLISHED"
+                : "NEEDS_CLIENT_PATCH"
+            : "UNVERIFIED";
+
+        var visibilityState = clientAudit.ClientDataAvailable
+            ? clientAudit.TemplateKnown
+                ? "VISIBLE"
+                : detail.IconId > 0
+                    ? "VISIBLE_WITH_PATCH"
+                    : "INVISIBLE"
+            : "UNVERIFIED";
+
+        var reasons = BuildPublicationReasons(detail, clientAudit, needsAsset, needsQa);
+        var recommendedActions = BuildPublicationActions(detail, clientAudit, needsAsset, needsQa);
+
+        return new ItemPublicationStatusDto(
+            detail.ItemId,
+            detail.ResolvedName,
+            detail.IconId,
+            detail.AppearanceId,
+            detail.PreviewState,
+            visibilityState,
+            clientTemplateState,
+            publicationState,
+            ClientKnown: clientAudit.ClientDataAvailable && clientAudit.TemplateKnown,
+            Published: clientAudit.ClientDataAvailable && clientAudit.TemplateKnown,
+            NeedsClientPatch: clientAudit.ClientDataAvailable && !clientAudit.TemplateKnown,
+            NeedsAsset: needsAsset,
+            NeedsQa: needsQa,
+            clientAudit.ClientRootPath,
+            clientAudit.ItemsD2oPath,
+            reasons,
+            recommendedActions);
     }
 
     public Task<IReadOnlyList<AdminOptionDto>> GetTypeOptionsAsync(CancellationToken cancellationToken = default)
@@ -341,6 +395,88 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
     {
         return string.Equals(previewState.State, "FOUND", StringComparison.OrdinalIgnoreCase)
             || string.Equals(previewState.State, "MANUAL", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static IReadOnlyList<string> BuildPublicationReasons(
+        ItemDetailDto detail,
+        ItemClientPublicationAuditResult clientAudit,
+        bool needsAsset,
+        bool needsQa)
+    {
+        var reasons = new List<string>();
+
+        if (!clientAudit.ClientDataAvailable)
+        {
+            reasons.Add(clientAudit.FailureReason
+                ?? "The Admin API could not inspect Client2.3.7/data/common/Items.d2o from this environment.");
+        }
+        else if (clientAudit.TemplateKnown)
+        {
+            reasons.Add($"Items.d2o already contains template {detail.ItemId}. The client knows this template id.");
+        }
+        else
+        {
+            reasons.Add($"Items.d2o does not contain template {detail.ItemId}. The client cannot render this item until a client patch is published.");
+        }
+
+        if (needsAsset)
+        {
+            reasons.Add($"Preview state is {detail.PreviewState.State}. Admin preview assets still need a curated PNG or manual fallback.");
+        }
+
+        if (detail.IconId <= 0)
+        {
+            reasons.Add("IconId is missing or invalid. Even after a client patch, inventory identity would remain incomplete.");
+        }
+
+        if (needsQa)
+        {
+            reasons.Add("Runtime QA is still blocked. Clear the existing QA blockers before claiming the item is publish-ready.");
+        }
+
+        if (detail.AppearanceId <= 0)
+        {
+            reasons.Add("AppearanceId is zero or missing. Equipped-look validation will stay partial until the look identity is confirmed.");
+        }
+
+        return reasons;
+    }
+
+    private static IReadOnlyList<string> BuildPublicationActions(
+        ItemDetailDto detail,
+        ItemClientPublicationAuditResult clientAudit,
+        bool needsAsset,
+        bool needsQa)
+    {
+        var actions = new List<string>();
+
+        if (!clientAudit.ClientDataAvailable)
+        {
+            actions.Add("Restore read-only access to Client2.3.7 metadata or configure AdminClientPublication:ClientRootPath before trusting publication diagnostics.");
+        }
+        else if (!clientAudit.TemplateKnown)
+        {
+            actions.Add($"Publish template {detail.ItemId} into Client2.3.7/data/common/Items.d2o before expecting inventory visibility.");
+            actions.Add($"Publish matching ES/EN i18n entries for DescriptionId {detail.DescriptionId} before claiming the custom item identity is complete.");
+            actions.Add("Treat vendor publication as blocked until the client patch exists. NPC shops also send objectGID/templateId.");
+        }
+        else
+        {
+            actions.Add("The template is already known by the client. Continue with QA, vendor checks, equip checks, and delivery validation.");
+        }
+
+        if (needsAsset)
+        {
+            actions.Add($"Curate or import a preview PNG for IconId {detail.IconId} so Admin operators are not blind during QA.");
+        }
+
+        if (needsQa)
+        {
+            actions.Add("Resolve current QA blockers from the readiness panel before marking the item as deliverable.");
+        }
+
+        actions.Add("Do not claim client visibility based on IconId alone. ItemId/template publication is the deciding factor.");
+        return actions;
     }
 
     private static void ValidateRequest(ItemSearchRequest request)

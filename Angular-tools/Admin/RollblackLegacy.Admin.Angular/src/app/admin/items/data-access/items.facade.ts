@@ -11,6 +11,7 @@ import {
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
+  ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
   ItemWriteRequest,
@@ -58,6 +59,10 @@ export class ItemsFacade {
 
   getItemQaSummary(itemId: number): Observable<ItemQaSummaryDto> {
     return this.itemsApi.getItemQaSummary(itemId);
+  }
+
+  getItemPublicationStatus(itemId: number): Observable<ItemPublicationStatusDto> {
+    return this.itemsApi.getItemPublicationStatus(itemId);
   }
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {

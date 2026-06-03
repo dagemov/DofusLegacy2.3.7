@@ -43,6 +43,13 @@ export const routes: Routes = [
       import('./admin/items/item-write-page.component').then((m) => m.ItemWritePageComponent)
   },
   {
+    path: 'admin/items/:itemId/publication-status',
+    loadComponent: () =>
+      import('./admin/items/item-publication-status-page.component').then(
+        (m) => m.ItemPublicationStatusPageComponent
+      )
+  },
+  {
     path: 'admin/items/:itemId',
     loadComponent: () =>
       import('./admin/items/item-detail-page.component').then((m) => m.ItemDetailPageComponent)
