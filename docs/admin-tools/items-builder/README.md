@@ -8,6 +8,12 @@ Important status note:
 - the accepted baseline is the code and docs now present in `C:\Users\Hombr\source\repos\DofusLegacy2.3.7`
 - the official current roadmap state is defined by [admin-tools-migration-master-plan.md](../../roadmap/admin-tools-migration-master-plan.md)
 
+Legacy functional reference (in official repo):
+
+- `legacy-reference/Rollback.Web/` — Blazor UI snapshot (no build)
+- `legacy-reference/Rollback.Admin/` — companion services/models for Items
+- See [rollback-web-functional-inventory.md](./rollback-web-functional-inventory.md) and [blazor-to-angular-port-plan.md](./blazor-to-angular-port-plan.md)
+
 Current checkpoint:
 
 - Phase 6 - Asset Pipeline: `DONE`
@@ -71,6 +77,9 @@ Document index:
 - `items-builder-effects-editor-plan.md`
 - `items-builder-effects-serialization-audit.md`
 - `items-builder-effects-editor-phase7b.md`
+- `rollback-web-functional-inventory.md`
+- `blazor-to-angular-port-plan.md`
+- `items-functional-port-map.md`
 - `blazor-functional-port-map.md`
 - `items-functional-port-phase7b.md`
 - `items-effects-port-map.md`

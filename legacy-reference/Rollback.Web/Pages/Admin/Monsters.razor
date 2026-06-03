@@ -1,0 +1,444 @@
+@page "/admin/monsters"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject MonsterAdminService MonsterAdminService
+@inject Rollback.Web.Services.AdminAssetUploadService AdminAssetUploadService
+
+<PageTitle>Monstruos</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Monsters</span>
+            <h1>Monstruos</h1>
+            <p class="muted-copy">CRUD de monstruos y grades para preparar el poblamiento del mundo sin tocar el runtime a mano.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar por id, nombre cliente, raza o look..." @bind="_query.Search" />
+                <button class="portal-button secondary" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" @onclick="CreateNew">Nuevo monstruo</button>
+            </div>
+
+            @if (_listResult is null)
+            {
+                <div class="empty-state"><p>Cargando monstruos...</p></div>
+            }
+            else if (_listResult.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No se encontraron monstruos.</p></div>
+            }
+            else
+            {
+                <table class="accounts-table admin-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Nombre</th>
+                            <th>Id</th>
+                            <th>Familia</th>
+                            <th>Niveles</th>
+                            <th>Spawns</th>
+                            <th>Extras</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var monster in _listResult.Items)
+                        {
+                            <tr class="@GetRowClass(monster)" @onclick="() => LoadMonsterAsync(monster.Id)">
+                                <td>
+                                    <GameAssetPreview EntityType="AdminEntityType.Monster"
+                                                      EntityId="@monster.Id"
+                                                      ManualImageUrl="@monster.ManualPreviewImageUrl"
+                                                      CategoryLabel="Monstruo"
+                                                      PlaceholderLabel="MON"
+                                                      AltText="@($"Monster #{monster.Id}")"
+                                                      CssClass="compact"
+                                                      ShowMeta="false" />
+                                </td>
+                                <td>
+                                    <strong>@monster.DisplayName</strong>
+                                    <div class="muted-copy">source: @monster.NameSource</div>
+                                    @if (monster.HasNameMismatch)
+                                    {
+                                        <span class="portal-chip subtle">cliente: @monster.ClientDisplayName</span>
+                                    }
+                                </td>
+                                <td><strong>#@monster.Id</strong></td>
+                                <td>Familia @monster.Race</td>
+                                <td>@monster.MinLevel - @monster.MaxLevel</td>
+                                <td>@monster.SpawnCount directos · @monster.RareSpawnCount raros</td>
+                                <td>@monster.GradeCount grades · @monster.SpellCount spells · @monster.DropCount drops</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <AdminPager Page="@_listResult.Page" TotalPages="@_listResult.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_isEditingExisting ? $"Editar monstruo #{_form.Id}" : "Nuevo monstruo")</h2>
+                    <p class="muted-copy">Edita template y grades. Los spells/drops pueden llegar despues, pero ya dejamos el monstruo listo para poblar mapas.</p>
+                </div>
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Identidad para World Builder</strong>
+                        <p class="muted-copy">El nombre admin tiene prioridad sobre la referencia cliente para no confiar a ciegas en nombres corruptos o mezclados.</p>
+                    </div>
+                    <span class="portal-chip subtle">source: @_form.NameSource</span>
+                </div>
+                <div class="admin-form-grid two">
+                    <div class="field-group">
+                        <label class="field-label">Nombre admin</label>
+                        <input class="field-input" placeholder="@_form.ResolvedDisplayName" @bind="_form.DisplayNameOverride" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Referencia cliente</label>
+                        <input class="field-input" value="@BuildClientReferenceLabel()" readonly />
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Notas admin</label>
+                    <textarea class="field-input admin-textarea" @bind="_form.DescriptionOverride"></textarea>
+                </div>
+                @if (_form.HasNameMismatch)
+                {
+                    <div class="alert-panel warning">
+                        Mismatch detectado: admin usa "@_form.ResolvedDisplayName", pero cliente referencia "@_form.ClientDisplayName".
+                    </div>
+                }
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Preview manual del monstruo</strong>
+                        <p class="muted-copy">Base reusable temporal: asocia un PNG administrativo mientras definimos el resolver visual definitivo.</p>
+                    </div>
+                </div>
+                <GameAssetPreview EntityType="AdminEntityType.Monster"
+                                  EntityId="@_form.Id"
+                                  ManualImageUrl="@_form.ManualImageUrl"
+                                  CategoryLabel="Monstruo"
+                                  PlaceholderLabel="MON"
+                                  AltText="@($"Monster #{_form.Id}")"
+                                  CssClass="large" />
+                <InputFile OnChange="UploadMonsterAssetAsync" accept=".png,.jpg,.jpeg,.webp" class="field-input file-input" />
+                @if (!string.IsNullOrWhiteSpace(_form.ManualAssetRelativePath))
+                {
+                    <div class="field-note">Asset actual: @_form.ManualAssetRelativePath</div>
+                    <button class="portal-button secondary" @onclick="ClearMonsterAssetAsync">Quitar PNG manual</button>
+                }
+            </div>
+
+            <div class="admin-form-grid two">
+                <div class="field-group">
+                    <label class="field-label">Id</label>
+                    <input class="field-input" type="number" min="1" @bind="_form.Id" readonly="@_isEditingExisting" />
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Raza</label>
+                    <input class="field-input" type="number" min="0" max="255" @bind="_form.Race" />
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Entity look</label>
+                <textarea class="field-input admin-textarea" @bind="_form.EntityLookString"></textarea>
+            </div>
+
+            <div class="section-heading compact">
+                <h3>Grades</h3>
+                <button class="portal-button secondary" @onclick="AddGrade">Agregar grade</button>
+            </div>
+
+            <div class="admin-stack">
+                @for (var index = 0; index < _form.Grades.Count; index++)
+                {
+                    var grade = _form.Grades[index];
+                    <article class="admin-subcard">
+                        <div class="section-heading compact">
+                            <strong>Grade @grade.Grade</strong>
+                            <button class="portal-button danger" @onclick="() => RemoveGrade(index)">Quitar</button>
+                        </div>
+                        <div class="admin-form-grid three">
+                            <div class="field-group">
+                                <label class="field-label">Grade</label>
+                                <input class="field-input" type="number" min="1" max="5" @bind="grade.Grade" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Nivel</label>
+                                <input class="field-input" type="number" min="1" @bind="grade.Level" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Vida</label>
+                                <input class="field-input" type="number" min="1" @bind="grade.Health" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">PA</label>
+                                <input class="field-input" type="number" min="0" @bind="grade.AP" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">PM</label>
+                                <input class="field-input" type="number" min="0" @bind="grade.MP" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">XP</label>
+                                <input class="field-input" type="number" min="0" @bind="grade.Experience" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Kamas min</label>
+                                <input class="field-input" type="number" min="0" @bind="grade.MinKamas" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Kamas max</label>
+                                <input class="field-input" type="number" min="0" @bind="grade.MaxKamas" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Sabiduria</label>
+                                <input class="field-input" type="number" @bind="grade.Wisdom" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Fuerza</label>
+                                <input class="field-input" type="number" @bind="grade.Strength" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Inteligencia</label>
+                                <input class="field-input" type="number" @bind="grade.Intelligence" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Suerte</label>
+                                <input class="field-input" type="number" @bind="grade.Chance" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Agilidad</label>
+                                <input class="field-input" type="number" @bind="grade.Agility" />
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            <div class="portal-actions">
+                <button class="portal-button" @onclick="SaveAsync">Guardar monstruo</button>
+                @if (_isEditingExisting)
+                {
+                    <button class="portal-button danger" @onclick="DeleteAsync">Eliminar</button>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<MonsterListItem>? _listResult;
+    private MonsterEditModel _form = CreateDefaultMonster();
+    private short? _selectedMonsterId;
+    private string? _status;
+    private string? _error;
+
+    private bool _isEditingExisting => _selectedMonsterId.HasValue && _selectedMonsterId.Value > 0;
+
+    protected override async Task OnInitializedAsync() =>
+        await ReloadAsync();
+
+    private async Task ReloadAsync()
+    {
+        _error = null;
+        _status = null;
+        _listResult = await MonsterAdminService.GetPagedAsync(_query);
+    }
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task LoadMonsterAsync(short monsterId)
+    {
+        var monster = await MonsterAdminService.GetByIdAsync(monsterId);
+        if (monster is null)
+        {
+            _error = $"No se encontro el monstruo #{monsterId}.";
+            return;
+        }
+
+        _selectedMonsterId = monsterId;
+        _form = monster;
+        _error = null;
+        _status = null;
+    }
+
+    private void CreateNew()
+    {
+        _selectedMonsterId = null;
+        _form = CreateDefaultMonster();
+        _error = null;
+        _status = null;
+    }
+
+    private void AddGrade() =>
+        _form.Grades.Add(new MonsterGradeAdminModel
+        {
+            Grade = (sbyte)Math.Clamp(_form.Grades.Count + 1, 1, 5),
+            Level = 1,
+            Health = 10,
+            AP = 6,
+            MP = 3,
+        });
+
+    private void RemoveGrade(int index)
+    {
+        if (index >= 0 && index < _form.Grades.Count)
+            _form.Grades.RemoveAt(index);
+    }
+
+    private async Task SaveAsync()
+    {
+        _error = ValidateMonster(_form);
+        if (!string.IsNullOrWhiteSpace(_error))
+            return;
+
+        await MonsterAdminService.SaveAsync(_form);
+        _selectedMonsterId = _form.Id;
+        _status = $"Monstruo #{_form.Id} guardado.";
+        await ReloadAsync();
+        await LoadMonsterAsync(_form.Id);
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (!_selectedMonsterId.HasValue)
+            return;
+
+        await MonsterAdminService.DeleteAsync(_selectedMonsterId.Value);
+        _status = $"Monstruo #{_selectedMonsterId.Value} eliminado.";
+        CreateNew();
+        await ReloadAsync();
+    }
+
+    private async Task UploadMonsterAssetAsync(InputFileChangeEventArgs args)
+    {
+        if (_form.Id <= 0)
+        {
+            _error = "Guarda primero un Id valido antes de asociar un PNG manual.";
+            return;
+        }
+
+        var file = args.File;
+        if (file is null)
+            return;
+
+        try
+        {
+            var previousPath = _form.ManualAssetRelativePath;
+            var relativePath = await AdminAssetUploadService.SaveEntityPreviewAsync(AdminEntityType.Monster, _form.Id, file);
+            await MonsterAdminService.SaveManualAssetAsync(_form.Id, relativePath);
+
+            if (!string.IsNullOrWhiteSpace(previousPath) && !string.Equals(previousPath, relativePath, StringComparison.OrdinalIgnoreCase))
+                await AdminAssetUploadService.DeleteIfExistsAsync(previousPath);
+
+            _status = $"PNG manual asociado al monstruo #{_form.Id}.";
+            _error = null;
+            await ReloadAsync();
+            await LoadMonsterAsync(_form.Id);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task ClearMonsterAssetAsync()
+    {
+        if (_form.Id <= 0 || string.IsNullOrWhiteSpace(_form.ManualAssetRelativePath))
+            return;
+
+        try
+        {
+            var currentPath = _form.ManualAssetRelativePath;
+            await MonsterAdminService.ClearManualAssetAsync(_form.Id);
+            await AdminAssetUploadService.DeleteIfExistsAsync(currentPath);
+            _status = $"PNG manual removido del monstruo #{_form.Id}.";
+            _error = null;
+            await ReloadAsync();
+            await LoadMonsterAsync(_form.Id);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private static MonsterEditModel CreateDefaultMonster() =>
+        new()
+        {
+            Grades =
+            {
+                new MonsterGradeAdminModel(),
+            },
+        };
+
+    private static string? ValidateMonster(MonsterEditModel model)
+    {
+        if (model.Id <= 0)
+            return "El id del monstruo debe ser mayor a 0.";
+
+        if (string.IsNullOrWhiteSpace(model.EntityLookString))
+            return "EntityLookString es obligatorio.";
+
+        if (model.Grades.Count == 0)
+            return "Debes agregar al menos un grade.";
+
+        var duplicates = model.Grades
+            .GroupBy(x => x.Grade)
+            .FirstOrDefault(x => x.Count() > 1);
+
+        if (duplicates is not null)
+            return $"La grade {duplicates.Key} esta repetida.";
+
+        return null;
+    }
+
+    private string BuildClientReferenceLabel()
+    {
+        if (string.IsNullOrWhiteSpace(_form.ClientDisplayName) && !_form.ClientNameId.HasValue && !_form.ClientGfxId.HasValue)
+            return "Sin referencia cliente";
+
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(_form.ClientDisplayName))
+            parts.Add(_form.ClientDisplayName);
+
+        if (_form.ClientNameId.HasValue)
+            parts.Add($"NameId {_form.ClientNameId.Value}");
+
+        if (_form.ClientGfxId.HasValue)
+            parts.Add($"GfxId {_form.ClientGfxId.Value}");
+
+        return string.Join(" - ", parts);
+    }
+
+    private string GetRowClass(MonsterListItem monster) =>
+        monster.Id == _selectedMonsterId ? "admin-row-selected" : string.Empty;
+}

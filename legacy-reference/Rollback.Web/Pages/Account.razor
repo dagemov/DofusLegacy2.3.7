@@ -1,0 +1,115 @@
+@page "/account"
+@attribute [Authorize]
+@inject IAccountPortalService AccountPortalService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Mi cuenta</PageTitle>
+
+@if (_loading)
+{
+    <section class="portal-card empty-state">
+        <h1>Cargando cuenta</h1>
+        <p>Estamos resolviendo tus datos desde la base del servidor.</p>
+    </section>
+}
+else if (_account is null)
+{
+    <section class="portal-card empty-state">
+        <h1>Cuenta no encontrada</h1>
+        <p>La sesion es valida, pero no pudimos recuperar la cuenta desde la base.</p>
+    </section>
+}
+else
+{
+    <section class="account-grid">
+        <article class="portal-card account-card">
+            <span class="portal-chip">Perfil</span>
+            <h1>@_account.Nickname</h1>
+            <p class="muted-copy">Login: @_account.Login</p>
+
+            <div class="account-stat-grid">
+                <div class="account-stat">
+                    <span>Rol</span>
+                    <strong>@_account.RoleLabel</strong>
+                </div>
+                <div class="account-stat">
+                    <span>Personajes</span>
+                    <strong>@_account.CharacterCount</strong>
+                </div>
+                <div class="account-stat">
+                    <span>Estado</span>
+                    <strong>@(_account.IsBanned ? "Baneada" : "Activa")</strong>
+                </div>
+            </div>
+
+            <div class="portal-divider"></div>
+
+            <div class="account-overview">
+                <div>
+                    <span class="field-label">Ultima conexion</span>
+                    <div>@(_account.LastConnection?.ToString("yyyy-MM-dd HH:mm") ?? "Sin registro")</div>
+                </div>
+                <div>
+                    <span class="field-label">Ultima IP</span>
+                    <div>@(_account.LastIp ?? "Sin registro")</div>
+                </div>
+                <div>
+                    <span class="field-label">Ban</span>
+                    <div>@(_account.BannedDate?.ToString("yyyy-MM-dd HH:mm") ?? "No")</div>
+                </div>
+            </div>
+        </article>
+
+        <article class="portal-card account-card">
+            <span class="portal-chip">Sesion web</span>
+            <h2>Acciones disponibles</h2>
+            <p class="muted-copy">
+                Esta primera version abre autenticacion, registro y control inicial de staff sin tocar el protocolo del juego.
+            </p>
+
+            <div class="portal-actions">
+                <form method="post" action="/auth/logout" class="inline-form">
+                    <button type="submit" class="portal-button secondary">Cerrar sesion</button>
+                </form>
+
+                @if (_account.Role == GameHierarchyEnum.ADMIN)
+                {
+                    <a class="portal-button" href="/admin/users">Ir al panel admin</a>
+                }
+            </div>
+        </article>
+    </section>
+}
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    private PortalAccountSummary? _account;
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask!;
+        var user = authenticationState.User;
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            NavigationManager.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        var rawAccountId =
+            user.FindFirst("AccountId")?.Value ??
+            user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (!int.TryParse(rawAccountId, out var accountId))
+        {
+            NavigationManager.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        _account = await AccountPortalService.GetAccountByIdAsync(accountId);
+
+        _loading = false;
+    }
+}

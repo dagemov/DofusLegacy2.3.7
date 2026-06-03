@@ -12,6 +12,18 @@
   - `docs/infrastructure/`
   - `docs/combat/`
 
+## Legacy functional reference
+
+Controlled Blazor snapshot (read-only, no deploy):
+
+- `legacy-reference/Rollback.Web/`
+- `legacy-reference/Rollback.Admin/` (Items/effects services used by the Web host)
+
+Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/items-builder/blazor-to-angular-port-plan.md).
+
+**Execution subphase (reference import):** `A.6 / A.8` — commits + build validation.  
+**Product subphase (Items Builder):** `7C / 8` — form UX polish next.
+
 ## Repository rules
 
 1. Use `C:\Users\Hombr\source\repos\DofusLegacy2.3.7` as the single source of truth.
@@ -69,6 +81,9 @@ Validated on `2026-06-02` in the official repo:
 
 ## Corrective phase references
 
+- [Rollback.Web functional inventory](../admin-tools/items-builder/rollback-web-functional-inventory.md)
+- [Blazor to Angular port plan (subphases)](../admin-tools/items-builder/blazor-to-angular-port-plan.md)
+- [Items functional port map](../admin-tools/items-builder/items-functional-port-map.md)
 - [Blazor functional port map](../admin-tools/items-builder/blazor-functional-port-map.md)
 - [Items functional port Phase 7B](../admin-tools/items-builder/items-functional-port-phase7b.md)
 - [Blazor parity audit](../admin-tools/items-builder/items-builder-blazor-parity-audit.md)

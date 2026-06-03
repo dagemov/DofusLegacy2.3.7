@@ -1,0 +1,92 @@
+@page "/register"
+@attribute [AllowAnonymous]
+
+<PageTitle>Registro</PageTitle>
+
+<section class="auth-grid auth-scene auth-scene--register">
+    <article class="portal-card auth-card auth-card--form">
+        <span class="portal-chip">Registro</span>
+        <h1>Crea tu cuenta y abre el portal</h1>
+        <p class="auth-subtitle">
+            El portal guarda la cuenta en las bases reales del emulador y te deja autenticado al terminar, sin inventar flujos paralelos.
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(Error))
+        {
+            <div class="alert-panel error">@Error</div>
+        }
+
+        <form method="post" action="/auth/register" class="auth-form">
+            <input type="hidden" name="returnUrl" value="@SafeReturnUrl" />
+
+            <div class="field-group">
+                <label class="field-label" for="login">Login</label>
+                <input class="field-input" id="login" name="login" autocomplete="username" placeholder="Solo letras y numeros" />
+                <span class="field-note">Solo letras y numeros, entre 3 y 24 caracteres.</span>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="nickname">Apodo</label>
+                <input class="field-input" id="nickname" name="nickname" autocomplete="nickname" placeholder="Como te vera el equipo" />
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="password">Contrasena</label>
+                <input class="field-input" id="password" name="password" type="password" autocomplete="new-password" placeholder="Crea una clave segura" />
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="confirmPassword">Confirmar contrasena</label>
+                <input class="field-input" id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Repite tu clave" />
+            </div>
+
+            <button type="submit" class="portal-button">Crear cuenta</button>
+        </form>
+
+        <div class="realm-chip-row">
+            <span class="realm-mini-badge">Registro real</span>
+            <span class="realm-mini-badge">Sesion inmediata</span>
+            <span class="realm-mini-badge">Preparado para equipo y jugadores</span>
+        </div>
+    </article>
+
+    <article class="portal-card auth-card auth-card--lore">
+        <div class="auth-card__media auth-card__media--register">
+            <img class="auth-card__image" src="assest-img/fondos/sobre.png" alt="Arte ornamental fantasy del portal" />
+            <img class="auth-card__sprite auth-card__sprite--green" src="assest-img/15717.png" alt="" aria-hidden="true" />
+        </div>
+
+        <div class="auth-card__copy">
+            <span class="portal-chip">Siguiente paso</span>
+            <h2>Un portal mas calido para un mundo con identidad</h2>
+            <p class="muted-copy">
+                Si ya tienes cuenta desde el juego o desde SQL, puedes entrar directamente. Si no, aqui nace tu acceso al mundo y al panel web.
+            </p>
+
+            <ul class="realm-bullet-list">
+                <li>Mismo lenguaje visual que el login y la home.</li>
+                <li>Formulario claro, sin romper validaciones ni rutas.</li>
+                <li>Decoracion fantasy con mejor profundidad y presencia.</li>
+            </ul>
+
+            <div class="portal-actions">
+                <a class="portal-button secondary" href="/login">Volver al login</a>
+            </div>
+        </div>
+    </article>
+</section>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+    private string SafeReturnUrl =>
+        !string.IsNullOrWhiteSpace(ReturnUrl) && ReturnUrl.StartsWith("/", StringComparison.Ordinal) && !ReturnUrl.StartsWith("//", StringComparison.Ordinal)
+            ? ReturnUrl
+            : "/account";
+}

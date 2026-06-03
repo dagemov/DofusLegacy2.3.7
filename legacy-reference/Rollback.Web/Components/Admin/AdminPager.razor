@@ -1,0 +1,22 @@
+@if (TotalPages > 1)
+{
+    <div class="admin-pager">
+        <button class="portal-button secondary" disabled="@(Page <= 1)" @onclick="() => ChangePage(Page - 1)">Anterior</button>
+        <span>Pagina @Page de @TotalPages</span>
+        <button class="portal-button secondary" disabled="@(Page >= TotalPages)" @onclick="() => ChangePage(Page + 1)">Siguiente</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Page { get; set; }
+
+    [Parameter]
+    public int TotalPages { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnPageChanged { get; set; }
+
+    private Task ChangePage(int page) =>
+        OnPageChanged.InvokeAsync(page);
+}

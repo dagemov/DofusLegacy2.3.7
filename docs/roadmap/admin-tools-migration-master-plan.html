@@ -46,6 +46,14 @@
     <li>Si una herramienta no existe en el repo oficial, no se puede marcar como implementada.</li>
   </ul>
 
+  <h2>Legacy functional reference</h2>
+  <ul>
+    <li><code>legacy-reference/Rollback.Web/</code> — Blazor UI snapshot (read-only)</li>
+    <li><code>legacy-reference/Rollback.Admin/</code> — companion Items/effects services</li>
+    <li>Subphases: <code>docs/admin-tools/items-builder/blazor-to-angular-port-plan.md</code></li>
+    <li>Reference import: <code>A.6 / A.8</code> · Items product: <code>7C / 8</code></li>
+  </ul>
+
   <h2>Current execution checkpoint</h2>
   <table>
     <thead>
@@ -75,7 +83,7 @@
   <h2>Corrective audit status (Phase 7)</h2>
   <ul>
     <li>Current write stack is functional but parity-incomplete versus legacy Blazor item editor.</li>
-    <li>Effects/characteristics editing is currently missing from Angular write flow.</li>
+    <li>Effects/characteristics editing is available on <code>/admin/items/:id/edit</code> (Phase 7B); publish and advanced conditions remain deferred.</li>
     <li>Conditions are currently plain string and should remain operator-editable.</li>
     <li>Preview and icon selection are present but need hardening before advanced write scope resumes.</li>
     <li>Phase 7 remains paused until parity corrective slices (7A-7C) are completed.</li>
@@ -83,6 +91,9 @@
 
   <h2>Corrective phase references</h2>
   <ul>
+    <li><code>docs/admin-tools/items-builder/rollback-web-functional-inventory.md</code></li>
+    <li><code>docs/admin-tools/items-builder/blazor-to-angular-port-plan.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-functional-port-map.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-icon-selector-plan.md</code></li>

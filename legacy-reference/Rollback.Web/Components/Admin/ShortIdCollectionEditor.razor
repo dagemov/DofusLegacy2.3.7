@@ -1,0 +1,78 @@
+<div class="admin-subcard short-id-editor">
+    <div class="section-heading compact">
+        <div>
+            <h3>@Title</h3>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p class="muted-copy">@Description</p>
+            }
+        </div>
+    </div>
+
+    <div class="admin-toolbar short-id-editor-toolbar">
+        <input class="field-input compact-input"
+               type="number"
+               placeholder="@Placeholder"
+               value="@_draftValue"
+               @oninput="OnDraftChanged" />
+        <button class="portal-button secondary" type="button" @onclick="AddValue">@AddButtonLabel</button>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="field-note warning">@_error</div>
+    }
+
+    @if (Values.Count == 0)
+    {
+        <div class="empty-state compact"><p>@EmptyMessage</p></div>
+    }
+    else
+    {
+        <div class="chip-row">
+            @foreach (var value in Values.OrderBy(x => x))
+            {
+                <button class="portal-chip selectable selected" type="button" @onclick="() => RemoveValue(value)">
+                    @value
+                </button>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private string _draftValue = string.Empty;
+    private string? _error;
+
+    [Parameter, EditorRequired] public List<short> Values { get; set; } = new();
+    [Parameter] public string Title { get; set; } = "Estados";
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public string Placeholder { get; set; } = "Id de estado";
+    [Parameter] public string AddButtonLabel { get; set; } = "Agregar";
+    [Parameter] public string EmptyMessage { get; set; } = "Todavia no hay valores cargados.";
+
+    private void OnDraftChanged(ChangeEventArgs args)
+    {
+        _draftValue = args.Value?.ToString() ?? string.Empty;
+        _error = null;
+    }
+
+    private void AddValue()
+    {
+        if (!short.TryParse(_draftValue.Trim(), out var value) || value <= 0)
+        {
+            _error = "Escribe un id numerico positivo.";
+            return;
+        }
+
+        if (!Values.Contains(value))
+            Values.Add(value);
+
+        Values.Sort();
+        _draftValue = string.Empty;
+        _error = null;
+    }
+
+    private void RemoveValue(short value) =>
+        Values.Remove(value);
+}

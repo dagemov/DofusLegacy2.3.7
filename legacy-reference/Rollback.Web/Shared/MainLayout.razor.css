@@ -1,0 +1,29 @@
+.portal-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.portal-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.portal-main {
+    flex: 1;
+    width: 100%;
+}
+
+.portal-content {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+
+@media (max-width: 720px) {
+    .portal-content {
+        width: min(100% - 1rem, 1120px);
+        padding-top: 1.25rem;
+    }
+}

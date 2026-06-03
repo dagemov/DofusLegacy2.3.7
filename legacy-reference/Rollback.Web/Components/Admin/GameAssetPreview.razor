@@ -1,0 +1,52 @@
+@inject GameAssetPreviewService PreviewService
+
+<div class="game-asset-preview @CssClass">
+    <div class="game-asset-preview-frame">
+        @if (_preview.HasPreview)
+        {
+            <img class="game-asset-preview-image" src="@_preview.ImageUrl" alt="@AltText" />
+        }
+        else
+        {
+            <div class="game-asset-preview-placeholder">@_preview.PlaceholderLabel</div>
+        }
+    </div>
+
+    @if (ShowMeta)
+    {
+        <div class="game-asset-preview-meta">
+            <strong>@_preview.Status</strong>
+            @if (!string.IsNullOrWhiteSpace(_preview.Hint))
+            {
+                <small>@_preview.Hint</small>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private GameAssetPreviewModel _preview = new();
+
+    [Parameter] public AdminEntityType EntityType { get; set; } = AdminEntityType.Item;
+    [Parameter] public int EntityId { get; set; }
+    [Parameter] public int AppearanceId { get; set; }
+    [Parameter] public string ManualImageUrl { get; set; } = string.Empty;
+    [Parameter] public string CategoryLabel { get; set; } = string.Empty;
+    [Parameter] public string PlaceholderLabel { get; set; } = string.Empty;
+    [Parameter] public string AltText { get; set; } = "Preview";
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter] public bool ShowMeta { get; set; } = true;
+
+    protected override void OnParametersSet()
+    {
+        _preview = PreviewService.Resolve(new GameAssetPreviewRequest
+        {
+            EntityType = EntityType,
+            EntityId = EntityId,
+            AppearanceId = AppearanceId,
+            ManualImageUrl = ManualImageUrl,
+            CategoryLabel = CategoryLabel,
+            PlaceholderLabel = PlaceholderLabel,
+        });
+    }
+}
