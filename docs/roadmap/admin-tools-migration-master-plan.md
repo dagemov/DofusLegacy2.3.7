@@ -81,7 +81,7 @@ Phase 7C DONE
 Phase 7D DONE (documentary)
 Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: NEXT
+Macro 2 - Client Identity Audit Tool: IN_PROGRESS (Phase 1 DONE)
 Macro 3 - Sprite Preview Pipeline: PENDING
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
@@ -105,6 +105,8 @@ Phase status summary:
 - Phase 7D - Client Sprite Preview Extraction: `DONE (DOCUMENTARY)`
 - Phase 8 - Publish / QA Workflow: `DONE`
 - Phase 8 adds `Item Publication Status` plus the visibility matrix for `7754`, `12616`, and `12617`.
+- Macro 2 - Client Identity Audit Tool / Phase 1: `DONE`
+- Macro 2 now has a read-only scaffold under `Infrastructure/scripts/ClientIdentityAudit`.
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -173,11 +175,18 @@ Key references:
 - [Target architecture](../admin-tools/migration/dofuslegacy-admin-target-architecture.md)
 - [Team VPS and database workflow](../admin-tools/migration/team-vps-database-workflow.md)
 
+## Client Identity doc set
+
+- [Client Identity README](../admin-tools/client-identity/README.md)
+- [Client Identity Phase 1](../admin-tools/client-identity/client-identity-audit-tool-phase1.md)
+- [Client Identity source map](../admin-tools/client-identity/client-identity-source-map.md)
+- [Client Identity item check report](../admin-tools/client-identity/client-identity-item-check-report.md)
+
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 2 - Client Identity Audit Tool
+1. Macro 2 - Client Identity Audit Tool / Phase 2
 2. Macro 3 - Sprite Preview Pipeline
 3. Macro 4 - Spells Builder
 4. Macro 5 - Glyph Builder
