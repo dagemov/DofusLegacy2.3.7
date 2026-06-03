@@ -18,6 +18,7 @@
   </div>
 
   <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="clientIdentityProblem"></app-api-problem-panel>
 
   <div *ngIf="isLoading" class="card admin-card border-0">
     <div class="card-body text-secondary">Auditando publicación cliente...</div>
@@ -70,7 +71,13 @@
         </div>
       </div>
 
-      <div class="col-12 col-xl-5">
+      <div class="col-12 col-xl-5 d-grid gap-4">
+        <app-client-identity-diagnostic-card
+          [routeItemId]="itemId"
+          [diagnostic]="clientIdentityDiagnostic"
+          [isLoading]="isLoadingClientIdentity"
+          [showPublicationLink]="false"></app-client-identity-diagnostic-card>
+
         <div class="card admin-card border-0 h-100">
           <div class="card-body d-grid gap-3">
             <div>
@@ -89,6 +96,10 @@
               <div><strong>Needs Client Patch</strong> significa que el template runtime existe en DB, pero el cliente todavía no lo conoce.</div>
               <div><strong>Needs Asset</strong> depende del preview operativo del Admin, no de un publish de cliente completo.</div>
             </div>
+
+            <a *ngIf="itemId" class="btn btn-sm btn-outline-secondary align-self-start" [routerLink]="['/admin/items', itemId]">
+              Abrir detalle con diagnóstico completo
+            </a>
           </div>
         </div>
       </div>

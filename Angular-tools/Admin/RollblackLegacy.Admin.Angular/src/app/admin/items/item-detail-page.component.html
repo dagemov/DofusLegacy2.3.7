@@ -32,6 +32,7 @@
   </div>
 
   <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="clientIdentityProblem"></app-api-problem-panel>
   <app-api-problem-panel [feedback]="pageFeedback"></app-api-problem-panel>
 
   <div *ngIf="isLoading" class="card admin-card border-0">
@@ -47,6 +48,11 @@
     </div>
 
     <div class="col-12 col-xl-5 d-grid gap-4">
+      <app-client-identity-diagnostic-card
+        [routeItemId]="itemId"
+        [diagnostic]="clientIdentityDiagnostic"
+        [isLoading]="isLoadingClientIdentity"></app-client-identity-diagnostic-card>
+
       <app-item-client-identity-card
         [routeItemId]="itemId"
         [identity]="resolvedIdentity"></app-item-client-identity-card>
@@ -64,6 +70,10 @@
         [isLoading]="isLoadingQaSummary"></app-item-qa-readiness-panel>
 
       <app-item-diagnostic-panel [warnings]="detail?.warnings ?? []"></app-item-diagnostic-panel>
+    </div>
+
+    <div class="col-12">
+      <app-client-identity-batch-check-panel></app-client-identity-batch-check-panel>
     </div>
 
     <div class="col-12">

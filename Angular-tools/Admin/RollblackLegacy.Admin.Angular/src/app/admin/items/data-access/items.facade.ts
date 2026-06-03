@@ -21,6 +21,8 @@ import {
   ItemEffectsUpdateRequest,
   ItemEffectsUpdateResultDto
 } from './items.models';
+import { ClientIdentityApi } from './client-identity.api';
+import { ClientItemIdentityCheckResultDto } from './client-identity.models';
 import { ItemsApi } from './items.api';
 
 @Injectable({
@@ -35,7 +37,10 @@ export class ItemsFacade {
   readonly typeOptions = this.typeOptionsState.asReadonly();
   readonly itemSetOptions = this.itemSetOptionsState.asReadonly();
 
-  constructor(private readonly itemsApi: ItemsApi) {}
+  constructor(
+    private readonly itemsApi: ItemsApi,
+    private readonly clientIdentityApi: ClientIdentityApi
+  ) {}
 
   getItems(
     request: ItemSearchRequest
@@ -55,6 +60,14 @@ export class ItemsFacade {
 
   getItemIdentity(itemId: number): Observable<ItemClientIdentityDto> {
     return this.itemsApi.getItemIdentity(itemId);
+  }
+
+  getClientIdentityDiagnostic(itemId: number): Observable<ClientItemIdentityCheckResultDto> {
+    return this.clientIdentityApi.getItem(itemId);
+  }
+
+  checkClientIdentity(itemIds: readonly number[]): Observable<ClientItemIdentityCheckResultDto[]> {
+    return this.clientIdentityApi.checkItems(itemIds);
   }
 
   getItemQaSummary(itemId: number): Observable<ItemQaSummaryDto> {

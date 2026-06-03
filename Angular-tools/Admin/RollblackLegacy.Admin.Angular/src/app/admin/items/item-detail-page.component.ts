@@ -5,12 +5,15 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, combineLatest, finalize, of } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
+import { ClientIdentityBatchCheckPanelComponent } from './components/client-identity-batch-check-panel.component';
+import { ClientIdentityDiagnosticCardComponent } from './components/client-identity-diagnostic-card.component';
 import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
 import { ItemQaReadinessPanelComponent } from './components/item-qa-readiness-panel.component';
 import { ItemRuntimeSummaryCardComponent } from './components/item-runtime-summary-card.component';
 import { ItemsFacade } from './data-access/items.facade';
+import { ClientItemIdentityCheckResultDto } from './data-access/client-identity.models';
 import {
   AdminApiProblem,
   AdminFeedback,
@@ -29,6 +32,8 @@ import {
     RouterLink,
     ApiProblemPanelComponent,
     ItemRuntimeSummaryCardComponent,
+    ClientIdentityDiagnosticCardComponent,
+    ClientIdentityBatchCheckPanelComponent,
     ItemClientIdentityCardComponent,
     ItemPreviewCardComponent,
     ItemDiagnosticPanelComponent,
@@ -46,6 +51,9 @@ export class ItemDetailPageComponent implements OnInit {
 
   protected detail: ItemDetailDto | null = null;
   protected identity: ItemClientIdentityDto | null = null;
+  protected clientIdentityDiagnostic: ClientItemIdentityCheckResultDto | null = null;
+  protected clientIdentityProblem: AdminApiProblem | null = null;
+  protected isLoadingClientIdentity = false;
   protected itemSetOptions: AdminOptionDto[] = [];
   protected problem: AdminApiProblem | null = null;
   protected pageFeedback: AdminFeedback | null = null;
@@ -76,11 +84,14 @@ export class ItemDetailPageComponent implements OnInit {
                 : null;
             this.detail = null;
             this.identity = null;
+            this.clientIdentityDiagnostic = null;
+            this.clientIdentityProblem = null;
             this.qaSummary = null;
             this.qaSummaryProblem = null;
             this.itemSetOptions = [];
             this.isLoading = true;
             this.isLoadingQaSummary = true;
+            this.isLoadingClientIdentity = true;
             this.refreshView();
           });
 
@@ -100,6 +111,7 @@ export class ItemDetailPageComponent implements OnInit {
 
           this.loadDetailBundle(this.itemId);
           this.loadQaSummary(this.itemId);
+          this.loadClientIdentityDiagnostic(this.itemId);
       });
   }
 
@@ -147,6 +159,37 @@ export class ItemDetailPageComponent implements OnInit {
           this.detail = bundle.detail;
           this.identity = bundle.detail.clientIdentity ?? null;
           this.itemSetOptions = bundle.itemSetOptions;
+          this.refreshView();
+        });
+      });
+  }
+
+  private loadClientIdentityDiagnostic(itemId: number): void {
+    this.itemsFacade
+      .getClientIdentityDiagnostic(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.clientIdentityProblem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoadingClientIdentity = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((diagnostic) => {
+        if (!diagnostic) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.clientIdentityDiagnostic = diagnostic;
           this.refreshView();
         });
       });

@@ -1,0 +1,134 @@
+<div class="card admin-card border-0 h-100 client-identity-card" [ngClass]="cardAccentClass">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-2">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Client Identity Diagnostics</p>
+        <h3 class="h5 mb-1">
+          {{ diagnostic?.dbName || ('Item #' + (routeItemId ?? '—')) }}
+        </h3>
+        <p class="text-secondary mb-0">
+          ¿El cliente conoce este ItemId? ¿Necesita patch? ¿Hay i18n y preview?
+        </p>
+      </div>
+      <div class="d-flex flex-wrap gap-2 align-content-start">
+        <span class="badge" [class]="primaryBadgeClass">{{ primaryStatusLabel }}</span>
+        <span
+          class="badge"
+          [class]="diagnostic?.clientKnown ? 'text-bg-success' : 'text-bg-danger'">
+          Cliente {{ diagnostic?.clientKnown ? 'conoce' : 'no conoce' }}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-secondary small">Cargando diagnóstico de identidad cliente...</div>
+
+    <ng-container *ngIf="!isLoading && diagnostic">
+      <div class="identity-strip rounded-3 p-3">
+        <div class="row g-3 small">
+          <div class="col-6 col-md-3">
+            <div class="detail-label">ItemId</div>
+            <div class="font-monospace-soft">{{ diagnostic.itemId }}</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="detail-label">DescriptionId (DB)</div>
+            <div class="font-monospace-soft">{{ displayId(diagnostic.dbDescriptionId) }}</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="detail-label">IconId (DB)</div>
+            <div class="font-monospace-soft">{{ displayId(diagnostic.dbIconId) }}</div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="detail-label">AppearanceId (DB)</div>
+            <div class="font-monospace-soft">{{ displayId(diagnostic.dbAppearanceId) }}</div>
+          </div>
+        </div>
+        <div class="small text-secondary mt-2">
+          ItemId, IconId y AppearanceId son superficies distintas. No asumir equivalencias.
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <span
+          *ngFor="let code of diagnostic.status.statuses"
+          class="badge"
+          [class]="presentStatus(code).badgeClass">
+          {{ presentStatus(code).label }}
+        </span>
+      </div>
+
+      <div class="row g-3 small">
+        <div class="col-12 col-md-6">
+          <div class="rounded-3 status-box h-100">
+            <div class="text-uppercase fw-semibold text-secondary mb-2">i18n</div>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <span class="badge" [class]="i18nBadgeClass(diagnostic.descriptionEs.exists)">
+                {{ i18nLabel(diagnostic.descriptionEs.exists, 'ES (desc)') }}
+              </span>
+              <span class="badge" [class]="i18nBadgeClass(diagnostic.descriptionEn.exists)">
+                {{ i18nLabel(diagnostic.descriptionEn.exists, 'EN (desc)') }}
+              </span>
+            </div>
+            <div *ngIf="diagnostic.descriptionEs.text" class="text-break">
+              <strong>ES:</strong> {{ diagnostic.descriptionEs.text }}
+            </div>
+            <div *ngIf="diagnostic.descriptionEn.text" class="text-break mt-1">
+              <strong>EN:</strong> {{ diagnostic.descriptionEn.text }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="rounded-3 status-box h-100">
+            <div class="text-uppercase fw-semibold text-secondary mb-2">Preview y apariencia</div>
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <span class="badge" [class]="diagnostic.iconPreviewFound ? 'text-bg-success' : 'text-bg-warning'">
+                Preview icono {{ diagnostic.iconPreviewFound ? 'OK' : 'ausente' }}
+              </span>
+              <span
+                class="badge"
+                [class]="
+                  diagnostic.appearance.exists === true
+                    ? 'text-bg-success'
+                    : diagnostic.appearance.exists === false
+                      ? 'text-bg-warning'
+                      : 'text-bg-secondary'
+                ">
+                Appearance
+                {{
+                  diagnostic.appearance.exists === true
+                    ? 'conocida'
+                    : diagnostic.appearance.exists === false
+                      ? 'desconocida'
+                      : 'N/A'
+                }}
+              </span>
+            </div>
+            <div class="text-secondary text-break">
+              {{ diagnostic.previewPath || 'Sin ruta de preview curada' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="diagnostic.status.warnings.length > 0" class="d-grid gap-2">
+        <div class="text-uppercase small fw-semibold text-secondary">Advertencias</div>
+        <div *ngFor="let warning of diagnostic.status.warnings" class="alert alert-warning py-2 px-3 mb-0 small">
+          {{ warning }}
+        </div>
+      </div>
+
+      <app-client-identity-recommended-action
+        [action]="diagnostic.status.recommendedAction"
+        [needsClientPatch]="diagnostic.status.needsClientPatch"></app-client-identity-recommended-action>
+
+      <div *ngIf="showPublicationLink && routeItemId" class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/items', routeItemId, 'publication-status']">
+          Ver publication status
+        </a>
+      </div>
+    </ng-container>
+
+    <div *ngIf="!isLoading && !diagnostic" class="alert alert-light border mb-0">
+      El diagnóstico de identidad cliente no está disponible. Revisa el panel de error (traceId).
+    </div>
+  </div>
+</div>

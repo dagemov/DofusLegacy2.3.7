@@ -1,0 +1,36 @@
+.client-identity-card {
+  border-left: 4px solid var(--bs-secondary);
+}
+
+.client-identity-card--success {
+  border-left-color: var(--bs-success);
+}
+
+.client-identity-card--warning {
+  border-left-color: var(--bs-warning);
+}
+
+.client-identity-card--danger {
+  border-left-color: var(--bs-danger);
+}
+
+.client-identity-card--info {
+  border-left-color: var(--bs-info);
+}
+
+.identity-strip {
+  background: rgba(var(--bs-secondary-rgb), 0.06);
+}
+
+.status-box {
+  background: rgba(var(--bs-body-color-rgb), 0.04);
+  padding: 0.85rem 1rem;
+}
+
+.detail-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary);
+}

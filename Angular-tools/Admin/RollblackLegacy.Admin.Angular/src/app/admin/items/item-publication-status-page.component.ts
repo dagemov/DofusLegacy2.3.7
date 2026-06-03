@@ -5,6 +5,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
+import { ClientIdentityDiagnosticCardComponent } from './components/client-identity-diagnostic-card.component';
+import { ClientItemIdentityCheckResultDto } from './data-access/client-identity.models';
 import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
@@ -14,7 +16,7 @@ import {
 
 @Component({
   selector: 'app-item-publication-status-page',
-  imports: [CommonModule, RouterLink, ApiProblemPanelComponent],
+  imports: [CommonModule, RouterLink, ApiProblemPanelComponent, ClientIdentityDiagnosticCardComponent],
   templateUrl: './item-publication-status-page.component.html',
   styleUrl: './item-publication-status-page.component.scss'
 })
@@ -27,8 +29,11 @@ export class ItemPublicationStatusPageComponent implements OnInit {
 
   protected itemId: number | null = null;
   protected status: ItemPublicationStatusDto | null = null;
+  protected clientIdentityDiagnostic: ClientItemIdentityCheckResultDto | null = null;
   protected problem: AdminApiProblem | null = null;
+  protected clientIdentityProblem: AdminApiProblem | null = null;
   protected isLoading = false;
+  protected isLoadingClientIdentity = false;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
@@ -39,8 +44,11 @@ export class ItemPublicationStatusPageComponent implements OnInit {
         this.ngZone.run(() => {
           this.itemId = Number.isInteger(nextItemId) && nextItemId > 0 ? nextItemId : null;
           this.status = null;
+          this.clientIdentityDiagnostic = null;
           this.problem = null;
+          this.clientIdentityProblem = null;
           this.isLoading = true;
+          this.isLoadingClientIdentity = true;
           this.refreshView();
         });
 
@@ -57,33 +65,7 @@ export class ItemPublicationStatusPageComponent implements OnInit {
           return;
         }
 
-        this.itemsFacade.getItemPublicationStatus(this.itemId)
-          .pipe(
-            catchError((error: unknown) => {
-              this.ngZone.run(() => {
-                this.problem = toAdminApiProblem(error);
-                this.refreshView();
-              });
-              return of(null);
-            }),
-            finalize(() => {
-              this.ngZone.run(() => {
-                this.isLoading = false;
-                this.refreshView();
-              });
-            }),
-            takeUntilDestroyed(this.destroyRef)
-          )
-          .subscribe((status) => {
-            if (!status) {
-              return;
-            }
-
-            this.ngZone.run(() => {
-              this.status = status;
-              this.refreshView();
-            });
-          });
+        this.loadPublicationBundle(this.itemId);
       });
   }
 
@@ -159,6 +141,66 @@ export class ItemPublicationStatusPageComponent implements OnInit {
         negativeText: 'No'
       }
     ];
+  }
+
+  private loadPublicationBundle(itemId: number): void {
+    this.itemsFacade
+      .getItemPublicationStatus(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.problem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoading = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((status) => {
+        if (!status) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.status = status;
+          this.refreshView();
+        });
+      });
+
+    this.itemsFacade
+      .getClientIdentityDiagnostic(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.clientIdentityProblem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoadingClientIdentity = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((diagnostic) => {
+        if (!diagnostic) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.clientIdentityDiagnostic = diagnostic;
+          this.refreshView();
+        });
+      });
   }
 
   private refreshView(): void {

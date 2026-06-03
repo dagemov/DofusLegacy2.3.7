@@ -4,11 +4,12 @@ Este folder concentra la documentacion oficial del `Client Identity Audit Tool`.
 
 Estado actual:
 
-- Macro 2: `IN_PROGRESS`
+- Macro 2: `IN_PROGRESS` (Phase 3 DONE, Phase 4 NEXT)
 - Phase 1: `DONE`
 - Phase 2: `DONE`
+- Phase 3: `DONE` (Angular diagnostics)
 - Stabilization gate before Phase 3: `PASSED`
-- Scope actual: `scaffold + capa reusable read-only + Admin API`
+- Scope actual: `scaffold + Admin API + Angular read-only diagnostics`
 
 Ruta del scaffold:
 
@@ -36,6 +37,7 @@ Documentos clave:
 - [Phase 2 admin layer](./client-identity-admin-layer-phase2.md)
 - [API contracts](./client-identity-api-contracts.md)
 - [Stabilization gate before Phase 3](./client-identity-stabilization-gate-before-phase3.md)
+- [Phase 3 Angular diagnostics](./client-identity-angular-diagnostics-phase3.md)
 - [Source map](./client-identity-source-map.md)
 - [Item check report](./client-identity-item-check-report.md)
 
@@ -47,4 +49,4 @@ Reglas permanentes:
 - no extraer `D2P` masivamente
 - no auditar armas
 - no recorrer 44k registros
-- no agregar UI hasta fase explicita
+- UI diagnostica solo en Angular (Phase 3); sin writes
