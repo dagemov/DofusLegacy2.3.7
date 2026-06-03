@@ -10,15 +10,18 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 | Macro 3 / Phase 2 | `DONE` — lector D2P reutilizado + `d2p-audit` / `extract-icon` |
 | Macro 3 / Phase 3 | `DONE` — `by-icon/23012.png` (Dofus Ocre / 7754) |
 | Macro 3 / Phase 4 | `DONE / PARTIAL` — workflow dry-run/approve + selector UX |
-| Macro 3 / Phase 5 | `NEXT` — appearance preview strategy (solo con aprobación) |
+| Macro 3 / Phase 5 | `DONE` — appearance identity audit + preview feasibility |
+| Macro 3 / Phase 6 | `NEXT` — curated equipment preview (`by-appearance/`) |
+| Macro 3 / Phase 7 | `PLANNED` — EntityLook renderer research (documental, opcional) |
 
 ## Objetivo
 
 Conectar identidad cliente (Macro 2) con assets visuales utilizables en Admin:
 
 - icon previews (`IconId` → `by-icon`)
-- appearance previews (`AppearanceId` → `by-appearance`)
-- sprite/look equipado (futuro)
+- appearance previews (`AppearanceId` → `by-appearance`, curado manual)
+- validación `Appearances.d2o` (client identity, `APPEARANCE_UNKNOWN`)
+- sprite/look equipado completo (`EntityLook`) — fuera de alcance Macro 3 salvo investigación Phase 7
 
 ## Herramienta offline
 
@@ -62,8 +65,19 @@ Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-it
 Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-appearance/
 ```
 
+## Hallazgo clave (Phase 5)
+
+```txt
+AppearanceId en Sunshine = skin añadido a EntityLook al equipar (no es IconId).
+Appearances.d2o en Client2.3.7 = catálogo recortado (130 ids, 654–868); 458 y 1004 no existen.
+Preview equipamiento viable = PNG curado by-appearance + validación, no renderer Tiphon.
+```
+
 ## Documentos
 
+- [Phase 5 appearance identity audit](./appearance-identity-audit-phase5.md)
+- [Phase 5 preview feasibility](./appearance-preview-feasibility-study.md)
+- [EntityLook relationship map](./entitylook-relationship-map.md)
 - [Phase 1 plan](./sprite-preview-pipeline-phase1.md)
 - [Phase 2 D2P extractor](./sprite-preview-d2p-extractor-phase2.md)
 - [Phase 3 curated import](./sprite-preview-curated-import-phase3.md)

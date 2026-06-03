@@ -82,7 +82,7 @@ Phase 7D DONE (documentary)
 Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
-Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1–4 DONE/PARTIAL, Phase 5 NEXT)
+Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1–5 DONE, Phase 6 NEXT)
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -115,7 +115,9 @@ Phase status summary:
 - Macro 3 / Phase 2 - D2P extractor research + minimal proof: `DONE`
 - Macro 3 / Phase 3 - Curated icon import / Angular integration: `DONE`
 - Macro 3 / Phase 4 - Curated import workflow / selector integration: `DONE / PARTIAL`
-- Macro 3 / Phase 5 - Appearance preview strategy (optional): `NEXT`
+- Macro 3 / Phase 5 - Appearance identity audit + preview feasibility: `DONE`
+- Macro 3 / Phase 6 - Curated equipment preview (`by-appearance/`): `NEXT`
+- Macro 3 / Phase 7 - EntityLook renderer research (optional): `PLANNED`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -207,16 +209,19 @@ Key references:
 - [Sprite Preview D2P format notes](../admin-tools/sprite-preview/sprite-preview-d2p-format-notes.md)
 - [Sprite Preview Phase 3 curated import](../admin-tools/sprite-preview/sprite-preview-curated-import-phase3.md)
 - [Sprite Preview Phase 4 curated workflow](../admin-tools/sprite-preview/sprite-preview-curated-workflow-phase4.md)
+- [Sprite Preview Phase 5 appearance audit](../admin-tools/sprite-preview/appearance-identity-audit-phase5.md)
+- [Sprite Preview Phase 5 feasibility](../admin-tools/sprite-preview/appearance-preview-feasibility-study.md)
+- [Sprite Preview EntityLook map](../admin-tools/sprite-preview/entitylook-relationship-map.md)
 
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 3 / Phase 5 - Appearance preview strategy (explicit approval)
+1. Macro 3 / Phase 6 - Curated equipment preview (`by-appearance/`)
 2. Macro 4 - Spells Builder
 3. Macro 5 - Glyph Builder
 
-Macro 3 Phase 1 is closed; continue Macro 3 Phase 2 only with explicit scope approval.
+Macro 3 Phase 5 is closed (documental). Phase 7 (EntityLook renderer research) remains optional and deferred.
 
 ## Mandatory handoff
 

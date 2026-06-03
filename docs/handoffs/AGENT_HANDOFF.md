@@ -6,44 +6,58 @@ Generated: `2026-06-03`
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-sprite-preview-curated-workflow-phase4
+feature/item-sprite-preview-appearance-audit-phase5
 ```
 
 ## Estado Macro 3
 
 ```txt
-Phase 1–3 DONE
-Phase 4 DONE / PARTIAL — dry-run + approve workflow, selector UX
-Phase 5 NEXT — appearance preview (solo con aprobación)
+Phase 1–4 DONE / PARTIAL
+Phase 5 DONE — appearance identity audit + feasibility (documental)
+Phase 6 NEXT — curated equipment preview (by-appearance/)
+Phase 7 PLANNED — EntityLook renderer research (solo con aprobación)
 ```
 
-## Ultimo trabajo (Phase 4)
+## Ultimo trabajo (Phase 5)
 
-Commit:
+Commit esperado:
 
 ```txt
-feat: formalize curated sprite preview import workflow
+docs: audit appearance identity and preview feasibility
 ```
 
-Cambios:
+Entregables:
 
 ```txt
---dry-run-curated-copy / --approve-curated-copy / --overwrite-curated
-CuratedIconCopyPlanner.cs
-Icon selector: labels ES, fuente CURATED_BY_ICON, banner CLI
-API Source: CURATED_BY_ICON
+docs/admin-tools/sprite-preview/appearance-identity-audit-phase5.md
+docs/admin-tools/sprite-preview/appearance-preview-feasibility-study.md
+docs/admin-tools/sprite-preview/entitylook-relationship-map.md
+README + roadmap + este handoff
 ```
 
-## Comando dry-run validado (23012)
+Evidencia probe (temporal, no commitear):
 
-```bash
-dotnet run --project Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj -- \
-  --mode extract-icon --icon-id 23012 \
-  --output Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted \
-  --dry-run-curated-copy
+```txt
+Infrastructure/temporal-artifacts/appearance-d2o-probe/ReflectProbe.csproj
 ```
 
-## QA pendiente (operador, stack levantado)
+Hallazgos:
+
+```txt
+AppearanceId → skin en EntityLook (Character.Look.AddSkin)
+Appearances.d2o Client2.3.7: 130 índices (654–868); 0/458/1004 ausentes
+Item 12616 AppearanceId 1004 → APPEARANCE_UNKNOWN
+Angular: solo IconId auto; equipamiento = by-appearance curado
+Tiphon: no en repo; no requerido para Admin
+```
+
+## Phase 6 (siguiente agente)
+
+Objetivo: workflow curado `by-appearance/{appearanceId}.png` (espejo Phase 3–4 de iconos).
+
+No hacer: renderer EntityLook, extracción masiva sprites, Tiphon.
+
+## QA pendiente (operador)
 
 ```txt
 /admin/items/7754
@@ -59,4 +73,4 @@ no commitear temporal-artifacts
 no modificar Client2.3.7
 ```
 
-Docs: `docs/admin-tools/sprite-preview/sprite-preview-curated-workflow-phase4.md`
+Docs Phase 5: `docs/admin-tools/sprite-preview/appearance-identity-audit-phase5.md`
