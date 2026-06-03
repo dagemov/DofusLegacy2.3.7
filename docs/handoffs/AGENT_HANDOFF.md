@@ -75,9 +75,9 @@ Phase 6: DONE
 Phase 6.5A: DONE
 Phase 7A: DONE
 Phase 7B: DONE
-Phase 7C: NEXT / AUTHORIZED
+Phase 7C: DONE
 Phase 7D: DOCS DONE
-Phase 8: PENDING
+Phase 8: NEXT
 ```
 
 Additional macros:
@@ -93,11 +93,12 @@ Macro 6 - Maps Builder: DEFERRED
 ## Latest relevant commits
 
 ```txt
-cc94a1f docs: update agent handoff for items builder
-a9fed9e docs: plan item client sprite preview extraction
-7a4ed12 docs: define client publication pipeline for custom items
-32c0b71 feat: enable visible dofus tester vendor fallback
-cc02466 docs: audit dofus tester visibility and restart safety
+276774c fix: remove duplicate effects editor from item layout
+f7a5820 feat: add numeric formatting to item editor
+13bcd1c feat: add item preview warnings
+208e7b2 feat: improve item conditions editor
+41a22f1 feat: add split layout to item editor
+106f13d feat: unify items builder notifications
 ```
 
 ## Current status confirmed
@@ -172,52 +173,66 @@ We are here:
 
 ```txt
 Macro 1 - Items Builder
-Phase 7C - Form UX polish
+Phase 8 - Publish / QA
 ```
 
-Phase 7C is authorized because:
+Phase 7C is now closed because:
 
 ```txt
-Phase 7A: DONE
-Phase 7B: DONE
-Stabilization gate: PASSED
-VPS DB target: isRemote=true
-7D docs are already closed
+Unified success/error panel shipped
+Split write layout shipped
+Conditions UX shipped
+Preview warnings shipped
+Numeric formatting shipped
+Builds stayed green
+Browser QA on item 12616 passed
 ```
 
-## Phase 7C implementation target
+## Phase 7C result snapshot
 
-Goal:
+Closed scope:
 
 ```txt
-polish the existing Create/Edit UX without reopening client publish or sprite extraction work
+1. Unified success/error feedback for save and validation flows
+2. Split editor layout:
+   left = runtime form
+   right = preview / identity / warnings
+   bottom = effects editor
+3. Conditions textarea with contextual help
+4. Pre-save preview warnings
+5. Human numeric formatting for price / weight / level / stats
 ```
 
-Expected Angular files:
+Main Angular files touched:
 
 ```txt
 Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-write-page.*
 Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-effects-editor.*
 Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/shared/components/api-problem-panel.component.*
 Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/data-access/items.models.ts
-Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/data-access/items.api.ts
 ```
 
-Expected changes:
+Validation performed:
 
 ```txt
-1. Unified success/error alerts or toasts
-2. Cleaner 409/422/traceId UX
-3. Split layout:
-   left = runtime form
-   right = preview / identity / warnings
-   bottom = effects editor
-4. Conditions as free textarea with hints
-5. Preview warnings before save
-6. Better numeric formatting for price / weight / level / values
+dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" -> OK
+npm run build in Angular-tools/Admin/RollblackLegacy.Admin.Angular -> OK
+/admin/items/12616/edit -> load OK
+/admin/items/12616/edit -> save OK
+/admin/items/12616/edit -> reload OK
+/admin/items/12616/edit -> preview visible
+/admin/items/12616/edit -> effects visible once after duplicate-layout fix
+/admin/items/12616/edit -> forcing weapon TypeId returns 422 with visible traceId
 ```
 
-Do not touch in 7C:
+Important validation limit kept on purpose:
+
+```txt
+409 and 500 now use the same unified panel path, but they were not fault-injected against the current VPS-backed environment.
+We did not manufacture DB conflicts or backend outages just to force those statuses during Phase 7C.
+```
+
+Do not touch next:
 
 ```txt
 client publish
@@ -228,15 +243,9 @@ mass asset import
 Client2.3.7 tracked payloads
 ```
 
-Expected commit:
-
-```txt
-feat: polish items write form ux
-```
-
 ## Exact next phase after 7C
 
-Do not jump there yet, but keep it explicit:
+This is now the exact next action:
 
 ### Phase 8 - Publish / QA
 
@@ -303,20 +312,21 @@ cd Angular-tools/Admin/RollblackLegacy.Admin.Angular
 npm run build
 ```
 
-Recommended browser QA after 7C:
+Recommended browser QA when Phase 8 starts:
 
 ```txt
+/admin/items/12616
 /admin/items/12616/edit
-/admin/items/39/edit
+/admin/items/39
 /admin/items/new
 ```
 
 Check:
 
 ```txt
-preview
-warnings
-effects editor still works
+client visibility readiness
+qa-summary panel
+write flow still green after Phase 7C
 traceId remains visible on error
 ```
 

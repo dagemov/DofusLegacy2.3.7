@@ -30,9 +30,9 @@ Phase 6 DONE
 Phase 6.5A DONE
 Phase 7A DONE
 Phase 7B DONE
-Phase 7C NEXT
+Phase 7C DONE
 Phase 7D DONE (documentary)
-Phase 8 PENDING
+Phase 8 NEXT
 
 Macro 2 - Client Identity Audit Tool: PENDING
 Macro 3 - Sprite Preview Pipeline: PENDING
@@ -48,9 +48,11 @@ Macro 6 - Maps Builder: DEFERRED
 - Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
 - Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
 - Stabilization Gate (build lock, VPS DB, warnings): `PASSED` (see `items-builder-stabilization-gate-before-7c.md`)
-- Phase 7C - Item Form UX Polish: `NEXT` (authorized after gate)
+- Phase 7C - Item Form UX Polish: `DONE`
+- Validated on `/admin/items/12616/edit`: save OK, reload OK, split layout OK, preview visible, effects visible, numeric formatting visible, and `422` with `traceId` visible when forcing a weapon `TypeId`.
+- `409` and `500` now share the same unified error surface, but were not fault-injected against the current VPS-backed environment to avoid manufacturing collisions or backend outages during this phase.
 - Phase 7D - Client Sprite Preview Extraction: `DONE (documentary)`
-- Phase 8 - Publish / QA Workflow: `PENDING`
+- Phase 8 - Publish / QA Workflow: `NEXT`
 - Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8`
 
 Operational DB target note:
