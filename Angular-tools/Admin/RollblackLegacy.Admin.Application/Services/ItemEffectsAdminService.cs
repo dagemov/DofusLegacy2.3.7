@@ -11,6 +11,7 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
     private readonly IItemsAdminWriteRepository _itemsWriteRepository;
     private readonly IItemEffectsCodec _codec;
     private readonly IItemEffectsCharacteristicCatalog _catalog;
+    private readonly IItemEffectsCatalog _effectsCatalog;
     private readonly IItemEffectNameResolver _effectNameResolver;
 
     public ItemEffectsAdminService(
@@ -18,12 +19,14 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
         IItemsAdminWriteRepository itemsWriteRepository,
         IItemEffectsCodec codec,
         IItemEffectsCharacteristicCatalog catalog,
+        IItemEffectsCatalog effectsCatalog,
         IItemEffectNameResolver effectNameResolver)
     {
         _repository = repository;
         _itemsWriteRepository = itemsWriteRepository;
         _codec = codec;
         _catalog = catalog;
+        _effectsCatalog = effectsCatalog;
         _effectNameResolver = effectNameResolver;
     }
 
@@ -130,7 +133,7 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
     }
 
     public Task<IReadOnlyList<AdminEffectOptionDto>> GetOptionsAsync(CancellationToken cancellationToken = default) =>
-        Task.FromResult(_catalog.GetOptions());
+        Task.FromResult(_effectsCatalog.GetOptions());
 
     private ItemEffectEditDto MapEditDto(ItemEffectEntryModel entry, int index)
     {

@@ -22,6 +22,8 @@ public sealed class ItemEffectsCharacteristicCatalog : IItemEffectsCharacteristi
                 x.Metadata.Group,
                 x.Metadata.DefaultSerializationTypeId,
                 x.Metadata.OperatorMode,
+                x.Metadata.OperatorMode,
+                x.Metadata.SortPriority,
                 IsCharacteristic: true,
                 IsSupported: true))
             .ToList();

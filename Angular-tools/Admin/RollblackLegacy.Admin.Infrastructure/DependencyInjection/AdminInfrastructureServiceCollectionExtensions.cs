@@ -43,7 +43,9 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddSingleton<IClientItemSourceReader, FileSystemClientItemSourceReader>();
         services.AddSingleton<IItemEffectsCodec, ItemEffectsCodecAdapter>();
         services.AddSingleton<IItemEffectNameResolver, ItemEffectNameResolver>();
+        services.AddSingleton<EffectsEnumCatalogReader>();
         services.AddSingleton<IItemEffectsCharacteristicCatalog, ItemEffectsCharacteristicCatalog>();
+        services.AddSingleton<IItemEffectsCatalog, ItemEffectsCatalog>();
         services.AddSingleton<IItemClientPublicationInspector, FileSystemItemClientPublicationInspector>();
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();

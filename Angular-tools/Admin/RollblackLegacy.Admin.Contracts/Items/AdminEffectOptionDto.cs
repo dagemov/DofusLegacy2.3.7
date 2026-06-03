@@ -6,6 +6,8 @@ public sealed record AdminEffectOptionDto(
     string ProtocolName,
     string Group,
     short DefaultSerializationTypeId,
+    string Format,
     string OperatorMode,
+    int SortPriority,
     bool IsCharacteristic,
     bool IsSupported);
