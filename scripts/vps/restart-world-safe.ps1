@@ -3,7 +3,7 @@ param(
     [string]$VpsHost = "174.138.35.107",
     [string]$SshUser = "root",
     [string]$SshKey = "",
-    [string]$WorldNameHint = "world",
+    [string]$WorldNameHint = "sunshine-server",
     [int]$Tail = 50,
     [switch]$ConfirmRestart
 )
@@ -29,10 +29,10 @@ function Invoke-Remote {
 $discoveryScript = @"
 set -eu
 if command -v docker >/dev/null 2>&1; then
-  docker ps --format 'docker|{{.Names}}|{{.Image}}'
+  docker ps -a --format 'docker|{{.Names}}|{{.Image}}'
 fi
 if command -v systemctl >/dev/null 2>&1; then
-  systemctl list-units --type=service --all --no-legend | awk '{print "systemd|" $1 "|service"}'
+  systemctl list-units --type=service --all --no-legend | sed 's/[[:space:]].*$//' | sed 's/^/systemd|/' | sed 's/$/|service/'
 fi
 "@
 

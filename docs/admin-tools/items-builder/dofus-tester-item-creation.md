@@ -86,10 +86,10 @@ The server does not expose a separate modern `Power` stat. For this core, the co
 
 ## Generated effects payload
 
-Generated with the Admin item effects codec integer serialization (`TypeInteger = 70`):
+Generated with the runtime `EffectManager.SetEffects`-compatible layout using fixed bonuses in `diceNum` and `value = 0`:
 
 ```txt
-000D0046006F0006004600800006004600750003004600B600030046007D01F4004600B000C80046008A01900046007000320046007C00C80046019A00280046019C0028004602F10032004602F00032
+000D0000006F00000006000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000008000000006000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000007500000003000000000000000000000000000000000000000000096E756C6C207A6F6E650000000000000000000000000000000000000000000000000000000000B600000003000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000007D000001F4000000000000000000000000000000000000000000096E756C6C207A6F6E650000000000000000000000000000000000000000000000000000000000B0000000C8000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000008A00000190000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000007000000032000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000007C000000C8000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000019A00000028000000000000000000000000000000000000000000096E756C6C207A6F6E6500000000000000000000000000000000000000000000000000000000019C00000028000000000000000000000000000000000000000000096E756C6C207A6F6E650000000000000000000000000000000000000000000000000000000002F100000032000000000000000000000000000000000000000000096E756C6C207A6F6E650000000000000000000000000000000000000000000000000000000002F000000032000000000000000000000000000000000000000000096E756C6C207A6F6E650000000000000000000000000000000000000000000000000000
 ```
 
 ## Command audit
@@ -107,20 +107,33 @@ Important limitation:
 
 That makes SQL grant scripting the only realistic way to give `20` items to every character on `sebcos1` without logging each one in manually.
 
-## Operational blocker
+## Live deployment result
 
-Live restart is currently blocked on this machine:
-
-```txt
-ssh -o BatchMode=yes root@174.138.35.107
-Permission denied (publickey)
-```
-
-Also, the scripted default key path does not currently exist:
+Applied on `2026-06-03` from this workstation with a local non-tracked key copy sourced from:
 
 ```txt
-SSH/private_key_sebas.pem
+C:\Users\Hombr\Downloads\keys\private_key_sebas.pem
 ```
+
+Verified live outcomes:
+
+- `sebcos1` role updated from `1` to `5`
+- `Dofus Tester` template created in `items`
+- `20` units granted to each audited character:
+  - `359` -> `Dagemov`
+  - `361` -> `Megatron`
+  - `362` -> `Test-Yopy`
+  - `363` -> `Test`
+- `sunshine-server` restarted in a controlled way without touching volumes or MySQL service
+- public ports recovered after restart:
+  - `2450/tcp` -> `True`
+  - `5557/tcp` -> `True`
+
+Important production finding:
+
+- a pre-existing test row `items.Id = 12616` (`ADMIN TEST`) had been persisted with the compact Admin effects format and broke World restart
+- that row was repaired to the runtime format before the final `Dofus Tester` deployment
+- this proves the Admin compact codec and the runtime item-template codec must not be mixed for live template rows
 
 ## Safe apply order
 
@@ -134,10 +147,13 @@ SSH/private_key_sebas.pem
 
 ## Current conclusion
 
-The audited ids, reversible scripts, and operator docs are ready in-repo.
+The live DB rollout is complete:
 
-What is still blocked for a full live close:
+- `Dofus Tester` exists as a real template row
+- `sebcos1` is admin
+- all audited `sebcos1` characters have `20` units persisted
+- controlled World restart completed successfully
 
-- controlled World restart over SSH
-- safe proof that target characters are offline during the inventory grant
-- live client validation after restart
+Still pending for total closure:
+
+- manual in-client QA with `sebcos1` to visually confirm the item in inventory and its equip/runtime behavior

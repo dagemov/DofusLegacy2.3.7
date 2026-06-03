@@ -48,8 +48,12 @@ Live Dofus Tester rollout note:
 
 - the audited `Dofus Tester` template/grant flow is documented in `dofus-tester-item-creation.md`
 - reversible SQL scripts live in `infrastructure/sql/items/`
-- current live blocker: controlled VPS restart is still blocked by `Permission denied (publickey)` from this workstation
-- do not apply the inventory grant while target characters may still be online
+- live rollout was executed on `2026-06-03`
+- `sebcos1` is now `Administrator`
+- `Dofus Tester` now exists as template `12617`
+- `20` units were granted to each audited `sebcos1` character
+- manual in-client QA is still pending to confirm inventory visibility/equip behavior
+- do not apply future inventory grants while target characters may still be online
 
 Document index:
 

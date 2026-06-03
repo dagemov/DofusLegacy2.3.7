@@ -4,7 +4,7 @@ set -euo pipefail
 VPS_HOST="${VPS_HOST:-174.138.35.107}"
 SSH_USER="${SSH_USER:-root}"
 SSH_KEY="${SSH_KEY:-}"
-WORLD_NAME_HINT="${WORLD_NAME_HINT:-world}"
+WORLD_NAME_HINT="${WORLD_NAME_HINT:-sunshine-server}"
 TAIL_LINES="${TAIL_LINES:-50}"
 CONFIRM_RESTART="${CONFIRM_RESTART:-0}"
 
@@ -21,7 +21,7 @@ SSH_BASE=(ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new
 mapfile -t DISCOVERY < <("${SSH_BASE[@]}" "
 set -eu
 if command -v docker >/dev/null 2>&1; then
-  docker ps --format 'docker|{{.Names}}|{{.Image}}'
+  docker ps -a --format 'docker|{{.Names}}|{{.Image}}'
 fi
 if command -v systemctl >/dev/null 2>&1; then
   systemctl list-units --type=service --all --no-legend | awk '{print \"systemd|\" \$1 \"|service\"}'

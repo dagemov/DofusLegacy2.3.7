@@ -7,21 +7,17 @@
 - Expected host name: `RollBlackLegacy`
 - Scope: restart only the World runtime after item-template deployment
 
-## Current blocker
+## Current status
 
-Current SSH result from this machine:
+SSH restart is now executable from this workstation when using a local non-tracked key copy.
 
-```txt
-root@174.138.35.107: Permission denied (publickey)
-```
-
-And the documented default key path does not currently exist in the repo:
+The live rollout on `2026-06-03` used:
 
 ```txt
-SSH/private_key_sebas.pem
+C:\Users\Hombr\Downloads\keys\private_key_sebas.pem
 ```
 
-Because of that, the restart flow is documented and ready, but not executable yet from this workstation.
+That key must remain local-only and must not be copied into the repo.
 
 ## Safe goal
 
@@ -39,6 +35,11 @@ Do not:
 
 - `scripts/vps/restart-world-safe.ps1`
 - `scripts/vps/restart-world-safe.sh`
+
+Both scripts were corrected during the live rollout to:
+
+- prefer `sunshine-server` as the default target hint
+- discover Docker targets with `docker ps -a` so a stopped World container is still selected for restart instead of accidentally picking `sunshine-db`
 
 ## Audit-first commands
 
@@ -88,3 +89,14 @@ Adjust credentials locally; do not commit them.
 6. Apply the inventory grant patch while target characters are offline.
 7. Start or confirm World back up.
 8. Validate login and inventory with `sebcos1`.
+
+## Last validated live result
+
+- Target container: `sunshine-server`
+- Database container left untouched: `sunshine-db`
+- Public game ports recovered after restart:
+  - `2450/tcp`
+  - `5557/tcp`
+- No `docker compose down -v`
+- No volume deletion
+- No MySQL container restart as part of the final controlled World restart
