@@ -1,6 +1,8 @@
+using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
 using RollblackLegacy.Admin.Application.Exceptions;
 using RollblackLegacy.Admin.Application.Models.Items;
+using RollblackLegacy.Admin.Contracts.ClientIdentity;
 using RollblackLegacy.Admin.Contracts.Common;
 using RollblackLegacy.Admin.Contracts.Items;
 
@@ -10,16 +12,16 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 {
     private readonly IItemsAdminReadRepository _repository;
     private readonly IItemPreviewStateResolver _previewStateResolver;
-    private readonly IItemClientPublicationInspector _itemClientPublicationInspector;
+    private readonly IClientItemIdentityReadService _clientItemIdentityReadService;
 
     public ItemsAdminReadService(
         IItemsAdminReadRepository repository,
         IItemPreviewStateResolver previewStateResolver,
-        IItemClientPublicationInspector itemClientPublicationInspector)
+        IClientItemIdentityReadService clientItemIdentityReadService)
     {
         _repository = repository;
         _previewStateResolver = previewStateResolver;
-        _itemClientPublicationInspector = itemClientPublicationInspector;
+        _clientItemIdentityReadService = clientItemIdentityReadService;
     }
 
     public async Task<ItemPagedResultDto<ItemListItemDto>> SearchAsync(
@@ -60,13 +62,8 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
     public async Task<ItemClientIdentityDto> GetIdentityAsync(int itemId, CancellationToken cancellationToken = default)
     {
-        EnsurePositiveItemId(itemId);
-
-        var item = await _repository.GetByIdAsync(itemId, cancellationToken);
-        if (item is null)
-            throw new AdminEntityNotFoundException("item", itemId.ToString());
-
-        return BuildClientIdentity(item);
+        var identity = await _clientItemIdentityReadService.GetItemAsync(itemId, cancellationToken);
+        return MapIdentity(identity);
     }
 
     public async Task<ItemQaSummaryDto> GetQaSummaryAsync(int itemId, CancellationToken cancellationToken = default)
@@ -100,33 +97,35 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
     public async Task<ItemPublicationStatusDto> GetPublicationStatusAsync(int itemId, CancellationToken cancellationToken = default)
     {
         var detail = await GetItemAsync(itemId, cancellationToken);
-        var clientAudit = await _itemClientPublicationInspector.InspectAsync(itemId, cancellationToken);
+        var identity = await _clientItemIdentityReadService.GetItemAsync(itemId, cancellationToken);
         var qaBlockingReasons = BuildQaBlockingReasons(detail);
         var needsQa = qaBlockingReasons.Count > 0;
         var needsAsset = !IsPreviewReady(detail.PreviewState);
+        var clientKnown = identity.Status.ClientKnown;
+        var clientDataAvailable = !identity.Status.Statuses.Contains("CLIENT_DATA_UNAVAILABLE", StringComparer.Ordinal);
 
-        var clientTemplateState = clientAudit.ClientDataAvailable
-            ? clientAudit.TemplateKnown
+        var clientTemplateState = clientDataAvailable
+            ? clientKnown
                 ? "CLIENT_KNOWN"
                 : "CLIENT_UNKNOWN"
             : "CLIENT_DATA_UNAVAILABLE";
 
-        var publicationState = clientAudit.ClientDataAvailable
-            ? clientAudit.TemplateKnown
+        var publicationState = clientDataAvailable
+            ? clientKnown
                 ? "PUBLISHED"
                 : "NEEDS_CLIENT_PATCH"
             : "UNVERIFIED";
 
-        var visibilityState = clientAudit.ClientDataAvailable
-            ? clientAudit.TemplateKnown
+        var visibilityState = clientDataAvailable
+            ? clientKnown
                 ? "VISIBLE"
                 : detail.IconId > 0
                     ? "VISIBLE_WITH_PATCH"
                     : "INVISIBLE"
             : "UNVERIFIED";
 
-        var reasons = BuildPublicationReasons(detail, clientAudit, needsAsset, needsQa);
-        var recommendedActions = BuildPublicationActions(detail, clientAudit, needsAsset, needsQa);
+        var reasons = BuildPublicationReasons(detail, identity, needsAsset, needsQa);
+        var recommendedActions = BuildPublicationActions(detail, identity, needsAsset, needsQa);
 
         return new ItemPublicationStatusDto(
             detail.ItemId,
@@ -137,13 +136,13 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             visibilityState,
             clientTemplateState,
             publicationState,
-            ClientKnown: clientAudit.ClientDataAvailable && clientAudit.TemplateKnown,
-            Published: clientAudit.ClientDataAvailable && clientAudit.TemplateKnown,
-            NeedsClientPatch: clientAudit.ClientDataAvailable && !clientAudit.TemplateKnown,
+            ClientKnown: clientDataAvailable && clientKnown,
+            Published: clientDataAvailable && clientKnown,
+            NeedsClientPatch: clientDataAvailable && !clientKnown,
             NeedsAsset: needsAsset,
             NeedsQa: needsQa,
-            clientAudit.ClientRootPath,
-            clientAudit.ItemsD2oPath,
+            DeriveClientRootPath(identity.ItemsD2oPath),
+            identity.ItemsD2oPath,
             reasons,
             recommendedActions);
     }
@@ -235,6 +234,26 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
     private static ItemClientIdentityDto BuildClientIdentity(AdminItemDetailReadModel item)
     {
         return BuildClientIdentity(item.ItemId, item.ResolvedName, item.IconId, item.AppearanceId);
+    }
+
+    private static ItemClientIdentityDto MapIdentity(ClientItemIdentityCheckResultDto identity)
+    {
+        var clientName = !string.IsNullOrWhiteSpace(identity.ClientNameEs.Text)
+            ? identity.ClientNameEs.Text
+            : identity.DbName;
+        var source = identity.Status.ClientKnown
+            ? "client+d2o+d2i"
+            : "sunshine.items";
+        var confidence = identity.Status.ClientKnown ? 0.95d : 0.50d;
+
+        return new ItemClientIdentityDto(
+            identity.ItemId,
+            identity.ClientNameId,
+            clientName,
+            identity.ClientIconId ?? identity.DbIconId,
+            identity.ClientAppearanceId ?? identity.DbAppearanceId,
+            source,
+            confidence);
     }
 
     private static ItemClientIdentityDto BuildClientIdentity(
@@ -399,18 +418,20 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
     private static IReadOnlyList<string> BuildPublicationReasons(
         ItemDetailDto detail,
-        ItemClientPublicationAuditResult clientAudit,
+        ClientItemIdentityCheckResultDto identity,
         bool needsAsset,
         bool needsQa)
     {
         var reasons = new List<string>();
+        var clientKnown = identity.Status.ClientKnown;
+        var clientDataAvailable = !identity.Status.Statuses.Contains("CLIENT_DATA_UNAVAILABLE", StringComparer.Ordinal);
 
-        if (!clientAudit.ClientDataAvailable)
+        if (!clientDataAvailable)
         {
-            reasons.Add(clientAudit.FailureReason
+            reasons.Add(identity.Status.Warnings.FirstOrDefault()
                 ?? "The Admin API could not inspect Client2.3.7/data/common/Items.d2o from this environment.");
         }
-        else if (clientAudit.TemplateKnown)
+        else if (clientKnown)
         {
             reasons.Add($"Items.d2o already contains template {detail.ItemId}. The client knows this template id.");
         }
@@ -444,17 +465,19 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
     private static IReadOnlyList<string> BuildPublicationActions(
         ItemDetailDto detail,
-        ItemClientPublicationAuditResult clientAudit,
+        ClientItemIdentityCheckResultDto identity,
         bool needsAsset,
         bool needsQa)
     {
         var actions = new List<string>();
+        var clientKnown = identity.Status.ClientKnown;
+        var clientDataAvailable = !identity.Status.Statuses.Contains("CLIENT_DATA_UNAVAILABLE", StringComparer.Ordinal);
 
-        if (!clientAudit.ClientDataAvailable)
+        if (!clientDataAvailable)
         {
             actions.Add("Restore read-only access to Client2.3.7 metadata or configure AdminClientPublication:ClientRootPath before trusting publication diagnostics.");
         }
-        else if (!clientAudit.TemplateKnown)
+        else if (!clientKnown)
         {
             actions.Add($"Publish template {detail.ItemId} into Client2.3.7/data/common/Items.d2o before expecting inventory visibility.");
             actions.Add($"Publish matching ES/EN i18n entries for DescriptionId {detail.DescriptionId} before claiming the custom item identity is complete.");
@@ -477,6 +500,18 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
         actions.Add("Do not claim client visibility based on IconId alone. ItemId/template publication is the deciding factor.");
         return actions;
+    }
+
+    private static string? DeriveClientRootPath(string? itemsD2oPath)
+    {
+        if (string.IsNullOrWhiteSpace(itemsD2oPath))
+        {
+            return null;
+        }
+
+        var commonDirectory = Path.GetDirectoryName(itemsD2oPath);
+        var dataDirectory = commonDirectory is null ? null : Path.GetDirectoryName(commonDirectory);
+        return dataDirectory is null ? null : Path.GetDirectoryName(dataDirectory);
     }
 
     private static void ValidateRequest(ItemSearchRequest request)

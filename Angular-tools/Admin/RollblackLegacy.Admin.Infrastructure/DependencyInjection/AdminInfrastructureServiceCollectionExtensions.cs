@@ -1,11 +1,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RollblackLegacy.Admin.Application.Abstractions;
+using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
 using RollblackLegacy.Admin.Infrastructure.Configuration;
 using RollblackLegacy.Admin.Infrastructure.Data;
 using RollblackLegacy.Admin.Infrastructure.Items;
 using RollblackLegacy.Admin.Infrastructure.Services;
+using RollblackLegacy.Admin.Infrastructure.Services.ClientIdentity;
 using RollblackLegacy.Admin.Infrastructure.Services.Items;
 
 namespace RollblackLegacy.Admin.Infrastructure.DependencyInjection;
@@ -27,9 +29,18 @@ public static class AdminInfrastructureServiceCollectionExtensions
             options.ClientRootPath = configuration
                 .GetValue<string>("AdminClientPublication:ClientRootPath") ?? string.Empty;
         });
+        services.Configure<AdminClientIdentityOptions>(options =>
+        {
+            options.ClientRootPath = configuration
+                .GetValue<string>("AdminClientIdentity:ClientRootPath") ?? string.Empty;
+            options.AdminAngularRootPath = configuration
+                .GetValue<string>("AdminClientIdentity:AdminAngularRootPath") ?? string.Empty;
+        });
 
         services.AddScoped<AdminDbConnectionFactory>();
+        services.AddScoped<IClientItemIdentityRepository, MySqlClientItemIdentityRepository>();
         services.AddSingleton<AdminProtocolCatalog>();
+        services.AddSingleton<IClientItemSourceReader, FileSystemClientItemSourceReader>();
         services.AddSingleton<IItemEffectsCodec, ItemEffectsCodecAdapter>();
         services.AddSingleton<IItemEffectNameResolver, ItemEffectNameResolver>();
         services.AddSingleton<IItemEffectsCharacteristicCatalog, ItemEffectsCharacteristicCatalog>();

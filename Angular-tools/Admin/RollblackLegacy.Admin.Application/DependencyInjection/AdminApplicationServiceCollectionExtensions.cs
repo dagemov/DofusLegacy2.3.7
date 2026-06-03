@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
 using RollblackLegacy.Admin.Application.Services;
+using RollblackLegacy.Admin.Application.Services.ClientIdentity;
 
 namespace RollblackLegacy.Admin.Application.DependencyInjection;
 
@@ -8,6 +10,7 @@ public static class AdminApplicationServiceCollectionExtensions
 {
     public static IServiceCollection AddAdminApplication(this IServiceCollection services)
     {
+        services.AddScoped<IClientItemIdentityReadService, ClientItemIdentityReadService>();
         services.AddScoped<IItemsAdminReadService, ItemsAdminReadService>();
         services.AddScoped<IItemsAdminWriteService, ItemsAdminWriteService>();
         services.AddScoped<IItemEffectsAdminService, ItemEffectsAdminService>();
