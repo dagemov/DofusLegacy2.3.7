@@ -44,9 +44,9 @@
     <div class="card-body text-secondary">Cargando contexto de escritura...</div>
   </div>
 
-  <div *ngIf="!isLoading" class="row g-4">
-    <div class="col-12 col-xl-7">
-      <div class="card admin-card border-0">
+  <div *ngIf="!isLoading" class="editor-layout">
+    <div class="editor-layout__main">
+      <div class="card admin-card border-0 h-100">
         <div class="card-body">
           <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-4">
             <div>
@@ -309,7 +309,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-xl-5 d-grid gap-4">
+    <div class="editor-layout__side d-grid gap-4">
       <div *ngIf="sourceDetail" class="card admin-card border-0">
         <div class="card-body d-grid gap-2">
           <div class="d-flex justify-content-between align-items-start gap-3">
@@ -341,6 +341,10 @@
         </div>
       </div>
 
+      <app-item-client-identity-card
+        [routeItemId]="sourceItemId"
+        [identity]="sourceIdentity"></app-item-client-identity-card>
+
       <div *ngIf="isLoadingPreview" class="small text-secondary px-2">Actualizando preview por IconId...</div>
 
       <app-item-preview-card
@@ -367,6 +371,29 @@
           <div>El publish de Description, la persistencia real de IsVisible, el upload de PNG y las armas siguen fuera de alcance.</div>
         </div>
       </div>
+    </div>
+
+    <div class="editor-layout__effects">
+      <app-item-effects-editor
+        *ngIf="mode === 'edit' && sourceItemId; else effectsDeferred"
+        [itemId]="sourceItemId"></app-item-effects-editor>
+
+      <ng-template #effectsDeferred>
+        <div class="card admin-card border-0">
+          <div class="card-body d-grid gap-2">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Effects</p>
+              <h3 class="h5 mb-1">Editor de efectos</h3>
+              <p class="text-secondary mb-0">
+                El editor de efectos queda abajo, como en el flujo Blazor. Solo se activa cuando el item ya existe y puede cargarse por ItemId.
+              </p>
+            </div>
+            <div class="alert alert-light border mb-0">
+              Guarda primero el item o abre un item existente para editar efectos runtime.
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </section>

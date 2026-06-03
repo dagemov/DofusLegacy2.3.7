@@ -2,8 +2,19 @@
   font-weight: 600;
 }
 
+.editor-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
 .form-flags-card {
   background: rgba(243, 246, 249, 0.92);
+}
+
+.editor-layout__main,
+.editor-layout__side,
+.editor-layout__effects {
+  min-width: 0;
 }
 
 .source-snapshot dt {
@@ -16,4 +27,15 @@
 
 .invalid-feedback {
   display: block;
+}
+
+@media (min-width: 1200px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
+    align-items: start;
+  }
+
+  .editor-layout__effects {
+    grid-column: 1 / -1;
+  }
 }

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchError, debounceTime, distinctUntilChanged, finalize, forkJoin, of, switchMap } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
+import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
 import { ItemEffectsEditorComponent } from './item-effects-editor.component';
@@ -58,6 +59,7 @@ type ItemWriteFieldName = keyof ItemWriteFormControls;
     ReactiveFormsModule,
     RouterLink,
     ApiProblemPanelComponent,
+    ItemClientIdentityCardComponent,
     ItemPreviewCardComponent,
     ItemDiagnosticPanelComponent,
     ItemIconSelectorModalComponent,
@@ -264,6 +266,10 @@ export class ItemWritePageComponent implements OnInit {
 
   protected get currentPreviewPath(): string | null {
     return this.previewState.resolvedPath || this.selectedIconPreviewPath;
+  }
+
+  protected get sourceIdentity() {
+    return this.sourceDetail?.clientIdentity ?? null;
   }
 
   protected get saveFeedback(): AdminFeedback | null {
