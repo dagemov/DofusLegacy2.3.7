@@ -4,7 +4,7 @@
       <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
       <h2 class="h4 mb-1">Detalle de item</h2>
       <p class="text-secondary mb-0">
-        Vista operativa de runtime, identidad explicita, estado de preview y diagnosticos antes de entrar al flujo de escritura.
+        Cuatro superficies: identidad cliente, preview inventario (IconId), preview apariencia equipada (AppearanceId), y publication status en enlace dedicado.
       </p>
     </div>
 
@@ -21,7 +21,7 @@
           Abrir selector de iconos
         </a>
         <a class="btn btn-outline-secondary" [routerLink]="['/admin/items', itemId, 'publication-status']">
-          Publication Status
+          Estado de publicación
         </a>
         <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Editar item</a>
         <a class="btn btn-outline-primary" [routerLink]="['/admin/items', itemId, 'duplicate']">

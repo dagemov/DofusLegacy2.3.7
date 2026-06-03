@@ -40,7 +40,7 @@
         </div>
         <div class="col-6">
           <div class="qa-metric">
-            <span class="qa-metric__label">Estado de preview</span>
+            <span class="qa-metric__label">Preview inventario (IconId)</span>
             <strong [class.text-success]="previewReady" [class.text-danger]="!previewReady">
               {{ previewReady ? 'Listo' : 'Bloqueado' }}
             </strong>
@@ -58,7 +58,8 @@
 
       <div class="d-flex flex-wrap gap-2">
         <span class="badge text-bg-light border">Warnings: {{ warningCount }}</span>
-        <span class="badge text-bg-light border">Preview: {{ qaSummary.previewState.state }}</span>
+        <span class="badge text-bg-light border">Icon preview: {{ qaSummary.previewState.state }}</span>
+        <span class="badge text-bg-light border">Appearance preview: {{ qaSummary.appearancePreviewState.state }}</span>
         <span class="badge text-bg-light border">IconId: {{ qaSummary.iconId }}</span>
         <span class="badge text-bg-light border">AppearanceId: {{ qaSummary.appearanceId }}</span>
       </div>
