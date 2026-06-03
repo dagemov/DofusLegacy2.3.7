@@ -1,104 +1,86 @@
-# Agent Handoff - Client Identity Audit Tool
+# Agent Handoff - Sprite Preview Pipeline (Macro 3)
 
 Generated: `2026-06-03`
 
 Leer este archivo antes de cualquier implementacion.
 
-## Regla obligatoria
-
-No continuar implementacion si este handoff no existe o esta desactualizado.
-
 ## Repo y rama
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/client-identity-batch-report-phase4
+feature/item-sprite-preview-pipeline-phase1
 ```
 
-Stack Admin: `Angular-tools/Admin/` (no `src/Admin/`)
+Stack Admin: `Angular-tools/Admin/`
 
-## Estado Macro 2
+## Estado macros
 
 ```txt
-Phase 1 DONE — CLI + scaffold
-Phase 2 DONE — Admin API read-only
-Stabilization gate PASSED
-Phase 3 DONE — Angular diagnostics UI
-Phase 4 DONE — Batch/report por lista explícita (máx. 100 IDs)
-Macro 2 COMPLETE — pendiente QA navegador del operador
-Macro 3 NEXT — Sprite Preview solo con aprobación explícita
+Macro 2 COMPLETE — Client Identity (Phases 1–4)
+Macro 3 IN_PROGRESS
+  Phase 1 DONE / PARTIAL — source map + audit scaffold + casos 7754/39/12617
+  Phase 2 NEXT — D2P extractor research or implementation (requiere scope explícito)
 ```
 
-## Ultimo trabajo (Phase 4)
+## Ultimo trabajo (Macro 3 Phase 1)
 
 Commit esperado:
 
 ```txt
-feat: add client identity batch diagnostics report
+feat: add item sprite preview pipeline scaffold
 ```
 
 Entregables:
 
 ```txt
-ClientItemIdentityIdParser + ClientItemIdentityBatchLimits (máx. 100)
-GET /api/admin/v1/client-identity/items/check?ids=...
-CLI: --items, --input-file, --output, --format markdown|csv
-Angular: client-identity-batch-check-panel (textarea, tabla, contadores, copiar CSV)
-docs/admin-tools/client-identity/client-identity-batch-report-phase4.md
-docs/admin-tools/client-identity/client-identity-batch-report-sample.md
+Infrastructure/scripts/ItemSpritePreviewPipeline/ (--mode audit)
+docs/admin-tools/sprite-preview/*
+Infrastructure/temporal-artifacts/item-sprite-preview-audit/ (gitignored)
+by-appearance/.gitkeep en Angular assets
 ```
+
+Comando validado:
+
+```bash
+dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
+  --mode audit --items 7754,39,12617 \
+  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit"
+```
+
+## Resultados audit (resumen)
+
+| ItemId | Icon preview curado | ClientKnown | Siguiente paso |
+| --- | --- | --- | --- |
+| 7754 | no (IconId 23012 en D2P, sin índice) | yes | Phase 2 D2P o curar by-icon/23012.png |
+| 39 | sí (by-icon/1001.png) | yes | Mantener catálogo |
+| 12617 | no | no | Client patch antes de preview |
+
+AppearanceId 458: hipótesis no verificada; ver `items-client-appearance-mapping-audit.md`.
 
 ## Validacion ejecutada
 
 ```txt
+dotnet build ItemSpritePreviewPipeline.csproj -> OK
 dotnet build Sunshine.sln /nr:false -> OK
-dotnet run ClientIdentityAudit --items 7754,12616,12617,39 -> sample.md OK
-npm run build (Admin Angular) -> OK (budget warning +589 bytes)
-```
-
-Browser QA pendiente (operador):
-
-```txt
-/admin/items/7754 -> expandir Auditoría batch controlada
-ingresar 7754,12616,12617,39 -> ejecutar -> badges y contadores
-probar >100 IDs -> error en español (UI) / 422 (API)
-```
-
-## Casos de control
-
-```txt
-7754  -> verde / CLIENT_KNOWN
-12616 -> warning / NEEDS_CLIENT_PATCH / APPEARANCE_UNKNOWN
-12617 -> warning / NEEDS_CLIENT_PATCH
-39    -> verde / CLIENT_KNOWN
 ```
 
 ## Prohibiciones
 
 ```txt
 no worktrees externos
-no tocar Client2.3.7 write
+no modificar Client2.3.7 write
+no extracción masiva D2P
+no commitear temporal-artifacts
 no DB writes
-no publish workflow
-no 44k scan
-no Macro 3 sin aprobación explícita
-```
-
-## Archivos ajenos — no tocar
-
-```txt
-Sunshine net11.0/.../WorldServerManager.cs
-Client2.3.7/cliente*
-config/Database*.xml (local)
+no Macro 4+ (Spells/Maps) sin petición
 ```
 
 ## Siguiente agente
 
 ```txt
-1. Leer este handoff.
-2. Confirmar commit feat Phase 4 en feature/client-identity-batch-report-phase4.
-3. Si el usuario pide Macro 3: requerir aprobación explícita antes de implementar.
-4. Items Builder Macro 1 Phase 7C u otras fases: solo si el usuario lo pide.
+1. Confirmar commit feat Phase 1.
+2. Phase 2 solo si el usuario aprueba scope (lector D2P o import puntual 1–3 PNG).
+3. No tocar cliente ni gameplay.
 ```
 
-Docs Phase 4: `docs/admin-tools/client-identity/client-identity-batch-report-phase4.md`
+Docs: `docs/admin-tools/sprite-preview/sprite-preview-pipeline-phase1.md`

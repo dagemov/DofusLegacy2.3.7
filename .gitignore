@@ -55,6 +55,10 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Admin offline tools — generated audit/extraction outputs (never commit)
+Infrastructure/temporal-artifacts/
+infrastructure/temporal-artifacts/
+
 # Build results on 'Bin' directories
 **/[Bb]in/*
 # Uncomment if you have tasks that rely on *.refresh files to move binaries

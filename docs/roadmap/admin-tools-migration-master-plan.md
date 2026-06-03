@@ -81,8 +81,8 @@ Phase 7C DONE
 Phase 7D DONE (documentary)
 Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE; QA navegador operador pendiente)
-Macro 3 - Sprite Preview Pipeline: NEXT (solo con aprobación explícita)
+Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
+Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1 DONE / PARTIAL, Phase 2 NEXT)
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -111,6 +111,8 @@ Phase status summary:
 - Macro 2 stabilization gate before Phase 3: `PASSED`
 - Macro 2 / Phase 3 - Angular Client Identity Diagnostics: `DONE`
 - Macro 2 / Phase 4 - Batch/report diagnostics: `DONE`
+- Macro 3 / Phase 1 - Sprite preview source map + audit scaffold: `DONE / PARTIAL`
+- Macro 3 / Phase 2 - D2P extractor research or implementation: `NEXT`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -192,15 +194,22 @@ Key references:
 - [Client Identity Phase 4 batch/report](../admin-tools/client-identity/client-identity-batch-report-phase4.md)
 - [Client Identity batch report sample](../admin-tools/client-identity/client-identity-batch-report-sample.md)
 
+## Sprite Preview doc set
+
+- [Sprite Preview README](../admin-tools/sprite-preview/README.md)
+- [Sprite Preview Phase 1](../admin-tools/sprite-preview/sprite-preview-pipeline-phase1.md)
+- [Sprite Preview source map](../admin-tools/sprite-preview/sprite-preview-source-map.md)
+- [Sprite Preview Phase 1 report](../admin-tools/sprite-preview/item-sprite-preview-phase1-report.md)
+
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 3 - Sprite Preview Pipeline (requires explicit approval)
-3. Macro 4 - Spells Builder
-4. Macro 5 - Glyph Builder
+1. Macro 3 / Phase 2 - D2P extractor research or implementation
+2. Macro 4 - Spells Builder
+3. Macro 5 - Glyph Builder
 
-Macro 2 is closed; do not start Macro 3 without explicit approval.
+Macro 3 Phase 1 is closed; continue Macro 3 Phase 2 only with explicit scope approval.
 
 ## Mandatory handoff
 
