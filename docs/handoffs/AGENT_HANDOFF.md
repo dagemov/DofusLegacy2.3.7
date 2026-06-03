@@ -6,66 +6,58 @@ Generated: `2026-06-03`
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-sprite-preview-final-qa-phase7
+feature/items-final-effects-catalog-audit-7d1
 ```
 
-## Macro 3 — Sprite Preview: COMPLETE
+## Macro activo: Items Final (effects catalog parity)
+
+**Objetivo:** 100% paridad funcional Items Builder vs `Rollback.Web` **antes** de Spells.
+
+| Phase | Status |
+| --- | --- |
+| 7D.1 Item Effects Catalog Audit | `DONE` (docs) |
+| 7D.2 Item Effects Catalog API | `PENDING` |
+| 7D.3 Item Effects Editor UX | `PENDING` |
+| 7D.4 Templates y presets | `PENDING` |
+| 7D.5 QA end-to-end | `PENDING` |
+
+Docs:
 
 ```txt
-Phases 1–7 DONE
-EntityLook renderer DEFERRED (not required for Items Builder MVP)
+docs/admin-tools/items-builder/items-final/README.md
+docs/admin-tools/items-builder/items-final/items-final-macro-plan.md
+docs/admin-tools/items-builder/items-final/items-effects-catalog-audit-phase7d1.md
 ```
 
-Últimos commits Macro 3:
+## Hallazgo 7D.1 (resumen)
+
+- Phase 7B: codec + `PUT /items/{id}/effects` OK.
+- `GET item-effects/options`: **26** características curadas (`LegacyBlazorEffectLabelRegistry`).
+- Legacy `GameEffectDisplayService`: **todos** los `EffectId` + labels ES + kind sugerido.
+- Angular: solo “Agregar característica”; filas sin selector de efecto; dice/minmax readonly.
+
+## Macros cerrados / prohibidos
 
 ```txt
-02ad65a feat: add curated appearance preview diagnostics
-022e992 docs: audit appearance identity and preview feasibility
-(+ commits phases 1–4 en ramas anteriores)
+Macro 3 Sprite Preview: COMPLETE
+Macro 4 Spells: NO ABRIR hasta Items Final 7D.5
+EntityLook renderer: DEFERRED
 ```
 
-Phase 7 entrega:
+## Siguiente acción exacta
 
-```txt
-docs/admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md
-UX labels ES (Icon / Appearance / Client Identity / Publication Status)
-API smoke PASS (7754, 12616, 12617, 39)
-```
+1. Branch `feature/items-final-effects-catalog-api-7d2`
+2. Implementar catálogo completo (`IItemEffectsCatalog`, port labels desde `GameEffectDisplayService`)
+3. Extender `AdminEffectOptionDto` + `GET /api/admin/v1/item-effects/options`
+4. No tocar Spells ni renderer EntityLook
 
-## Cuatro superficies (operador)
-
-```txt
-Icon Preview        → inventario (IconId / by-icon)
-Appearance Preview  → equipamiento (AppearanceId / by-appearance)
-Client Identity     → ItemId en Items.d2o
-Publication Status  → visible / patch / assets
-```
-
-## Browser QA pendiente (operador)
-
-```txt
-/admin/items/7754
-/admin/items/7754/publication-status
-/admin/items/12616
-/admin/items/12616/edit
-/admin/items/12617/publication-status
-/admin/items/icon-selector
-```
-
-API smoke ya PASS en sesión 2026-06-03.
-
-## Siguiente macro
-
-```txt
-NO iniciar sin aprobación explícita.
-Candidato documentado: Macro 4 Spells Builder (DEFERRED en roadmap).
-```
-
-## Builds
+## Builds (última sesión conocida)
 
 ```txt
 dotnet build Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj — OK
 npm run build — OK
 ```
 
-Docs: `docs/admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md`
+## Browser QA pendiente (operador, Macro 3)
+
+Sin cambio: rutas `/admin/items/7754`, `12616`, `12617`, icon-selector — ver `sprite-preview-final-qa-phase7.md`.

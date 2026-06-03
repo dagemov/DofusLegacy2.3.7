@@ -34,18 +34,20 @@ Phase 7C DONE
 Phase 7D DONE (documentary)
 Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: NEXT
-Macro 3 - Sprite Preview Pipeline: PENDING
-Macro 4 - Spells Builder: DEFERRED
+Macro 2 - Client Identity Audit Tool: COMPLETE
+Macro 3 - Sprite Preview Pipeline: COMPLETE
+Macro Items Final - Effects catalog parity (7D.1-7D.5): IN_PROGRESS
+Macro 4 - Spells Builder: DEFERRED (until Items Final closes)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
 
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
-- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
+- Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects save shipped; full catalog parity in Macro Items Final)
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
+- Phase 7B - Item Effects/Characteristics Editor (codec + save): `DONE`
+- Phase 7B - Full Blazor effects catalog parity: `NOT DONE` — see [items-final](./items-final/README.md)
 - Phase A.8 - QA manual item `12616`: `PASSED`
 - Stabilization Gate (build lock, VPS DB, warnings): `PASSED`
 - Phase 7C - Item Form UX Polish: `DONE`
@@ -134,6 +136,8 @@ Document index:
 - `blazor-functional-port-map.md`
 - `items-functional-port-phase7b.md`
 - `items-effects-port-map.md`
+- `items-final/README.md` — Macro Items Final (effects catalog parity 7D.1–7D.5)
+- `items-final/items-effects-catalog-audit-phase7d1.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-client-visibility-matrix.md`
 - `items-publish-decision-workflow.md`

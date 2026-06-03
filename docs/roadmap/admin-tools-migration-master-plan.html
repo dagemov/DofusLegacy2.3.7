@@ -61,7 +61,8 @@ Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
 Macro 3 - Sprite Preview Pipeline: COMPLETE (Phases 1–7 DONE)
-Macro 4 - Spells Builder: DEFERRED
+Macro Items Final - Effects catalog parity: IN_PROGRESS (7D.1 DONE)
+Macro 4 - Spells Builder: DEFERRED (until Items Final closes)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED</code></pre>
 
@@ -137,13 +138,17 @@ Macro 6 - Maps Builder: DEFERRED</code></pre>
     <li><code>docs/infrastructure/vps-restart-safety-checklist.md</code></li>
   </ul>
 
+  <h2>Macro Items Final</h2>
+  <p>Close Items Builder effects parity with <code>Rollback.Web</code> before Spells. Phase 7D.1 audit: <code>docs/admin-tools/items-builder/items-final/items-effects-catalog-audit-phase7d1.md</code>. Next: 7D.2 catalog API, 7D.3 editor UX, 7D.4 presets, 7D.5 QA.</p>
+
   <h2>Immediate next branch</h2>
   <ol>
-    <li>Macro 4 - Spells Builder (explicit user approval)</li>
-    <li>Macro 5 - Glyph Builder</li>
+    <li>Macro Items Final 7D.2 — Item Effects Catalog API</li>
+    <li>Macro Items Final 7D.3 — Item Effects Editor UX</li>
+    <li>Macro 4 - Spells Builder — <strong>blocked</strong> until Items Final 7D.5 passes</li>
   </ol>
 
-  <p>Macro 3 is complete. EntityLook renderer is deferred and not required for the Items Builder MVP. Next macro requires explicit user approval.</p>
+  <p>Macro 3 is complete. Do not open Spells until Items Final closes.</p>
 
   <h2>Mandatory handoff</h2>
   <p>Canonical handoff path: <code>docs/handoffs/AGENT_HANDOFF.md</code></p>

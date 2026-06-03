@@ -83,7 +83,8 @@ Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
 Macro 3 - Sprite Preview Pipeline: COMPLETE (Phases 1–7 DONE)
-Macro 4 - Spells Builder: DEFERRED
+Macro Items Final - Items Builder effects catalog parity: IN_PROGRESS (7D.1 DONE)
+Macro 4 - Spells Builder: DEFERRED (until Macro Items Final closes)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
@@ -100,7 +101,8 @@ Phase status summary:
 - Phase 6.5A - Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7B - Item Effects/Characteristics Editor (codec + save): `DONE`
+- Phase 7B - Full Rollback.Web effects catalog parity: `NOT DONE` (Macro Items Final)
 - Phase 7C - Item Form UX Polish: `DONE`
 - Phase 7D - Client Sprite Preview Extraction: `DONE (DOCUMENTARY)`
 - Phase 8 - Publish / QA Workflow: `DONE`
@@ -126,7 +128,7 @@ Phase status summary:
 Validated on `2026-06-03` in the official repo:
 
 - Current write stack is functional but parity-incomplete versus legacy Blazor item editor.
-- Effects/characteristics editing is available on `/admin/items/:id/edit`.
+- Effects save/edit is available on `/admin/items/:id/edit`; **full effect catalog parity is pending** (Macro Items Final 7D.2–7D.5).
 - Conditions remain plain operator-editable string.
 - Preview, icon selection, and publication diagnostics are present.
 - Publish and client patch workflow remain separate from write runtime flow.
@@ -216,12 +218,29 @@ Key references:
 - [Sprite Preview Phase 6 appearance curated](../admin-tools/sprite-preview/appearance-preview-curated-workflow-phase6.md)
 - [Sprite Preview Phase 7 final QA](../admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md)
 
+## Macro Items Final (effects catalog parity)
+
+Goal: **100% functional parity** with `Rollback.Web` item effects editing before Spells.
+
+| Phase | Status | Doc |
+| --- | --- | --- |
+| 7D.1 Item Effects Catalog Audit | `DONE` | [items-effects-catalog-audit-phase7d1.md](../admin-tools/items-builder/items-final/items-effects-catalog-audit-phase7d1.md) |
+| 7D.2 Item Effects Catalog API | `PENDING` | [items-final-macro-plan.md](../admin-tools/items-builder/items-final/items-final-macro-plan.md) |
+| 7D.3 Item Effects Editor UX | `PENDING` | same |
+| 7D.4 Templates y presets | `PENDING` | same |
+| 7D.5 QA end-to-end | `PENDING` | same |
+
+Branch (7D.1): `feature/items-final-effects-catalog-audit-7d1`
+
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 4 - Spells Builder (requiere aprobación explícita)
-3. Macro 5 - Glyph Builder
+1. Macro Items Final **7D.2** — full `GET item-effects/options` catalog API
+2. Macro Items Final **7D.3** — Angular `EffectListEditor` parity
+3. Macro Items Final **7D.4** / **7D.5** — presets + QA
+
+Do **not** start Macro 4 Spells until 7D.5 passes.
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
