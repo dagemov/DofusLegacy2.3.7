@@ -2,19 +2,19 @@
 
 Generated: `2026-06-03`
 
-Leer este archivo antes de cualquier implementación.
+Leer este archivo antes de cualquier implementacion.
 
 ## Regla obligatoria
 
-No continuar implementación si este handoff no existe o está desactualizado.
+No continuar implementacion si este handoff no existe o esta desactualizado.
 
 El siguiente agente debe:
 
 1. leer este handoff completo
-2. confirmar repo, branch, fase y último commit
-3. solo después continuar
+2. confirmar repo, branch, fase y ultimo commit
+3. solo despues continuar
 
-Si el presupuesto operativo entra en el último `15%`, detener implementación, actualizar este archivo, hacer commit `docs: update agent handoff` y terminar la sesión.
+Si el presupuesto operativo entra en el ultimo `15%`, detener implementacion, actualizar este archivo, hacer commit `docs: update agent handoff` y terminar la sesion.
 
 ## Repo oficial
 
@@ -24,7 +24,7 @@ C:\Users\Hombr\source\repos\DofusLegacy2.3.7
 
 Sin worktrees externos.
 Sin repos paralelos.
-Sin implementación fuera del repo oficial.
+Sin implementacion fuera del repo oficial.
 
 ## Rama actual
 
@@ -38,7 +38,7 @@ feature/client-identity-admin-layer-phase2
 Angular-tools/Admin/
 ```
 
-Rutas canónicas:
+Rutas canonicas:
 
 ```txt
 Angular-tools/Admin/RollblackLegacy.Admin.Angular
@@ -81,27 +81,26 @@ Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
 
-## Últimos commits relevantes
+## Ultimos commits relevantes
 
 ```txt
+142ac1e docs: record admin api stabilization gate before client identity phase3
 2a7c402 feat: expose client identity audit through admin api
+e1d33fd docs: update agent handoff
 2a7c402 promueve la tool Phase 1 a capa reusable de Application + Infrastructure + Admin API
-c606976 feat: add client identity audit runtime scaffold
-d122434 feat: add client identity audit tool scaffold
-944ff0c docs: update agent handoff
 ```
 
 ## Fase exacta actual
 
-Estamos aquí:
+Estamos aqui:
 
 ```txt
 Macro 2 - Client Identity Audit Tool
-Phase 2 - Admin API reusable read-only layer
-Status: CLOSED
+Stabilization gate before Phase 3
+Status: PASSED
 ```
 
-## Qué entregó Phase 2
+## Que entrego Phase 2
 
 Closed scope:
 
@@ -112,8 +111,19 @@ Closed scope:
 4. source reader D2O/D2I read-only con cache
 5. endpoints GET /api/admin/v1/client-identity/items/{itemId}
 6. endpoint GET /api/admin/v1/client-identity/items/check?ids=...
-7. publication-status ya reutiliza la misma auditoría
-8. la tool CLI ClientIdentityAudit quedó como wrapper/report writer
+7. publication-status ya reutiliza la misma auditoria
+8. la tool CLI ClientIdentityAudit quedo como wrapper/report writer
+```
+
+## Que cerro el stabilization gate
+
+```txt
+1. no habia dotnet run vivo de RollblackLegacy.Admin.Api
+2. si existia VBCSCompiler.exe reteniendo outputs intermedios
+3. dotnet build-server shutdown libero el compiler server
+4. dotnet clean/build con /nr:false dejo el build reproducible
+5. Admin.Api.csproj volvio a compilar en verde
+6. los warnings restantes quedaron clasificados
 ```
 
 ## Archivos nuevos o clave
@@ -143,18 +153,21 @@ Docs:
 docs/admin-tools/client-identity/README.md
 docs/admin-tools/client-identity/client-identity-admin-layer-phase2.md
 docs/admin-tools/client-identity/client-identity-api-contracts.md
+docs/admin-tools/client-identity/client-identity-stabilization-gate-before-phase3.md
 docs/admin-tools/client-identity/client-identity-item-check-report.md
 docs/roadmap/admin-tools-migration-master-plan.md
 docs/roadmap/admin-tools-migration-master-plan.html
 ```
 
-## Validación ejecutada
+## Validacion ejecutada
 
 Builds:
 
 ```txt
-dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" -> OK
 dotnet run --project "Infrastructure/scripts/ClientIdentityAudit/ClientIdentityAudit.csproj" -- --items 7754,12616,12617,39 --output "docs/admin-tools/client-identity/client-identity-item-check-report.md" -> OK
+dotnet clean "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" /nr:false -> OK
+dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" /nr:false -> OK
+dotnet build "Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj" /nr:false -> OK
 ```
 
 Smoke test API ejecutado localmente:
@@ -163,12 +176,10 @@ Smoke test API ejecutado localmente:
 GET /api/admin/v1/health -> OK
 GET /api/admin/v1/client-identity/items/7754 -> OK
 GET /api/admin/v1/client-identity/items/12617 -> OK
-GET /api/admin/v1/client-identity/items/check?ids=7754,12616,12617,39 -> OK
 GET /api/admin/v1/items/7754/publication-status -> OK
-GET /api/admin/v1/items/12617/publication-status -> OK
 ```
 
-La API local usada para smoke test ya quedó apagada al cerrar la validación.
+La API local usada para smoke test ya quedo apagada al cerrar la validacion.
 
 ## Casos de control actuales
 
@@ -188,7 +199,16 @@ Hechos validados:
 DescriptionId 50090 resuelve en ES y EN
 DescriptionId 50091 resuelve en ES y EN
 IconId solo no publica un template cliente
-publication-status ya usa la auditoría reusable, no una lógica aparte
+publication-status ya usa la auditoria reusable, no una logica aparte
+el lock reproducido del build aislado se resolvio con build-server shutdown + /nr:false
+```
+
+## Warnings clasificados
+
+```txt
+CS2012 -> CRITICAL / FIX_NOW -> resuelto
+CA1416 FirewallManager -> KNOWN_EXTERNAL / DEFER
+NETSDK1057 preview SDK -> KNOWN_EXTERNAL / DEFER
 ```
 
 ## Prohibiciones activas
@@ -201,7 +221,7 @@ modificar d2o/d2i/d2p
 auditar armas
 recorrer 44k registros
 tocar gameplay
-escribir producción sin backup
+escribir produccion sin backup
 commitear secretos
 copiar bin/obj/node_modules/dist/logs/artifacts
 arrancar Macro 3 antes de cerrar Macro 2
@@ -215,7 +235,7 @@ No revertir ni stagear:
 Sunshine net11.0/Sunshine net11.0/Sunshine.MySql/Database/Managers/WorldServerManager.cs
 ```
 
-También dejar intactos los locales no trackeados:
+Tambien dejar intactos los locales no trackeados:
 
 ```txt
 Client2.3.7/cliente.rar
@@ -226,23 +246,24 @@ config/Database.runtime.backup.xml
 config/Database.team.xml
 ```
 
-## Siguiente acción exacta
+## Siguiente accion exacta
 
 Si eres el siguiente agente:
 
 ```txt
 1. Lee este handoff completo.
 2. Confirma branch = feature/client-identity-admin-layer-phase2.
-3. Confirma último commit = 2a7c402 o más nuevo.
-4. No abras Macro 3 todavía.
-5. Arranca Macro 2 / Phase 3 solamente si el usuario la pide explícitamente.
+3. Confirma ultimo commit = 142ac1e o mas nuevo.
+4. Confirma que el stabilization gate ya esta PASS.
+5. No abras Macro 3 todavia.
+6. Arranca Macro 2 / Phase 3 solamente si el usuario la pide explicitamente.
 ```
 
-Siguiente paso técnico recomendado:
+Siguiente paso tecnico recomendado:
 
 ```txt
 Macro 2 / Phase 3
-exponer esta auditoría en Angular como pantalla read-only
+exponer esta auditoria en Angular como pantalla read-only
 sin tocar Client2.3.7 en write mode
-sin abrir Sprite Preview Pipeline todavía
+sin abrir Sprite Preview Pipeline todavia
 ```
