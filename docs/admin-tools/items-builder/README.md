@@ -22,7 +22,8 @@ Current checkpoint:
 - Phase 7A - Item Icon Selector Modal: `DONE`
 - Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
 - Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
-- Phase 7C - Item Form UX Polish: `NEXT`
+- Stabilization Gate (build lock, VPS DB, warnings): `PASSED` (see `items-builder-stabilization-gate-before-7c.md`)
+- Phase 7C - Item Form UX Polish: `NEXT` (authorized after gate)
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
 
@@ -47,12 +48,14 @@ Repository rules:
 Live Dofus Tester rollout note:
 
 - the audited `Dofus Tester` template/grant flow is documented in `dofus-tester-item-creation.md`
+- the production visibility root cause is documented in `dofus-tester-visibility-diagnosis.md`
 - reversible SQL scripts live in `infrastructure/sql/items/`
 - live rollout was executed on `2026-06-03`
 - `sebcos1` is now `Administrator`
 - `Dofus Tester` now exists as template `12617`
-- `20` units were granted to each audited `sebcos1` character
-- manual in-client QA is still pending to confirm inventory visibility/equip behavior
+- persisted inventory rows were granted to the audited `sebcos1` characters
+- `12617` is not yet a client-visible shipped item because the client does not know that template id
+- adding `12617` to a kamas NPC shop would not solve visibility by itself
 - do not apply future inventory grants while target characters may still be online
 
 Document index:
@@ -85,6 +88,7 @@ Document index:
 - `rollback-web-functional-inventory.md`
 - `blazor-to-angular-port-plan.md`
 - `items-builder-a8-qa-item-12616.md`
+- `items-builder-stabilization-gate-before-7c.md`
 - `items-functional-port-map.md`
 - `blazor-functional-port-map.md`
 - `items-functional-port-phase7b.md`
@@ -96,3 +100,5 @@ Document index:
 - `items-builder-options-loading-fix.md`
 - `items-builder-png-import-plan.md`
 - `dofus-tester-item-creation.md`
+- `dofus-tester-visibility-diagnosis.md`
+- `dofus-tester-vendor-kamas-plan.md`

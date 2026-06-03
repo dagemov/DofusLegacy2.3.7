@@ -22,7 +22,8 @@ Controlled Blazor snapshot (read-only, no deploy):
 Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/items-builder/blazor-to-angular-port-plan.md).
 
 **Execution subphase (reference import):** `A.8 / A.8` — **DONE** (QA item 12616, see `items-builder-a8-qa-item-12616.md`).  
-**Product subphase (Items Builder):** `7C / 8` — form UX polish next.
+**Stabilization gate (pre-7C):** **PASSED** — [items-builder-stabilization-gate-before-7c.md](../admin-tools/items-builder/items-builder-stabilization-gate-before-7c.md) (build lock, VPS `isRemote=true`, warnings classified).  
+**Product subphase (Items Builder):** `7C / 8` — form UX polish **authorized**.
 
 ## Repository rules
 
@@ -65,6 +66,7 @@ Operational rules:
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
 - Phase 7A - Item Icon Selector Modal: `DONE`
 - Phase 7B - Item Effects/Characteristics Editor (Blazor functional port): `DONE`
+- Stabilization Gate (pre-7C: build lock, VPS DB, warnings): `DONE`
 - Phase 7C - Item Form UX Polish: `NEXT`
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
@@ -118,6 +120,8 @@ Key references:
 - [Post-Phase 8 stabilization](../admin-tools/items-builder/items-builder-vps-qa-stabilization.md)
 - [Options loading fix](../admin-tools/items-builder/items-builder-options-loading-fix.md)
 - [PNG import plan](../admin-tools/items-builder/items-builder-png-import-plan.md)
+- [Dofus Tester visibility diagnosis](../admin-tools/items-builder/dofus-tester-visibility-diagnosis.md)
+- [Dofus Tester vendor kamas plan](../admin-tools/items-builder/dofus-tester-vendor-kamas-plan.md)
 - [VPS world restart flow](../infrastructure/vps-world-restart-flow.md)
 
 ## Cross-cutting Admin migration docs
