@@ -1,6 +1,6 @@
 ﻿# Item Sprite Preview — Phase 1 Report
 
-Estado: `DONE / PARTIAL` — auditoría y rutas validadas; extracción D2P pendiente Phase 2.
+Estado: `DONE` — identidad y rutas curadas. Extracción D2P: ver [Phase 2](./sprite-preview-d2p-extractor-phase2.md) (`IconId 23012` extraíble).
 
 Última generación: `2026-06-03 21:56:10 UTC`
 

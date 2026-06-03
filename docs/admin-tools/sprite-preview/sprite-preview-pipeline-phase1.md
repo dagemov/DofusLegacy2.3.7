@@ -62,9 +62,13 @@ Opcional: actualiza también el reporte en `docs/` (por defecto activado).
 - ¿Client patch? **Sí** (`NEEDS_CLIENT_PATCH`).
 - ¿Automático? **No** hasta publicar `Items.d2o`.
 
-## Phase 2 — NEXT
+## Phase 2 — DONE
 
-- Investigación o implementación de lector/extractor **D2P** compatible Dofus 2.x.
+Ver [sprite-preview-d2p-extractor-phase2.md](./sprite-preview-d2p-extractor-phase2.md).
+
+## Phase 3 — NEXT
+
+- Import curado controlado (`23012.png` → `by-icon/`).
 - Extracción puntual de IconId → PNG temporal → copia curada (1–3 assets).
 - Wiring opcional `by-appearance` cuando exista mapping verificado.
 

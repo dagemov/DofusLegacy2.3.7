@@ -11,7 +11,7 @@ Mapa de fuentes reales para el pipeline Macro 3. Solo lectura en Phase 1.
 | ItemSets | metadata | `data/common/ItemSets.d2o` | D2O | no | no | no | Admin D2O reader | Bajo |
 | Appearances | metadata | `data/common/Appearances.d2o` | D2O | no | sí (índice) | sí (look) | Admin D2O reader (Phase 2+) | Medio — mapping no trivial |
 | i18n ES/EN | texto | `data/i18n/i18n_es.d2i`, `i18n_en.d2i` | D2I | no | no | no | D2I lookup | Bajo |
-| Item bitmap packs | gfx empaquetado | `content/gfx/items/bitmap0.d2p`, `bitmap1.d2p` | D2P | **sí** (`IconId`) | no directo | no | **Lector D2P Dofus 2.x (Phase 2)** | Alto — sin parser en Phase 1 |
+| Item bitmap packs | gfx empaquetado | `content/gfx/items/bitmap0.d2p`, `bitmap1.d2p` | D2P | **sí** (`IconId`) | no directo | no | **`Sunshine.Protocol.D2p.D2pFile` (Phase 2 DONE)** | Medio — extracción puntual por `{iconId}.png` |
 | Item vector packs | gfx empaquetado | `content/gfx/items/vector0.d2p`, `vector1.d2p` | D2P | alternativo UI | no | no | Lector D2P | Medio |
 | Cliente binario | runtime | `cliente/DofusInvoker.swf`, etc. | SWF/AIR | no directo Admin | no | no | JPEXS/FFDec (legacy) | No usar como fuente principal 2.3.7 |
 

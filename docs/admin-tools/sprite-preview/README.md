@@ -7,7 +7,8 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 | Fase | Estado |
 | --- | --- |
 | Macro 3 / Phase 1 | `DONE / PARTIAL` — source map, scaffold audit, casos 7754/39/12617 |
-| Macro 3 / Phase 2 | `NEXT` — investigación o implementación lector D2P |
+| Macro 3 / Phase 2 | `DONE` — lector D2P reutilizado + `d2p-audit` / `extract-icon` |
+| Macro 3 / Phase 3 | `NEXT` — import curado + integración Angular |
 
 ## Objetivo
 
@@ -24,10 +25,20 @@ Infrastructure/scripts/ItemSpritePreviewPipeline/
 ```
 
 ```bash
+# Phase 1 — identidad + previews curados
 dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
-  --mode audit \
-  --items 7754,39,12617 \
+  --mode audit --items 7754,39,12617 \
   --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit"
+
+# Phase 2 — auditoría D2P
+dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
+  --mode d2p-audit \
+  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit"
+
+# Phase 2 — extraer un icono (ej. Dofus Ocre)
+dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
+  --mode extract-icon --icon-id 23012 \
+  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted"
 ```
 
 Salidas temporales (gitignored): `Infrastructure/temporal-artifacts/`
@@ -43,6 +54,8 @@ Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-ap
 ## Documentos
 
 - [Phase 1 plan](./sprite-preview-pipeline-phase1.md)
+- [Phase 2 D2P extractor](./sprite-preview-d2p-extractor-phase2.md)
+- [D2P format notes](./sprite-preview-d2p-format-notes.md)
 - [Source map](./sprite-preview-source-map.md)
 - [Phase 1 audit report](./item-sprite-preview-phase1-report.md)
 

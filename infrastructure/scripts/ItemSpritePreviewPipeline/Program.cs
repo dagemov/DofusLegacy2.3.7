@@ -1,8 +1,9 @@
 using System.Text;
+using ItemSpritePreviewPipeline;
+using ItemSpritePreviewPipeline.D2p;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ItemSpritePreviewPipeline;
 using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.ClientIdentity;
 using RollblackLegacy.Admin.Application.DependencyInjection;
@@ -10,72 +11,142 @@ using RollblackLegacy.Admin.Contracts.ClientIdentity;
 using RollblackLegacy.Admin.Infrastructure.DependencyInjection;
 
 var options = PipelineOptions.Parse(args);
-if (!options.Mode.Equals("audit", StringComparison.OrdinalIgnoreCase))
-{
-    throw new ArgumentException("Phase 1 only supports --mode audit.");
-}
-
 var repoRoot = RepositoryRootResolver.Resolve(AppContext.BaseDirectory);
 var paths = SpritePreviewPaths.Resolve(repoRoot);
-var pathsConfig = RepositoryPaths.FromRepoRoot(repoRoot);
+var outputDirectory = ResolveOutputDirectory(repoRoot, options.OutputDirectory);
 
-var settings = new HostApplicationBuilderSettings
+var exitCode = options.Mode.ToLowerInvariant() switch
 {
-    ContentRootPath = repoRoot,
-    EnvironmentName = Environments.Development
+    "audit" => await RunIdentityAuditAsync(repoRoot, paths, options, outputDirectory),
+    "d2p-audit" => RunD2pAudit(repoRoot, paths, options, outputDirectory),
+    "extract-icon" => RunExtractIcon(repoRoot, paths, options, outputDirectory),
+    _ => throw new ArgumentException($"Modo no soportado: {options.Mode}. Usa audit, d2p-audit o extract-icon.")
 };
 
-var builder = Host.CreateApplicationBuilder(settings);
-builder.Configuration.Sources.Clear();
-builder.Configuration
-    .SetBasePath(pathsConfig.AdminApiConfigDirectory)
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-    .AddJsonFile("appsettings.Development.example.json", optional: true, reloadOnChange: false)
-    .AddJsonFile("appsettings.Development.vps.example.json", optional: true, reloadOnChange: false)
-    .AddJsonFile("appsettings.Development.local.json", optional: true, reloadOnChange: false);
+return exitCode;
 
-builder.Services.AddAdminApplication();
-builder.Services.AddAdminInfrastructure(builder.Configuration);
-
-using var host = builder.Build();
-using var scope = host.Services.CreateScope();
-var identityService = scope.ServiceProvider.GetRequiredService<IClientItemIdentityReadService>();
-var itemIds = ClientItemIdentityIdParser.Parse(options.RawIds);
-var identityResults = await identityService.CheckAsync(new ClientItemIdentityCheckRequest(itemIds), CancellationToken.None);
-
-var auditRows = SpritePreviewAuditRunner.BuildRows(paths, identityResults);
-var appearanceProbe = BuildAppearanceProbe(paths, identityResults.FirstOrDefault()?.AppearancesD2oPath);
-
-var report = SpritePreviewAuditRunner.WriteMarkdown(
-    DateTimeOffset.UtcNow,
-    paths,
-    auditRows,
-    appearanceProbe);
-
-var outputDirectory = Path.IsPathRooted(options.OutputDirectory)
-    ? options.OutputDirectory
-    : Path.GetFullPath(Path.Combine(repoRoot, options.OutputDirectory));
-Directory.CreateDirectory(outputDirectory);
-
-var auditReportPath = Path.Combine(outputDirectory, "audit-report.md");
-await File.WriteAllTextAsync(auditReportPath, report, Encoding.UTF8);
-Console.WriteLine($"Audit report: {auditReportPath}");
-
-if (!string.IsNullOrWhiteSpace(options.DocsReportPath))
+async Task<int> RunIdentityAuditAsync(
+    string repoRoot,
+    SpritePreviewPaths paths,
+    PipelineOptions options,
+    string outputDirectory)
 {
-    var docsPath = Path.IsPathRooted(options.DocsReportPath)
-        ? options.DocsReportPath
-        : Path.GetFullPath(Path.Combine(repoRoot, options.DocsReportPath));
+    var pathsConfig = RepositoryPaths.FromRepoRoot(repoRoot);
+    var builder = CreateAdminHostBuilder(repoRoot, pathsConfig);
+    using var host = builder.Build();
+    using var scope = host.Services.CreateScope();
+    var identityService = scope.ServiceProvider.GetRequiredService<IClientItemIdentityReadService>();
+    var itemIds = ClientItemIdentityIdParser.Parse(options.RawIds);
+    var identityResults = await identityService.CheckAsync(new ClientItemIdentityCheckRequest(itemIds), CancellationToken.None);
+
+    var auditRows = SpritePreviewAuditRunner.BuildRows(paths, identityResults);
+    var appearanceProbe = BuildAppearanceProbe(paths, identityResults.FirstOrDefault()?.AppearancesD2oPath);
+
+    var report = SpritePreviewAuditRunner.WriteMarkdown(
+        DateTimeOffset.UtcNow,
+        paths,
+        auditRows,
+        appearanceProbe);
+
+    Directory.CreateDirectory(outputDirectory);
+    var auditReportPath = Path.Combine(outputDirectory, "audit-report.md");
+    await File.WriteAllTextAsync(auditReportPath, report, Encoding.UTF8);
+    Console.WriteLine($"Audit report: {auditReportPath}");
+
+    if (!string.IsNullOrWhiteSpace(options.DocsReportPath))
+    {
+        await WritePhase1DocsReportAsync(repoRoot, options.DocsReportPath, auditRows, appearanceProbe);
+    }
+
+    return 0;
+}
+
+int RunD2pAudit(string repoRoot, SpritePreviewPaths paths, PipelineOptions options, string outputDirectory)
+{
+    Directory.CreateDirectory(outputDirectory);
+    var packPaths = paths.ItemBitmapD2pPaths.Concat(paths.ItemVectorD2pPaths).ToArray();
+    var packs = D2pPackAuditor.AuditPacks(packPaths);
+    var probeIconId = options.IconId ?? 23012;
+    var matches = D2pIconExtractor.FindMatches(paths.ItemBitmapD2pPaths, probeIconId);
+
+    var report = D2pPackAuditor.WriteMarkdown(DateTimeOffset.UtcNow, repoRoot, packs, probeIconId, matches);
+    var reportPath = Path.Combine(outputDirectory, "d2p-audit-report.md");
+    File.WriteAllText(reportPath, report, Encoding.UTF8);
+    Console.WriteLine($"D2P audit report: {reportPath}");
+    Console.WriteLine($"IconId {probeIconId} matches: {matches.Count}");
+    return 0;
+}
+
+int RunExtractIcon(string repoRoot, SpritePreviewPaths paths, PipelineOptions options, string outputDirectory)
+{
+    if (options.IconId is not > 0)
+    {
+        throw new ArgumentException("extract-icon requiere --icon-id positivo.");
+    }
+
+    Directory.CreateDirectory(outputDirectory);
+    var result = D2pIconExtractor.ExtractIcon(paths.ItemBitmapD2pPaths, options.IconId.Value, outputDirectory);
+    var reportPath = Path.Combine(outputDirectory, $"extract-icon-{options.IconId.Value}.md");
+    File.WriteAllText(reportPath, D2pIconExtractor.WriteExtractionMarkdown(result), Encoding.UTF8);
+
+    Console.WriteLine(result.Message);
+    Console.WriteLine($"Extraction report: {reportPath}");
+
+    if (result.Success && options.ApproveCuratedCopy)
+    {
+        var curatedTarget = Path.Combine(paths.ByIconDirectory, $"{options.IconId.Value}.png");
+        Directory.CreateDirectory(paths.ByIconDirectory);
+        File.Copy(result.OutputFilePath!, curatedTarget, overwrite: true);
+        Console.WriteLine($"Copiado a catálogo curado: {curatedTarget}");
+    }
+
+    return result.Success ? 0 : 1;
+}
+
+HostApplicationBuilder CreateAdminHostBuilder(string repoRoot, RepositoryPaths pathsConfig)
+{
+    var settings = new HostApplicationBuilderSettings
+    {
+        ContentRootPath = repoRoot,
+        EnvironmentName = Environments.Development
+    };
+
+    var builder = Host.CreateApplicationBuilder(settings);
+    builder.Configuration.Sources.Clear();
+    builder.Configuration
+        .SetBasePath(pathsConfig.AdminApiConfigDirectory)
+        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+        .AddJsonFile("appsettings.Development.example.json", optional: true, reloadOnChange: false)
+        .AddJsonFile("appsettings.Development.vps.example.json", optional: true, reloadOnChange: false)
+        .AddJsonFile("appsettings.Development.local.json", optional: true, reloadOnChange: false);
+
+    builder.Services.AddAdminApplication();
+    builder.Services.AddAdminInfrastructure(builder.Configuration);
+    return builder;
+}
+
+string ResolveOutputDirectory(string repoRoot, string output) =>
+    Path.IsPathRooted(output)
+        ? output
+        : Path.GetFullPath(Path.Combine(repoRoot, output));
+
+async Task WritePhase1DocsReportAsync(
+    string repoRoot,
+    string docsReportPath,
+    IReadOnlyList<SpritePreviewAuditRow> auditRows,
+    AppearanceProbeResult appearanceProbe)
+{
+    var docsPath = Path.IsPathRooted(docsReportPath)
+        ? docsReportPath
+        : Path.GetFullPath(Path.Combine(repoRoot, docsReportPath));
     Directory.CreateDirectory(Path.GetDirectoryName(docsPath)!);
 
     var docsBody = new StringBuilder();
     docsBody.AppendLine("# Item Sprite Preview — Phase 1 Report");
     docsBody.AppendLine();
-    docsBody.AppendLine("Estado: `DONE / PARTIAL` — auditoría y rutas validadas; extracción D2P pendiente Phase 2.");
+    docsBody.AppendLine("Estado: `DONE` — ver [Phase 2 D2P](./sprite-preview-d2p-extractor-phase2.md) para extracción.");
     docsBody.AppendLine();
-    docsBody.AppendLine($"Última generación: `{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss 'UTC'}`");
-    docsBody.AppendLine();
-    docsBody.AppendLine("Artefacto temporal: `Infrastructure/temporal-artifacts/item-sprite-preview-audit/audit-report.md`");
+    docsBody.AppendLine($"Última generación identity audit: `{DateTimeOffset.UtcNow:yyyy-MM-dd HH:mm:ss 'UTC'}`");
     docsBody.AppendLine();
     docsBody.AppendLine("## Tabla de casos");
     docsBody.AppendLine();
@@ -84,19 +155,14 @@ if (!string.IsNullOrWhiteSpace(options.DocsReportPath))
     docsBody.AppendLine("## Aparición 458 (control)");
     docsBody.AppendLine();
     docsBody.AppendLine($"- Hipótesis: `{appearanceProbe.Hypothesis}`");
-    docsBody.AppendLine($"- Exists in Appearances.d2o (from identity layer): `{appearanceProbe.ExistsInAppearancesD2o}`");
     docsBody.AppendLine($"- Curated PNG: `{appearanceProbe.CuratedPath ?? "(missing)"}`");
     docsBody.AppendLine($"- Notas: {appearanceProbe.Notes}");
-    docsBody.AppendLine();
-    docsBody.AppendLine("Ver informe completo en temporal-artifacts y [sprite-preview-pipeline-phase1.md](./sprite-preview-pipeline-phase1.md).");
 
     await File.WriteAllTextAsync(docsPath, docsBody.ToString(), Encoding.UTF8);
     Console.WriteLine($"Docs report: {docsPath}");
 }
 
-return 0;
-
-static AppearanceProbeResult BuildAppearanceProbe(SpritePreviewPaths paths, string? appearancesD2oPath)
+AppearanceProbeResult BuildAppearanceProbe(SpritePreviewPaths paths, string? appearancesD2oPath)
 {
     const int appearanceId = 458;
     var curatedPath = Path.Combine(paths.ByAppearanceDirectory, $"{appearanceId}.png");
@@ -109,18 +175,26 @@ static AppearanceProbeResult BuildAppearanceProbe(SpritePreviewPaths paths, stri
         null,
         existsCurated ? curatedPath : null,
         d2oPresent
-            ? "Phase 1 no indexa Appearances.d2o por id; ver items-client-appearance-mapping-audit.md. No afirmar mapping sin item de prueba en DB."
+            ? "Ver items-client-appearance-mapping-audit.md."
             : "Appearances.d2o no disponible en este workspace.");
 }
 
-internal sealed record PipelineOptions(string Mode, string RawIds, string OutputDirectory, string? DocsReportPath)
+internal sealed record PipelineOptions(
+    string Mode,
+    string RawIds,
+    string OutputDirectory,
+    string? DocsReportPath,
+    int? IconId,
+    bool ApproveCuratedCopy)
 {
     public static PipelineOptions Parse(string[] args)
     {
         var mode = "audit";
         var rawIds = "7754,39,12617";
         var output = "Infrastructure/temporal-artifacts/item-sprite-preview-audit";
-        string? docsReport = "docs/admin-tools/sprite-preview/item-sprite-preview-phase1-report.md";
+        string? docsReport = null;
+        int? iconId = null;
+        var approveCuratedCopy = false;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -138,13 +212,22 @@ internal sealed record PipelineOptions(string Mode, string RawIds, string Output
                 case "--docs-report" when index + 1 < args.Length:
                     docsReport = args[++index];
                     break;
-                case "--no-docs-report":
-                    docsReport = null;
+                case "--icon-id" when index + 1 < args.Length:
+                    iconId = int.Parse(args[++index]);
+                    break;
+                case "--approve-curated-copy":
+                    approveCuratedCopy = true;
                     break;
             }
         }
 
-        return new PipelineOptions(mode, rawIds, output, docsReport);
+        if (mode.Equals("audit", StringComparison.OrdinalIgnoreCase)
+            && string.IsNullOrWhiteSpace(docsReport))
+        {
+            docsReport = "docs/admin-tools/sprite-preview/item-sprite-preview-phase1-report.md";
+        }
+
+        return new PipelineOptions(mode, rawIds, output, docsReport, iconId, approveCuratedCopy);
     }
 }
 

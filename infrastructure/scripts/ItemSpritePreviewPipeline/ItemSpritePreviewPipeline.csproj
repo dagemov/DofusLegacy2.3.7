@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\shared\Sunshine.Protocol.D2pReadOnly\Sunshine.Protocol.D2pReadOnly.csproj" />
     <ProjectReference Include="..\..\..\Angular-tools\Admin\RollblackLegacy.Admin.Application\RollblackLegacy.Admin.Application.csproj" />
     <ProjectReference Include="..\..\..\Angular-tools\Admin\RollblackLegacy.Admin.Contracts\RollblackLegacy.Admin.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Angular-tools\Admin\RollblackLegacy.Admin.Infrastructure\RollblackLegacy.Admin.Infrastructure.csproj" />

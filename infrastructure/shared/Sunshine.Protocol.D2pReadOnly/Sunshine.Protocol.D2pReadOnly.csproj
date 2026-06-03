@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Sunshine.Protocol</RootNamespace>
+    <AssemblyName>Sunshine.Protocol.D2pReadOnly</AssemblyName>
+    <Description>Read-only D2P subset linked from Sunshine.Protocol (Sunshine net11.0).</Description>
+  </PropertyGroup>
+
+  <!-- Origen: Sunshine net11.0/Sunshine net11.0/Sunshine.Protocol — no duplicar lógica. -->
+  <ItemGroup>
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\Tools\D2p\*.cs" Link="Tools\D2p\%(Filename)%(Extension)" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\IDataReader.cs" Link="IO\IDataReader.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\IDataWriter.cs" Link="IO\IDataWriter.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\FastBigEndianReader.cs" Link="IO\FastBigEndianReader.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\BigEndianWriter.cs" Link="IO\BigEndianWriter.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Pool\BufferSegment.cs" Link="IO\Pool\BufferSegment.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Pool\ArrayBuffer.cs" Link="IO\Pool\ArrayBuffer.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Pool\BufferManager.cs" Link="IO\Pool\BufferManager.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Pool\SegmentStream.cs" Link="IO\Pool\SegmentStream.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Collections\LockFreeQueue.cs" Link="IO\Collections\LockFreeQueue.cs" />
+    <Compile Include="..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol\IO\Collections\SingleLinkNode.cs" Link="IO\Collections\SingleLinkNode.cs" />
+  </ItemGroup>
+
+</Project>
