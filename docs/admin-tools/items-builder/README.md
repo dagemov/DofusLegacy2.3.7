@@ -10,8 +10,8 @@ Important status note:
 
 Legacy functional reference (in official repo):
 
-- `legacy-reference/Rollback.Web/` — Blazor UI snapshot (no build)
-- `legacy-reference/Rollback.Admin/` — companion services/models for Items
+- `legacy-reference/Rollback.Web/` - Blazor UI snapshot (no build)
+- `legacy-reference/Rollback.Admin/` - companion services/models for Items
 - See [rollback-web-functional-inventory.md](./rollback-web-functional-inventory.md) and [blazor-to-angular-port-plan.md](./blazor-to-angular-port-plan.md)
 
 Current checkpoint:
@@ -32,9 +32,9 @@ Phase 7A DONE
 Phase 7B DONE
 Phase 7C DONE
 Phase 7D DONE (documentary)
-Phase 8 NEXT
+Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: PENDING
+Macro 2 - Client Identity Audit Tool: NEXT
 Macro 3 - Sprite Preview Pipeline: PENDING
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
@@ -46,14 +46,13 @@ Macro 6 - Maps Builder: DEFERRED
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
 - Phase 7A - Item Icon Selector Modal: `DONE`
 - Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
-- Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
-- Stabilization Gate (build lock, VPS DB, warnings): `PASSED` (see `items-builder-stabilization-gate-before-7c.md`)
+- Phase A.8 - QA manual item `12616`: `PASSED`
+- Stabilization Gate (build lock, VPS DB, warnings): `PASSED`
 - Phase 7C - Item Form UX Polish: `DONE`
-- Validated on `/admin/items/12616/edit`: save OK, reload OK, split layout OK, preview visible, effects visible, numeric formatting visible, and `422` with `traceId` visible when forcing a weapon `TypeId`.
-- `409` and `500` now share the same unified error surface, but were not fault-injected against the current VPS-backed environment to avoid manufacturing collisions or backend outages during this phase.
 - Phase 7D - Client Sprite Preview Extraction: `DONE (documentary)`
-- Phase 8 - Publish / QA Workflow: `NEXT`
-- Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8`
+- Phase 8 - Publish / QA Workflow: `DONE`
+- Phase 8 adds `Item Publication Status` plus the visibility matrix for `7754`, `12616`, and `12617`.
+- Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE`
 
 Operational DB target note:
 
@@ -75,7 +74,7 @@ Repository rules:
 - no se permite continuar implementacion si `docs/handoffs/AGENT_HANDOFF.md` no existe o esta desactualizado
 - el siguiente agente debe leer el ultimo handoff antes de empezar
 - si el agente entra en el ultimo tramo de presupuesto operativo, alrededor del `15%`, debe detenerse y actualizar el handoff
-- no iniciar Macro 2 ni Macro 3 hasta cerrar `Phase 8`
+- no iniciar Macro 3 antes de cerrar `Macro 2`
 
 Live Dofus Tester rollout note:
 
@@ -136,6 +135,11 @@ Document index:
 - `items-functional-port-phase7b.md`
 - `items-effects-port-map.md`
 - `items-builder-publish-qa-phase8.md`
+- `items-client-visibility-matrix.md`
+- `items-publish-decision-workflow.md`
+- `items-admin-command-catalog.md`
+- `items-vendor-publication-workflow.md`
+- `items-production-qa-checklist.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`
 - `items-builder-client-publication-analysis.md`

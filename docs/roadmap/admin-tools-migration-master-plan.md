@@ -17,13 +17,17 @@
 Controlled Blazor snapshot (read-only, no deploy):
 
 - `legacy-reference/Rollback.Web/`
-- `legacy-reference/Rollback.Admin/` (Items/effects services used by the Web host)
+- `legacy-reference/Rollback.Admin/`
 
-Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/items-builder/blazor-to-angular-port-plan.md).
+Inventory and port subphases:
 
-**Execution subphase (reference import):** `A.8 / A.8` — **DONE** (QA item 12616, see `items-builder-a8-qa-item-12616.md`).  
-**Stabilization gate (pre-7C):** **PASSED** — [items-builder-stabilization-gate-before-7c.md](../admin-tools/items-builder/items-builder-stabilization-gate-before-7c.md) (build lock, VPS `isRemote=true`, warnings classified).  
-**Product subphase (Items Builder):** `7C / 8` — form UX polish **authorized**.
+- [blazor-to-angular-port-plan.md](../admin-tools/items-builder/blazor-to-angular-port-plan.md)
+
+Execution checkpoints:
+
+- `A.8 / A.8` reference import: `DONE`
+- pre-7C stabilization gate: `PASSED`
+- `Phase 8 / 8` publish and client visibility workflow: `DONE`
 
 ## Repository rules
 
@@ -41,11 +45,11 @@ Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/it
 
 ## Admin Angular canonical location
 
-The Admin Angular workspace now lives in the official repo at:
+The Admin Angular workspace lives in:
 
 `Angular-tools/Admin/RollblackLegacy.Admin.Angular`
 
-The Admin API, Application, Contracts, Domain, and Infrastructure projects for this migration also live under:
+The Admin API, Application, Contracts, Domain, and Infrastructure projects also live under:
 
 `Angular-tools/Admin/`
 
@@ -59,7 +63,7 @@ Operational rules:
 
 ## Current execution checkpoint
 
-- Official operating order:
+Official operating order:
 
 ```txt
 Macro 1 - Items Builder
@@ -73,16 +77,18 @@ Phase 6 DONE
 Phase 6.5A DONE
 Phase 7A DONE
 Phase 7B DONE
-Phase 7C NEXT
+Phase 7C DONE
 Phase 7D DONE (documentary)
-Phase 8 PENDING
+Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: PENDING
+Macro 2 - Client Identity Audit Tool: NEXT
 Macro 3 - Sprite Preview Pipeline: PENDING
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
+
+Phase status summary:
 
 - Phase 1 - Items Builder Audit: `DONE`
 - Phase 1.5 - Admin Clean Architecture Scaffold: `DONE`
@@ -94,27 +100,27 @@ Macro 6 - Maps Builder: DEFERRED
 - Phase 6.5A - Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL`
 - Phase 7A - Item Icon Selector Modal: `DONE`
-- Phase 7B - Item Effects/Characteristics Editor (Blazor functional port): `DONE`
-- Stabilization Gate (pre-7C: build lock, VPS DB, warnings): `DONE`
-- Phase 7C - Item Form UX Polish: `NEXT`
+- Phase 7B - Item Effects/Characteristics Editor: `DONE`
+- Phase 7C - Item Form UX Polish: `DONE`
 - Phase 7D - Client Sprite Preview Extraction: `DONE (DOCUMENTARY)`
-- Phase 8 - Publish / QA Workflow: `PENDING`
-- Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8`
+- Phase 8 - Publish / QA Workflow: `DONE`
+- Phase 8 adds `Item Publication Status` plus the visibility matrix for `7754`, `12616`, and `12617`.
+- Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
-## Corrective audit status (Phase 7)
+## Corrective audit status
 
-Validated on `2026-06-02` in the official repo:
+Validated on `2026-06-03` in the official repo:
 
 - Current write stack is functional but parity-incomplete versus legacy Blazor item editor.
-- Effects/characteristics editing is available on `/admin/items/:id/edit` (Phase 7B); publish and advanced conditions remain deferred.
-- Conditions are currently plain string and should remain operator-editable.
-- Preview and icon selection are present but need hardening before advanced write scope resumes.
-- Phase 7 remains paused until parity corrective slices (7A-7C) are completed.
+- Effects/characteristics editing is available on `/admin/items/:id/edit`.
+- Conditions remain plain operator-editable string.
+- Preview, icon selection, and publication diagnostics are present.
+- Publish and client patch workflow remain separate from write runtime flow.
 
 ## Corrective phase references
 
 - [Rollback.Web functional inventory](../admin-tools/items-builder/rollback-web-functional-inventory.md)
-- [Blazor to Angular port plan (subphases)](../admin-tools/items-builder/blazor-to-angular-port-plan.md)
+- [Blazor to Angular port plan](../admin-tools/items-builder/blazor-to-angular-port-plan.md)
 - [Items functional port map](../admin-tools/items-builder/items-functional-port-map.md)
 - [Blazor functional port map](../admin-tools/items-builder/blazor-functional-port-map.md)
 - [Items functional port Phase 7B](../admin-tools/items-builder/items-functional-port-phase7b.md)
@@ -143,12 +149,13 @@ Key references:
 - [Phase 7 create/edit](../admin-tools/items-builder/items-builder-create-edit-phase7.md)
 - [Phase 7 write contracts](../admin-tools/items-builder/items-builder-write-contracts-phase7.md)
 - [Phase 7 Angular workflow](../admin-tools/items-builder/items-builder-angular-create-edit-phase7.md)
-- [Blazor parity audit](../admin-tools/items-builder/items-builder-blazor-parity-audit.md)
-- [Create/Edit gap analysis](../admin-tools/items-builder/items-builder-create-edit-gap-analysis.md)
-- [Icon selector plan](../admin-tools/items-builder/items-builder-icon-selector-plan.md)
-- [Effects editor plan](../admin-tools/items-builder/items-builder-effects-editor-plan.md)
 - [Phase 8 publish and QA workflow](../admin-tools/items-builder/items-builder-publish-qa-phase8.md)
 - [Phase 8 QA checklist](../admin-tools/items-builder/items-builder-qa-checklist.md)
+- [Item client visibility matrix](../admin-tools/items-builder/items-client-visibility-matrix.md)
+- [Item publish decision workflow](../admin-tools/items-builder/items-publish-decision-workflow.md)
+- [Items admin command catalog](../admin-tools/items-builder/items-admin-command-catalog.md)
+- [Items vendor publication workflow](../admin-tools/items-builder/items-vendor-publication-workflow.md)
+- [Items production QA checklist](../admin-tools/items-builder/items-production-qa-checklist.md)
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
 - [Client publication analysis](../admin-tools/items-builder/items-builder-client-publication-analysis.md)
 - [Item publication pipeline](../admin-tools/items-builder/item-publication-pipeline.md)
@@ -156,11 +163,6 @@ Key references:
 - [QA vendor test checklist](../admin-tools/items-builder/qa-vendor-test-checklist.md)
 - [VPS restart safety checklist](../infrastructure/vps-restart-safety-checklist.md)
 - [Post-Phase 8 stabilization](../admin-tools/items-builder/items-builder-vps-qa-stabilization.md)
-- [Options loading fix](../admin-tools/items-builder/items-builder-options-loading-fix.md)
-- [PNG import plan](../admin-tools/items-builder/items-builder-png-import-plan.md)
-- [Dofus Tester visibility diagnosis](../admin-tools/items-builder/dofus-tester-visibility-diagnosis.md)
-- [Dofus Tester vendor kamas plan](../admin-tools/items-builder/dofus-tester-vendor-kamas-plan.md)
-- [VPS world restart flow](../infrastructure/vps-world-restart-flow.md)
 
 ## Cross-cutting Admin migration docs
 
@@ -173,14 +175,14 @@ Key references:
 
 ## Immediate next branch
 
-The next intended branch should execute the corrective parity order:
+The next intended branch order is:
 
-1. Phase 7C form UX polish
-2. Phase 8 publish / QA workflow
-3. Macro 2 - Client Identity Audit Tool
-4. Macro 3 - Sprite Preview Pipeline
+1. Macro 2 - Client Identity Audit Tool
+2. Macro 3 - Sprite Preview Pipeline
+3. Macro 4 - Spells Builder
+4. Macro 5 - Glyph Builder
 
-Do not start Macro 2 or Macro 3 before Phase 8 is closed.
+Do not start Macro 3 before Macro 2 is closed.
 
 ## Mandatory handoff
 
