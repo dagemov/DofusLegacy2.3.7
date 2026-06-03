@@ -1,4 +1,5 @@
 using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
+using RollblackLegacy.Admin.Application.ClientIdentity;
 using RollblackLegacy.Admin.Application.Exceptions;
 using RollblackLegacy.Admin.Application.Models.ClientIdentity;
 using RollblackLegacy.Admin.Contracts.ClientIdentity;
@@ -20,6 +21,7 @@ public sealed class ClientItemIdentityReadService : IClientItemIdentityReadServi
 
     public async Task<ClientItemIdentityCheckResultDto> GetItemAsync(int itemId, CancellationToken cancellationToken = default)
     {
+        ClientItemIdentityIdParser.EnsureWithinBatchLimit([itemId]);
         EnsurePositiveIds([itemId]);
 
         var dbItem = (await _repository.GetItemsAsync([itemId], cancellationToken)).SingleOrDefault();
@@ -43,6 +45,7 @@ public sealed class ClientItemIdentityReadService : IClientItemIdentityReadServi
                 });
         }
 
+        ClientItemIdentityIdParser.EnsureWithinBatchLimit(request.ItemIds);
         EnsurePositiveIds(request.ItemIds);
 
         var orderedIds = request.ItemIds.Distinct().ToArray();

@@ -81,8 +81,8 @@ Phase 7C DONE
 Phase 7D DONE (documentary)
 Phase 8 DONE
 
-Macro 2 - Client Identity Audit Tool: IN_PROGRESS (Phase 1–3 DONE, Phase 4 NEXT)
-Macro 3 - Sprite Preview Pipeline: PENDING
+Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE; QA navegador operador pendiente)
+Macro 3 - Sprite Preview Pipeline: NEXT (solo con aprobación explícita)
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -110,7 +110,7 @@ Phase status summary:
 - Macro 2 / Phase 2 now exposes the same audit through the Admin API and reuses it for `publication-status`.
 - Macro 2 stabilization gate before Phase 3: `PASSED`
 - Macro 2 / Phase 3 - Angular Client Identity Diagnostics: `DONE`
-- Macro 2 / Phase 4 - Batch/report diagnostics: `NEXT`
+- Macro 2 / Phase 4 - Batch/report diagnostics: `DONE`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -189,17 +189,18 @@ Key references:
 - [Client Identity source map](../admin-tools/client-identity/client-identity-source-map.md)
 - [Client Identity item check report](../admin-tools/client-identity/client-identity-item-check-report.md)
 - [Client Identity Phase 3 Angular](../admin-tools/client-identity/client-identity-angular-diagnostics-phase3.md)
+- [Client Identity Phase 4 batch/report](../admin-tools/client-identity/client-identity-batch-report-phase4.md)
+- [Client Identity batch report sample](../admin-tools/client-identity/client-identity-batch-report-sample.md)
 
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 2 - Client Identity Audit Tool / Phase 4
-2. Macro 3 - Sprite Preview Pipeline
+1. Macro 3 - Sprite Preview Pipeline (requires explicit approval)
 3. Macro 4 - Spells Builder
 4. Macro 5 - Glyph Builder
 
-Do not start Macro 3 before Macro 2 is closed.
+Macro 2 is closed; do not start Macro 3 without explicit approval.
 
 ## Mandatory handoff
 

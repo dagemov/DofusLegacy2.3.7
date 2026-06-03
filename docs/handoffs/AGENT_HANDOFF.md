@@ -12,7 +12,7 @@ No continuar implementacion si este handoff no existe o esta desactualizado.
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/client-identity-angular-diagnostics-phase3
+feature/client-identity-batch-report-phase4
 ```
 
 Stack Admin: `Angular-tools/Admin/` (no `src/Admin/`)
@@ -24,41 +24,44 @@ Phase 1 DONE — CLI + scaffold
 Phase 2 DONE — Admin API read-only
 Stabilization gate PASSED
 Phase 3 DONE — Angular diagnostics UI
-Phase 4 NEXT — Batch/report diagnostics
+Phase 4 DONE — Batch/report por lista explícita (máx. 100 IDs)
+Macro 2 COMPLETE — pendiente QA navegador del operador
+Macro 3 NEXT — Sprite Preview solo con aprobación explícita
 ```
 
-## Ultimo trabajo (Phase 3)
+## Ultimo trabajo (Phase 4)
 
 Commit esperado:
 
 ```txt
-feat: add client identity diagnostics to item admin
+feat: add client identity batch diagnostics report
 ```
 
-Angular:
+Entregables:
 
 ```txt
-client-identity.api.ts / models / status helpers
-client-identity-diagnostic-card
-client-identity-batch-check-panel (7754,12616,12617,39)
-item-detail-page + item-publication-status-page integration
+ClientItemIdentityIdParser + ClientItemIdentityBatchLimits (máx. 100)
+GET /api/admin/v1/client-identity/items/check?ids=...
+CLI: --items, --input-file, --output, --format markdown|csv
+Angular: client-identity-batch-check-panel (textarea, tabla, contadores, copiar CSV)
+docs/admin-tools/client-identity/client-identity-batch-report-phase4.md
+docs/admin-tools/client-identity/client-identity-batch-report-sample.md
 ```
 
 ## Validacion ejecutada
 
 ```txt
 dotnet build Sunshine.sln /nr:false -> OK
-npm run build (Admin Angular) -> OK
+dotnet run ClientIdentityAudit --items 7754,12616,12617,39 -> sample.md OK
+npm run build (Admin Angular) -> OK (budget warning +589 bytes)
 ```
 
-Browser QA: operador debe confirmar visualmente:
+Browser QA pendiente (operador):
 
 ```txt
-/admin/items/7754
-/admin/items/12616
-/admin/items/12617
-/admin/items/7754/publication-status
-/admin/items/12617/publication-status
+/admin/items/7754 -> expandir Auditoría batch controlada
+ingresar 7754,12616,12617,39 -> ejecutar -> badges y contadores
+probar >100 IDs -> error en español (UI) / 422 (API)
 ```
 
 ## Casos de control
@@ -67,7 +70,7 @@ Browser QA: operador debe confirmar visualmente:
 7754  -> verde / CLIENT_KNOWN
 12616 -> warning / NEEDS_CLIENT_PATCH / APPEARANCE_UNKNOWN
 12617 -> warning / NEEDS_CLIENT_PATCH
-39    -> verde / CLIENT_KNOWN (batch panel)
+39    -> verde / CLIENT_KNOWN
 ```
 
 ## Prohibiciones
@@ -78,7 +81,7 @@ no tocar Client2.3.7 write
 no DB writes
 no publish workflow
 no 44k scan
-no Macro 3 (Sprite Preview) hasta cerrar Macro 2 Phase 4+
+no Macro 3 sin aprobación explícita
 ```
 
 ## Archivos ajenos — no tocar
@@ -93,9 +96,9 @@ config/Database*.xml (local)
 
 ```txt
 1. Leer este handoff.
-2. Confirmar branch y commit feat Phase 3.
-3. Si el usuario pide Phase 4: batch/report diagnostics (docs macro 2).
-4. No abrir Macro 3 (Sprite Preview) sin cierre Macro 2.
+2. Confirmar commit feat Phase 4 en feature/client-identity-batch-report-phase4.
+3. Si el usuario pide Macro 3: requerir aprobación explícita antes de implementar.
+4. Items Builder Macro 1 Phase 7C u otras fases: solo si el usuario lo pide.
 ```
 
-Docs Phase 3: `docs/admin-tools/client-identity/client-identity-angular-diagnostics-phase3.md`
+Docs Phase 4: `docs/admin-tools/client-identity/client-identity-batch-report-phase4.md`

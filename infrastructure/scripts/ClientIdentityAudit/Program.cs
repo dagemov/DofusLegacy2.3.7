@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
+using RollblackLegacy.Admin.Application.ClientIdentity;
 using RollblackLegacy.Admin.Application.DependencyInjection;
 using RollblackLegacy.Admin.Contracts.ClientIdentity;
 using RollblackLegacy.Admin.Infrastructure.DependencyInjection;
@@ -33,12 +34,15 @@ builder.Services.AddAdminInfrastructure(builder.Configuration);
 using var host = builder.Build();
 using var scope = host.Services.CreateScope();
 var auditService = scope.ServiceProvider.GetRequiredService<IClientItemIdentityReadService>();
-var results = await auditService.CheckAsync(new ClientItemIdentityCheckRequest(options.ItemIds));
+var itemIds = ClientItemIdentityIdParser.Parse(options.RawIds);
+var results = await auditService.CheckAsync(new ClientItemIdentityCheckRequest(itemIds));
 
-var report = MarkdownReportWriter.Write(new AuditReport(
-    GeneratedAtUtc: DateTimeOffset.UtcNow,
-    RepoRoot: repoRoot,
-    Items: results));
+var report = options.Format.Equals("csv", StringComparison.OrdinalIgnoreCase)
+    ? CsvReportWriter.Write(results)
+    : MarkdownReportWriter.Write(new AuditReport(
+        GeneratedAtUtc: DateTimeOffset.UtcNow,
+        RepoRoot: repoRoot,
+        Items: results));
 
 if (!string.IsNullOrWhiteSpace(options.OutputPath))
 {
@@ -56,34 +60,58 @@ else
 
 return 0;
 
-internal sealed record AuditOptions(IReadOnlyList<int> ItemIds, string? OutputPath)
+internal sealed record AuditOptions(string RawIds, string? OutputPath, string Format)
 {
     public static AuditOptions Parse(string[] args)
     {
-        var items = new List<int>();
+        var rawParts = new List<string>();
         string? output = null;
+        var format = "markdown";
+        string? inputFile = null;
 
         for (var index = 0; index < args.Length; index++)
         {
             switch (args[index])
             {
                 case "--items" when index + 1 < args.Length:
-                    items.AddRange(args[++index]
-                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        .Select(static value => int.Parse(value, CultureInfo.InvariantCulture)));
+                    rawParts.Add(args[++index]);
+                    break;
+                case "--input-file" when index + 1 < args.Length:
+                    inputFile = args[++index];
                     break;
                 case "--output" when index + 1 < args.Length:
                     output = args[++index];
                     break;
+                case "--format" when index + 1 < args.Length:
+                    format = args[++index];
+                    break;
             }
         }
 
-        if (items.Count == 0)
+        if (!string.IsNullOrWhiteSpace(inputFile))
         {
-            items.AddRange([7754, 12616, 12617, 39]);
+            var path = Path.IsPathRooted(inputFile)
+                ? inputFile
+                : Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), inputFile));
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException($"Input file not found: {path}");
+            }
+
+            rawParts.Add(File.ReadAllText(path));
         }
 
-        return new AuditOptions(items.Distinct().ToArray(), output);
+        var rawIds = rawParts.Count == 0
+            ? "7754,12616,12617,39"
+            : string.Join(",", rawParts);
+
+        if (!format.Equals("markdown", StringComparison.OrdinalIgnoreCase)
+            && !format.Equals("csv", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new ArgumentException("Format must be markdown or csv.");
+        }
+
+        return new AuditOptions(rawIds, output, format);
     }
 }
 
@@ -122,6 +150,39 @@ internal sealed record AuditReport(
     DateTimeOffset GeneratedAtUtc,
     string RepoRoot,
     IReadOnlyList<ClientItemIdentityCheckResultDto> Items);
+
+internal static class CsvReportWriter
+{
+    public static string Write(IReadOnlyList<ClientItemIdentityCheckResultDto> items)
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine("ItemId,DbName,ClientKnown,PrimaryStatus,NeedsClientPatch,Statuses,Warnings,RecommendedAction,IconPreviewFound");
+
+        foreach (var item in items)
+        {
+            builder.AppendLine(string.Join(",",
+                item.ItemId.ToString(CultureInfo.InvariantCulture),
+                CsvEscape(item.DbName),
+                item.ClientKnown.ToString(CultureInfo.InvariantCulture),
+                CsvEscape(item.Status.PrimaryStatus),
+                item.Status.NeedsClientPatch.ToString(CultureInfo.InvariantCulture),
+                CsvEscape(string.Join("|", item.Status.Statuses)),
+                CsvEscape(string.Join("|", item.Status.Warnings)),
+                CsvEscape(item.Status.RecommendedAction),
+                item.IconPreviewFound.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        return builder.ToString();
+    }
+
+    private static string CsvEscape(string? value)
+    {
+        var normalized = value ?? string.Empty;
+        return normalized.Contains('"') || normalized.Contains(',') || normalized.Contains('\n')
+            ? $"\"{normalized.Replace("\"", "\"\"", StringComparison.Ordinal)}\""
+            : normalized;
+    }
+}
 
 internal static class MarkdownReportWriter
 {
