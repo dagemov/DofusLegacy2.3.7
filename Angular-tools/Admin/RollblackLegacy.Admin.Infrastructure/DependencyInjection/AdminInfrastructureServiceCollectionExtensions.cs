@@ -50,6 +50,7 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
         services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();
+        services.AddSingleton<IItemAppearancePreviewStateResolver, FileSystemItemAppearancePreviewStateResolver>();
 
         return services;
     }

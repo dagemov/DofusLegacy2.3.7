@@ -8,6 +8,7 @@ public sealed record ItemQaSummaryDto(
     int IconId,
     int AppearanceId,
     ItemPreviewStateDto PreviewState,
+    ItemAppearancePreviewStateDto AppearancePreviewState,
     IReadOnlyList<ItemWarningDto> Warnings,
     string WorkflowState,
     bool CanQa,

@@ -104,9 +104,11 @@ Decidir qué puede hacer Angular Admin con `AppearanceId` sin renderizador 3D, s
 ## Recomendación de roadmap
 
 ```txt
-Macro 3 / Phase 6  →  Curated equipment preview (by-appearance workflow)
-Macro 3 / Phase 7  →  EntityLook renderer research (documental + POC mínimo, solo si aprobado)
+Macro 3 / Phase 6  →  DONE / PARTIAL (diagnósticos + UX by-appearance)
+Macro 3 / Phase 7  →  OPTIONAL / DEFERRED (EntityLook renderer research)
 ```
+
+Ver implementación: [appearance-preview-curated-workflow-phase6.md](./appearance-preview-curated-workflow-phase6.md).
 
 No invertir Phase 6 en renderer completo: el ROI de `by-appearance/` es coherente con Macro 3 Phases 1–4 y con las prohibiciones del programa.
 

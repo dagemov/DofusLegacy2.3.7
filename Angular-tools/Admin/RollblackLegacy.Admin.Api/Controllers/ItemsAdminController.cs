@@ -86,6 +86,21 @@ public sealed class ItemsAdminController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("appearance-preview-state")]
+    [ProducesResponseType(typeof(ItemAppearancePreviewStateDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ItemAppearancePreviewStateDto>> ResolveAppearancePreviewState(
+        [FromQuery] int appearanceId,
+        [FromQuery] bool? appearanceKnown,
+        CancellationToken cancellationToken)
+    {
+        var result = await _itemsAdminWriteService.ResolveAppearancePreviewStateAsync(
+            appearanceId,
+            appearanceKnown,
+            cancellationToken);
+        return Ok(result);
+    }
+
     [HttpGet("types/options")]
     [ProducesResponseType(typeof(IReadOnlyList<AdminOptionDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<AdminOptionDto>>> GetItemTypeOptions(

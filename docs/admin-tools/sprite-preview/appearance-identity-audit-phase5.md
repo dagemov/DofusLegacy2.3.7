@@ -173,9 +173,9 @@ Los ítems con `appearanceId > 0` en `Items.d2o` del pack actual (~230 en ids `1
 
 ## Siguiente paso recomendado
 
-**Macro 3 / Phase 6 — Preview de equipamiento (curado `by-appearance/`)** alineado con Phases 3–4 de iconos, más warnings de identidad.
+**Macro 3 / Phase 6 — DONE / PARTIAL:** diagnósticos y UX `by-appearance/` — ver [appearance-preview-curated-workflow-phase6.md](./appearance-preview-curated-workflow-phase6.md).
 
-Investigación de **renderer EntityLook** queda como lane separada (Macro 3 Phase 7 o macro futura), no bloqueante para cerrar Phase 5.
+**Macro 3 / Phase 7 — OPTIONAL / DEFERRED:** investigación renderer EntityLook (no bloqueante).
 
 ## Referencias
 

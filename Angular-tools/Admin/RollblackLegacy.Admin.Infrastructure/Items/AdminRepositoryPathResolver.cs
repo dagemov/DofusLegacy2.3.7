@@ -47,6 +47,9 @@ public static class AdminRepositoryPathResolver
     public static string ResolveAdminAngularByIconRoot(string contentRootPath) =>
         Path.Combine(ResolveAdminAngularItemPreviewsRoot(contentRootPath), "by-icon");
 
+    public static string ResolveAdminAngularByAppearanceRoot(string contentRootPath) =>
+        Path.Combine(ResolveAdminAngularItemPreviewsRoot(contentRootPath), "by-appearance");
+
     public static string ResolveAdminAngularManualItemsRoot(string contentRootPath) =>
         Path.Combine(ResolveAdminAngularAssetsRoot(contentRootPath), "manual-assets", "items");
 }

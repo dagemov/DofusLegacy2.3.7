@@ -20,5 +20,6 @@ public sealed record ItemDetailDto(
     ItemSetLinkDto? Set,
     ItemClientIdentityDto ClientIdentity,
     ItemPreviewStateDto PreviewState,
+    ItemAppearancePreviewStateDto AppearancePreviewState,
     IReadOnlyList<ItemWarningDto> Warnings,
     IReadOnlyList<ItemEffectDto> Effects);

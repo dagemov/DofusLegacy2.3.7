@@ -11,6 +11,7 @@ import {
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
+  ItemAppearancePreviewStateDto,
   ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
@@ -80,6 +81,13 @@ export class ItemsFacade {
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
     return this.itemsApi.getPreviewState(itemId, iconId);
+  }
+
+  getAppearancePreviewState(
+    appearanceId: number,
+    appearanceKnown?: boolean | null
+  ): Observable<ItemAppearancePreviewStateDto> {
+    return this.itemsApi.getAppearancePreviewState(appearanceId, appearanceKnown);
   }
 
   ensureTypeOptions(): Observable<AdminOptionDto[]> {

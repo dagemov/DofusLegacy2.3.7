@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
+import { ItemAppearancePreviewCardComponent } from './components/item-appearance-preview-card.component';
 import { ClientIdentityDiagnosticCardComponent } from './components/client-identity-diagnostic-card.component';
 import { ClientItemIdentityCheckResultDto } from './data-access/client-identity.models';
 import { ItemsFacade } from './data-access/items.facade';
@@ -16,7 +17,13 @@ import {
 
 @Component({
   selector: 'app-item-publication-status-page',
-  imports: [CommonModule, RouterLink, ApiProblemPanelComponent, ClientIdentityDiagnosticCardComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ApiProblemPanelComponent,
+    ClientIdentityDiagnosticCardComponent,
+    ItemAppearancePreviewCardComponent
+  ],
   templateUrl: './item-publication-status-page.component.html',
   styleUrl: './item-publication-status-page.component.scss'
 })

@@ -9,6 +9,7 @@ import { ClientIdentityBatchCheckPanelComponent } from './components/client-iden
 import { ClientIdentityDiagnosticCardComponent } from './components/client-identity-diagnostic-card.component';
 import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
+import { ItemAppearancePreviewCardComponent } from './components/item-appearance-preview-card.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
 import { ItemQaReadinessPanelComponent } from './components/item-qa-readiness-panel.component';
 import { ItemRuntimeSummaryCardComponent } from './components/item-runtime-summary-card.component';
@@ -36,6 +37,7 @@ import {
     ClientIdentityBatchCheckPanelComponent,
     ItemClientIdentityCardComponent,
     ItemPreviewCardComponent,
+    ItemAppearancePreviewCardComponent,
     ItemDiagnosticPanelComponent,
     ItemQaReadinessPanelComponent
   ],

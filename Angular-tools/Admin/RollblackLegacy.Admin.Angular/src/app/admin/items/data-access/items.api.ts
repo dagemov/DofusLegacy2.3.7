@@ -12,6 +12,7 @@ import {
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
+  ItemAppearancePreviewStateDto,
   ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
@@ -93,6 +94,24 @@ export class ItemsApi {
     return this.httpClient.get<ItemPreviewStateDto>(`${this.baseUrl}/items/preview-state`, {
       params
     });
+  }
+
+  getAppearancePreviewState(
+    appearanceId: number,
+    appearanceKnown?: boolean | null
+  ): Observable<ItemAppearancePreviewStateDto> {
+    const params: Record<string, string | number> = {
+      appearanceId
+    };
+
+    if (appearanceKnown !== null && appearanceKnown !== undefined) {
+      params['appearanceKnown'] = appearanceKnown ? 'true' : 'false';
+    }
+
+    return this.httpClient.get<ItemAppearancePreviewStateDto>(
+      `${this.baseUrl}/items/appearance-preview-state`,
+      { params }
+    );
   }
 
   createItem(request: ItemWriteRequest): Observable<ItemWriteResultDto> {

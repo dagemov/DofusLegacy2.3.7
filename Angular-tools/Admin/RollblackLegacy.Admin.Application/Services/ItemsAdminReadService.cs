@@ -12,15 +12,18 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 {
     private readonly IItemsAdminReadRepository _repository;
     private readonly IItemPreviewStateResolver _previewStateResolver;
+    private readonly IItemAppearancePreviewStateResolver _appearancePreviewStateResolver;
     private readonly IClientItemIdentityReadService _clientItemIdentityReadService;
 
     public ItemsAdminReadService(
         IItemsAdminReadRepository repository,
         IItemPreviewStateResolver previewStateResolver,
+        IItemAppearancePreviewStateResolver appearancePreviewStateResolver,
         IClientItemIdentityReadService clientItemIdentityReadService)
     {
         _repository = repository;
         _previewStateResolver = previewStateResolver;
+        _appearancePreviewStateResolver = appearancePreviewStateResolver;
         _clientItemIdentityReadService = clientItemIdentityReadService;
     }
 
@@ -57,7 +60,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         if (item is null)
             throw new AdminEntityNotFoundException("item", itemId.ToString());
 
-        return MapDetail(item);
+        return await MapDetailAsync(item, cancellationToken);
     }
 
     public async Task<ItemClientIdentityDto> GetIdentityAsync(int itemId, CancellationToken cancellationToken = default)
@@ -86,6 +89,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             detail.IconId,
             detail.AppearanceId,
             detail.PreviewState,
+            detail.AppearancePreviewState,
             detail.Warnings,
             canQa ? "READY_FOR_QA" : "BLOCKED",
             canQa,
@@ -133,6 +137,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             detail.IconId,
             detail.AppearanceId,
             detail.PreviewState,
+            detail.AppearancePreviewState,
             visibilityState,
             clientTemplateState,
             publicationState,
@@ -184,10 +189,25 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             warnings.Count);
     }
 
-    private ItemDetailDto MapDetail(AdminItemDetailReadModel item)
+    private async Task<ItemDetailDto> MapDetailAsync(
+        AdminItemDetailReadModel item,
+        CancellationToken cancellationToken)
     {
         var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId);
-        var clientIdentity = BuildClientIdentity(item);
+        ClientItemIdentityCheckResultDto? identityCheck = null;
+        try
+        {
+            identityCheck = await _clientItemIdentityReadService.GetItemAsync(item.ItemId, cancellationToken);
+        }
+        catch (AdminEntityNotFoundException)
+        {
+            // Keep detail available even if identity audit cannot load the row.
+        }
+
+        var appearancePreviewState = BuildAppearancePreviewState(item.AppearanceId, identityCheck);
+        var clientIdentity = identityCheck is null
+            ? BuildClientIdentity(item)
+            : MapIdentity(identityCheck);
         var warnings = BuildWarnings(
             item.ResolvedName,
             item.TypeName,
@@ -196,7 +216,9 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             item.SetId,
             item.SetName,
             clientIdentity,
-            previewState);
+            previewState,
+            appearancePreviewState,
+            identityCheck);
 
         var setLink = item.SetId.HasValue
             ? new ItemSetLinkDto(item.SetId.Value, item.SetName, string.IsNullOrWhiteSpace(item.SetName) ? "MISSING" : "LINKED")
@@ -222,6 +244,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
             setLink,
             clientIdentity,
             previewState,
+            appearancePreviewState,
             warnings,
             item.Effects.Select(x => new ItemEffectDto(
                 x.EffectId,
@@ -229,6 +252,15 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
                 x.DiceSide,
                 x.Value,
                 x.Description)).ToList());
+    }
+
+    private ItemAppearancePreviewStateDto BuildAppearancePreviewState(
+        int appearanceId,
+        ClientItemIdentityCheckResultDto? identityCheck)
+    {
+        var appearanceKnown = appearanceId > 0 ? identityCheck?.Appearance.Exists : null;
+        var appearancesD2oPath = identityCheck?.AppearancesD2oPath;
+        return _appearancePreviewStateResolver.Resolve(appearanceId, appearanceKnown, appearancesD2oPath);
     }
 
     private static ItemClientIdentityDto BuildClientIdentity(AdminItemDetailReadModel item)
@@ -280,7 +312,9 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         int? setId,
         string? setName,
         ItemClientIdentityDto clientIdentity,
-        ItemPreviewStateDto previewState)
+        ItemPreviewStateDto previewState,
+        ItemAppearancePreviewStateDto? appearancePreviewState = null,
+        ClientItemIdentityCheckResultDto? identityCheck = null)
     {
         var warnings = new List<ItemWarningDto>();
 
@@ -327,6 +361,36 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
                 "warning",
                 "No preview asset was resolved from manual, by-item, or by-icon paths.",
                 "previewState"));
+        }
+
+        if (appearanceId > 0 && identityCheck?.Appearance.Exists == false)
+        {
+            warnings.Add(new ItemWarningDto(
+                "APPEARANCE_UNKNOWN",
+                "warning",
+                "AppearanceId is not indexed in Client2.3.7/data/common/Appearances.d2o.",
+                "appearanceId"));
+        }
+
+        if (appearancePreviewState is not null)
+        {
+            if (string.Equals(appearancePreviewState.State, "UNKNOWN", StringComparison.OrdinalIgnoreCase)
+                && appearanceId > 0)
+            {
+                warnings.Add(new ItemWarningDto(
+                    "APPEARANCE_PREVIEW_UNKNOWN",
+                    "warning",
+                    "Equipped appearance is unknown to the client catalog or cannot be validated in this environment.",
+                    "appearancePreviewState"));
+            }
+            else if (string.Equals(appearancePreviewState.State, "MISSING", StringComparison.OrdinalIgnoreCase))
+            {
+                warnings.Add(new ItemWarningDto(
+                    "APPEARANCE_PREVIEW_MISSING",
+                    "warning",
+                    "No curated by-appearance PNG exists for this AppearanceId.",
+                    "appearancePreviewState"));
+            }
         }
 
         if (setId.HasValue && string.IsNullOrWhiteSpace(setName))
@@ -459,6 +523,14 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         {
             reasons.Add("AppearanceId is zero or missing. Equipped-look validation will stay partial until the look identity is confirmed.");
         }
+        else if (string.Equals(detail.AppearancePreviewState.State, "UNKNOWN", StringComparison.OrdinalIgnoreCase))
+        {
+            reasons.Add($"AppearanceId {detail.AppearanceId} is not known in Appearances.d2o for this client pack.");
+        }
+        else if (!string.Equals(detail.AppearancePreviewState.State, "CURATED_BY_APPEARANCE", StringComparison.OrdinalIgnoreCase))
+        {
+            reasons.Add($"Equipped appearance preview is {detail.AppearancePreviewState.State}. Curate by-appearance/{detail.AppearanceId}.png for operator QA.");
+        }
 
         return reasons;
     }
@@ -491,6 +563,12 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         if (needsAsset)
         {
             actions.Add($"Curate or import a preview PNG for IconId {detail.IconId} so Admin operators are not blind during QA.");
+        }
+
+        if (detail.AppearanceId > 0
+            && !string.Equals(detail.AppearancePreviewState.State, "CURATED_BY_APPEARANCE", StringComparison.OrdinalIgnoreCase))
+        {
+            actions.Add($"Curate equipped preview at src/assets/item-previews/by-appearance/{detail.AppearanceId}.png (manual capture; AppearanceId is not IconId).");
         }
 
         if (needsQa)

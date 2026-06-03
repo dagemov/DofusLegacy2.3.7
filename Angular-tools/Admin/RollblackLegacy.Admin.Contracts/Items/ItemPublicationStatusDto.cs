@@ -6,6 +6,7 @@ public sealed record ItemPublicationStatusDto(
     int IconId,
     int AppearanceId,
     ItemPreviewStateDto PreviewState,
+    ItemAppearancePreviewStateDto AppearancePreviewState,
     string VisibilityState,
     string ClientTemplateState,
     string PublicationState,

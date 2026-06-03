@@ -62,6 +62,16 @@ export interface ItemPreviewStateDto {
   fallbackUsed: string;
 }
 
+export interface ItemAppearancePreviewStateDto {
+  appearanceId: number;
+  appearanceKnown: boolean | null;
+  state: string;
+  byAppearancePath: string;
+  previewSource: string;
+  resolvedPath?: string | null;
+  appearancesD2oPath?: string | null;
+}
+
 export interface ItemWarningDto extends AdminWarningLike {}
 
 export interface ItemSetLinkDto {
@@ -122,6 +132,7 @@ export interface ItemDetailDto {
   set?: ItemSetLinkDto | null;
   clientIdentity: ItemClientIdentityDto;
   previewState: ItemPreviewStateDto;
+  appearancePreviewState: ItemAppearancePreviewStateDto;
   warnings: ItemWarningDto[];
   effects: ItemEffectDto[];
 }
@@ -134,6 +145,7 @@ export interface ItemQaSummaryDto {
   iconId: number;
   appearanceId: number;
   previewState: ItemPreviewStateDto;
+  appearancePreviewState: ItemAppearancePreviewStateDto;
   warnings: ItemWarningDto[];
   workflowState: string;
   canQa: boolean;
@@ -148,6 +160,7 @@ export interface ItemPublicationStatusDto {
   iconId: number;
   appearanceId: number;
   previewState: ItemPreviewStateDto;
+  appearancePreviewState: ItemAppearancePreviewStateDto;
   visibilityState: string;
   clientTemplateState: string;
   publicationState: string;
@@ -327,6 +340,18 @@ export function createUnknownPreviewState(): ItemPreviewStateDto {
     previewSource: 'PLACEHOLDER',
     resolvedPath: null,
     fallbackUsed: 'PLACEHOLDER'
+  };
+}
+
+export function createUnknownAppearancePreviewState(appearanceId = 0): ItemAppearancePreviewStateDto {
+  return {
+    appearanceId,
+    appearanceKnown: null,
+    state: appearanceId > 0 ? 'UNKNOWN' : 'NOT_APPLICABLE',
+    byAppearancePath: appearanceId > 0 ? `/assets/item-previews/by-appearance/${appearanceId}.png` : '',
+    previewSource: 'PLACEHOLDER',
+    resolvedPath: null,
+    appearancesD2oPath: null
   };
 }
 

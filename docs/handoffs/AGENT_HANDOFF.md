@@ -6,71 +6,67 @@ Generated: `2026-06-03`
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-sprite-preview-appearance-audit-phase5
+feature/item-sprite-preview-appearance-curated-phase6
 ```
 
 ## Estado Macro 3
 
 ```txt
-Phase 1–4 DONE / PARTIAL
-Phase 5 DONE — appearance identity audit + feasibility (documental)
-Phase 6 NEXT — curated equipment preview (by-appearance/)
-Phase 7 PLANNED — EntityLook renderer research (solo con aprobación)
+Phase 1–5 DONE
+Phase 6 DONE / PARTIAL — appearance preview diagnostics + Angular UX
+Phase 7 OPTIONAL / DEFERRED — EntityLook renderer research
 ```
 
-## Ultimo trabajo (Phase 5)
+## Ultimo trabajo (Phase 6)
 
-Commit esperado:
+Commit:
 
 ```txt
-docs: audit appearance identity and preview feasibility
+feat: add curated appearance preview diagnostics
 ```
 
-Entregables:
+Cambios:
 
 ```txt
-docs/admin-tools/sprite-preview/appearance-identity-audit-phase5.md
-docs/admin-tools/sprite-preview/appearance-preview-feasibility-study.md
-docs/admin-tools/sprite-preview/entitylook-relationship-map.md
-README + roadmap + este handoff
+ItemAppearancePreviewStateDto + FileSystemItemAppearancePreviewStateResolver
+GET /api/admin/v1/items/appearance-preview-state
+ItemDetailDto / PublicationStatus / QaSummary incluyen appearancePreviewState
+ItemAppearancePreviewCardComponent en detail / edit / publication-status
+by-appearance/.gitkeep confirmado
 ```
 
-Evidencia probe (temporal, no commitear):
+Estados: `NOT_APPLICABLE`, `CURATED_BY_APPEARANCE`, `MISSING`, `UNKNOWN`
+
+## QA browser (operador, API levantada)
 
 ```txt
-Infrastructure/temporal-artifacts/appearance-d2o-probe/ReflectProbe.csproj
-```
-
-Hallazgos:
-
-```txt
-AppearanceId → skin en EntityLook (Character.Look.AddSkin)
-Appearances.d2o Client2.3.7: 130 índices (654–868); 0/458/1004 ausentes
-Item 12616 AppearanceId 1004 → APPEARANCE_UNKNOWN
-Angular: solo IconId auto; equipamiento = by-appearance curado
-Tiphon: no en repo; no requerido para Admin
-```
-
-## Phase 6 (siguiente agente)
-
-Objetivo: workflow curado `by-appearance/{appearanceId}.png` (espejo Phase 3–4 de iconos).
-
-No hacer: renderer EntityLook, extracción masiva sprites, Tiphon.
-
-## QA pendiente (operador)
-
-```txt
-/admin/items/7754
+/admin/items/7754 → AppearanceId 0, NOT_APPLICABLE
 /admin/items/7754/publication-status
-/admin/items/icon-selector?iconId=23012
+/admin/items/12616 → AppearanceId 1004, AppearanceKnown=false, UNKNOWN
+/admin/items/12616/publication-status
 ```
 
-## Prohibiciones
+## Builds validados
 
 ```txt
-no import masivo
-no commitear temporal-artifacts
-no modificar Client2.3.7
+dotnet build Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj
+npm run build (Angular Admin)
 ```
 
-Docs Phase 5: `docs/admin-tools/sprite-preview/appearance-identity-audit-phase5.md`
+## Prohibiciones respetadas
+
+```txt
+no EntityLook renderer
+no Tiphon
+no extraccion masiva
+no tocar cliente/DB/gameplay
+```
+
+## Siguiente (opcional)
+
+```txt
+ItemAppearanceSelectorComponent (fase futura)
+Macro 3 Phase 7 EntityLook research — solo con aprobacion
+```
+
+Docs: `docs/admin-tools/sprite-preview/appearance-preview-curated-workflow-phase6.md`

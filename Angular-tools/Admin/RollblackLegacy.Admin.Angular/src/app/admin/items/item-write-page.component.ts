@@ -8,6 +8,7 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, forkJoin, of,
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
 import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel.component';
+import { ItemAppearancePreviewCardComponent } from './components/item-appearance-preview-card.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
 import { ItemEffectsEditorComponent } from './item-effects-editor.component';
 import { ItemIconSelectorModalComponent } from './item-icon-selector-modal.component';
@@ -20,6 +21,7 @@ import {
   ItemDetailDto,
   ItemIconSelection,
   ItemPreviewStateDto,
+  ItemAppearancePreviewStateDto,
   ItemWriteBundle,
   ItemWriteMode,
   ItemWriteRequest,
@@ -28,6 +30,7 @@ import {
   createAdminSuccessFeedback,
   createItemWriteRequestFromDetail,
   createUnknownPreviewState,
+  createUnknownAppearancePreviewState,
   normalizeItemWriteRequest,
   toAdminApiProblem
 } from './data-access/items.models';
@@ -67,6 +70,7 @@ type PreviewWarningViewModel = {
     ApiProblemPanelComponent,
     ItemClientIdentityCardComponent,
     ItemPreviewCardComponent,
+    ItemAppearancePreviewCardComponent,
     ItemDiagnosticPanelComponent,
     ItemIconSelectorModalComponent,
     ItemEffectsEditorComponent
@@ -111,6 +115,7 @@ export class ItemWritePageComponent implements OnInit {
   protected typeOptions: AdminOptionDto[] = [];
   protected itemSetOptions: AdminOptionDto[] = [];
   protected previewState: ItemPreviewStateDto = createUnknownPreviewState();
+  protected appearancePreviewState: ItemAppearancePreviewStateDto = createUnknownAppearancePreviewState();
   protected advisoryWarnings: AdminWarningLike[] = [];
   protected loadProblem: AdminApiProblem | null = null;
   protected saveProblem: AdminApiProblem | null = null;
@@ -118,6 +123,8 @@ export class ItemWritePageComponent implements OnInit {
   protected isLoading = false;
   protected isSaving = false;
   protected isLoadingPreview = false;
+  protected isLoadingAppearancePreview = false;
+  private appearancePreviewRequestVersion = 0;
   protected isIconSelectorOpen = false;
   protected selectedIconPreviewPath: string | null = null;
 
@@ -127,6 +134,13 @@ export class ItemWritePageComponent implements OnInit {
       .subscribe(() => {
         this.clearWriteFeedback();
         void this.refreshPreviewState();
+      });
+
+    this.form.controls.appearanceId.valueChanges
+      .pipe(debounceTime(180), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.clearWriteFeedback();
+        void this.refreshAppearancePreviewState();
       });
 
     this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
@@ -148,6 +162,7 @@ export class ItemWritePageComponent implements OnInit {
             this.typeOptions = [];
             this.itemSetOptions = [];
             this.previewState = createUnknownPreviewState();
+            this.appearancePreviewState = createUnknownAppearancePreviewState();
             this.advisoryWarnings = [];
             this.loadProblem = null;
             this.saveProblem = null;
@@ -199,10 +214,14 @@ export class ItemWritePageComponent implements OnInit {
           this.typeOptions = bundle.typeOptions;
           this.itemSetOptions = bundle.itemSetOptions;
           this.sourceDetail = bundle.sourceDetail;
+          this.appearancePreviewState =
+            bundle.sourceDetail?.appearancePreviewState ??
+            createUnknownAppearancePreviewState(bundle.sourceDetail?.appearanceId ?? 0);
           this.applyFormState(bundle.sourceDetail);
         });
 
         void this.refreshPreviewState();
+        void this.refreshAppearancePreviewState();
       });
   }
 
@@ -648,13 +667,79 @@ export class ItemWritePageComponent implements OnInit {
       });
   }
 
+  private async refreshAppearancePreviewState(): Promise<void> {
+    const appearanceId = this.form.controls.appearanceId.value ?? 0;
+    const currentRequestVersion = ++this.appearancePreviewRequestVersion;
+    const appearanceKnown =
+      this.sourceDetail?.appearanceId === appearanceId
+        ? this.sourceDetail.appearancePreviewState.appearanceKnown
+        : null;
+
+    if (appearanceId < 0) {
+      this.appearancePreviewState = createUnknownAppearancePreviewState();
+      this.advisoryWarnings = this.buildAdvisoryWarnings();
+      this.refreshView();
+      return;
+    }
+
+    if (appearanceId === 0) {
+      this.appearancePreviewState = createUnknownAppearancePreviewState(0);
+      this.advisoryWarnings = this.buildAdvisoryWarnings();
+      this.refreshView();
+      return;
+    }
+
+    this.isLoadingAppearancePreview = true;
+    this.refreshView();
+
+    this.itemsFacade
+      .getAppearancePreviewState(appearanceId, appearanceKnown)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        catchError(() => {
+          this.ngZone.run(() => {
+            if (currentRequestVersion !== this.appearancePreviewRequestVersion) {
+              return;
+            }
+
+            this.appearancePreviewState = createUnknownAppearancePreviewState(appearanceId);
+            this.advisoryWarnings = this.buildAdvisoryWarnings();
+            this.refreshView();
+          });
+
+          return of(createUnknownAppearancePreviewState(appearanceId));
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            if (currentRequestVersion !== this.appearancePreviewRequestVersion) {
+              return;
+            }
+
+            this.isLoadingAppearancePreview = false;
+            this.refreshView();
+          });
+        })
+      )
+      .subscribe((appearancePreviewState) => {
+        this.ngZone.run(() => {
+          if (currentRequestVersion !== this.appearancePreviewRequestVersion) {
+            return;
+          }
+
+          this.appearancePreviewState = appearancePreviewState;
+          this.advisoryWarnings = this.buildAdvisoryWarnings();
+          this.refreshView();
+        });
+      });
+  }
+
   private buildAdvisoryWarnings(): AdminWarningLike[] {
     const request = this.toWriteRequest();
     const warnings: AdminWarningLike[] = [
       {
         code: 'IDENTITY_RULE_REMINDER',
         severity: 'info',
-        message: 'ItemId, IconId y AppearanceId siguen separados. El preview del formulario se resuelve por IconId.',
+        message: 'ItemId, IconId y AppearanceId siguen separados. Icon preview = IconId; Appearance preview = equipamiento.',
         field: null
       },
       {
@@ -704,6 +789,24 @@ export class ItemWritePageComponent implements OnInit {
         severity: 'warning',
         message: 'Todavía no hay un PNG resuelto para este IconId. Guardar sigue permitido.',
         field: 'iconId'
+      });
+    }
+
+    if (request.appearanceId > 0 && this.appearancePreviewState.state === 'UNKNOWN') {
+      warnings.push({
+        code: 'APPEARANCE_PREVIEW_UNKNOWN',
+        severity: 'warning',
+        message: 'Appearance desconocido para el cliente o sin indice en Appearances.d2o.',
+        field: 'appearanceId'
+      });
+    }
+
+    if (request.appearanceId > 0 && this.appearancePreviewState.state === 'MISSING') {
+      warnings.push({
+        code: 'APPEARANCE_PREVIEW_MISSING',
+        severity: 'warning',
+        message: 'Falta PNG curado en by-appearance para este AppearanceId.',
+        field: 'appearancePreviewState'
       });
     }
 

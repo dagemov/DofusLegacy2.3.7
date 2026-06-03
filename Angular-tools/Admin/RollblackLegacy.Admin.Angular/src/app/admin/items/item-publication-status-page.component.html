@@ -52,14 +52,33 @@
             </div>
 
             <div class="row g-3 small">
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-md-4">
                 <div class="rounded-3 status-box">
-                  <div class="text-uppercase fw-semibold text-secondary mb-1">Preview state</div>
+                  <div class="text-uppercase fw-semibold text-secondary mb-1">Icon preview (IconId)</div>
                   <div class="fw-semibold">{{ status.previewState.state }}</div>
                   <div class="text-secondary text-break">{{ status.previewState.resolvedPath || status.previewState.byIconPath || 'Sin ruta resuelta' }}</div>
                 </div>
               </div>
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="text-uppercase fw-semibold text-secondary mb-1">Appearance preview</div>
+                  <div class="fw-semibold">{{ status.appearancePreviewState.state }}</div>
+                  <div class="text-secondary text-break">
+                    Known:
+                    {{
+                      status.appearancePreviewState.appearanceKnown === true
+                        ? 'si'
+                        : status.appearancePreviewState.appearanceKnown === false
+                          ? 'no'
+                          : 'n/a'
+                    }}
+                  </div>
+                  <div class="text-secondary text-break">
+                    {{ status.appearancePreviewState.resolvedPath || status.appearancePreviewState.byAppearancePath || 'Sin ruta curada' }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
                 <div class="rounded-3 status-box">
                   <div class="text-uppercase fw-semibold text-secondary mb-1">Client metadata source</div>
                   <div class="fw-semibold">{{ status.itemsD2oPath ? 'Items.d2o auditado' : 'Metadata no disponible' }}</div>
@@ -77,6 +96,10 @@
           [diagnostic]="clientIdentityDiagnostic"
           [isLoading]="isLoadingClientIdentity"
           [showPublicationLink]="false"></app-client-identity-diagnostic-card>
+
+        <app-item-appearance-preview-card
+          [routeItemId]="itemId"
+          [appearancePreviewState]="status.appearancePreviewState"></app-item-appearance-preview-card>
 
         <div class="card admin-card border-0 h-100">
           <div class="card-body d-grid gap-3">

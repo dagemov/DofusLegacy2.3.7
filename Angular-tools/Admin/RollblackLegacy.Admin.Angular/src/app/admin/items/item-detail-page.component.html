@@ -62,6 +62,10 @@
         [iconId]="detail?.iconId ?? resolvedIdentity?.iconId ?? null"
         [previewState]="detail?.previewState ?? null"></app-item-preview-card>
 
+      <app-item-appearance-preview-card
+        [routeItemId]="itemId"
+        [appearancePreviewState]="detail?.appearancePreviewState ?? null"></app-item-appearance-preview-card>
+
       <app-item-qa-readiness-panel
         [itemId]="itemId"
         [detail]="detail"

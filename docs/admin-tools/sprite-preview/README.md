@@ -11,8 +11,8 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 | Macro 3 / Phase 3 | `DONE` — `by-icon/23012.png` (Dofus Ocre / 7754) |
 | Macro 3 / Phase 4 | `DONE / PARTIAL` — workflow dry-run/approve + selector UX |
 | Macro 3 / Phase 5 | `DONE` — appearance identity audit + preview feasibility |
-| Macro 3 / Phase 6 | `NEXT` — curated equipment preview (`by-appearance/`) |
-| Macro 3 / Phase 7 | `PLANNED` — EntityLook renderer research (documental, opcional) |
+| Macro 3 / Phase 6 | `DONE / PARTIAL` — curated appearance preview diagnostics + UX |
+| Macro 3 / Phase 7 | `OPTIONAL / DEFERRED` — EntityLook renderer research |
 
 ## Objetivo
 
@@ -82,6 +82,7 @@ Preview equipamiento viable = PNG curado by-appearance + validación, no rendere
 - [Phase 2 D2P extractor](./sprite-preview-d2p-extractor-phase2.md)
 - [Phase 3 curated import](./sprite-preview-curated-import-phase3.md)
 - [Phase 4 curated workflow](./sprite-preview-curated-workflow-phase4.md)
+- [Phase 6 appearance curated workflow](./appearance-preview-curated-workflow-phase6.md)
 - [D2P format notes](./sprite-preview-d2p-format-notes.md)
 - [Source map](./sprite-preview-source-map.md)
 - [Phase 1 audit report](./item-sprite-preview-phase1-report.md)

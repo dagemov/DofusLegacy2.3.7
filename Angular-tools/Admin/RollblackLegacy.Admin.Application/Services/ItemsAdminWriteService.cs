@@ -17,15 +17,18 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
     private readonly IItemsAdminWriteRepository _writeRepository;
     private readonly IItemsAdminReadRepository _readRepository;
     private readonly IItemPreviewStateResolver _previewStateResolver;
+    private readonly IItemAppearancePreviewStateResolver _appearancePreviewStateResolver;
 
     public ItemsAdminWriteService(
         IItemsAdminWriteRepository writeRepository,
         IItemsAdminReadRepository readRepository,
-        IItemPreviewStateResolver previewStateResolver)
+        IItemPreviewStateResolver previewStateResolver,
+        IItemAppearancePreviewStateResolver appearancePreviewStateResolver)
     {
         _writeRepository = writeRepository;
         _readRepository = readRepository;
         _previewStateResolver = previewStateResolver;
+        _appearancePreviewStateResolver = appearancePreviewStateResolver;
     }
 
     public async Task<ItemWriteResultDto> CreateAsync(ItemCreateRequest request, CancellationToken cancellationToken = default)
@@ -91,6 +94,26 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
         }
 
         return Task.FromResult(_previewStateResolver.Resolve(itemId, iconId));
+    }
+
+    public Task<ItemAppearancePreviewStateDto> ResolveAppearancePreviewStateAsync(
+        int appearanceId,
+        bool? appearanceKnown,
+        CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (appearanceId < 0)
+        {
+            throw new AdminValidationException(
+                "The requested appearance id is invalid.",
+                new Dictionary<string, string[]>
+                {
+                    ["appearanceId"] = ["appearanceId must be greater than or equal to zero."]
+                });
+        }
+
+        return Task.FromResult(_appearancePreviewStateResolver.Resolve(appearanceId, appearanceKnown));
     }
 
     private async Task<AdminItemWriteDraft> ValidateAndBuildDraftAsync(
