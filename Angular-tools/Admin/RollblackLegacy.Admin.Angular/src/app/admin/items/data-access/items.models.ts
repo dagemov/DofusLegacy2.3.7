@@ -186,6 +186,17 @@ export interface AdminApiProblem {
   errors?: Record<string, string[]>;
 }
 
+export type AdminFeedbackKind = 'success' | 'error';
+
+export interface AdminFeedback {
+  kind: AdminFeedbackKind;
+  title: string;
+  detail?: string | null;
+  status?: number | null;
+  traceId?: string | null;
+  errors?: Record<string, string[]>;
+}
+
 export interface ItemDetailBundle {
   detail: ItemDetailDto;
   itemSetOptions: AdminOptionDto[];
@@ -296,6 +307,20 @@ export function createUnknownPreviewState(): ItemPreviewStateDto {
     previewSource: 'PLACEHOLDER',
     resolvedPath: null,
     fallbackUsed: 'PLACEHOLDER'
+  };
+}
+
+export function createAdminSuccessFeedback(
+  title: string,
+  detail?: string | null
+): AdminFeedback {
+  return {
+    kind: 'success',
+    title,
+    detail: normalizeProblemDetail(title, normalizeProblemText(detail ?? undefined)) ?? null,
+    status: null,
+    traceId: null,
+    errors: undefined
   };
 }
 

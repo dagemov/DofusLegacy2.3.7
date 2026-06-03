@@ -10,12 +10,11 @@
 
     <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
     <app-api-problem-panel [problem]="saveProblem"></app-api-problem-panel>
+    <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
 
     <div *ngIf="isLoading" class="small text-secondary">Cargando efectos editables...</div>
 
     <div *ngIf="!isLoading && editState" class="d-grid gap-3">
-      <div *ngIf="saveMessage" class="alert alert-success border-0 py-2 mb-0">{{ saveMessage }}</div>
-
       <div *ngIf="warnings.length > 0" class="alert alert-warning border-0 py-2 mb-0">
         <div class="fw-semibold mb-1">Advertencias del parser</div>
         <ul class="mb-0 ps-3 small">

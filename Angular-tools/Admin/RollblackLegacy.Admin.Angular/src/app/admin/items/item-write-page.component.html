@@ -38,28 +38,7 @@
 
   <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
   <app-api-problem-panel [problem]="saveProblem"></app-api-problem-panel>
-
-  <div *ngIf="saveResult" class="alert alert-success border-0 shadow-sm mb-0">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
-      <div>
-        <h3 class="h6 mb-1">Operacion completada</h3>
-        <p class="mb-1">
-          <strong>{{ saveResult.operation | titlecase }}</strong>
-          guardo el item
-          <span class="font-monospace-soft">{{ saveResult.itemId }}</span>
-          con DescriptionId runtime
-          <span class="font-monospace-soft">{{ saveResult.descriptionId }}</span>.
-        </p>
-        <p class="mb-0 small text-secondary">
-          El publish del texto Description y la persistencia real de IsVisible siguen diferidos por diseno.
-        </p>
-      </div>
-      <div class="small text-secondary">
-        <div>Warnings devueltos: {{ saveResult.warnings.length }}</div>
-        <div>Ruta de detalle: <span class="font-monospace-soft">{{ saveResult.detailPath }}</span></div>
-      </div>
-    </div>
-  </div>
+  <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
 
   <div *ngIf="isLoading" class="card admin-card border-0">
     <div class="card-body text-secondary">Cargando contexto de escritura...</div>

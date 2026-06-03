@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { catchError, finalize, of } from 'rxjs';
+import { catchError, combineLatest, finalize, of } from 'rxjs';
 
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemClientIdentityCardComponent } from './components/item-client-identity-card.component';
@@ -11,7 +11,16 @@ import { ItemPreviewCardComponent } from './components/item-preview-card.compone
 import { ItemQaReadinessPanelComponent } from './components/item-qa-readiness-panel.component';
 import { ItemRuntimeSummaryCardComponent } from './components/item-runtime-summary-card.component';
 import { ItemsFacade } from './data-access/items.facade';
-import { AdminApiProblem, AdminOptionDto, ItemClientIdentityDto, ItemDetailDto, ItemQaSummaryDto, toAdminApiProblem } from './data-access/items.models';
+import {
+  AdminApiProblem,
+  AdminFeedback,
+  AdminOptionDto,
+  ItemClientIdentityDto,
+  ItemDetailDto,
+  ItemQaSummaryDto,
+  createAdminSuccessFeedback,
+  toAdminApiProblem
+} from './data-access/items.models';
 
 @Component({
   selector: 'app-item-detail-page',
@@ -39,6 +48,7 @@ export class ItemDetailPageComponent implements OnInit {
   protected identity: ItemClientIdentityDto | null = null;
   protected itemSetOptions: AdminOptionDto[] = [];
   protected problem: AdminApiProblem | null = null;
+  protected pageFeedback: AdminFeedback | null = null;
   protected qaSummary: ItemQaSummaryDto | null = null;
   protected qaSummaryProblem: AdminApiProblem | null = null;
   protected isLoading = false;
@@ -46,15 +56,24 @@ export class ItemDetailPageComponent implements OnInit {
   protected itemId: number | null = null;
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap
+    combineLatest([this.activatedRoute.paramMap, this.activatedRoute.queryParamMap])
       .pipe(
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((paramMap) => {
+      .subscribe(([paramMap, queryParamMap]) => {
           const itemId = Number(paramMap.get('itemId'));
+          const writeOperation = (queryParamMap.get('writeOperation') || '').trim();
+          const wasSaved = queryParamMap.get('saved') === '1';
           this.ngZone.run(() => {
             this.itemId = Number.isInteger(itemId) && itemId > 0 ? itemId : null;
             this.problem = null;
+            this.pageFeedback =
+              wasSaved && this.itemId
+                ? createAdminSuccessFeedback(
+                    'SUCCESS',
+                    this.buildSaveDetail(writeOperation, this.itemId)
+                  )
+                : null;
             this.detail = null;
             this.identity = null;
             this.qaSummary = null;
@@ -165,5 +184,18 @@ export class ItemDetailPageComponent implements OnInit {
 
   private refreshView(): void {
     this.changeDetectorRef.detectChanges();
+  }
+
+  private buildSaveDetail(writeOperation: string, itemId: number): string {
+    switch (writeOperation.toLowerCase()) {
+      case 'duplicate':
+        return `El item duplicado ${itemId} ya esta persistido y listo para validar detalle, preview y efectos.`;
+      case 'update':
+        return `Los cambios del item ${itemId} ya quedaron guardados. Si algo falla en cliente, conserva el traceId del ultimo error.`;
+      case 'create':
+        return `El item ${itemId} ya fue creado. Ahora puedes validar identidad, preview y QA readiness desde este detalle.`;
+      default:
+        return `La operacion de escritura del item ${itemId} termino correctamente.`;
+    }
   }
 }

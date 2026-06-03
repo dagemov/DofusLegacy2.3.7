@@ -12,6 +12,7 @@ import { ItemEffectsEditorComponent } from './item-effects-editor.component';
 import { ItemIconSelectorModalComponent } from './item-icon-selector-modal.component';
 import { ItemsFacade } from './data-access/items.facade';
 import {
+  AdminFeedback,
   AdminApiProblem,
   AdminOptionDto,
   AdminWarningLike,
@@ -23,6 +24,7 @@ import {
   ItemWriteRequest,
   ItemWriteResultDto,
   createEmptyItemWriteRequest,
+  createAdminSuccessFeedback,
   createItemWriteRequestFromDetail,
   createUnknownPreviewState,
   normalizeItemWriteRequest,
@@ -262,6 +264,17 @@ export class ItemWritePageComponent implements OnInit {
 
   protected get currentPreviewPath(): string | null {
     return this.previewState.resolvedPath || this.selectedIconPreviewPath;
+  }
+
+  protected get saveFeedback(): AdminFeedback | null {
+    if (!this.saveResult) {
+      return null;
+    }
+
+    return createAdminSuccessFeedback(
+      'Operacion completada',
+      `${this.saveResult.operation} guardo el item ${this.saveResult.itemId} con DescriptionId runtime ${this.saveResult.descriptionId}.`
+    );
   }
 
   protected submit(): void {

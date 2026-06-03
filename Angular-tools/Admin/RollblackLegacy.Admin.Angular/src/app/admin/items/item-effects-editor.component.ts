@@ -7,12 +7,14 @@ import { catchError, finalize, forkJoin, of } from 'rxjs';
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemsFacade } from './data-access/items.facade';
 import {
+  AdminFeedback,
   AdminApiProblem,
   AdminEffectOptionDto,
   ItemEffectEditDto,
   ItemEffectEditRowRequest,
   ItemEffectsEditDto,
   ItemEffectsUpdateRequest,
+  createAdminSuccessFeedback,
   toAdminApiProblem
 } from './data-access/items.models';
 
@@ -40,6 +42,14 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected isLoading = false;
   protected isSaving = false;
   protected selectedEffectId: number | null = null;
+
+  protected get saveFeedback(): AdminFeedback | null {
+    if (!this.saveMessage) {
+      return null;
+    }
+
+    return createAdminSuccessFeedback('Efectos guardados', this.saveMessage);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['itemId']) {
