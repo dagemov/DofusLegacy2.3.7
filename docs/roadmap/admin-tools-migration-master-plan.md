@@ -21,7 +21,7 @@ Controlled Blazor snapshot (read-only, no deploy):
 
 Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/items-builder/blazor-to-angular-port-plan.md).
 
-**Execution subphase (reference import):** `A.6 / A.8` — commits + build validation.  
+**Execution subphase (reference import):** `A.8 / A.8` — **DONE** (QA item 12616, see `items-builder-a8-qa-item-12616.md`).  
 **Product subphase (Items Builder):** `7C / 8` — form UX polish next.
 
 ## Repository rules

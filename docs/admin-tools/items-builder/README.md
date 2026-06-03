@@ -21,6 +21,7 @@ Current checkpoint:
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
 - Phase 7A - Item Icon Selector Modal: `DONE`
 - Phase 7B - Item Effects/Characteristics Editor + Blazor functional port: `DONE`
+- Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
 - Phase 7C - Item Form UX Polish: `NEXT`
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
@@ -79,6 +80,7 @@ Document index:
 - `items-builder-effects-editor-phase7b.md`
 - `rollback-web-functional-inventory.md`
 - `blazor-to-angular-port-plan.md`
+- `items-builder-a8-qa-item-12616.md`
 - `items-functional-port-map.md`
 - `blazor-functional-port-map.md`
 - `items-functional-port-phase7b.md`

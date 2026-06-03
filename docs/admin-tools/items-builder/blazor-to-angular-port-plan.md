@@ -27,9 +27,11 @@ Spells / glifos / mapas          →  después de Items Phase 8
 | A.5 | Roadmap + risk register actualizados | **DONE** (este doc set) |
 | A.6 | Commits `chore:` + `docs:` | **DONE** (`c277a44`) |
 | A.7 | Builds `dotnet` + `npm run build` | **DONE** (2026-06-02) |
-| A.8 | QA manual item 12616 (AP/PM/Vitalidad + icono) | **PENDING** |
+| A.8 | QA manual item 12616 (AP/PM/Vitalidad + icono) | **PASSED** (2026-06-03) |
 
-**→ Estamos en subfase A.8 de A.8** (QA manual; import + docs + builds cerrados).
+**→ Iniciativa A cerrada (A.8 / A.8).** Siguiente: **Phase 7C — Form UX Polish**.
+
+Detalle QA: [items-builder-a8-qa-item-12616.md](./items-builder-a8-qa-item-12616.md).
 
 ---
 
