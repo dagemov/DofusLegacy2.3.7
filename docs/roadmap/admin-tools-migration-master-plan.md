@@ -34,6 +34,7 @@ Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/it
 5. Treat exploratory docs imported from parallel branches as reference, not as accepted code baseline.
 6. Do not create `RollblackLegacy.Admin.Angular` outside the official repo.
 7. If a tool does not exist in the official repo, it cannot be marked as implemented.
+8. No item can be called client-visible unless the template exists in client metadata and the launcher delivery lane is accounted for.
 
 ## Admin Angular canonical location
 
@@ -70,6 +71,7 @@ Operational rules:
 - Phase 7C - Item Form UX Polish: `NEXT`
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
+- Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
 
 ## Corrective audit status (Phase 7)
 
@@ -117,6 +119,11 @@ Key references:
 - [Phase 8 publish and QA workflow](../admin-tools/items-builder/items-builder-publish-qa-phase8.md)
 - [Phase 8 QA checklist](../admin-tools/items-builder/items-builder-qa-checklist.md)
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
+- [Client publication analysis](../admin-tools/items-builder/items-builder-client-publication-analysis.md)
+- [Item publication pipeline](../admin-tools/items-builder/item-publication-pipeline.md)
+- [Visible item checklist](../admin-tools/items-builder/visible-item-checklist.md)
+- [QA vendor test checklist](../admin-tools/items-builder/qa-vendor-test-checklist.md)
+- [VPS restart safety checklist](../infrastructure/vps-restart-safety-checklist.md)
 - [Post-Phase 8 stabilization](../admin-tools/items-builder/items-builder-vps-qa-stabilization.md)
 - [Options loading fix](../admin-tools/items-builder/items-builder-options-loading-fix.md)
 - [PNG import plan](../admin-tools/items-builder/items-builder-png-import-plan.md)
@@ -140,3 +147,4 @@ The next intended branch should execute the corrective parity order:
 1. Phase 7C form UX polish
 2. Phase 7D client sprite preview extraction (documentation)
 3. Phase 8 publish / QA workflow
+4. Client publication audit/tooling for real custom template shipment

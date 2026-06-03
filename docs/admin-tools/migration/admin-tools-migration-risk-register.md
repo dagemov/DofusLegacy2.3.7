@@ -40,6 +40,8 @@
 | R34 | Admin item effects saved with the compact editor codec are written into live template rows that the runtime loader expects in `EffectManager.SetEffects` format, causing World boot failures on restart | 7 / live rollout | Critical | Medium | keep a hard separation between compact admin-edit payloads and runtime template serialization, validate any live-written template with a controlled restart, and repair legacy compact rows before future deployments | the server loads fine until a restart, then dies in `EffectManager.GetEffects(string)` while loading `items` |
 | R34 | Developers port `BinaryEffects` or `EffectManager` from `legacy-reference` into Sunshine instead of `SunshineItemEffectsCodec` | 7B+ | Very high | Medium | treat `legacy-reference/` as read-only UI/service reference; enforce hex codec in Infrastructure; block Angular serialization | effects saved as BLOB or Angular builds hex strings |
 | R35 | `legacy-reference` grows unbounded (client SWF dumps, `by-icon` trees, bin/obj) | import | Medium | Medium | keep import exclusions documented in `legacy-reference/README.md`; review PR file count; max ~40 manual PNGs in reference | PR adds thousands of assets or build artifacts under `legacy-reference/` |
+| R36 | A custom item is treated as "visible" because it exists in `sunshine.items`, even though the client still lacks the template in `Items.d2o` | future client publication | High | High | expose explicit publication states (`SERVER_ONLY`, `CARRIER_TEMPLATE_FALLBACK`, `CLIENT_PUBLISHED`), require the visible-item checklist before claiming success, and keep vendor QA separate from true client publish | item exists in DB or vendor stock but still does not render in inventory or shop |
+| R37 | A future publish edits `Items.d2o` but skips `i18n*.d2i` or launcher patch metadata, leaving blank identity or stale clients | future client publication | High | Medium | treat `Items.d2o`, `i18n_es.d2i`, `i18n_en.d2i`, and launcher patch delivery as one publication unit, require backups and QA-client update validation | template id exists but the name is blank, wrong, or only visible on one workstation |
 
 ## Priority watchlist
 
@@ -80,3 +82,4 @@ Lowest-risk starting points:
 - No item template row should be written with the compact admin effects codec and then considered production-safe until a full World restart passes.
 - No port from `legacy-reference/` should reintroduce Rollback `BinaryEffects` or client publish scripts into Sunshine Admin.
 - No bulk copy into `legacy-reference/` without an inventory row and asset count in `legacy-reference/README.md`.
+- No custom item should be called client-visible until the template, i18n, and launcher delivery lane are all validated together.

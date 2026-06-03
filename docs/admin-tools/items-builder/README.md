@@ -26,6 +26,7 @@ Current checkpoint:
 - Phase 7C - Item Form UX Polish: `NEXT` (authorized after gate)
 - Phase 7D - Client Sprite Preview Extraction: `PENDING DOCUMENTATION`
 - Phase 8 - Publish / QA Workflow: `PENDING`
+- Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
 
 Operational DB target note:
 
@@ -57,6 +58,13 @@ Live Dofus Tester rollout note:
 - `12617` is not yet a client-visible shipped item because the client does not know that template id
 - adding `12617` to a kamas NPC shop would not solve visibility by itself
 - do not apply future inventory grants while target characters may still be online
+
+Client publication distinction:
+
+- `SERVER_ONLY` means the DB row exists but the client does not know the template id
+- `CARRIER_TEMPLATE_FALLBACK` means visibility is borrowed from a known client template such as `7754`
+- `CLIENT_PUBLISHED` means the template id, i18n, and launcher patch lane were all updated
+- no item should be called "visible" just because it exists in `sunshine.items`
 
 Document index:
 
@@ -96,6 +104,10 @@ Document index:
 - `items-builder-publish-qa-phase8.md`
 - `items-builder-qa-checklist.md`
 - `items-builder-future-client-publish.md`
+- `items-builder-client-publication-analysis.md`
+- `item-publication-pipeline.md`
+- `visible-item-checklist.md`
+- `qa-vendor-test-checklist.md`
 - `items-builder-vps-qa-stabilization.md`
 - `items-builder-options-loading-fix.md`
 - `items-builder-png-import-plan.md`
