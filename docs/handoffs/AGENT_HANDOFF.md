@@ -6,70 +6,67 @@ Generated: `2026-06-03`
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-sprite-preview-d2p-extractor-phase2
+feature/item-sprite-preview-curated-import-phase3
 ```
 
 ## Estado Macro 3
 
 ```txt
-Phase 1 DONE / PARTIAL — audit scaffold + source map
-Phase 2 DONE — D2P audit + extract-icon (Sunshine D2pFile reutilizado)
-Phase 3 NEXT — curated icon import / Angular integration
+Phase 1 DONE — audit scaffold
+Phase 2 DONE — D2P extract-icon (Sunshine D2pFile)
+Phase 3 DONE — by-icon/23012.png (Dofus Ocre 7754)
+Phase 4 NEXT — curated import workflow / selector integration
 ```
 
-## Ultimo trabajo (Phase 2)
+## Ultimo trabajo (Phase 3)
 
-Commit esperado:
+Commit:
 
 ```txt
-feat: add d2p icon extraction audit mode
+feat: import curated dofus ocre icon preview
 ```
 
-Entregables:
+Asset:
 
 ```txt
-infrastructure/shared/Sunshine.Protocol.D2pReadOnly/  (linked Sunshine D2P reader)
-ItemSpritePreviewPipeline: --mode d2p-audit, --mode extract-icon
-docs/admin-tools/sprite-preview/sprite-preview-d2p-extractor-phase2.md
-docs/admin-tools/sprite-preview/sprite-preview-d2p-format-notes.md
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/23012.png
 ```
 
-## Prueba mínima validada
-
-```txt
-IconId 23012 → bitmap0.d2p / 23012.png (3881 bytes, PNG OK)
-IconId 1001  → bitmap0.d2p / 1001.png (control)
-```
-
-Salida temporal (gitignored):
-
-```txt
-Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted/23012.png
-```
-
-Copia a Angular **no** incluida por defecto. Usar `--approve-curated-copy` para `by-icon/23012.png`.
-
-## Comandos
+Comando:
 
 ```bash
 dotnet run --project Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj -- \
-  --mode d2p-audit --output Infrastructure/temporal-artifacts/item-sprite-preview-audit
-
-dotnet run --project Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj -- \
   --mode extract-icon --icon-id 23012 \
-  --output Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted
+  --output Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted \
+  --approve-curated-copy
+```
+
+## Validacion
+
+```txt
+Pipeline audit 7754 → IconPreviewAvailable: yes, BY_ICON /23012.png
+dotnet build (pipeline + Sunshine.sln) → OK
+npm run build → OK
+API/browser → pendiente confirmacion operador con stack levantado
+```
+
+URLs QA:
+
+```txt
+/admin/items/7754
+/admin/items/7754/publication-status
 ```
 
 ## Prohibiciones
 
 ```txt
+no mas imports masivos sin aprobacion
+no commitear temporal-artifacts
 no modificar Client2.3.7
-no extracción masiva / no commitear temporal-artifacts
-no DB writes
 ```
 
 ## Siguiente agente
 
-Phase 3: promover `23012.png` al catálogo si operador aprueba; opcional API hint “preview desde D2P”.
+Phase 4: formalizar workflow de import + selector; no abrir Macro 4 (Spells) sin peticion.
 
-Docs: `docs/admin-tools/sprite-preview/sprite-preview-d2p-extractor-phase2.md`
+Docs: `docs/admin-tools/sprite-preview/sprite-preview-curated-import-phase3.md`

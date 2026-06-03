@@ -70,10 +70,13 @@ Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted/23012.png
 Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted/extract-icon-23012.md
 ```
 
-## Phase 3 — NEXT
+## Phase 3 — DONE
 
-- Import curado controlado (`23012.png` → `by-icon/` si operador aprueba).
-- Integración Admin API / diagnóstico “preview desde D2P vs curado”.
+`23012.png` importado al catálogo curado. Ver [sprite-preview-curated-import-phase3.md](./sprite-preview-curated-import-phase3.md).
+
+## Phase 4 — NEXT
+
+- Workflow documentado de import curado + integración selector.
 - Sin batch masivo ni extracción de 44k iconos.
 
 ## Documentación relacionada
