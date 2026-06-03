@@ -10,4 +10,4 @@ public interface IItemEffectsAdminRepository
         CancellationToken cancellationToken = default);
 }
 
-public sealed record ItemEffectsRow(int ItemId, int TypeId, string? Effects);
+public sealed record ItemEffectsRow(int ItemId, uint TypeId, string? Effects);

@@ -37,7 +37,7 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
             throw new AdminEntityNotFoundException("item", itemId.ToString());
         }
 
-        await EnsureNotWeaponAsync(row.TypeId, cancellationToken);
+        await EnsureNotWeaponAsync((int)row.TypeId, cancellationToken);
 
         var decoded = _codec.Decode(row.Effects);
         var effects = decoded.Entries
@@ -66,7 +66,7 @@ public sealed class ItemEffectsAdminService : IItemEffectsAdminService
             throw new AdminEntityNotFoundException("item", itemId.ToString());
         }
 
-        await EnsureNotWeaponAsync(row.TypeId, cancellationToken);
+        await EnsureNotWeaponAsync((int)row.TypeId, cancellationToken);
 
         var validationErrors = ValidateRequest(request);
         if (validationErrors.Count > 0)
