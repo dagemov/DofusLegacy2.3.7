@@ -138,6 +138,7 @@ Document index:
 - `items-effects-port-map.md`
 - `items-final/README.md` — Macro Items Final (effects catalog parity 7D.1–7D.5)
 - `items-final/items-effects-catalog-audit-phase7d1.md`
+- `items-final/items-effects-editor-ui-phase7d3.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-client-visibility-matrix.md`
 - `items-publish-decision-workflow.md`

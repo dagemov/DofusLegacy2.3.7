@@ -18,6 +18,12 @@ import {
   toAdminApiProblem
 } from './data-access/items.models';
 
+const SERIALIZATION_TYPE_INTEGER = 70;
+const SERIALIZATION_TYPE_DICE = 73;
+
+const EDITABLE_FORMATS = ['Integer', 'Dice'] as const;
+type EditableEffectFormat = (typeof EDITABLE_FORMATS)[number];
+
 @Component({
   selector: 'app-item-effects-editor',
   imports: [CommonModule, FormsModule, ApiProblemPanelComponent],
@@ -32,6 +38,7 @@ export class ItemEffectsEditorComponent implements OnChanges {
   @Input({ required: true }) itemId!: number;
 
   protected effectOptions: AdminEffectOptionDto[] = [];
+  protected effectOptionsById = new Map<number, AdminEffectOptionDto>();
   protected editState: ItemEffectsEditDto | null = null;
   protected rows: ItemEffectEditDto[] = [];
   protected preservedSuffixHex: string | null = null;
@@ -42,6 +49,9 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected isLoading = false;
   protected isSaving = false;
   protected selectedEffectId: number | null = null;
+  protected addSearchTerm = '';
+  protected addGroupFilter = '';
+  protected readonly editableFormats = EDITABLE_FORMATS;
 
   protected get saveFeedback(): AdminFeedback | null {
     if (!this.saveMessage) {
@@ -51,54 +61,153 @@ export class ItemEffectsEditorComponent implements OnChanges {
     return createAdminSuccessFeedback('Efectos guardados', this.saveMessage);
   }
 
+  protected get effectOptionGroups(): { group: string; options: AdminEffectOptionDto[] }[] {
+    const groups = new Map<string, AdminEffectOptionDto[]>();
+
+    for (const option of this.effectOptions) {
+      const bucket = groups.get(option.group) ?? [];
+      bucket.push(option);
+      groups.set(option.group, bucket);
+    }
+
+    return Array.from(groups.entries())
+      .sort(([left], [right]) => left.localeCompare(right, 'es'))
+      .map(([group, options]) => ({
+        group,
+        options: options.sort(
+          (left, right) =>
+            left.sortPriority - right.sortPriority || left.label.localeCompare(right.label, 'es')
+        )
+      }));
+  }
+
+  protected get addGroupChoices(): string[] {
+    return [...new Set(this.effectOptions.map((option) => option.group))].sort((left, right) =>
+      left.localeCompare(right, 'es')
+    );
+  }
+
+  protected get filteredAddOptions(): AdminEffectOptionDto[] {
+    const term = this.addSearchTerm.trim().toLowerCase();
+
+    return this.effectOptions.filter((option) => {
+      if (this.addGroupFilter && option.group !== this.addGroupFilter) {
+        return false;
+      }
+
+      if (!term) {
+        return true;
+      }
+
+      return (
+        option.label.toLowerCase().includes(term) ||
+        option.protocolName.toLowerCase().includes(term) ||
+        String(option.effectId).includes(term)
+      );
+    });
+  }
+
+  protected get filteredAddOptionGroups(): { group: string; options: AdminEffectOptionDto[] }[] {
+    const allowed = new Set(this.filteredAddOptions.map((option) => option.effectId));
+
+    return this.effectOptionGroups
+      .map((group) => ({
+        group: group.group,
+        options: group.options.filter((option) => allowed.has(option.effectId))
+      }))
+      .filter((group) => group.options.length > 0);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['itemId']) {
       this.loadEditor();
     }
   }
 
-  protected get groupedRows(): { group: string; rows: ItemEffectEditDto[] }[] {
-    const groups = new Map<string, ItemEffectEditDto[]>();
-
-    for (const row of this.rows) {
-      const key = row.group || 'Other / unsupported';
-      const bucket = groups.get(key) ?? [];
-      bucket.push(row);
-      groups.set(key, bucket);
-    }
-
-    return Array.from(groups.entries()).map(([group, rows]) => ({ group, rows }));
+  protected trackRow(_index: number, row: ItemEffectEditDto): string {
+    return row.rowId;
   }
 
-  protected addCharacteristic(): void {
+  protected isFormatEditable(row: ItemEffectEditDto): boolean {
+    return row.isSupported && EDITABLE_FORMATS.includes(row.operatorMode as EditableEffectFormat);
+  }
+
+  protected canChangeFormat(row: ItemEffectEditDto): boolean {
+    return row.isSupported && !row.preservedEffectHex;
+  }
+
+  protected addEffect(): void {
     if (!this.selectedEffectId) {
       return;
     }
 
-    const option = this.effectOptions.find((entry) => entry.effectId === this.selectedEffectId);
+    const option = this.effectOptionsById.get(this.selectedEffectId);
     if (!option) {
       return;
     }
 
-    const row: ItemEffectEditDto = {
-      rowId: `new-${option.effectId}-${Date.now()}`,
-      serializationTypeId: option.defaultSerializationTypeId,
-      effectId: option.effectId,
-      label: option.label,
-      diceNum: 0,
-      diceSide: 0,
-      value: 0,
-      minValue: 0,
-      maxValue: 0,
-      operatorMode: option.operatorMode,
-      group: option.group,
-      isCharacteristic: true,
-      isSupported: true,
-      previewText: `${option.label}: 0`
-    };
-
-    this.rows = [...this.rows, row];
+    this.rows = [...this.rows, this.createRowFromOption(option)];
     this.selectedEffectId = null;
+    this.saveMessage = null;
+    this.refreshView();
+  }
+
+  protected onRowEffectChange(row: ItemEffectEditDto, rawEffectId: string | number): void {
+    if (!row.isSupported || row.preservedEffectHex) {
+      return;
+    }
+
+    const effectId = Number(rawEffectId);
+    const option = this.effectOptionsById.get(effectId);
+    if (!option) {
+      return;
+    }
+
+    row.effectId = option.effectId;
+    row.label = option.label;
+    row.group = option.group;
+    row.operatorMode = option.format || option.operatorMode;
+    row.serializationTypeId = option.defaultSerializationTypeId;
+    row.isCharacteristic = option.isCharacteristic;
+    row.isSupported = true;
+    row.preservedEffectHex = null;
+    row.warning = null;
+    this.updatePreview(row);
+    this.saveMessage = null;
+    this.refreshView();
+  }
+
+  protected onRowFormatChange(row: ItemEffectEditDto, format: string): void {
+    if (!this.canChangeFormat(row)) {
+      return;
+    }
+
+    row.operatorMode = format;
+    row.serializationTypeId = this.serializationTypeForFormat(format);
+    this.updatePreview(row);
+    this.saveMessage = null;
+    this.refreshView();
+  }
+
+  protected onRowValueChange(row: ItemEffectEditDto): void {
+    this.updatePreview(row);
+    this.saveMessage = null;
+  }
+
+  protected moveRow(row: ItemEffectEditDto, direction: -1 | 1): void {
+    const index = this.rows.findIndex((entry) => entry.rowId === row.rowId);
+    if (index < 0) {
+      return;
+    }
+
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= this.rows.length) {
+      return;
+    }
+
+    const next = [...this.rows];
+    [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
+    this.rows = next;
     this.saveMessage = null;
     this.refreshView();
   }
@@ -106,7 +215,7 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected removeRow(row: ItemEffectEditDto): void {
     if (!row.isSupported) {
       const confirmed = window.confirm(
-        'Este efecto no es editable en Phase 7B. Si lo eliminas, se perderá del payload preservado. ¿Continuar?'
+        'Este efecto no es editable en el codec actual. Si lo eliminas, se perderá del payload preservado. ¿Continuar?'
       );
 
       if (!confirmed) {
@@ -205,9 +314,84 @@ export class ItemEffectsEditorComponent implements OnChanges {
         this.rows = [...bundle.edit.effects];
         this.preservedSuffixHex = bundle.edit.preservedSuffixHex ?? null;
         this.warnings = bundle.edit.warnings ?? [];
-        this.effectOptions = bundle.options;
+        this.setEffectOptions(bundle.options);
         this.refreshView();
       });
+  }
+
+  private setEffectOptions(options: AdminEffectOptionDto[]): void {
+    this.effectOptions = [...options].sort(
+      (left, right) =>
+        left.sortPriority - right.sortPriority ||
+        left.label.localeCompare(right.label, 'es') ||
+        left.effectId - right.effectId
+    );
+    this.effectOptionsById = new Map(this.effectOptions.map((option) => [option.effectId, option]));
+  }
+
+  private createRowFromOption(option: AdminEffectOptionDto): ItemEffectEditDto {
+    const format = option.format || option.operatorMode;
+
+    const row: ItemEffectEditDto = {
+      rowId: `new-${option.effectId}-${Date.now()}`,
+      serializationTypeId: option.defaultSerializationTypeId,
+      effectId: option.effectId,
+      label: option.label,
+      diceNum: 0,
+      diceSide: 0,
+      value: 0,
+      minValue: 0,
+      maxValue: 0,
+      operatorMode: format,
+      group: option.group,
+      isCharacteristic: option.isCharacteristic,
+      isSupported: true,
+      previewText: ''
+    };
+
+    this.updatePreview(row);
+    return row;
+  }
+
+  private serializationTypeForFormat(format: string): number {
+    switch (format) {
+      case 'Dice':
+        return SERIALIZATION_TYPE_DICE;
+      case 'MinMax':
+        return 82;
+      case 'Duration':
+        return 75;
+      case 'Base':
+        return 76;
+      default:
+        return SERIALIZATION_TYPE_INTEGER;
+    }
+  }
+
+  private updatePreview(row: ItemEffectEditDto): void {
+    if (!row.isSupported) {
+      return;
+    }
+
+    const label = row.label;
+
+    switch (row.operatorMode) {
+      case 'Dice':
+        row.previewText = `${label}: ${row.diceNum}d${row.diceSide}+${row.value}`;
+        break;
+      case 'MinMax':
+        row.previewText = `${label}: ${row.minValue}..${row.maxValue}`;
+        break;
+      case 'Duration':
+        row.previewText = `${label}: ${row.diceNum}d ${row.diceSide}h ${row.value}m`;
+        break;
+      case 'Base':
+        row.previewText = label;
+        break;
+      default:
+        row.previewText = `${label}: ${row.value}`;
+        break;
+    }
   }
 
   private toRequestRow(row: ItemEffectEditDto): ItemEffectEditRowRequest {

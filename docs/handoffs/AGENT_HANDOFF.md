@@ -9,55 +9,34 @@ C:\Users\Hombr\source\repos\DofusLegacy2.3.7
 feature/items-final-effects-catalog-audit-7d1
 ```
 
-## Macro activo: Items Final (effects catalog parity)
+## Macro Items Final
 
-**Objetivo:** 100% paridad funcional Items Builder vs `Rollback.Web` **antes** de Spells.
+| Phase | Commit | Status |
+| --- | --- | --- |
+| 7D.1 Audit | `44632b8` | DONE |
+| 7D.2 Catalog API | `10538e8` | DONE |
+| 7D.3 Editor UX | (pending commit) | DONE |
+| 7D.4 Templates | — | NEXT |
+| 7D.5 QA E2E | — | PENDING |
 
-| Phase | Status |
-| --- | --- |
-| 7D.1 Item Effects Catalog Audit | `DONE` (docs) |
-| 7D.2 Item Effects Catalog API | `PENDING` |
-| 7D.3 Item Effects Editor UX | `PENDING` |
-| 7D.4 Templates y presets | `PENDING` |
-| 7D.5 QA end-to-end | `PENDING` |
+## 7D.3 entrega
 
-Docs:
+- `ItemEffectsEditorComponent`: catálogo 507, select por fila, add con búsqueda/grupo, Integer/Dice, reorder, unsupported preservado.
+- `npm run build` PASS.
+- API smoke `GET items/12616/effects/edit`: 1 fila (`111` + PA) en DB actual — validar browser en `/admin/items/12616/edit`.
 
-```txt
-docs/admin-tools/items-builder/items-final/README.md
-docs/admin-tools/items-builder/items-final/items-final-macro-plan.md
-docs/admin-tools/items-builder/items-final/items-effects-catalog-audit-phase7d1.md
-```
+Doc: `docs/admin-tools/items-builder/items-final/items-effects-editor-ui-phase7d3.md`
 
-## Hallazgo 7D.1 (resumen)
+## Siguiente acción
 
-- Phase 7B: codec + `PUT /items/{id}/effects` OK.
-- `GET item-effects/options`: **26** características curadas (`LegacyBlazorEffectLabelRegistry`).
-- Legacy `GameEffectDisplayService`: **todos** los `EffectId` + labels ES + kind sugerido.
-- Angular: solo “Agregar característica”; filas sin selector de efecto; dice/minmax readonly.
+1. Commit: `feat: add item effects editor parity ui`
+2. Phase 7D.4 — templates/presets (commit separado)
+3. No Spells hasta 7D.5
 
-## Macros cerrados / prohibidos
+## Prohibido
 
 ```txt
-Macro 3 Sprite Preview: COMPLETE
-Macro 4 Spells: NO ABRIR hasta Items Final 7D.5
-EntityLook renderer: DEFERRED
+Macro 4 Spells
+cliente / gameplay
+SunshineItemEffectsCodec rewrite
 ```
-
-## Siguiente acción exacta
-
-1. Branch `feature/items-final-effects-catalog-api-7d2`
-2. Implementar catálogo completo (`IItemEffectsCatalog`, port labels desde `GameEffectDisplayService`)
-3. Extender `AdminEffectOptionDto` + `GET /api/admin/v1/item-effects/options`
-4. No tocar Spells ni renderer EntityLook
-
-## Builds (última sesión conocida)
-
-```txt
-dotnet build Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj — OK
-npm run build — OK
-```
-
-## Browser QA pendiente (operador, Macro 3)
-
-Sin cambio: rutas `/admin/items/7754`, `12616`, `12617`, icon-selector — ver `sprite-preview-final-qa-phase7.md`.

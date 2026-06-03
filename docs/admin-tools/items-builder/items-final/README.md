@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | 7D.1 | [items-effects-catalog-audit-phase7d1.md](./items-effects-catalog-audit-phase7d1.md) | Gap analysis: legacy catalog vs Admin API vs Angular UX | `DONE` |
 | 7D.2 | (planned) | Full catalog API (`IItemEffectsCatalog`, extend `GET item-effects/options`) | `PENDING` |
-| 7D.3 | (planned) | Angular editor parity (`EffectListEditor` shape: effect picker, kinds, reorder) | `PENDING` |
+| 7D.3 | [items-effects-editor-ui-phase7d3.md](./items-effects-editor-ui-phase7d3.md) | Angular editor parity (`EffectListEditor` MVP) | `DONE` |
 | 7D.4 | (planned) | Templates and presets for common item stat bundles | `PENDING` |
 | 7D.5 | (planned) | End-to-end QA vs Blazor workflows (item `12616`, resist sets, dice rows) | `PENDING` |
 

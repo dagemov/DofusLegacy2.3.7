@@ -1,5 +1,12 @@
-.effects-group + .effects-group {
-  margin-top: 0.5rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+.effects-add-panel {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.effects-row-stack .effects-row {
+  background: #fff;
+}
+
+.effects-row .form-label {
+  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
 }

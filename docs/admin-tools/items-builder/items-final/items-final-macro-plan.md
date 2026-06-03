@@ -58,9 +58,10 @@ Deliverable: [items-effects-catalog-audit-phase7d1.md](./items-effects-catalog-a
 | Endpoint | Keep `GET /api/admin/v1/item-effects/options`; optional `?scope=characteristics\|full` during transition |
 | Tests | Contract test: option count ≥ legacy characteristic labels; every curated ID resolves |
 
-### Phase 7D.3 — Item Effects Editor UX (`PENDING`)
+### Phase 7D.3 — Item Effects Editor UX (`DONE`)
 
-**Branch suggestion:** `feature/items-final-effects-editor-ux-7d3`
+**Branch:** `feature/items-final-effects-catalog-audit-7d1`  
+**Doc:** [items-effects-editor-ui-phase7d3.md](./items-effects-editor-ui-phase7d3.md)
 
 | Task | Notes |
 | --- | --- |

@@ -1,10 +1,10 @@
 <div class="card admin-card border-0">
   <div class="card-body d-grid gap-3">
     <div>
-      <p class="text-uppercase small fw-semibold text-secondary mb-1">Phase 7B</p>
-      <h3 class="h5 mb-1">Efectos y características</h3>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">Items Final · 7D.3</p>
+      <h3 class="h5 mb-1">Efectos del item</h3>
       <p class="text-secondary small mb-0">
-        La serialización vive en el Admin API (formato ObjectEffect de Sunshine). Angular solo edita filas y envía DTOs.
+        Catálogo completo vía Admin API. La serialización ObjectEffect se guarda en el servidor; aquí solo se editan filas.
       </p>
     </div>
 
@@ -22,79 +22,188 @@
         </ul>
       </div>
 
-      <div class="row g-2 align-items-end">
-        <div class="col-md-8">
-          <label class="form-label" for="characteristicSelect">Agregar característica</label>
-          <select id="characteristicSelect" class="form-select" [(ngModel)]="selectedEffectId">
-            <option [ngValue]="null">Elegir efecto soportado...</option>
-            <option *ngFor="let option of effectOptions" [ngValue]="option.effectId">
-              {{ option.group }} — {{ option.label }} ({{ option.effectId }})
-            </option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <button class="btn btn-outline-primary w-100" type="button" (click)="addCharacteristic()" [disabled]="!selectedEffectId">
-            Agregar
-          </button>
-        </div>
+      <div *ngIf="preservedSuffixHex" class="alert alert-info border-0 py-2 mb-0 small">
+        Se conservan bytes no editables al final del payload (<code>preservedSuffixHex</code>). No se eliminan al guardar filas
+        soportadas.
       </div>
+
+      <section class="effects-add-panel border rounded p-3">
+        <h4 class="h6 mb-2">Agregar efecto</h4>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <label class="form-label" for="addGroupFilter">Grupo</label>
+            <select id="addGroupFilter" class="form-select form-select-sm" [(ngModel)]="addGroupFilter">
+              <option value="">Todos los grupos</option>
+              <option *ngFor="let group of addGroupChoices" [value]="group">{{ group }}</option>
+            </select>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label" for="addSearchTerm">Buscar</label>
+            <input
+              id="addSearchTerm"
+              class="form-control form-control-sm"
+              type="search"
+              placeholder="Label, protocolo o id..."
+              [(ngModel)]="addSearchTerm" />
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <div class="small text-secondary pb-2">{{ filteredAddOptions.length }} coincidencias</div>
+          </div>
+        </div>
+        <div class="row g-2 align-items-end mt-1">
+          <div class="col-md-9">
+            <label class="form-label" for="addEffectSelect">Efecto</label>
+            <select id="addEffectSelect" class="form-select" [(ngModel)]="selectedEffectId">
+              <option [ngValue]="null">Elegir del catálogo...</option>
+              <optgroup *ngFor="let group of filteredAddOptionGroups" [label]="group.group">
+                <option *ngFor="let option of group.options" [ngValue]="option.effectId">
+                  {{ option.label }} ({{ option.effectId }}) · {{ option.format || option.operatorMode }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-outline-primary w-100" type="button" (click)="addEffect()" [disabled]="!selectedEffectId || isSaving">
+              Agregar
+            </button>
+          </div>
+        </div>
+      </section>
 
       <div *ngIf="rows.length === 0" class="alert alert-light border mb-0">
-        Este item no tiene efectos editables cargados. Puedes agregar AP/PM/stats desde el catálogo.
+        Este item no tiene efectos cargados. Agrega filas desde el catálogo completo ({{ effectOptions.length }} opciones).
       </div>
 
-      <div *ngFor="let group of groupedRows" class="effects-group">
-        <h4 class="h6 mb-2">{{ group.group }}</h4>
-        <div class="table-responsive">
-          <table class="table table-sm align-middle mb-0">
-            <thead>
-              <tr>
-                <th>Efecto</th>
-                <th>Valores</th>
-                <th>Preview</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of group.rows">
-                <td>
-                  <div class="fw-semibold">{{ row.label }}</div>
-                  <div class="small text-secondary font-monospace-soft">
-                    id {{ row.effectId }} · tipo {{ row.serializationTypeId }}
-                    <span *ngIf="!row.isSupported" class="badge text-bg-warning ms-1">unsupported</span>
-                  </div>
-                </td>
-                <td>
-                  <ng-container *ngIf="row.isSupported && row.operatorMode === 'Integer'; else readonlyValues">
-                    <input
-                      class="form-control form-control-sm font-monospace-soft"
-                      type="number"
-                      min="0"
-                      [(ngModel)]="row.value"
-                      [disabled]="isSaving" />
-                    <div class="small text-secondary mt-1">
-                      Valor formateado: {{ row.value | number: '1.0-0' }}
-                    </div>
-                  </ng-container>
-                  <ng-template #readonlyValues>
-                    <span class="small text-secondary">{{ row.previewText }}</span>
-                  </ng-template>
-                </td>
-                <td class="small">
-                  <div>{{ row.previewText }}</div>
-                  <div *ngIf="row.isSupported && row.operatorMode === 'Integer'" class="text-secondary">
-                    Runtime: {{ row.value | number: '1.0-0' }}
-                  </div>
-                </td>
-                <td class="text-end">
-                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeRow(row)" [disabled]="isSaving">
-                    Quitar
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div *ngIf="rows.length > 0" class="effects-row-stack d-grid gap-2">
+        <article class="effects-row card border" *ngFor="let row of rows; trackBy: trackRow">
+          <div class="card-body d-grid gap-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+              <div class="flex-grow-1">
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                  <span class="badge text-bg-light border">{{ row.group }}</span>
+                  <span class="badge text-bg-secondary">{{ row.operatorMode }}</span>
+                  <span *ngIf="row.isCharacteristic" class="badge text-bg-primary">característica</span>
+                  <span *ngIf="!row.isSupported" class="badge text-bg-warning">no editable</span>
+                </div>
+                <div class="small text-secondary font-monospace-soft">
+                  tipo {{ row.serializationTypeId }} · fila {{ row.rowId }}
+                </div>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  title="Subir"
+                  (click)="moveRow(row, -1)"
+                  [disabled]="isSaving || rows[0] === row">
+                  ↑
+                </button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  title="Bajar"
+                  (click)="moveRow(row, 1)"
+                  [disabled]="isSaving || rows[rows.length - 1] === row">
+                  ↓
+                </button>
+                <button class="btn btn-outline-danger" type="button" (click)="removeRow(row)" [disabled]="isSaving">
+                  Quitar
+                </button>
+              </div>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-lg-6">
+                <label class="form-label">Efecto</label>
+                <select
+                  class="form-select form-select-sm"
+                  [ngModel]="row.effectId"
+                  (ngModelChange)="onRowEffectChange(row, $event)"
+                  [disabled]="!row.isSupported || !!row.preservedEffectHex || isSaving">
+                  <optgroup *ngFor="let group of effectOptionGroups" [label]="group.group">
+                    <option *ngFor="let option of group.options" [ngValue]="option.effectId">
+                      {{ option.label }} ({{ option.effectId }})
+                    </option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-lg-3">
+                <label class="form-label">Formato</label>
+                <select
+                  *ngIf="canChangeFormat(row); else readonlyFormat"
+                  class="form-select form-select-sm"
+                  [ngModel]="row.operatorMode"
+                  (ngModelChange)="onRowFormatChange(row, $event)"
+                  [disabled]="isSaving">
+                  <option *ngFor="let format of editableFormats" [ngValue]="format">{{ format }}</option>
+                </select>
+                <ng-template #readonlyFormat>
+                  <input class="form-control form-control-sm" [value]="row.operatorMode" readonly />
+                </ng-template>
+              </div>
+              <div class="col-lg-3">
+                <label class="form-label">Preview</label>
+                <div class="form-control form-control-sm bg-light">{{ row.previewText }}</div>
+              </div>
+            </div>
+
+            <div *ngIf="row.warning" class="alert alert-warning border-0 py-2 mb-0 small">{{ row.warning }}</div>
+
+            <ng-container *ngIf="row.isSupported && isFormatEditable(row); else readonlyValuesBlock">
+              <div class="row g-2" *ngIf="row.operatorMode === 'Integer'">
+                <div class="col-md-4">
+                  <label class="form-label">Valor</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.value"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+              </div>
+              <div class="row g-2" *ngIf="row.operatorMode === 'Dice'">
+                <div class="col-md-3">
+                  <label class="form-label">DiceNum</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.diceNum"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">DiceSide</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.diceSide"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Const / Value</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.value"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #readonlyValuesBlock>
+              <div class="small text-secondary">
+                {{ row.previewText }}
+                <span *ngIf="!row.isSupported"> — conservado tal cual al guardar (hex preservado).</span>
+              </div>
+            </ng-template>
+          </div>
+        </article>
       </div>
 
       <div class="d-flex flex-wrap gap-2">
@@ -102,7 +211,7 @@
           Guardar efectos
         </button>
         <span class="small text-secondary align-self-center font-monospace-soft" *ngIf="editState.effectsHex">
-          hex: {{ editState.effectsHex | slice:0:24 }}<span *ngIf="editState.effectsHex.length > 24">...</span>
+          hex: {{ editState.effectsHex | slice: 0 : 24 }}<span *ngIf="editState.effectsHex.length > 24">...</span>
         </span>
       </div>
     </div>

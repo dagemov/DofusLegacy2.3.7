@@ -247,7 +247,9 @@ export interface AdminEffectOptionDto {
   protocolName: string;
   group: string;
   defaultSerializationTypeId: number;
+  format: string;
   operatorMode: string;
+  sortPriority: number;
   isCharacteristic: boolean;
   isSupported: boolean;
 }

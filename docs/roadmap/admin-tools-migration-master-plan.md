@@ -226,7 +226,7 @@ Goal: **100% functional parity** with `Rollback.Web` item effects editing before
 | --- | --- | --- |
 | 7D.1 Item Effects Catalog Audit | `DONE` | [items-effects-catalog-audit-phase7d1.md](../admin-tools/items-builder/items-final/items-effects-catalog-audit-phase7d1.md) |
 | 7D.2 Item Effects Catalog API | `PENDING` | [items-final-macro-plan.md](../admin-tools/items-builder/items-final/items-final-macro-plan.md) |
-| 7D.3 Item Effects Editor UX | `PENDING` | same |
+| 7D.3 Item Effects Editor UX | `DONE` | [items-effects-editor-ui-phase7d3.md](../admin-tools/items-builder/items-final/items-effects-editor-ui-phase7d3.md) |
 | 7D.4 Templates y presets | `PENDING` | same |
 | 7D.5 QA end-to-end | `PENDING` | same |
 
@@ -236,9 +236,8 @@ Branch (7D.1): `feature/items-final-effects-catalog-audit-7d1`
 
 The next intended branch order is:
 
-1. Macro Items Final **7D.2** — full `GET item-effects/options` catalog API
-2. Macro Items Final **7D.3** — Angular `EffectListEditor` parity
-3. Macro Items Final **7D.4** / **7D.5** — presets + QA
+1. Macro Items Final **7D.4** — templates y presets
+2. Macro Items Final **7D.5** — QA end-to-end + PR Macro Items Final
 
 Do **not** start Macro 4 Spells until 7D.5 passes.
 
