@@ -84,23 +84,49 @@ int RunExtractIcon(string repoRoot, SpritePreviewPaths paths, PipelineOptions op
         throw new ArgumentException("extract-icon requiere --icon-id positivo.");
     }
 
+    var iconId = options.IconId.Value;
+    var matches = D2pIconExtractor.FindMatches(paths.ItemBitmapD2pPaths, iconId);
+    var copyPlan = CuratedIconCopyPlanner.Plan(paths, iconId, matches);
+
+    if (options.DryRunCuratedCopy)
+    {
+        CuratedIconCopyPlanner.PrintDryRunConsole(copyPlan);
+        Directory.CreateDirectory(outputDirectory);
+        var dryRunPath = Path.Combine(outputDirectory, $"curated-copy-dry-run-{iconId}.md");
+        File.WriteAllText(dryRunPath, CuratedIconCopyPlanner.WriteDryRunReport(copyPlan), Encoding.UTF8);
+        Console.WriteLine($"Dry-run report: {dryRunPath}");
+        return copyPlan.SourceFound && copyPlan.PngSignatureValid ? 0 : 1;
+    }
+
     Directory.CreateDirectory(outputDirectory);
-    var result = D2pIconExtractor.ExtractIcon(paths.ItemBitmapD2pPaths, options.IconId.Value, outputDirectory);
-    var reportPath = Path.Combine(outputDirectory, $"extract-icon-{options.IconId.Value}.md");
+    var result = D2pIconExtractor.ExtractIcon(paths.ItemBitmapD2pPaths, iconId, outputDirectory);
+    var reportPath = Path.Combine(outputDirectory, $"extract-icon-{iconId}.md");
     File.WriteAllText(reportPath, D2pIconExtractor.WriteExtractionMarkdown(result), Encoding.UTF8);
 
     Console.WriteLine(result.Message);
     Console.WriteLine($"Extraction report: {reportPath}");
 
-    if (result.Success && options.ApproveCuratedCopy)
+    if (!options.ApproveCuratedCopy)
     {
-        var curatedTarget = Path.Combine(paths.ByIconDirectory, $"{options.IconId.Value}.png");
-        Directory.CreateDirectory(paths.ByIconDirectory);
-        File.Copy(result.OutputFilePath!, curatedTarget, overwrite: true);
-        Console.WriteLine($"Copiado a catálogo curado: {curatedTarget}");
+        return result.Success ? 0 : 1;
     }
 
-    return result.Success ? 0 : 1;
+    if (!result.Success || string.IsNullOrWhiteSpace(result.OutputFilePath))
+    {
+        Console.Error.WriteLine("No se puede aprobar copia curada: extracción fallida.");
+        return 1;
+    }
+
+    if (!CuratedIconCopyPlanner.CanApproveCopy(copyPlan, options.OverwriteCurated, out var approveError))
+    {
+        Console.Error.WriteLine(approveError);
+        return 1;
+    }
+
+    Directory.CreateDirectory(paths.ByIconDirectory);
+    File.Copy(result.OutputFilePath, copyPlan.TargetPath, overwrite: options.OverwriteCurated);
+    Console.WriteLine($"Copiado a catálogo curado: {copyPlan.TargetPath}");
+    return 0;
 }
 
 HostApplicationBuilder CreateAdminHostBuilder(string repoRoot, RepositoryPaths pathsConfig)
@@ -185,7 +211,9 @@ internal sealed record PipelineOptions(
     string OutputDirectory,
     string? DocsReportPath,
     int? IconId,
-    bool ApproveCuratedCopy)
+    bool DryRunCuratedCopy,
+    bool ApproveCuratedCopy,
+    bool OverwriteCurated)
 {
     public static PipelineOptions Parse(string[] args)
     {
@@ -194,7 +222,9 @@ internal sealed record PipelineOptions(
         var output = "Infrastructure/temporal-artifacts/item-sprite-preview-audit";
         string? docsReport = null;
         int? iconId = null;
+        var dryRunCuratedCopy = false;
         var approveCuratedCopy = false;
+        var overwriteCurated = false;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -215,10 +245,21 @@ internal sealed record PipelineOptions(
                 case "--icon-id" when index + 1 < args.Length:
                     iconId = int.Parse(args[++index]);
                     break;
+                case "--dry-run-curated-copy":
+                    dryRunCuratedCopy = true;
+                    break;
                 case "--approve-curated-copy":
                     approveCuratedCopy = true;
                     break;
+                case "--overwrite-curated":
+                    overwriteCurated = true;
+                    break;
             }
+        }
+
+        if (dryRunCuratedCopy && approveCuratedCopy)
+        {
+            throw new ArgumentException("Usa solo uno: --dry-run-curated-copy o --approve-curated-copy.");
         }
 
         if (mode.Equals("audit", StringComparison.OrdinalIgnoreCase)
@@ -227,7 +268,15 @@ internal sealed record PipelineOptions(
             docsReport = "docs/admin-tools/sprite-preview/item-sprite-preview-phase1-report.md";
         }
 
-        return new PipelineOptions(mode, rawIds, output, docsReport, iconId, approveCuratedCopy);
+        return new PipelineOptions(
+            mode,
+            rawIds,
+            output,
+            docsReport,
+            iconId,
+            dryRunCuratedCopy,
+            approveCuratedCopy,
+            overwriteCurated);
     }
 }
 

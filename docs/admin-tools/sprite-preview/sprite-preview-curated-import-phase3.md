@@ -64,12 +64,9 @@ Rutas UI:
 - Sin modificar `Client2.3.7` ni D2P/D2O/D2I.
 - Sin writes DB.
 
-## Workflow futuro (Phase 4)
+## Workflow formalizado (Phase 4)
 
-1. `extract-icon --icon-id N`
-2. Revisar PNG en `temporal-artifacts/.../extracted/`
-3. `--approve-curated-copy` solo tras QA visual
-4. Validar item en Admin
+Ver [sprite-preview-curated-workflow-phase4.md](./sprite-preview-curated-workflow-phase4.md): `--dry-run-curated-copy`, `--approve-curated-copy`, `--overwrite-curated`.
 
 ## Rama
 

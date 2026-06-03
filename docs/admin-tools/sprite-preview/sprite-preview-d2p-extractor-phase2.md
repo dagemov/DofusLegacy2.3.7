@@ -74,10 +74,13 @@ Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted/extract-ic
 
 `23012.png` importado al catálogo curado. Ver [sprite-preview-curated-import-phase3.md](./sprite-preview-curated-import-phase3.md).
 
-## Phase 4 — NEXT
+## Phase 4 — DONE
 
-- Workflow documentado de import curado + integración selector.
-- Sin batch masivo ni extracción de 44k iconos.
+Workflow dry-run/approve documentado. Ver [sprite-preview-curated-workflow-phase4.md](./sprite-preview-curated-workflow-phase4.md).
+
+## Phase 5 — NEXT (solo con aprobación)
+
+- Estrategia opcional `by-appearance/`.
 
 ## Documentación relacionada
 

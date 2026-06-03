@@ -82,7 +82,7 @@ Phase 7D DONE (documentary)
 Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
-Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1–3 DONE, Phase 4 NEXT)
+Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1–4 DONE/PARTIAL, Phase 5 NEXT)
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -114,7 +114,8 @@ Phase status summary:
 - Macro 3 / Phase 1 - Sprite preview source map + audit scaffold: `DONE / PARTIAL`
 - Macro 3 / Phase 2 - D2P extractor research + minimal proof: `DONE`
 - Macro 3 / Phase 3 - Curated icon import / Angular integration: `DONE`
-- Macro 3 / Phase 4 - Curated import workflow / selector integration: `NEXT`
+- Macro 3 / Phase 4 - Curated import workflow / selector integration: `DONE / PARTIAL`
+- Macro 3 / Phase 5 - Appearance preview strategy (optional): `NEXT`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -205,12 +206,13 @@ Key references:
 - [Sprite Preview Phase 2 D2P](../admin-tools/sprite-preview/sprite-preview-d2p-extractor-phase2.md)
 - [Sprite Preview D2P format notes](../admin-tools/sprite-preview/sprite-preview-d2p-format-notes.md)
 - [Sprite Preview Phase 3 curated import](../admin-tools/sprite-preview/sprite-preview-curated-import-phase3.md)
+- [Sprite Preview Phase 4 curated workflow](../admin-tools/sprite-preview/sprite-preview-curated-workflow-phase4.md)
 
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 3 / Phase 4 - Curated import workflow / selector integration
+1. Macro 3 / Phase 5 - Appearance preview strategy (explicit approval)
 2. Macro 4 - Spells Builder
 3. Macro 5 - Glyph Builder
 

@@ -270,7 +270,7 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
             iconId,
             $"/assets/item-previews/by-icon/{iconId}.png",
             "FOUND",
-            "BY_ICON_PREVIEW",
+            "CURATED_BY_ICON",
             HasPreview: true,
             LinkedItemCount: 0,
             SampleItemNames: []);

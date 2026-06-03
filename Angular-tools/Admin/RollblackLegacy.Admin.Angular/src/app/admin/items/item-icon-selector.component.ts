@@ -181,6 +181,51 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
     this.brokenPreviewIds.add(iconId);
   }
 
+  protected previewAvailabilityLabel(option: ItemIconOptionDto): string {
+    if (this.brokenPreviewIds.has(option.iconId)) {
+      return 'Preview roto en host';
+    }
+
+    return option.hasPreview ? 'Preview disponible' : 'Preview faltante';
+  }
+
+  protected previewAvailabilityClass(option: ItemIconOptionDto): string {
+    if (this.brokenPreviewIds.has(option.iconId)) {
+      return 'text-warning';
+    }
+
+    return option.hasPreview ? 'text-success' : 'text-secondary';
+  }
+
+  protected previewSourceLabel(option: ItemIconOptionDto): string {
+    switch (option.source) {
+      case 'CURATED_BY_ICON':
+        return 'CURATED_BY_ICON';
+      case 'BY_ICON_PREVIEW':
+        return 'CURATED_BY_ICON';
+      case 'MISSING':
+        return 'MISSING';
+      default:
+        return option.source || 'MISSING';
+    }
+  }
+
+  protected previewStateLabel(option: ItemIconOptionDto): string {
+    if (this.brokenPreviewIds.has(option.iconId)) {
+      return 'BROKEN_HOST';
+    }
+
+    return option.hasPreview ? option.previewState || 'FOUND' : 'MISSING';
+  }
+
+  protected previewStateBadgeClass(option: ItemIconOptionDto): string {
+    if (this.brokenPreviewIds.has(option.iconId) || !option.hasPreview) {
+      return 'text-bg-warning';
+    }
+
+    return 'text-bg-success';
+  }
+
   protected trackByIconId(_index: number, option: ItemIconOptionDto): number {
     return option.iconId;
   }
