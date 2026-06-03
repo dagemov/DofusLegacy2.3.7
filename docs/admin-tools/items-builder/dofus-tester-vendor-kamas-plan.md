@@ -121,3 +121,31 @@ The safer workaround is:
 - Do not apply a `12617` NPC shop insert as a production fix.
 - Keep `Vendeur de Dofus (1053)` as the future kamas seller insertion point.
 - If immediate visibility is required before client patching, choose a client-known template fallback explicitly and document the identity trade-off.
+
+## Applied live fallback on `2026-06-03`
+
+Chosen template:
+
+- `7754` -> `Dofus Ocre`
+
+Applied changes:
+
+- updated `items.Id = 7754` base effects to the tester stat payload
+- inserted `NpcId = 1053`, `Item = 7754`, `Price = 500000`, `Token = 0`
+- restarted only `sunshine-server` after focused backup and zero active auth/world connections at audit time
+
+Why `7754`:
+
+- visible to the client
+- same icon family as `12617`
+- zero owned rows at audit time
+- not already sold by vendor `1053`
+
+Operational trade-off:
+
+- the visible client item is `Dofus Ocre`, not `Dofus Tester`
+- future creations of template `7754` will use tester effects until the restore patch is applied
+
+Restore path:
+
+- `infrastructure/sql/items/restore_enable_visible_dofus_tester_vendor.sql`

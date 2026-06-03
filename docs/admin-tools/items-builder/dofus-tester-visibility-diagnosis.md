@@ -102,6 +102,21 @@ Trade-off:
 - the visible name remains the client-known template name
 - this is an operational workaround, not a true new custom client item
 
+Applied production fallback on `2026-06-03`:
+
+- `TemplateId = 7754`
+- client-visible name: `Dofus Ocre`
+- `IconId = 23012`
+- vendor target: `NpcId = 1053`
+
+Why this template was chosen:
+
+- zero owned rows in production at audit time
+- not sold by `NpcId = 1053` before the patch
+- same icon family as server-side `12617`
+
+This preserves immediate client visibility without pretending that `12617` itself became visible.
+
 ### Path C - NPC vendor by kamas
 
 The audited NPC shop system can sell by kamas when `Token = 0`.
@@ -129,6 +144,8 @@ Audited live seller:
 
 This NPC is a good future insertion point for visible Dofus testing, but not for a server-only template id.
 
+It is now also the live insertion point for the visible fallback based on `TemplateId = 7754`.
+
 ## Operational recommendation
 
 - Keep `12617` documented as a server-side custom template.
@@ -136,3 +153,7 @@ This NPC is a good future insertion point for visible Dofus testing, but not for
 - If immediate visible QA is required before client patching, choose between:
   - a client-known template fallback
   - or a full client publish workflow
+
+Current live choice:
+
+- client-known template fallback using `7754`

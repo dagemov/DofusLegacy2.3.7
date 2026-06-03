@@ -171,3 +171,24 @@ Still pending for total closure:
 
 - client patch for `12617`, or
 - explicit fallback to a client-known visible template id for QA
+
+## Visible fallback executed
+
+Because `12617` remains server-only from the client point of view, the immediate QA path was switched to a visible fallback:
+
+- visible template used: `7754` (`Dofus Ocre`)
+- vendor used: `NpcId = 1053` (`Vendeur de Dofus`)
+- currency: kamas (`Token = 0`)
+- vendor price: `500000`
+
+Tester stats applied to the visible fallback template:
+
+- `+10 AP`
+- `+10 PM`
+- `+3 Range`
+- `+3 Summons`
+- `+150 Prospecting`
+- `+500 DamageBonusPercent`
+- `+50 Damage`
+
+This fallback is client-visible immediately after World reload, but the visible name remains `Dofus Ocre`.
