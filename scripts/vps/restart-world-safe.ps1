@@ -9,9 +9,19 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 if (-not $SshKey) {
-    $SshKey = Join-Path $repoRoot "SSH\private_key_sebas.pem"
+    $downloadKey = Join-Path $env:USERPROFILE "Downloads\keys\private_key_sebas.pem"
+    $fallbackKey = Join-Path $env:USERPROFILE "Downloads\private_key_sebas.pem"
+    if (Test-Path $downloadKey) {
+        $SshKey = $downloadKey
+    }
+    elseif (Test-Path $fallbackKey) {
+        $SshKey = $fallbackKey
+    }
+}
+
+if (-not $SshKey -or -not (Test-Path $SshKey)) {
+    throw "SSH key not found. Pass -SshKey with a local non-tracked PEM file."
 }
 
 $sshTarget = "${SshUser}@${VpsHost}"

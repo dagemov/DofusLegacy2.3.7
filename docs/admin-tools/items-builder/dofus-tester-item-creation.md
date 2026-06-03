@@ -147,13 +147,27 @@ Important production finding:
 
 ## Current conclusion
 
-The live DB rollout is complete:
+The live server-side rollout is complete:
 
 - `Dofus Tester` exists as a real template row
 - `sebcos1` is admin
-- all audited `sebcos1` characters have `20` units persisted
+- audited `sebcos1` characters have persisted inventory rows
 - controlled World restart completed successfully
+
+However, the production diagnosis on `2026-06-03` changed the final interpretation:
+
+- `items.Id = 12617` is a server-only custom template id
+- the client resolves inventory entries by `Template.Id`
+- `IconId` and `AppearanceId` alone do not make a server-only template visible
+- the current grant shape also uses stacked equipment rows, which is not the preferred final representation
+
+So the rollout is **not** yet equivalent to a client-visible shipped item.
+
+See:
+
+- `dofus-tester-visibility-diagnosis.md`
 
 Still pending for total closure:
 
-- manual in-client QA with `sebcos1` to visually confirm the item in inventory and its equip/runtime behavior
+- client patch for `12617`, or
+- explicit fallback to a client-known visible template id for QA
