@@ -65,7 +65,13 @@ Angular-tools/Admin/RollblackLegacy.Admin.Domain
 Items Builder:
 
 ```txt
-Phase 1-6: DONE
+Phase 1: DONE
+Phase 1.5: DONE
+Phase 2: DONE
+Phase 3: DONE
+Phase 4: DONE
+Phase 5: DONE
+Phase 6: DONE
 Phase 6.5A: DONE
 Phase 7A: DONE
 Phase 7B: DONE
@@ -74,15 +80,20 @@ Phase 7D: DOCS DONE
 Phase 8: PENDING
 ```
 
-Additional lane:
+Additional macros:
 
 ```txt
-Future client publication pipeline: ANALYSIS COMPLETE / IMPLEMENTATION PENDING
+Macro 2 - Client Identity Audit Tool: PENDING (do not start before Phase 8)
+Macro 3 - Sprite Preview Pipeline: PENDING (do not start before Phase 8)
+Macro 4 - Spells Builder: DEFERRED
+Macro 5 - Glyph Builder: DEFERRED
+Macro 6 - Maps Builder: DEFERRED
 ```
 
 ## Latest relevant commits
 
 ```txt
+cc94a1f docs: update agent handoff for items builder
 a9fed9e docs: plan item client sprite preview extraction
 7a4ed12 docs: define client publication pipeline for custom items
 32c0b71 feat: enable visible dofus tester vendor fallback
@@ -223,28 +234,27 @@ Expected commit:
 feat: polish items write form ux
 ```
 
-## Next macro after 7C
+## Exact next phase after 7C
 
 Do not jump there yet, but keep it explicit:
 
-### Macro 2 - Client Data Audit Tools
-
-Planned next documentary/technical lane:
-
-```txt
-read-only tooling for:
-Items.d2o
-Appearances.d2o
-ItemTypes.d2o
-ItemSets.d2o
-i18n_es.d2i
-i18n_en.d2i
-```
+### Phase 8 - Publish / QA
 
 Goal:
 
 ```txt
-answer if the client knows a template, a name, and an appearance before claiming visibility
+guarantee that what is created in DB
+exists in client
+is visible
+is deliverable
+is equippable
+```
+
+After Phase 8 is closed:
+
+```txt
+Macro 2 - Client Identity Audit Tool
+Macro 3 - Sprite Preview Pipeline
 ```
 
 ## Files recently added or updated that matter now
@@ -353,7 +363,7 @@ If you are the next agent, do this first:
 ```txt
 1. Read this handoff completely.
 2. Confirm branch = feature/items-builder-vps-qa-stabilization.
-3. Confirm last commit = a9fed9e or newer.
+3. Confirm last commit = cc94a1f or newer.
 4. Start only Phase 7C.
 ```
 
@@ -362,5 +372,6 @@ Then:
 ```txt
 implement the write-form UX polish slice
 validate dotnet build + npm run build
+do not start Macro 2 or Macro 3 before Phase 8 is closed
 update this handoff again if the turn gets close to the final 15% of budget
 ```

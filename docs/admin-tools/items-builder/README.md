@@ -16,6 +16,31 @@ Legacy functional reference (in official repo):
 
 Current checkpoint:
 
+- Official operating order:
+
+```txt
+Macro 1 - Items Builder
+Phase 1 DONE
+Phase 1.5 DONE
+Phase 2 DONE
+Phase 3 DONE
+Phase 4 DONE
+Phase 5 DONE
+Phase 6 DONE
+Phase 6.5A DONE
+Phase 7A DONE
+Phase 7B DONE
+Phase 7C NEXT
+Phase 7D DONE (documentary)
+Phase 8 PENDING
+
+Macro 2 - Client Identity Audit Tool: PENDING
+Macro 3 - Sprite Preview Pipeline: PENDING
+Macro 4 - Spells Builder: DEFERRED
+Macro 5 - Glyph Builder: DEFERRED
+Macro 6 - Maps Builder: DEFERRED
+```
+
 - Phase 6 - Asset Pipeline: `DONE`
 - Phase 6.5A - Item Client Asset Intelligence Audit: `DONE`
 - Phase 7 - Item Create/Edit: `PAUSED / PARTIAL` (effects editor shipped; publish/conditions deferred)
@@ -24,9 +49,9 @@ Current checkpoint:
 - Phase A.8 - QA manual item 12616: `PASSED` (see `items-builder-a8-qa-item-12616.md`)
 - Stabilization Gate (build lock, VPS DB, warnings): `PASSED` (see `items-builder-stabilization-gate-before-7c.md`)
 - Phase 7C - Item Form UX Polish: `NEXT` (authorized after gate)
-- Phase 7D - Client Sprite Preview Extraction: `DOCUMENTED / IMPLEMENTATION PENDING`
+- Phase 7D - Client Sprite Preview Extraction: `DONE (documentary)`
 - Phase 8 - Publish / QA Workflow: `PENDING`
-- Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
+- Future lane - Client Publication Pipeline: `ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8`
 
 Operational DB target note:
 
@@ -48,6 +73,7 @@ Repository rules:
 - no se permite continuar implementacion si `docs/handoffs/AGENT_HANDOFF.md` no existe o esta desactualizado
 - el siguiente agente debe leer el ultimo handoff antes de empezar
 - si el agente entra en el ultimo tramo de presupuesto operativo, alrededor del `15%`, debe detenerse y actualizar el handoff
+- no iniciar Macro 2 ni Macro 3 hasta cerrar `Phase 8`
 
 Live Dofus Tester rollout note:
 

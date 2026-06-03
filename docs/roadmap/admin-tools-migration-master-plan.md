@@ -2,7 +2,7 @@
 
 ## Snapshot
 
-- Date: `2026-06-02`
+- Date: `2026-06-03`
 - Official repo: `C:\Users\Hombr\source\repos\DofusLegacy2.3.7`
 - Official solution: `Sunshine.sln`
 - Official documentation roots:
@@ -59,6 +59,31 @@ Operational rules:
 
 ## Current execution checkpoint
 
+- Official operating order:
+
+```txt
+Macro 1 - Items Builder
+Phase 1 DONE
+Phase 1.5 DONE
+Phase 2 DONE
+Phase 3 DONE
+Phase 4 DONE
+Phase 5 DONE
+Phase 6 DONE
+Phase 6.5A DONE
+Phase 7A DONE
+Phase 7B DONE
+Phase 7C NEXT
+Phase 7D DONE (documentary)
+Phase 8 PENDING
+
+Macro 2 - Client Identity Audit Tool: PENDING
+Macro 3 - Sprite Preview Pipeline: PENDING
+Macro 4 - Spells Builder: DEFERRED
+Macro 5 - Glyph Builder: DEFERRED
+Macro 6 - Maps Builder: DEFERRED
+```
+
 - Phase 1 - Items Builder Audit: `DONE`
 - Phase 1.5 - Admin Clean Architecture Scaffold: `DONE`
 - Phase 2 - Items Builder Read-only API: `DONE / PARTIAL VALIDATED`
@@ -72,9 +97,9 @@ Operational rules:
 - Phase 7B - Item Effects/Characteristics Editor (Blazor functional port): `DONE`
 - Stabilization Gate (pre-7C: build lock, VPS DB, warnings): `DONE`
 - Phase 7C - Item Form UX Polish: `NEXT`
-- Phase 7D - Client Sprite Preview Extraction: `DOCUMENTED / IMPLEMENTATION PENDING`
+- Phase 7D - Client Sprite Preview Extraction: `DONE (DOCUMENTARY)`
 - Phase 8 - Publish / QA Workflow: `PENDING`
-- Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE / IMPLEMENTATION PENDING`
+- Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8`
 
 ## Corrective audit status (Phase 7)
 
@@ -151,9 +176,11 @@ Key references:
 The next intended branch should execute the corrective parity order:
 
 1. Phase 7C form UX polish
-2. Phase 7D client sprite preview extraction implementation slice
-3. Phase 8 publish / QA workflow
-4. Client publication audit/tooling for real custom template shipment
+2. Phase 8 publish / QA workflow
+3. Macro 2 - Client Identity Audit Tool
+4. Macro 3 - Sprite Preview Pipeline
+
+Do not start Macro 2 or Macro 3 before Phase 8 is closed.
 
 ## Mandatory handoff
 

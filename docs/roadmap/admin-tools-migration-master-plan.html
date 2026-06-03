@@ -18,7 +18,7 @@
 
   <h2>Snapshot</h2>
   <ul>
-    <li>Date: <code>2026-06-02</code></li>
+    <li>Date: <code>2026-06-03</code></li>
     <li>Official repo: <code>C:\Users\Hombr\source\repos\DofusLegacy2.3.7</code></li>
     <li>Official solution: <code>Sunshine.sln</code></li>
     <li>Official documentation roots: <code>docs/admin-tools</code>, <code>docs/roadmap</code>, <code>docs/website</code>, <code>docs/infrastructure</code>, <code>docs/combat</code></li>
@@ -59,6 +59,27 @@
   </ul>
 
   <h2>Current execution checkpoint</h2>
+  <p><strong>Official operating order</strong></p>
+  <pre><code>Macro 1 - Items Builder
+Phase 1 DONE
+Phase 1.5 DONE
+Phase 2 DONE
+Phase 3 DONE
+Phase 4 DONE
+Phase 5 DONE
+Phase 6 DONE
+Phase 6.5A DONE
+Phase 7A DONE
+Phase 7B DONE
+Phase 7C NEXT
+Phase 7D DONE (documentary)
+Phase 8 PENDING
+
+Macro 2 - Client Identity Audit Tool: PENDING
+Macro 3 - Sprite Preview Pipeline: PENDING
+Macro 4 - Spells Builder: DEFERRED
+Macro 5 - Glyph Builder: DEFERRED
+Macro 6 - Maps Builder: DEFERRED</code></pre>
   <table>
     <thead>
       <tr>
@@ -79,9 +100,9 @@
       <tr><td>Phase 7A - Item Icon Selector Modal</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7B - Item Effects/Characteristics Editor</td><td><code>DONE</code></td></tr>
       <tr><td>Phase 7C - Item Form UX Polish</td><td><code>NEXT</code></td></tr>
-      <tr><td>Phase 7D - Client Sprite Preview Extraction</td><td><code>DOCUMENTED / IMPLEMENTATION PENDING</code></td></tr>
+      <tr><td>Phase 7D - Client Sprite Preview Extraction</td><td><code>DONE (DOCUMENTARY)</code></td></tr>
       <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>PENDING</code></td></tr>
-      <tr><td>Future lane - Client Publication Pipeline for custom items</td><td><code>ANALYSIS COMPLETE / IMPLEMENTATION PENDING</code></td></tr>
+      <tr><td>Future lane - Client Publication Pipeline for custom items</td><td><code>ANALYSIS COMPLETE / DO NOT START BEFORE PHASE 8</code></td></tr>
     </tbody>
   </table>
 
@@ -136,6 +157,15 @@
     <li>Read it before starting any implementation work.</li>
     <li>Update it before ending a turn when the remaining operational budget is getting low.</li>
     <li>Keep repo, branch, phase, last commit, touched files, validation, pending work, prohibitions, and exact next action current.</li>
+    <li>Do not start Macro 2 or Macro 3 before Phase 8 is closed.</li>
   </ul>
+
+  <h2>Immediate next branch</h2>
+  <ol>
+    <li>Phase 7C form UX polish</li>
+    <li>Phase 8 publish / QA workflow</li>
+    <li>Macro 2 - Client Identity Audit Tool</li>
+    <li>Macro 3 - Sprite Preview Pipeline</li>
+  </ol>
 </body>
 </html>
