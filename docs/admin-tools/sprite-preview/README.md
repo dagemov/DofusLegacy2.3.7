@@ -2,26 +2,36 @@
 
 Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 
-## Estado
+## Estado — Macro 3 COMPLETE
 
 | Fase | Estado |
 | --- | --- |
-| Macro 3 / Phase 1 | `DONE / PARTIAL` — source map, scaffold audit, casos 7754/39/12617 |
-| Macro 3 / Phase 2 | `DONE` — lector D2P reutilizado + `d2p-audit` / `extract-icon` |
-| Macro 3 / Phase 3 | `DONE` — `by-icon/23012.png` (Dofus Ocre / 7754) |
+| Macro 3 / Phase 1 | `DONE` — source map, scaffold audit |
+| Macro 3 / Phase 2 | `DONE` — lector D2P + `extract-icon` puntual |
+| Macro 3 / Phase 3 | `DONE` — `by-icon/23012.png` (Dofus Ocre) |
 | Macro 3 / Phase 4 | `DONE / PARTIAL` — workflow dry-run/approve + selector UX |
-| Macro 3 / Phase 5 | `DONE` — appearance identity audit + preview feasibility |
-| Macro 3 / Phase 6 | `DONE / PARTIAL` — curated appearance preview diagnostics + UX |
-| Macro 3 / Phase 7 | `OPTIONAL / DEFERRED` — EntityLook renderer research |
+| Macro 3 / Phase 5 | `DONE` — appearance identity audit |
+| Macro 3 / Phase 6 | `DONE / PARTIAL` — appearance preview diagnostics |
+| Macro 3 / Phase 7 | `DONE` — final QA + macro closure |
 
-## Objetivo
+**EntityLook renderer:** `DEFERRED` — no requerido para Items Builder MVP.
 
-Conectar identidad cliente (Macro 2) con assets visuales utilizables en Admin:
+## Cuatro superficies en Admin (post Phase 7)
 
-- icon previews (`IconId` → `by-icon`)
-- appearance previews (`AppearanceId` → `by-appearance`, curado manual)
-- validación `Appearances.d2o` (client identity, `APPEARANCE_UNKNOWN`)
-- sprite/look equipado completo (`EntityLook`) — fuera de alcance Macro 3 salvo investigación Phase 7
+| Superficie | Identidad | Asset |
+| --- | --- | --- |
+| Icon Preview | `IconId` | `by-icon/{iconId}.png` |
+| Appearance Preview | `AppearanceId` | `by-appearance/{appearanceId}.png` (curado manual) |
+| Client Identity | `ItemId` en `Items.d2o` | — |
+| Publication Status | visibilidad + patch | — |
+
+```txt
+ItemId != IconId != AppearanceId
+```
+
+## Objetivo cumplido
+
+Conectar identidad cliente (Macro 2) con assets visuales utilizables en Admin sin extracción masiva ni renderer 3D.
 
 ## Herramienta offline
 
@@ -30,66 +40,40 @@ Infrastructure/scripts/ItemSpritePreviewPipeline/
 ```
 
 ```bash
-# Phase 1 — identidad + previews curados
-dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
-  --mode audit --items 7754,39,12617 \
-  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit"
+dotnet run --project Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj -- \
+  --mode audit --items 7754,12616,39 \
+  --output Infrastructure/temporal-artifacts/item-sprite-preview-audit
 
-# Phase 2 — auditoría D2P
-dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
-  --mode d2p-audit \
-  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit"
-
-# Phase 4 — dry-run copia curada
-dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
+dotnet run --project Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj -- \
   --mode extract-icon --icon-id 23012 \
-  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted" \
+  --output Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted \
   --dry-run-curated-copy
-
-# Phase 3/4 — aprobar copia al catálogo
-dotnet run --project "Infrastructure/scripts/ItemSpritePreviewPipeline/ItemSpritePreviewPipeline.csproj" -- \
-  --mode extract-icon --icon-id 23012 \
-  --output "Infrastructure/temporal-artifacts/item-sprite-preview-audit/extracted" \
-  --approve-curated-copy --overwrite-curated
 ```
 
-Asset curado Phase 3: `src/assets/item-previews/by-icon/23012.png`
-
-Salidas temporales (gitignored): `Infrastructure/temporal-artifacts/`
-
-## Destinos Angular (curado manual, no masivo)
+## Destinos Angular (curado manual)
 
 ```txt
-Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-icon/
-Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-item/
-Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/assets/item-previews/by-appearance/
-```
-
-## Hallazgo clave (Phase 5)
-
-```txt
-AppearanceId en Sunshine = skin añadido a EntityLook al equipar (no es IconId).
-Appearances.d2o en Client2.3.7 = catálogo recortado (130 ids, 654–868); 458 y 1004 no existen.
-Preview equipamiento viable = PNG curado by-appearance + validación, no renderer Tiphon.
+src/assets/item-previews/by-icon/
+src/assets/item-previews/by-item/
+src/assets/item-previews/by-appearance/
 ```
 
 ## Documentos
 
-- [Phase 5 appearance identity audit](./appearance-identity-audit-phase5.md)
-- [Phase 5 preview feasibility](./appearance-preview-feasibility-study.md)
-- [EntityLook relationship map](./entitylook-relationship-map.md)
+- [Phase 7 final QA](./sprite-preview-final-qa-phase7.md)
+- [Phase 6 appearance curated](./appearance-preview-curated-workflow-phase6.md)
+- [Phase 5 appearance audit](./appearance-identity-audit-phase5.md)
+- [EntityLook map](./entitylook-relationship-map.md)
 - [Phase 1 plan](./sprite-preview-pipeline-phase1.md)
-- [Phase 2 D2P extractor](./sprite-preview-d2p-extractor-phase2.md)
+- [Phase 2 D2P](./sprite-preview-d2p-extractor-phase2.md)
 - [Phase 3 curated import](./sprite-preview-curated-import-phase3.md)
-- [Phase 4 curated workflow](./sprite-preview-curated-workflow-phase4.md)
-- [Phase 6 appearance curated workflow](./appearance-preview-curated-workflow-phase6.md)
+- [Phase 4 workflow](./sprite-preview-curated-workflow-phase4.md)
 - [D2P format notes](./sprite-preview-d2p-format-notes.md)
 - [Source map](./sprite-preview-source-map.md)
-- [Phase 1 audit report](./item-sprite-preview-phase1-report.md)
 
-## Reglas
+## Reglas (respetadas en Macro 3)
 
 - read-only sobre cliente (`Client2.3.7`)
-- sin extracción masiva en Phase 1
+- sin extracción masiva
 - sin writes DB
-- sin commitear `temporal-artifacts`
+- sin renderer EntityLook / Tiphon en Admin

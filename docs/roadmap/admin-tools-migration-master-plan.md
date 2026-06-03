@@ -82,7 +82,7 @@ Phase 7D DONE (documentary)
 Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
-Macro 3 - Sprite Preview Pipeline: IN_PROGRESS (Phase 1–6 DONE/PARTIAL, Phase 7 OPTIONAL)
+Macro 3 - Sprite Preview Pipeline: COMPLETE (Phases 1–7 DONE)
 Macro 4 - Spells Builder: DEFERRED
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -117,7 +117,8 @@ Phase status summary:
 - Macro 3 / Phase 4 - Curated import workflow / selector integration: `DONE / PARTIAL`
 - Macro 3 / Phase 5 - Appearance identity audit + preview feasibility: `DONE`
 - Macro 3 / Phase 6 - Curated appearance preview diagnostics (`by-appearance/`): `DONE / PARTIAL`
-- Macro 3 / Phase 7 - EntityLook renderer research (optional): `OPTIONAL / DEFERRED`
+- Macro 3 / Phase 7 - Final QA + macro closure: `DONE`
+- EntityLook renderer (Sprite Preview): `DEFERRED / NOT REQUIRED FOR ITEMS BUILDER MVP`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -213,16 +214,16 @@ Key references:
 - [Sprite Preview Phase 5 feasibility](../admin-tools/sprite-preview/appearance-preview-feasibility-study.md)
 - [Sprite Preview EntityLook map](../admin-tools/sprite-preview/entitylook-relationship-map.md)
 - [Sprite Preview Phase 6 appearance curated](../admin-tools/sprite-preview/appearance-preview-curated-workflow-phase6.md)
+- [Sprite Preview Phase 7 final QA](../admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md)
 
 ## Immediate next branch
 
 The next intended branch order is:
 
-1. Macro 3 / Phase 7 - EntityLook renderer research (solo con aprobación explícita)
-2. Macro 4 - Spells Builder
+1. Macro 4 - Spells Builder (requiere aprobación explícita)
 3. Macro 5 - Glyph Builder
 
-Macro 3 Phase 6 is closed (diagnostics + UX). Phase 7 (EntityLook renderer) remains optional and deferred.
+Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
 ## Mandatory handoff
 

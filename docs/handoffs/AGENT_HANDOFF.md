@@ -1,4 +1,4 @@
-# Agent Handoff - Sprite Preview Pipeline (Macro 3)
+# Agent Handoff - Admin Tools Migration
 
 Generated: `2026-06-03`
 
@@ -6,67 +6,66 @@ Generated: `2026-06-03`
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-sprite-preview-appearance-curated-phase6
+feature/item-sprite-preview-final-qa-phase7
 ```
 
-## Estado Macro 3
+## Macro 3 — Sprite Preview: COMPLETE
 
 ```txt
-Phase 1–5 DONE
-Phase 6 DONE / PARTIAL — appearance preview diagnostics + Angular UX
-Phase 7 OPTIONAL / DEFERRED — EntityLook renderer research
+Phases 1–7 DONE
+EntityLook renderer DEFERRED (not required for Items Builder MVP)
 ```
 
-## Ultimo trabajo (Phase 6)
-
-Commit:
+Últimos commits Macro 3:
 
 ```txt
-feat: add curated appearance preview diagnostics
+02ad65a feat: add curated appearance preview diagnostics
+022e992 docs: audit appearance identity and preview feasibility
+(+ commits phases 1–4 en ramas anteriores)
 ```
 
-Cambios:
+Phase 7 entrega:
 
 ```txt
-ItemAppearancePreviewStateDto + FileSystemItemAppearancePreviewStateResolver
-GET /api/admin/v1/items/appearance-preview-state
-ItemDetailDto / PublicationStatus / QaSummary incluyen appearancePreviewState
-ItemAppearancePreviewCardComponent en detail / edit / publication-status
-by-appearance/.gitkeep confirmado
+docs/admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md
+UX labels ES (Icon / Appearance / Client Identity / Publication Status)
+API smoke PASS (7754, 12616, 12617, 39)
 ```
 
-Estados: `NOT_APPLICABLE`, `CURATED_BY_APPEARANCE`, `MISSING`, `UNKNOWN`
-
-## QA browser (operador, API levantada)
+## Cuatro superficies (operador)
 
 ```txt
-/admin/items/7754 → AppearanceId 0, NOT_APPLICABLE
+Icon Preview        → inventario (IconId / by-icon)
+Appearance Preview  → equipamiento (AppearanceId / by-appearance)
+Client Identity     → ItemId en Items.d2o
+Publication Status  → visible / patch / assets
+```
+
+## Browser QA pendiente (operador)
+
+```txt
+/admin/items/7754
 /admin/items/7754/publication-status
-/admin/items/12616 → AppearanceId 1004, AppearanceKnown=false, UNKNOWN
-/admin/items/12616/publication-status
+/admin/items/12616
+/admin/items/12616/edit
+/admin/items/12617/publication-status
+/admin/items/icon-selector
 ```
 
-## Builds validados
+API smoke ya PASS en sesión 2026-06-03.
+
+## Siguiente macro
 
 ```txt
-dotnet build Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj
-npm run build (Angular Admin)
+NO iniciar sin aprobación explícita.
+Candidato documentado: Macro 4 Spells Builder (DEFERRED en roadmap).
 ```
 
-## Prohibiciones respetadas
+## Builds
 
 ```txt
-no EntityLook renderer
-no Tiphon
-no extraccion masiva
-no tocar cliente/DB/gameplay
+dotnet build Angular-tools/Admin/RollblackLegacy.Admin.Api/RollblackLegacy.Admin.Api.csproj — OK
+npm run build — OK
 ```
 
-## Siguiente (opcional)
-
-```txt
-ItemAppearanceSelectorComponent (fase futura)
-Macro 3 Phase 7 EntityLook research — solo con aprobacion
-```
-
-Docs: `docs/admin-tools/sprite-preview/appearance-preview-curated-workflow-phase6.md`
+Docs: `docs/admin-tools/sprite-preview/sprite-preview-final-qa-phase7.md`
