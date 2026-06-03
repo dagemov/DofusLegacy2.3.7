@@ -72,12 +72,20 @@
                       min="0"
                       [(ngModel)]="row.value"
                       [disabled]="isSaving" />
+                    <div class="small text-secondary mt-1">
+                      Valor formateado: {{ row.value | number: '1.0-0' }}
+                    </div>
                   </ng-container>
                   <ng-template #readonlyValues>
                     <span class="small text-secondary">{{ row.previewText }}</span>
                   </ng-template>
                 </td>
-                <td class="small">{{ row.previewText }}</td>
+                <td class="small">
+                  <div>{{ row.previewText }}</div>
+                  <div *ngIf="row.isSupported && row.operatorMode === 'Integer'" class="text-secondary">
+                    Runtime: {{ row.value | number: '1.0-0' }}
+                  </div>
+                </td>
                 <td class="text-end">
                   <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeRow(row)" [disabled]="isSaving">
                     Quitar

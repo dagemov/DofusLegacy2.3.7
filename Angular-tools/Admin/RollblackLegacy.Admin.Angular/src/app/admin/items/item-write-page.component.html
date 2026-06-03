@@ -141,6 +141,9 @@
               <div *ngIf="!getFieldErrors('level').length && getLocalError('level')" class="invalid-feedback d-block">
                 {{ getLocalError('level') }}
               </div>
+              <div class="form-text numeric-helper">
+                Vista formateada: {{ (form.controls.level.value ?? 0) | number: '1.0-0' }}
+              </div>
             </div>
 
             <div class="col-6 col-md-3">
@@ -157,6 +160,9 @@
               </div>
               <div *ngIf="!getFieldErrors('weight').length && getLocalError('weight')" class="invalid-feedback d-block">
                 {{ getLocalError('weight') }}
+              </div>
+              <div class="form-text numeric-helper">
+                Vista formateada: {{ (form.controls.weight.value ?? 0) | number: '1.0-0' }}
               </div>
             </div>
 
@@ -175,6 +181,9 @@
               </div>
               <div *ngIf="!getFieldErrors('price').length && getLocalError('price')" class="invalid-feedback d-block">
                 {{ getLocalError('price') }}
+              </div>
+              <div class="form-text numeric-helper">
+                Vista formateada: {{ (form.controls.price.value ?? 0) | number: '1.0-0' }}
               </div>
             </div>
 
