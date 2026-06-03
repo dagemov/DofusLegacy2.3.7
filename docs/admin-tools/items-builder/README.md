@@ -45,6 +45,9 @@ Repository rules:
 - los proyectos Admin de esta migracion deben vivir bajo `Angular-tools/Admin/`
 - todo documento debe vivir bajo `docs/`
 - si una herramienta no existe en el repo oficial, no se puede marcar como implementada
+- no se permite continuar implementacion si `docs/handoffs/AGENT_HANDOFF.md` no existe o esta desactualizado
+- el siguiente agente debe leer el ultimo handoff antes de empezar
+- si el agente entra en el ultimo tramo de presupuesto operativo, alrededor del `15%`, debe detenerse y actualizar el handoff
 
 Live Dofus Tester rollout note:
 

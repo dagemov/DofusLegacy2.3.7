@@ -1,19 +1,55 @@
-# Agent Handoff — Items Builder (DofusLegacy2.3.7)
+# Agent Handoff - Admin Tools Migration / Items Builder
 
-**Generated:** 2026-06-02  
-**Read this file before starting any implementation work.**
+Generated: `2026-06-03`
 
----
+Read this file before starting any implementation work.
+
+## Mandatory handoff rule
+
+Do not continue implementing if this handoff was not produced or is clearly outdated.
+
+The next agent must:
+
+1. read the latest handoff first
+2. confirm repo, branch, phase, and last commit
+3. only then continue implementation
+
+If the current agent is getting close to the paid token/rate limit threshold, stop before the last stretch and update this file first.
+
+Working rule for future agents:
+
+- when remaining budget feels low, around the last `15%`, stop implementation
+- update `docs/handoffs/AGENT_HANDOFF.md`
+- record exact state, validations, risks, and next action
+- only then end the turn
 
 ## Repository
+
+Official repo only:
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
 ```
 
-Official source of truth only. No external worktrees, clones, or parallel repos.
+No external worktrees.
+No parallel repos.
+No implementation outside the official repo.
 
-**Admin stack location (not `src/Admin/`):**
+## Current branch
+
+```txt
+feature/items-builder-vps-qa-stabilization
+```
+
+## Real Admin stack
+
+```txt
+Angular-tools/Admin/
+```
+
+Do not use `src/Admin/`.
+
+Canonical paths:
 
 ```txt
 Angular-tools/Admin/RollblackLegacy.Admin.Angular
@@ -21,306 +57,310 @@ Angular-tools/Admin/RollblackLegacy.Admin.Api
 Angular-tools/Admin/RollblackLegacy.Admin.Application
 Angular-tools/Admin/RollblackLegacy.Admin.Contracts
 Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure
+Angular-tools/Admin/RollblackLegacy.Admin.Domain
 ```
 
-**Legacy Blazor reference (read-only, outside repo):**
+## Current roadmap snapshot
+
+Items Builder:
 
 ```txt
-C:\Users\Hombr\source\repos\DofusBeta-2.0\Dofus-2\Rollback\Rollback.Web
-C:\Users\Hombr\source\repos\DofusBeta-2.0\Dofus-2\Rollback\Rollback.Admin
+Phase 1-6: DONE
+Phase 6.5A: DONE
+Phase 7A: DONE
+Phase 7B: DONE
+Phase 7C: NEXT / AUTHORIZED
+Phase 7D: DOCS DONE
+Phase 8: PENDING
 ```
 
----
-
-## Branch
+Additional lane:
 
 ```txt
-feature/items-builder-vps-qa-stabilization
+Future client publication pipeline: ANALYSIS COMPLETE / IMPLEMENTATION PENDING
 ```
 
-Optional clean branch name if splitting work later:
+## Latest relevant commits
 
 ```txt
-feature/items-builder-icon-selector-phase7a   (already merged into work above via commits)
-feature/items-builder-effects-phase7b       (suggested for 7B+)
+a9fed9e docs: plan item client sprite preview extraction
+7a4ed12 docs: define client publication pipeline for custom items
+32c0b71 feat: enable visible dofus tester vendor fallback
+cc02466 docs: audit dofus tester visibility and restart safety
 ```
 
-**Do not commit unrelated dirty files:**
+## Current status confirmed
 
-- `Sunshine net11.0/Sunshine net11.0/Sunshine.MySql/Database/Managers/WorldServerManager.cs` (pre-existing local change)
-- `Client2.3.7/**`, `config/Database*.xml` (untracked, likely secrets/local)
+### Legacy reference
 
----
-
-## Current phase
+Imported and documented:
 
 ```txt
-Phase 7B.0 — Effects Serialization Audit (NEXT)
+legacy-reference/Rollback.Web/
+legacy-reference/Rollback.Admin/
 ```
 
-Sub-phase of:
+Reference only. Do not treat as deployable code.
+
+### Stabilization gate
+
+Closed and validated:
 
 ```txt
-Phase 7B — Item Effects/Characteristics Editor
+5366a9b docs: record items builder stabilization gate before phase 7c
 ```
 
-**Current status:** `NOT STARTED` (audit + implementation pending)
-
----
-
-## Last completed phase
+Confirmed during this arc:
 
 ```txt
-Phase 7A — Item Icon Selector Modal — DONE
+dotnet build Sunshine.sln: OK
+npm run build Angular: OK
+Admin API -> VPS DB: isRemote=true
+items/effects endpoints: valid JSON
 ```
 
-Prior corrective audit:
+### Dofus Tester visibility
+
+Confirmed distinction:
 
 ```txt
-Phase 7 — Blazor Parity Corrective Audit — DONE (docs only, commit cbfb3d3)
+7754 = client-known visible fallback
+12617 = server-side custom template, still not client-visible
 ```
 
----
-
-## Current status (roadmap snapshot)
-
-| Phase | Status |
-| --- | --- |
-| Phase 1 – Items Builder Audit | DONE |
-| Phase 1.5 – Admin Clean Architecture Scaffold | DONE |
-| Phase 2 – Read-only API | DONE / PARTIAL VALIDATED |
-| Phase 3 – Angular List/Detail | DONE / PARTIAL VALIDATED |
-| Phase 4 – Diagnostics + Preview UI | DONE |
-| Phase 5 – Live Data Workflow | DONE |
-| Phase 6 – Asset Pipeline + PNG Preview | DONE |
-| Phase 6.5A – Client Asset Intelligence Audit | DONE |
-| Phase 7 – Item Create/Edit | **PAUSED / PARTIAL** |
-| Phase 7A – Item Icon Selector Modal | **DONE** |
-| Phase 7B – Effects/Characteristics Editor | **NEXT** (start with 7B.0 audit) |
-| Phase 7C – Item Form UX Polish | PENDING |
-| Phase 8 – Publish / QA Workflow | PENDING |
-
----
-
-## What Phase 7A delivered
-
-- Bootstrap modal `ItemIconSelectorModalComponent` wired into Create/Edit (`item-write-page`).
-- Standalone route kept: `/admin/items/icon-selector`.
-- Icon selection sets `form.iconId`, refreshes preview via existing `getPreviewState`; **does not** change `AppearanceId`.
-- List page mini-preview column when `previewState.resolvedPath` or `byIconPath` exists.
-- API: `GET /api/admin/v1/item-icons` unchanged route; `ItemIconOptionDto` extended with `PreviewState` (`FOUND` for curated PNG catalog entries).
-
----
-
-## Commits created (this arc)
-
-| Commit | Message |
-| --- | --- |
-| `2b79283` | `fix: stabilize items builder error handling` |
-| `98d106a` | `docs: add agent handoff for items builder phase 7` |
-| `727d2c6` | `feat: add item icon selector modal` |
-| `cbfb3d3` | `docs: audit item builder parity gaps with legacy blazor` |
-
-Earlier related (same branch, context only):
-
-| Commit | Message |
-| --- | --- |
-| `8fc7819` | `docs: document admin api vps database profile` |
-| `5e38e1a` | `fix: stabilize items builder live vps workflow` |
-| `3b66428` | `feat: add items builder create edit workflow` |
-| `da75e03` | `feat: add item icon selector for builder workflow` |
-
----
-
-## Files touched (Phase 7A commit `727d2c6`)
-
-**Angular**
-
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-icon-selector-modal.component.ts`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-icon-selector-modal.component.html`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-icon-selector-modal.component.scss`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-write-page.component.ts`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-write-page.component.html`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-write-page.component.scss`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-icon-selector.component.html`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/items-page.component.html`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/items-page.component.scss`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/data-access/items.models.ts`
-
-**Admin API**
-
-- `Angular-tools/Admin/RollblackLegacy.Admin.Contracts/Items/ItemIconOptionDto.cs`
-- `Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Services/Items/ItemsAdminReadRepository.cs`
-
-**Docs (7A + audit)**
-
-- `docs/admin-tools/items-builder/items-builder-icon-selector-plan.md`
-- `docs/admin-tools/items-builder/README.md`
-- `docs/roadmap/admin-tools-migration-master-plan.md`
-- `docs/roadmap/admin-tools-migration-master-plan.html`
-- `docs/admin-tools/migration/admin-tools-migration-risk-register.md`
-- `docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md`
-- `docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md`
-- `docs/admin-tools/items-builder/items-builder-effects-editor-plan.md`
-
----
-
-## Validation performed
-
-| Check | Result | Notes |
-| --- | --- | --- |
-| `npm run build` (Admin Angular) | **PASS** | Warning: initial bundle ~6.3 kB over 500 kB budget |
-| `dotnet build Sunshine.sln` | **PASS** | First attempt failed: `RollblackLegacy.Admin.Api` DLL locked (PID 64252); stop process and rebuild succeeded |
-| Browser manual QA (`/admin/items/new`, `/admin/items/:id/edit`, icon-selector) | **NOT RUN** in last session | Next agent should run before claiming 7A sign-off in production-like env |
-| DB writes for 7A | **N/A** | Read-only icon catalog + form field only |
-
----
-
-## Known gaps (why Phase 7 remains PAUSED)
-
-Create/Edit is **basic CRUD only**. Missing vs legacy Blazor:
-
-1. **Effects/characteristics editor** — critical; no write payload for `items.Effects`.
-2. **AP/PM/stats via effects** — not editable in Angular write form.
-3. **Advanced template fields** — legacy had `APCost`, range, crit, etc. on `items_templates`; Sunshine write path is narrower.
-4. **Description / IsVisible** — contract fields exist; API warns they are not persisted to client i18n / no DB column.
-5. **Phase 7 write effects behavior today:**
-   - Create: `Effects = "0000"` hardcoded in `ItemsAdminWriteRepository`.
-   - Update: does **not** update `Effects` column.
-   - Duplicate: copies source `Effects` hex only.
-   - Read: `AdminProtocolCatalog.DecodeItemEffects` for detail display only.
-
----
-
-## Phase 7B.0 — Effects Serialization Audit (required first)
-
-**Goal:** Document how Sunshine stores item effects — no implementation, no DB writes, no invented format.
-
-### Must answer (from parity audit + code)
-
-| Question | Known pointers |
-| --- | --- |
-| Where are effects stored? | `sunshine.items.Effects` (hex string in current Admin); legacy `items_templates.BinaryEffects` (blob) |
-| Column type / format | Hex in Sunshine; decode in `AdminProtocolCatalog.DecodeItemEffects` |
-| Legacy serialize/deserialize | `GameEffectEditorService` → `EffectManager.SerializeEffects` / `DeserializeEffects` (Blazor repo) |
-| Effect type IDs in decode | Cases `70` (int), `73` (dice), `82` (min/max), `71`, `74`, `76` in `AdminProtocolCatalog.cs` |
-| AP/PM/stats representation | Effect `actionId` rows in payload; separate `APCost` column in legacy template (verify Sunshine schema) |
-| Enum labels | `Sunshine.Protocol/Enums/EffectsEnum.cs` via `AdminProtocolCatalog` |
-
-### Files to read first (official repo)
-
-- `Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Items/AdminProtocolCatalog.cs` (`DecodeItemEffects`)
-- `Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Services/Items/ItemsAdminWriteRepository.cs` (`EmptyEffectsHex`, insert/update SQL)
-- `Angular-tools/Admin/RollblackLegacy.Admin.Infrastructure/Services/Items/ItemsAdminReadRepository.cs` (select `Effects`)
-- `Angular-tools/Admin/RollblackLegacy.Admin.Contracts/Items/ItemEffectDto.cs`
-- `docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md`
-- `docs/admin-tools/items-builder/items-builder-effects-editor-plan.md`
-
-### Reference only (Blazor)
-
-- `Rollback.Admin/Services/GameEffectEditorService.cs`
-- `Rollback.Admin/Services/ItemAdminService.cs` (`BinaryEffects`)
-- `Rollback.Web/Components/Admin/EffectListEditor.razor`
-
-### Deliverable for 7B.0
-
-Update or add doc under:
+Important facts:
 
 ```txt
-docs/admin-tools/items-builder/
+ItemId = objectGID/template identity the client must know
+IconId = inventory icon / basic preview identity
+AppearanceId = equipped look identity
+sunshine.items does not currently expose ClientNameId as a DB column
 ```
 
-Suggested name: `items-builder-effects-serialization-audit.md` (or extend effects-editor-plan with audit section).
+## Phase 7D documentary conclusion
 
----
-
-## Remaining tasks (checklist)
-
-### Phase 7B.0 (audit only)
-
-- [ ] Confirm `items.Effects` column type in Sunshine schema (hex length, null, empty = `0000`?)
-- [ ] Document full binary/hex layout (count + per-effect records) with examples from real rows (sample 3–5 items, **not** 44k scan)
-- [ ] Map `EffectsEnum` IDs for Vitality, Wisdom, AP, PM, stats, resistances (grep enum file, document IDs only)
-- [ ] Compare Blazor `EffectManager` path vs `AdminProtocolCatalog` decode — list divergences
-- [ ] Document encode path gap: read exists, write missing
-- [ ] Update roadmap risk register if new serialization risks found
-
-### Phase 7B (implementation — after 7B.0 approved)
-
-- [ ] `ItemEffectWriteRow` contracts + extend `ItemCreateRequest` / `ItemUpdateRequest`
-- [ ] `SunshineItemEffectsCodec` (encode/decode round-trip) in Infrastructure
-- [ ] Wire `ItemsAdminWriteRepository` create/update/duplicate to persist effects
-- [ ] Angular `EffectsEditor` component in `item-write-page`
-- [ ] Unit tests for codec round-trip
-- [ ] `npm run build` + `dotnet build`
-- [ ] Manual QA: create/edit item with +Vitality / AP-style effects
-
-### Phase 7C / 8 (later)
-
-- [ ] Conditions UX polish (keep raw string)
-- [ ] Numeric formatting (price/weight display)
-- [ ] Publish/QA workflow (Phase 8 still PENDING)
-
----
-
-## Risks / blockers
-
-| Risk | Mitigation |
-| --- | --- |
-| **R28** — Claiming Phase 7 complete without effects editor | Keep Phase 7 `PAUSED / PARTIAL` until 7B done |
-| **R22** — `MAX(Id)+1` on `items` (MyISAM) | No ad-hoc create smoke on shared DB without cleanup |
-| **R30 / R31** — Icon selector false confidence | 7A done; browser QA still recommended |
-| Sunshine vs Rollback effect format mismatch | 7B.0 audit must resolve before encoder implementation |
-| `RollblackLegacy.Admin.Api` file lock during build | Stop running API process before `dotnet build` |
-| Weapon types | Blocked in write service; do not expand to weapons in 7B |
-| Secrets in `config/Database*.xml` | Never commit |
-
----
-
-## Next recommended action
-
-**Single next step:**
-
-Perform **Phase 7B.0 Effects Serialization Audit** — read `AdminProtocolCatalog.DecodeItemEffects`, `ItemsAdminWriteRepository`, and legacy `GameEffectEditorService`, then write `docs/admin-tools/items-builder/items-builder-effects-serialization-audit.md` with concrete hex layout and effect ID mapping. **Do not implement Angular/API write for effects until audit doc is reviewed.**
-
----
-
-## Things explicitly forbidden
+Closed in:
 
 ```txt
-- External worktrees or parallel repos
-- Auditing weapons module
-- Scanning 44k item records
-- D2P/SWF extraction or client asset mass copy
-- Gameplay changes
-- Client file writes
-- DB writes outside controlled item form QA (and none during 7B.0 audit)
-- Implementing full Phase 7B UI/API before 7B.0 audit doc exists
-- Copying entire Blazor folders into repo
-- Committing config/Database*.xml, Client2.3.7 binaries, or secrets
-- Marking Phase 7 Create/Edit as DONE before effects editor ships
-- Auto-syncing IconId → AppearanceId
+a9fed9e docs: plan item client sprite preview extraction
 ```
 
----
+Key conclusions:
 
-## Key doc index
+```txt
+The current client is D2O/D2I/D2P based.
+JPEXS / FFDec is useful for legacy SWF research, not as the primary current-client pipeline.
+7754 / Dofus Ocre is the safe control case.
+12617 / Dofus Tester remains invisible until client publication exists.
+AppearanceId = 458 is not verified and must not be treated as truth.
+```
 
-| Doc | Purpose |
-| --- | --- |
-| `docs/admin-tools/items-builder/items-builder-blazor-parity-audit.md` | Blazor vs Angular gaps |
-| `docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md` | Feature matrix |
-| `docs/admin-tools/items-builder/items-builder-effects-editor-plan.md` | 7B implementation plan |
-| `docs/admin-tools/items-builder/items-builder-icon-selector-plan.md` | 7A DONE |
-| `docs/roadmap/admin-tools-migration-master-plan.md` | Master roadmap |
-| `docs/admin-tools/migration/admin-tools-migration-risk-register.md` | Risks R28–R31 |
+## Exact current phase
 
----
+We are here:
 
-## Handoff rule for next agent
+```txt
+Macro 1 - Items Builder
+Phase 7C - Form UX polish
+```
 
-1. Read this file completely.
-2. Run `git status`, `git branch --show-current`, `git log --oneline -5`.
-3. Do **not** touch unrelated dirty/untracked files.
-4. Execute **Phase 7B.0 audit only** unless user explicitly approves implementation.
-5. Update this `AGENT_HANDOFF.md` when phase status changes.
+Phase 7C is authorized because:
+
+```txt
+Phase 7A: DONE
+Phase 7B: DONE
+Stabilization gate: PASSED
+VPS DB target: isRemote=true
+7D docs are already closed
+```
+
+## Phase 7C implementation target
+
+Goal:
+
+```txt
+polish the existing Create/Edit UX without reopening client publish or sprite extraction work
+```
+
+Expected Angular files:
+
+```txt
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-write-page.*
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/item-effects-editor.*
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/shared/components/api-problem-panel.component.*
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/data-access/items.models.ts
+Angular-tools/Admin/RollblackLegacy.Admin.Angular/src/app/admin/items/data-access/items.api.ts
+```
+
+Expected changes:
+
+```txt
+1. Unified success/error alerts or toasts
+2. Cleaner 409/422/traceId UX
+3. Split layout:
+   left = runtime form
+   right = preview / identity / warnings
+   bottom = effects editor
+4. Conditions as free textarea with hints
+5. Preview warnings before save
+6. Better numeric formatting for price / weight / level / values
+```
+
+Do not touch in 7C:
+
+```txt
+client publish
+sprite extraction implementation
+weapons
+gameplay
+mass asset import
+Client2.3.7 tracked payloads
+```
+
+Expected commit:
+
+```txt
+feat: polish items write form ux
+```
+
+## Next macro after 7C
+
+Do not jump there yet, but keep it explicit:
+
+### Macro 2 - Client Data Audit Tools
+
+Planned next documentary/technical lane:
+
+```txt
+read-only tooling for:
+Items.d2o
+Appearances.d2o
+ItemTypes.d2o
+ItemSets.d2o
+i18n_es.d2i
+i18n_en.d2i
+```
+
+Goal:
+
+```txt
+answer if the client knows a template, a name, and an appearance before claiming visibility
+```
+
+## Files recently added or updated that matter now
+
+Client publication / visibility:
+
+```txt
+docs/admin-tools/items-builder/items-builder-client-publication-analysis.md
+docs/admin-tools/items-builder/item-publication-pipeline.md
+docs/admin-tools/items-builder/visible-item-checklist.md
+docs/admin-tools/items-builder/qa-vendor-test-checklist.md
+docs/infrastructure/vps-restart-safety-checklist.md
+```
+
+Phase 7D docs:
+
+```txt
+docs/admin-tools/items-builder/items-client-sprite-preview-extraction-plan.md
+docs/admin-tools/items-builder/items-client-appearance-mapping-audit.md
+docs/admin-tools/items-builder/items-client-jpexs-ffdec-notes.md
+```
+
+Master roadmap / indexes:
+
+```txt
+docs/admin-tools/items-builder/README.md
+docs/roadmap/admin-tools-migration-master-plan.md
+docs/roadmap/admin-tools-migration-master-plan.html
+docs/admin-tools/migration/admin-tools-migration-risk-register.md
+```
+
+## Validation baseline
+
+Latest validated outcomes in this branch:
+
+```txt
+dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" -> OK
+npm run build in Angular-tools/Admin/RollblackLegacy.Admin.Angular -> OK
+```
+
+For the next implementation step, re-run:
+
+```txt
+dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln"
+cd Angular-tools/Admin/RollblackLegacy.Admin.Angular
+npm run build
+```
+
+Recommended browser QA after 7C:
+
+```txt
+/admin/items/12616/edit
+/admin/items/39/edit
+/admin/items/new
+```
+
+Check:
+
+```txt
+preview
+warnings
+effects editor still works
+traceId remains visible on error
+```
+
+## Dirty files that are not yours
+
+Do not revert or stage:
+
+```txt
+Sunshine net11.0/Sunshine net11.0/Sunshine.MySql/Database/Managers/WorldServerManager.cs
+```
+
+Also leave local untracked files alone:
+
+```txt
+Client2.3.7/cliente.rar
+Client2.3.7/cliente/
+Client2.3.7/version
+config/Database.local.xml
+config/Database.runtime.backup.xml
+config/Database.team.xml
+```
+
+## Absolute prohibitions
+
+```txt
+create external worktrees
+create parallel repos
+use src/Admin when the real stack is Angular-tools/Admin
+audit weapons
+scan 44k records
+touch client files without an approved phase
+touch gameplay
+run mass D2P/SWF extraction
+write to production without backup
+commit secrets
+copy bin/obj/node_modules/dist/logs/artifacts
+start a phase outside the roadmap without asking
+```
+
+## Exact next action
+
+If you are the next agent, do this first:
+
+```txt
+1. Read this handoff completely.
+2. Confirm branch = feature/items-builder-vps-qa-stabilization.
+3. Confirm last commit = a9fed9e or newer.
+4. Start only Phase 7C.
+```
+
+Then:
+
+```txt
+implement the write-form UX polish slice
+validate dotnet build + npm run build
+update this handoff again if the turn gets close to the final 15% of budget
+```

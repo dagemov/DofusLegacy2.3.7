@@ -34,6 +34,9 @@
     <li>Do not create <code>RollblackLegacy.Admin.Angular</code> outside the official repo.</li>
     <li>If a tool does not exist in the official repo, it cannot be marked as implemented.</li>
     <li>No item can be called client-visible unless the template exists in client metadata and the launcher delivery lane is accounted for.</li>
+    <li>Never continue implementing if <code>docs/handoffs/AGENT_HANDOFF.md</code> was not produced or is clearly outdated.</li>
+    <li>The next agent must read the latest handoff before starting work.</li>
+    <li>If the remaining paid token budget is getting low, around the last <code>15%</code>, stop implementation and update the handoff first.</li>
   </ol>
 
   <h2>Admin Angular canonical location</h2>
@@ -125,6 +128,14 @@
     <li><code>docs/admin-tools/items-builder/items-builder-create-edit-gap-analysis.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-icon-selector-plan.md</code></li>
     <li><code>docs/admin-tools/items-builder/items-builder-effects-editor-plan.md</code></li>
+  </ul>
+
+  <h2>Mandatory handoff</h2>
+  <p>Canonical handoff path: <code>docs/handoffs/AGENT_HANDOFF.md</code></p>
+  <ul>
+    <li>Read it before starting any implementation work.</li>
+    <li>Update it before ending a turn when the remaining operational budget is getting low.</li>
+    <li>Keep repo, branch, phase, last commit, touched files, validation, pending work, prohibitions, and exact next action current.</li>
   </ul>
 </body>
 </html>

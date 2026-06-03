@@ -35,6 +35,9 @@ Inventory and port subphases: [blazor-to-angular-port-plan.md](../admin-tools/it
 6. Do not create `RollblackLegacy.Admin.Angular` outside the official repo.
 7. If a tool does not exist in the official repo, it cannot be marked as implemented.
 8. No item can be called client-visible unless the template exists in client metadata and the launcher delivery lane is accounted for.
+9. Never continue implementing if `docs/handoffs/AGENT_HANDOFF.md` was not produced or is clearly outdated.
+10. The next agent must read the latest handoff before starting work.
+11. If the current agent is getting close to the last `15%` of paid token budget or similar operational limit, stop implementation and update the handoff first.
 
 ## Admin Angular canonical location
 
@@ -151,3 +154,21 @@ The next intended branch should execute the corrective parity order:
 2. Phase 7D client sprite preview extraction implementation slice
 3. Phase 8 publish / QA workflow
 4. Client publication audit/tooling for real custom template shipment
+
+## Mandatory handoff
+
+Canonical handoff path:
+
+`docs/handoffs/AGENT_HANDOFF.md`
+
+Minimum required contents:
+
+- repo
+- branch
+- current phase
+- last commit
+- files touched
+- validation
+- pending work
+- prohibitions
+- exact next action
