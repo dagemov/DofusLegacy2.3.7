@@ -396,10 +396,6 @@
 
       <app-item-diagnostic-panel [warnings]="displayWarnings"></app-item-diagnostic-panel>
 
-      <app-item-effects-editor
-        *ngIf="mode === 'edit' && sourceItemId"
-        [itemId]="sourceItemId"></app-item-effects-editor>
-
       <div class="card admin-card border-0">
         <div class="card-body d-grid gap-2 small">
           <p class="text-uppercase small fw-semibold text-secondary mb-1">Restricciones de esta fase</p>
