@@ -108,6 +108,7 @@ Phase status summary:
 - Macro 2 - Client Identity Audit Tool / Phase 1: `DONE`
 - Macro 2 now has a read-only scaffold under `Infrastructure/scripts/ClientIdentityAudit`.
 - Macro 2 / Phase 2 now exposes the same audit through the Admin API and reuses it for `publication-status`.
+- Macro 2 stabilization gate before Phase 3: `PASSED`
 - Future lane - Client Publication Pipeline for custom items: `ANALYSIS COMPLETE`
 
 ## Corrective audit status
@@ -182,6 +183,7 @@ Key references:
 - [Client Identity Phase 1](../admin-tools/client-identity/client-identity-audit-tool-phase1.md)
 - [Client Identity Phase 2](../admin-tools/client-identity/client-identity-admin-layer-phase2.md)
 - [Client Identity API contracts](../admin-tools/client-identity/client-identity-api-contracts.md)
+- [Client Identity stabilization gate](../admin-tools/client-identity/client-identity-stabilization-gate-before-phase3.md)
 - [Client Identity source map](../admin-tools/client-identity/client-identity-source-map.md)
 - [Client Identity item check report](../admin-tools/client-identity/client-identity-item-check-report.md)
 

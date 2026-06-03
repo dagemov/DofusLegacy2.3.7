@@ -7,6 +7,7 @@ Estado actual:
 - Macro 2: `IN_PROGRESS`
 - Phase 1: `DONE`
 - Phase 2: `DONE`
+- Stabilization gate before Phase 3: `PASSED`
 - Scope actual: `scaffold + capa reusable read-only + Admin API`
 
 Ruta del scaffold:
@@ -34,6 +35,7 @@ Documentos clave:
 - [Phase 1 plan](./client-identity-audit-tool-phase1.md)
 - [Phase 2 admin layer](./client-identity-admin-layer-phase2.md)
 - [API contracts](./client-identity-api-contracts.md)
+- [Stabilization gate before Phase 3](./client-identity-stabilization-gate-before-phase3.md)
 - [Source map](./client-identity-source-map.md)
 - [Item check report](./client-identity-item-check-report.md)
 
