@@ -52,6 +52,12 @@ type ItemWriteFormControls = {
 
 type ItemWriteFieldName = keyof ItemWriteFormControls;
 
+type PreviewWarningViewModel = {
+  code: 'MISSING_ICON' | 'MISSING_APPEARANCE' | 'MISSING_PREVIEW' | 'UNKNOWN_PREVIEW_STATE';
+  severity: 'warning' | 'info';
+  message: string;
+};
+
 @Component({
   selector: 'app-item-write-page',
   imports: [
@@ -295,6 +301,44 @@ export class ItemWritePageComponent implements OnInit {
     }
 
     return 'La cadena se enviara tal cual. En esta fase no hay parser frontend ni validacion de reglas de gameplay.';
+  }
+
+  protected get previewWarnings(): PreviewWarningViewModel[] {
+    const warnings: PreviewWarningViewModel[] = [];
+
+    if ((this.form.controls.iconId.value ?? 0) <= 0) {
+      warnings.push({
+        code: 'MISSING_ICON',
+        severity: 'warning',
+        message: 'Falta un IconId valido. El item puede guardarse, pero la identidad cliente queda debil y el preview no puede resolverse bien.'
+      });
+    }
+
+    if ((this.form.controls.appearanceId.value ?? 0) <= 0) {
+      warnings.push({
+        code: 'MISSING_APPEARANCE',
+        severity: 'info',
+        message: 'AppearanceId sigue vacio o en cero. Esto no bloquea el guardado, pero la apariencia equipada quedara sin resolver.'
+      });
+    }
+
+    if (this.previewState.state === 'MISSING') {
+      warnings.push({
+        code: 'MISSING_PREVIEW',
+        severity: 'warning',
+        message: 'El preview por IconId todavia no encontro un PNG disponible en las rutas logicas actuales.'
+      });
+    }
+
+    if (this.previewState.state === 'UNKNOWN') {
+      warnings.push({
+        code: 'UNKNOWN_PREVIEW_STATE',
+        severity: 'info',
+        message: 'El entorno actual no pudo confirmar si el preview existe de verdad. Guardar sigue permitido.'
+      });
+    }
+
+    return warnings;
   }
 
   protected submit(): void {

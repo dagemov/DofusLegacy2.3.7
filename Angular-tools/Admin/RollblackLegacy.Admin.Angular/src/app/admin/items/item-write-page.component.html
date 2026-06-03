@@ -299,6 +299,27 @@
               </div>
             </div>
 
+            <div *ngIf="previewWarnings.length > 0" class="col-12">
+              <div class="alert preview-warning-alert border-0 mb-0">
+                <div class="fw-semibold mb-2">Warnings de preview antes de guardar</div>
+                <div class="d-grid gap-2 small">
+                  <div *ngFor="let warning of previewWarnings" class="d-flex flex-column flex-lg-row gap-2 justify-content-between">
+                    <div>
+                      <span class="font-monospace-soft">{{ warning.code }}</span>
+                      <span class="mx-2">-</span>
+                      <span>{{ warning.message }}</span>
+                    </div>
+                    <span class="badge align-self-start" [class.text-bg-warning]="warning.severity === 'warning'" [class.text-bg-info]="warning.severity === 'info'">
+                      {{ warning.severity | uppercase }}
+                    </span>
+                  </div>
+                </div>
+                <div class="small text-secondary mt-2">
+                  Estas alertas no bloquean save. Solo hacen visible el riesgo antes de persistir.
+                </div>
+              </div>
+            </div>
+
             <div class="col-12 d-flex flex-wrap gap-2 pt-2">
               <button class="btn btn-primary" type="submit" [disabled]="submitDisabled">
                 {{ submitLabel }}
