@@ -177,6 +177,9 @@ Key references:
 - [Item publication pipeline](../admin-tools/items-builder/item-publication-pipeline.md)
 - [Macro 4 Client publication README](../admin-tools/client-publication/README.md)
 - [Macro 4 Phase 1 dry-run manifest](../admin-tools/client-publication/client-item-publication-pipeline-phase1.md)
+- [Macro 4 Phase 3A D2O Item class staging](../admin-tools/client-publication/client-publication-phase3a-d2o-item-class.md)
+- [Macro 4 D2O schema report](../admin-tools/client-publication/client-d2o-item-schema-report.md)
+- [Macro 4 D2O round-trip staging](../admin-tools/client-publication/client-d2o-roundtrip-report.md)
 - [Visible item checklist](../admin-tools/items-builder/visible-item-checklist.md)
 - [QA vendor test checklist](../admin-tools/items-builder/qa-vendor-test-checklist.md)
 - [VPS restart safety checklist](../infrastructure/vps-restart-safety-checklist.md)
@@ -240,7 +243,10 @@ The next intended branch order is:
 
 1. Abrir **PR único** Macro Items Final desde `feature/items-final-effects-catalog-audit-7d1`
 2. Browser QA pendiente: ver [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md)
-3. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
+3. **Macro 4 Phase 3B** — D2I writer research/prototype (`NEXT`)
+4. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
+
+Macro 4 Phase 3A (`feature/client-item-publication-d2o-item-class-phase3a`): **`DONE`** — clases `Item`/`Weapon`/`EffectInstance*`, round-trip staging, clone `7754`→`12617` en `Infrastructure/staging-client/d2o-phase3a/`.
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 

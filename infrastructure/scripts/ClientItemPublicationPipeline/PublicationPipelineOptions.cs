@@ -1,12 +1,27 @@
 namespace ClientItemPublicationPipeline;
 
-internal sealed record PublicationPipelineOptions(string Mode, int ItemId, string OutputDirectory)
+internal sealed record PublicationPipelineOptions(
+    string Mode,
+    int ItemId,
+    string OutputDirectory,
+    string? D2oClassName,
+    int SourceItemId,
+    int TargetItemId,
+    int CloneTypeId,
+    int CloneIconId,
+    int CloneAppearanceId)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
         var mode = "dry-run";
         var itemId = 12617;
         var output = "Infrastructure/temporal-artifacts/client-item-publication/12617";
+        string? d2oClassName = "Item";
+        var sourceItemId = 7754;
+        var targetItemId = 12617;
+        var cloneTypeId = 23;
+        var cloneIconId = 23012;
+        var cloneAppearanceId = 0;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -21,15 +36,42 @@ internal sealed record PublicationPipelineOptions(string Mode, int ItemId, strin
                 case "--output" when index + 1 < args.Length:
                     output = args[++index];
                     break;
+                case "--class" when index + 1 < args.Length:
+                    d2oClassName = args[++index];
+                    break;
+                case "--source-item-id" when index + 1 < args.Length:
+                    sourceItemId = int.Parse(args[++index]);
+                    break;
+                case "--target-item-id" when index + 1 < args.Length:
+                    targetItemId = int.Parse(args[++index]);
+                    break;
+                case "--clone-type-id" when index + 1 < args.Length:
+                    cloneTypeId = int.Parse(args[++index]);
+                    break;
+                case "--clone-icon-id" when index + 1 < args.Length:
+                    cloneIconId = int.Parse(args[++index]);
+                    break;
+                case "--clone-appearance-id" when index + 1 < args.Length:
+                    cloneAppearanceId = int.Parse(args[++index]);
+                    break;
             }
         }
 
-        if (itemId <= 0)
+        if (itemId <= 0 && mode.Equals("dry-run", StringComparison.OrdinalIgnoreCase))
         {
             throw new ArgumentException("--item-id debe ser un entero positivo.");
         }
 
-        return new PublicationPipelineOptions(mode, itemId, output);
+        return new PublicationPipelineOptions(
+            mode,
+            itemId,
+            output,
+            d2oClassName,
+            sourceItemId,
+            targetItemId,
+            cloneTypeId,
+            cloneIconId,
+            cloneAppearanceId);
     }
 }
 

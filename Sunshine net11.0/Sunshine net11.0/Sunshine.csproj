@@ -175,6 +175,11 @@
 		<Compile Include="Sunshine.Protocol\IO\Collections\PriorityQueueB.cs" />
 		<Compile Include="Sunshine.Protocol\Messages\Custom\CharactersListWithRemodelingMessage.cs" />
 		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\Breed.cs" />
+		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\EffectInstance.cs" />
+		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\EffectInstanceDice.cs" />
+		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\EffectInstanceInteger.cs" />
+		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\Item.cs" />
+		<Compile Include="Sunshine.Protocol\Tools\D2o\Classes\Weapon.cs" />
 		<Compile Include="Sunshine.Protocol\Tools\D2o\D2OClassAttribute.cs" />
 		<Compile Include="Sunshine.Protocol\Tools\D2o\D2OClassDefinition.cs" />
 		<Compile Include="Sunshine.Protocol\Tools\D2o\D2OFieldAttribute.cs" />
