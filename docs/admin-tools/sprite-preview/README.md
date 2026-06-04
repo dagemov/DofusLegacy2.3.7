@@ -16,6 +16,15 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 
 **EntityLook renderer:** `DEFERRED` — no requerido para Items Builder MVP.
 
+## Macro 4 / Phase 6C — Item preview massive extraction
+
+- [Phase 6C report](./item-preview-extraction-phase6c-report.md)
+- [Curated copy manifest (JSON)](./item-preview-curated-copy-manifest-phase6c.json)
+- [Curated copy manifest (MD)](./item-preview-curated-copy-manifest-phase6c.md)
+- CLI: `item-preview-extract-by-category`, `item-preview-copy-to-angular`
+- Assets: `src/assets/item-previews/by-category/` + `catalog-manifest.json`
+- UI: `/admin/items/icon-selector` — «Catálogo por categoría»
+
 ## Macro 4 / Phase 6B — Item skin catalog by category
 
 - [Phase 6B catalog](./item-skin-catalog-by-category-phase6b.md)

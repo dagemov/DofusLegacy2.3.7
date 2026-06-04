@@ -246,9 +246,10 @@ The next intended branch order is:
 1. Abrir **PR único** Macro Items Final desde `feature/items-final-effects-catalog-audit-7d1`
 2. Browser QA pendiente: ver [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md)
 3. **Macro 4 Phase 6B** — item skin catalog by category + stat icons (`DONE`)
-4. **Macro 4 Phase 6A** — controlled publish to real client (`READY_FOR_OPERATOR`)
-5. **Macro 4 Phase 5** — sandbox + UX (`DONE`)
-6. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
+4. **Macro 4 Phase 6C** — item preview extract by category + Angular gallery (`DONE` — 500 PNG, dofus 10/10)
+5. **Macro 4 Phase 6A** — controlled publish to real client (`READY_FOR_OPERATOR`)
+6. **Macro 4 Phase 5** — sandbox + UX (`DONE`)
+7. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
 
 Macro 4 Phase 3A: **`DONE`** — D2O Item classes + clone staging.  
 Macro 4 Phase 3B (`feature/client-item-publication-d2i-writer-phase3b`): **`DONE`** — `D2iFile` writer, append textos ES/EN.  
@@ -257,6 +258,8 @@ Macro 4 Phase 4 (`feature/client-publication-controlled-patch-phase4`): **`DONE`
 Macro 4 Phase 5 (`feature/client-publication-controlled-patch-phase5`): **`DONE`** — sandbox patch, UX stats, VPS bash guide.  
 Macro 4 Phase 6 (`feature/client-publication-controlled-publish-phase6`): **`READY_FOR_OPERATOR`** — `apply-package-to-real-client`, `validate-real-client`.  
 Macro 4 Phase 6B (`feature/item-skin-catalog-by-category-phase6b`): **`DONE`** — catálogo por categoría, export curado dofus dry-run, galería HTML, PyDofus audit, iconos stats.
+
+Macro 4 Phase 6C (`feature/item-preview-massive-extraction-phase6c`): **`DONE`** — extracción D2P masiva (500 PNG), copia Angular `by-category/`, selector con catálogo por categoría, manifest Phase 6C. Browser QA pendiente operador.
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
