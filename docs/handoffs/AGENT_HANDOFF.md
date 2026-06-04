@@ -2,6 +2,18 @@
 
 Generated: `2026-06-04`
 
+## QA Dofus de los Hielos (producción controlada)
+
+| Campo | Valor |
+| --- | --- |
+| Estado | `BLOCKED_CLIENT_TEMPLATE_MISSING` |
+| Doc | [dofus-hielos-production-qa.md](../admin-tools/items-builder/items-final/dofus-hielos-production-qa.md) |
+| DB QA | VPS `174.138.35.107` / `sunshine` / `isRemote=true` |
+| Item creado | **No** — sin template cliente *Dofus de los Hielos* en `Items.d2o` |
+| Backup / reinicio VPS | **No ejecutado** (sin cambios DB) |
+
+Siguiente paso: aprobación explícita para client patch; luego repetir QA con template `ItemId` conocido.
+
 ## Repo y rama
 
 ```txt
