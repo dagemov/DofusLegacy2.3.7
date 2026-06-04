@@ -175,6 +175,8 @@ Key references:
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
 - [Client publication analysis](../admin-tools/items-builder/items-builder-client-publication-analysis.md)
 - [Item publication pipeline](../admin-tools/items-builder/item-publication-pipeline.md)
+- [Macro 4 Client publication README](../admin-tools/client-publication/README.md)
+- [Macro 4 Phase 1 dry-run manifest](../admin-tools/client-publication/client-item-publication-pipeline-phase1.md)
 - [Visible item checklist](../admin-tools/items-builder/visible-item-checklist.md)
 - [QA vendor test checklist](../admin-tools/items-builder/qa-vendor-test-checklist.md)
 - [VPS restart safety checklist](../infrastructure/vps-restart-safety-checklist.md)

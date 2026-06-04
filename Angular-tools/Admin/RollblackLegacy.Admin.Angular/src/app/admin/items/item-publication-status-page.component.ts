@@ -7,10 +7,12 @@ import { catchError, finalize, of } from 'rxjs';
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { ItemAppearancePreviewCardComponent } from './components/item-appearance-preview-card.component';
 import { ClientIdentityDiagnosticCardComponent } from './components/client-identity-diagnostic-card.component';
+import { PublicationManifestPreviewComponent } from './components/publication-manifest-preview.component';
 import { ClientItemIdentityCheckResultDto } from './data-access/client-identity.models';
 import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
+  ItemPublicationManifestDto,
   ItemPublicationStatusDto,
   toAdminApiProblem
 } from './data-access/items.models';
@@ -22,7 +24,8 @@ import {
     RouterLink,
     ApiProblemPanelComponent,
     ClientIdentityDiagnosticCardComponent,
-    ItemAppearancePreviewCardComponent
+    ItemAppearancePreviewCardComponent,
+    PublicationManifestPreviewComponent
   ],
   templateUrl: './item-publication-status-page.component.html',
   styleUrl: './item-publication-status-page.component.scss'
@@ -36,11 +39,14 @@ export class ItemPublicationStatusPageComponent implements OnInit {
 
   protected itemId: number | null = null;
   protected status: ItemPublicationStatusDto | null = null;
+  protected manifest: ItemPublicationManifestDto | null = null;
   protected clientIdentityDiagnostic: ClientItemIdentityCheckResultDto | null = null;
   protected problem: AdminApiProblem | null = null;
   protected clientIdentityProblem: AdminApiProblem | null = null;
+  protected manifestProblem: AdminApiProblem | null = null;
   protected isLoading = false;
   protected isLoadingClientIdentity = false;
+  protected isLoadingManifest = false;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
@@ -54,8 +60,11 @@ export class ItemPublicationStatusPageComponent implements OnInit {
           this.clientIdentityDiagnostic = null;
           this.problem = null;
           this.clientIdentityProblem = null;
+          this.manifestProblem = null;
+          this.manifest = null;
           this.isLoading = true;
           this.isLoadingClientIdentity = true;
+          this.isLoadingManifest = true;
           this.refreshView();
         });
 
@@ -205,6 +214,35 @@ export class ItemPublicationStatusPageComponent implements OnInit {
 
         this.ngZone.run(() => {
           this.clientIdentityDiagnostic = diagnostic;
+          this.refreshView();
+        });
+      });
+
+    this.itemsFacade
+      .getItemPublicationManifest(itemId)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.manifestProblem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isLoadingManifest = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((manifest) => {
+        if (!manifest) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.manifest = manifest;
           this.refreshView();
         });
       });

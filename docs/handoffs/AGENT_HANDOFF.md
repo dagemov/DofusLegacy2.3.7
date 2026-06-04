@@ -14,11 +14,23 @@ Generated: `2026-06-04`
 
 Siguiente paso: aprobación explícita para client patch; luego repetir QA con template `ItemId` conocido.
 
+## Macro 4 — Client Item Publication (Phase 1)
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/client-item-publication-pipeline-phase1` |
+| Estado | Phase 1 `DONE` (dry-run manifest) |
+| Docs | [client-publication/README.md](../admin-tools/client-publication/README.md) |
+| API | `GET /api/admin/v1/items/{id}/publication-manifest` |
+| CLI | `Infrastructure/scripts/ClientItemPublicationPipeline` |
+
+Phase 2 (D2O/D2I writer en staging): **NO iniciar** sin aprobación.
+
 ## Repo y rama
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/items-final-effects-catalog-audit-7d1
+feature/client-item-publication-pipeline-phase1
 ```
 
 ## Macro Items Final — DONE (API)
@@ -50,7 +62,8 @@ Abrir **un solo PR** con los 6 commits de la rama. Título sugerido: `Macro Item
 ## Siguiente macro
 
 ```txt
-Macro 4 Spells — NO hasta merge PR + aprobación explícita
+Macro 4 Phase 2 (client writers staging) — NO sin aprobación explícita
+Macro Spells Builder — sigue diferido tras Items Final PR
 ```
 
 ## Builds

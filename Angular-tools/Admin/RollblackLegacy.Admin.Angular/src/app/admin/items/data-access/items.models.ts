@@ -154,6 +154,32 @@ export interface ItemQaSummaryDto {
   recommendedChecks: string[];
 }
 
+export interface ItemPublicationManifestDto {
+  dbItemId: number;
+  targetClientItemId: number;
+  nameEs?: string | null;
+  nameEn?: string | null;
+  descriptionId: number;
+  typeId: number;
+  typeName?: string | null;
+  iconId: number;
+  appearanceId: number;
+  effectsSummary: string;
+  criteria?: string | null;
+  sourceTemplateItemId?: number | null;
+  clientKnown: boolean;
+  primaryState: string;
+  states: string[];
+  requiredClientActions: string[];
+  filesToPatch: string[];
+  risks: string[];
+  canPublishAutomatically: boolean;
+  blockingReasons: string[];
+  clientRootPath?: string | null;
+  stagingOutputPath?: string | null;
+  generatedAtUtc: string;
+}
+
 export interface ItemPublicationStatusDto {
   itemId: number;
   resolvedName?: string | null;

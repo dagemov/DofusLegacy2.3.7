@@ -1,0 +1,26 @@
+namespace RollblackLegacy.Admin.Contracts.Items;
+
+public sealed record ItemPublicationManifestDto(
+    int DbItemId,
+    int TargetClientItemId,
+    string? NameEs,
+    string? NameEn,
+    int DescriptionId,
+    int TypeId,
+    string? TypeName,
+    int IconId,
+    int AppearanceId,
+    string EffectsSummary,
+    string? Criteria,
+    int? SourceTemplateItemId,
+    bool ClientKnown,
+    string PrimaryState,
+    IReadOnlyList<string> States,
+    IReadOnlyList<string> RequiredClientActions,
+    IReadOnlyList<string> FilesToPatch,
+    IReadOnlyList<string> Risks,
+    bool CanPublishAutomatically,
+    IReadOnlyList<string> BlockingReasons,
+    string? ClientRootPath,
+    string? StagingOutputPath,
+    DateTimeOffset GeneratedAtUtc);

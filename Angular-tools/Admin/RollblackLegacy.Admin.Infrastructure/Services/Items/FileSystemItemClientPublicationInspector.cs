@@ -4,28 +4,34 @@ using Microsoft.Extensions.Options;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
 using RollblackLegacy.Admin.Application.Models.Items;
 using RollblackLegacy.Admin.Infrastructure.Configuration;
+using RollblackLegacy.Admin.Infrastructure.Services.ClientIdentity;
 
 namespace RollblackLegacy.Admin.Infrastructure.Services.Items;
 
 public sealed class FileSystemItemClientPublicationInspector : IItemClientPublicationInspector
 {
     private readonly string _contentRootPath;
-    private readonly AdminClientPublicationOptions _options;
+    private readonly AdminClientIdentityOptions _identityOptions;
     private readonly object _syncRoot = new();
     private HashSet<int>? _knownItemTemplateIds;
+    private HashSet<int>? _knownItemTypeIds;
     private string? _knownItemsD2oPath;
+    private string? _knownItemTypesD2oPath;
     private string? _knownClientRootPath;
     private string? _knownFailureReason;
 
     public FileSystemItemClientPublicationInspector(
         IHostEnvironment hostEnvironment,
-        IOptions<AdminClientPublicationOptions> options)
+        IOptions<AdminClientIdentityOptions> identityOptions)
     {
         _contentRootPath = hostEnvironment.ContentRootPath;
-        _options = options.Value;
+        _identityOptions = identityOptions.Value;
     }
 
-    public Task<ItemClientPublicationAuditResult> InspectAsync(int itemId, CancellationToken cancellationToken = default)
+    public Task<ItemClientPublicationAuditResult> InspectAsync(
+        int itemId,
+        int typeId,
+        CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -38,16 +44,20 @@ public sealed class FileSystemItemClientPublicationInspector : IItemClientPublic
                 return Task.FromResult(new ItemClientPublicationAuditResult(
                     ClientDataAvailable: false,
                     TemplateKnown: false,
+                    TypeKnown: false,
                     ClientRootPath: _knownClientRootPath,
                     ItemsD2oPath: _knownItemsD2oPath,
+                    ItemTypesD2oPath: _knownItemTypesD2oPath,
                     FailureReason: _knownFailureReason));
             }
 
             return Task.FromResult(new ItemClientPublicationAuditResult(
                 ClientDataAvailable: true,
                 TemplateKnown: _knownItemTemplateIds.Contains(itemId),
+                TypeKnown: _knownItemTypeIds?.Contains(typeId) == true,
                 ClientRootPath: _knownClientRootPath,
                 ItemsD2oPath: _knownItemsD2oPath,
+                ItemTypesD2oPath: _knownItemTypesD2oPath,
                 FailureReason: null));
         }
     }
@@ -59,21 +69,23 @@ public sealed class FileSystemItemClientPublicationInspector : IItemClientPublic
             return;
         }
 
-        var clientRootPath = ResolveClientRootPath();
-        var itemsD2oPath = Path.Combine(clientRootPath, "data", "common", "Items.d2o");
+        var paths = ClientIdentityRepositoryPathResolver.Resolve(_contentRootPath, _identityOptions);
+        _knownClientRootPath = paths.ClientRootPath;
+        _knownItemsD2oPath = paths.ItemsD2oPath;
+        _knownItemTypesD2oPath = paths.ItemTypesD2oPath;
 
-        _knownClientRootPath = clientRootPath;
-        _knownItemsD2oPath = itemsD2oPath;
-
-        if (!File.Exists(itemsD2oPath))
+        if (!File.Exists(_knownItemsD2oPath))
         {
-            _knownFailureReason = $"Items.d2o was not found at '{itemsD2oPath}'.";
+            _knownFailureReason = $"Items.d2o was not found at '{_knownItemsD2oPath}'.";
             return;
         }
 
         try
         {
-            _knownItemTemplateIds = ReadItemTemplateIds(itemsD2oPath);
+            _knownItemTemplateIds = ReadD2oIndexIds(_knownItemsD2oPath);
+            _knownItemTypeIds = File.Exists(_knownItemTypesD2oPath)
+                ? ReadD2oIndexIds(_knownItemTypesD2oPath)
+                : new HashSet<int>();
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or InvalidDataException)
         {
@@ -81,19 +93,7 @@ public sealed class FileSystemItemClientPublicationInspector : IItemClientPublic
         }
     }
 
-    private string ResolveClientRootPath()
-    {
-        if (!string.IsNullOrWhiteSpace(_options.ClientRootPath))
-        {
-            return Path.IsPathRooted(_options.ClientRootPath)
-                ? _options.ClientRootPath
-                : Path.GetFullPath(Path.Combine(_contentRootPath, _options.ClientRootPath));
-        }
-
-        return Path.GetFullPath(Path.Combine(_contentRootPath, "..", "..", "..", "Client2.3.7"));
-    }
-
-    private static HashSet<int> ReadItemTemplateIds(string itemsD2oPath)
+    private static HashSet<int> ReadD2oIndexIds(string itemsD2oPath)
     {
         using var stream = File.OpenRead(itemsD2oPath);
         var header = new byte[3];

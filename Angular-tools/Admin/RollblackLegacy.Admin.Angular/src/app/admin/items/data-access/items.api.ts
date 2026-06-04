@@ -13,6 +13,7 @@ import {
   ItemPagedResultDto,
   ItemPreviewStateDto,
   ItemAppearancePreviewStateDto,
+  ItemPublicationManifestDto,
   ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
@@ -70,6 +71,10 @@ export class ItemsApi {
 
   getItemPublicationStatus(itemId: number): Observable<ItemPublicationStatusDto> {
     return this.httpClient.get<ItemPublicationStatusDto>(`${this.baseUrl}/items/${itemId}/publication-status`);
+  }
+
+  getItemPublicationManifest(itemId: number): Observable<ItemPublicationManifestDto> {
+    return this.httpClient.get<ItemPublicationManifestDto>(`${this.baseUrl}/items/${itemId}/publication-manifest`);
   }
 
   getTypeOptions(): Observable<AdminOptionDto[]> {

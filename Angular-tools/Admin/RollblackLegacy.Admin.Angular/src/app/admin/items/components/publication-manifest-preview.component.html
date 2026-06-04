@@ -1,0 +1,71 @@
+<div class="card admin-card border-0">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Publication Manifest Preview</p>
+        <h3 class="h5 mb-1">Dry-run de publicación cliente</h3>
+        <p class="text-secondary mb-0 small">
+          Phase 1 — solo lectura. No hay botón de publicar ni escritura en cliente/DB.
+        </p>
+      </div>
+      <div *ngIf="manifest" class="d-flex flex-wrap gap-2 align-content-start">
+        <span class="badge" [class]="primaryStateBadgeClass">{{ manifest.primaryState }}</span>
+        <span class="badge text-bg-secondary">CanPublish: {{ manifest.canPublishAutomatically ? 'sí' : 'no' }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-secondary small">Generando manifiesto...</div>
+    <div *ngIf="problemTitle" class="alert alert-warning mb-0 small">{{ problemTitle }}</div>
+
+    <ng-container *ngIf="manifest && !isLoading">
+      <div class="row g-3 small">
+        <div class="col-12 col-md-6">
+          <div class="rounded-3 status-box">
+            <div class="text-uppercase fw-semibold text-secondary mb-1">Target</div>
+            <div>ItemId {{ manifest.targetClientItemId }} · TypeId {{ manifest.typeId }} ({{ manifest.typeName || '?' }})</div>
+            <div>IconId {{ manifest.iconId }} · DescriptionId {{ manifest.descriptionId }}</div>
+            <div *ngIf="manifest.sourceTemplateItemId">Template ref: {{ manifest.sourceTemplateItemId }}</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="rounded-3 status-box">
+            <div class="text-uppercase fw-semibold text-secondary mb-1">Staging</div>
+            <div class="text-break">{{ manifest.stagingOutputPath || '(sin ruta)' }}</div>
+            <div class="text-break text-secondary">{{ manifest.clientRootPath || 'Client root no disponible' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="small">
+        <strong>Effects:</strong> {{ manifest.effectsSummary }}
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-xl-6">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">BlockingReasons</p>
+          <ul class="mb-0 ps-3 d-grid gap-1 small">
+            <li *ngFor="let reason of manifest.blockingReasons">{{ reason }}</li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">RequiredClientActions</p>
+          <ul class="mb-0 ps-3 d-grid gap-1 small">
+            <li *ngFor="let action of manifest.requiredClientActions">{{ action }}</li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">FilesToPatch</p>
+          <ul class="mb-0 ps-3 d-grid gap-1 small font-monospace-soft">
+            <li *ngFor="let file of manifest.filesToPatch">{{ file }}</li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">States</p>
+          <div class="d-flex flex-wrap gap-1">
+            <span *ngFor="let state of manifest.states" class="badge text-bg-light border text-dark">{{ state }}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

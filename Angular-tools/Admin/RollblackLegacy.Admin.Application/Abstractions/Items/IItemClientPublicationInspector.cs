@@ -4,5 +4,8 @@ namespace RollblackLegacy.Admin.Application.Abstractions.Items;
 
 public interface IItemClientPublicationInspector
 {
-    Task<ItemClientPublicationAuditResult> InspectAsync(int itemId, CancellationToken cancellationToken = default);
+    Task<ItemClientPublicationAuditResult> InspectAsync(
+        int itemId,
+        int typeId,
+        CancellationToken cancellationToken = default);
 }

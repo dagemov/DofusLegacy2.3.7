@@ -21,4 +21,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="temporal-artifacts/**" />
+    <None Include="temporal-artifacts/**" />
+  </ItemGroup>
+
 </Project>
