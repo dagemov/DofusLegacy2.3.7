@@ -58,6 +58,8 @@ bld/
 # Admin offline tools — generated audit/extraction outputs (never commit)
 Infrastructure/temporal-artifacts/
 infrastructure/temporal-artifacts/
+Infrastructure/staging-client/
+infrastructure/staging-client/
 
 # Build results on 'Bin' directories
 **/[Bb]in/*
