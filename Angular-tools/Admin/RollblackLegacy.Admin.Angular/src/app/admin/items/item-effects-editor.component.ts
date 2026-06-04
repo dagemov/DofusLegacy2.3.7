@@ -24,6 +24,12 @@ import {
   formatPresetPreviewLine,
   resolvePresetLines
 } from './item-effect-presets';
+import {
+  STAT_QUICK_PICKS,
+  StatQuickPickDefinition,
+  optionMatchesHumanSearch,
+  resolveQuickPickOption
+} from './item-effect-stat-quick-picks';
 
 const SERIALIZATION_TYPE_INTEGER = 70;
 const SERIALIZATION_TYPE_DICE = 73;
@@ -63,6 +69,9 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected selectedPresetId: string | null = null;
   protected presetApplyMode: 'append' | 'replace' = 'append';
   protected presetApplyMessage: string | null = null;
+  protected readonly statQuickPicks = STAT_QUICK_PICKS;
+  protected showTechnicalDetails = false;
+  protected quickPickMessage: string | null = null;
 
   protected get saveFeedback(): AdminFeedback | null {
     if (!this.saveMessage) {
@@ -99,7 +108,7 @@ export class ItemEffectsEditorComponent implements OnChanges {
   }
 
   protected get filteredAddOptions(): AdminEffectOptionDto[] {
-    const term = this.addSearchTerm.trim().toLowerCase();
+    const term = this.addSearchTerm.trim();
 
     return this.effectOptions.filter((option) => {
       if (this.addGroupFilter && option.group !== this.addGroupFilter) {
@@ -110,11 +119,7 @@ export class ItemEffectsEditorComponent implements OnChanges {
         return true;
       }
 
-      return (
-        option.label.toLowerCase().includes(term) ||
-        option.protocolName.toLowerCase().includes(term) ||
-        String(option.effectId).includes(term)
-      );
+      return optionMatchesHumanSearch(option, term);
     });
   }
 
@@ -174,6 +179,20 @@ export class ItemEffectsEditorComponent implements OnChanges {
 
   protected canChangeFormat(row: ItemEffectEditDto): boolean {
     return row.isSupported && !row.preservedEffectHex;
+  }
+
+  protected addFromQuickPick(pick: StatQuickPickDefinition): void {
+    const resolved = resolveQuickPickOption(pick, this.effectOptionsById, this.effectOptions);
+    if (!resolved.option) {
+      this.quickPickMessage = `No confirmado: "${pick.title}" no está en el catálogo cargado.`;
+      this.refreshView();
+      return;
+    }
+
+    this.rows = [...this.rows, this.createRowFromOption(resolved.option, pick.defaultValue)];
+    this.quickPickMessage = `Añadido: ${pick.emoji} ${pick.title}`;
+    this.saveMessage = null;
+    this.refreshView();
   }
 
   protected addEffect(): void {

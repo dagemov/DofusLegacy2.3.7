@@ -1,10 +1,10 @@
 <div class="card admin-card border-0">
   <div class="card-body d-grid gap-3">
     <div>
-      <p class="text-uppercase small fw-semibold text-secondary mb-1">Items Final · 7D.3 / 7D.4</p>
-      <h3 class="h5 mb-1">Efectos del item</h3>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
+      <h3 class="h5 mb-1">Stats y efectos</h3>
       <p class="text-secondary small mb-0">
-        Catálogo completo vía Admin API. La serialización ObjectEffect se guarda en el servidor; aquí solo se editan filas.
+        Plantilla en blanco por defecto. Añade stats con tarjetas rápidas o búsqueda humana; el catálogo completo sigue disponible abajo.
       </p>
     </div>
 
@@ -27,8 +27,28 @@
         soportadas.
       </div>
 
+      <section class="effects-quick-picks border rounded p-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+          <h4 class="h6 mb-0">Stats frecuentes</h4>
+          <span class="badge text-bg-light border">Sin plantilla aplicada</span>
+        </div>
+        <div class="stat-quick-pick-grid">
+          <button
+            *ngFor="let pick of statQuickPicks"
+            type="button"
+            class="stat-quick-pick btn btn-light border text-start"
+            (click)="addFromQuickPick(pick)"
+            [disabled]="isSaving">
+            <span class="stat-quick-pick__emoji">{{ pick.emoji }}</span>
+            <span class="stat-quick-pick__title">{{ pick.title }}</span>
+            <span class="stat-quick-pick__subtitle">{{ pick.subtitle }}</span>
+          </button>
+        </div>
+        <div *ngIf="quickPickMessage" class="alert alert-light border mt-2 mb-0 py-2 small">{{ quickPickMessage }}</div>
+      </section>
+
       <section class="effects-presets-panel border rounded p-3">
-        <h4 class="h6 mb-2">Plantillas de stats (presets)</h4>
+        <h4 class="h6 mb-2">Plantillas opcionales (presets)</h4>
         <p class="small text-secondary mb-2">
           Ayudas de operador; no son reglas de gameplay. Revisa el preview antes de aplicar.
         </p>
@@ -78,7 +98,7 @@
       </section>
 
       <section class="effects-add-panel border rounded p-3">
-        <h4 class="h6 mb-2">Agregar efecto</h4>
+        <h4 class="h6 mb-2">Búsqueda en catálogo</h4>
         <div class="row g-2">
           <div class="col-md-4">
             <label class="form-label" for="addGroupFilter">Grupo</label>
@@ -93,7 +113,7 @@
               id="addSearchTerm"
               class="form-control form-control-sm"
               type="search"
-              placeholder="Label, protocolo o id..."
+              placeholder="daño aire, sabiduría, golpes críticos, pa..."
               [(ngModel)]="addSearchTerm" />
           </div>
           <div class="col-md-3 d-flex align-items-end">
@@ -124,19 +144,28 @@
         Este item no tiene efectos cargados. Agrega filas desde el catálogo completo ({{ effectOptions.length }} opciones).
       </div>
 
+      <div class="d-flex justify-content-between align-items-center" *ngIf="rows.length > 0">
+        <h4 class="h6 mb-0">Filas actuales ({{ rows.length }})</h4>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="showTechnicalDetails = !showTechnicalDetails">
+          {{ showTechnicalDetails ? 'Ocultar detalles técnicos' : 'Ver detalles técnicos' }}
+        </button>
+      </div>
+
       <div *ngIf="rows.length > 0" class="effects-row-stack d-grid gap-2">
         <article class="effects-row card border" *ngFor="let row of rows; trackBy: trackRow">
           <div class="card-body d-grid gap-2">
             <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
               <div class="flex-grow-1">
+                <div class="fw-semibold">{{ row.label }}</div>
                 <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
                   <span class="badge text-bg-light border">{{ row.group }}</span>
                   <span class="badge text-bg-secondary">{{ row.operatorMode }}</span>
                   <span *ngIf="row.isCharacteristic" class="badge text-bg-primary">característica</span>
                   <span *ngIf="!row.isSupported" class="badge text-bg-warning">no editable</span>
                 </div>
-                <div class="small text-secondary font-monospace-soft">
-                  tipo {{ row.serializationTypeId }} · fila {{ row.rowId }}
+                <div *ngIf="showTechnicalDetails" class="small text-secondary font-monospace-soft">
+                  EffectId {{ row.effectId }} · tipo {{ row.serializationTypeId }} · fila {{ row.rowId }}
+                  <span *ngIf="row.preservedEffectHex"> · hex preservado</span>
                 </div>
               </div>
               <div class="btn-group btn-group-sm">

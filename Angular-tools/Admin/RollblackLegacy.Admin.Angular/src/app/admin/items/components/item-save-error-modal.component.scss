@@ -1,0 +1,23 @@
+.item-save-error-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1040;
+}
+
+.item-save-error-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  width: min(32rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.technical-details {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}

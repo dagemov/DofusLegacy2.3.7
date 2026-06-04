@@ -1,0 +1,58 @@
+<div class="item-save-error-backdrop" *ngIf="isOpen" (click)="close()" role="presentation"></div>
+
+<div
+  class="item-save-error-modal card admin-card border-0 shadow"
+  *ngIf="isOpen"
+  role="alertdialog"
+  aria-labelledby="saveErrorTitle"
+  aria-modal="true">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex justify-content-between align-items-start gap-2">
+      <div>
+        <p class="text-uppercase small fw-semibold text-danger mb-1">Error al guardar</p>
+        <h3 class="h5 mb-0" id="saveErrorTitle">No se pudo guardar el item</h3>
+      </div>
+      <button type="button" class="btn-close" aria-label="Cerrar" (click)="close()"></button>
+    </div>
+
+    <section>
+      <p class="small fw-semibold mb-1">Qué pasó</p>
+      <p class="mb-0">{{ whatHappened }}</p>
+    </section>
+
+    <section>
+      <p class="small fw-semibold mb-1">Qué puedes corregir</p>
+      <ul class="mb-0 ps-3 small d-grid gap-1">
+        <li *ngFor="let fix of whatToFix">{{ fix }}</li>
+      </ul>
+    </section>
+
+    <section *ngIf="affectedFields.length > 0">
+      <p class="small fw-semibold mb-1">Campos afectados</p>
+      <div class="d-flex flex-wrap gap-1">
+        <span *ngFor="let field of affectedFields" class="badge text-bg-light border">{{ field }}</span>
+      </div>
+    </section>
+
+    <section *ngIf="problem.traceId" class="small">
+      <span class="text-secondary">TraceId:</span>
+      <span class="font-monospace-soft ms-1">{{ problem.traceId }}</span>
+    </section>
+
+    <section>
+      <button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleTechnical()">
+        {{ showTechnicalDetails ? 'Ocultar detalles técnicos' : 'Ver detalles técnicos' }}
+      </button>
+      <div *ngIf="showTechnicalDetails" class="technical-details mt-2 small font-monospace-soft">
+        <div *ngIf="problem.status">status: {{ problem.status }}</div>
+        <div *ngIf="problem.type">type: {{ problem.type }}</div>
+        <div *ngIf="problem.instance">instance: {{ problem.instance }}</div>
+        <pre *ngIf="problem.errors" class="mb-0">{{ problem.errors | json }}</pre>
+      </div>
+    </section>
+
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-primary" (click)="close()">Entendido</button>
+    </div>
+  </div>
+</div>
