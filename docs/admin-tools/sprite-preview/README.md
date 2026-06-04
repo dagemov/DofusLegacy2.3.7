@@ -16,6 +16,13 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 
 **EntityLook renderer:** `DEFERRED` — no requerido para Items Builder MVP.
 
+## Macro 4 / Phase 6 — Item skin catalog (plan)
+
+- [Item skin catalog plan](./item-skin-catalog-plan-phase6.md)
+- [Category map](./item-skin-category-map.md)
+- Dry-run CLI: `item-skin-catalog-dry-run` (sin copia masiva PNG)
+- Carpetas planificadas: `src/assets/item-previews/by-category/*`
+
 ## Cuatro superficies en Admin (post Phase 7)
 
 | Superficie | Identidad | Asset |
