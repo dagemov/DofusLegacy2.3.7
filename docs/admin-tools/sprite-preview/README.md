@@ -16,12 +16,19 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 
 **EntityLook renderer:** `DEFERRED` — no requerido para Items Builder MVP.
 
+## Macro 4 / Phase 6B — Item skin catalog by category
+
+- [Phase 6B catalog](./item-skin-catalog-by-category-phase6b.md)
+- [Type & weapon map](./item-skin-category-type-map.md)
+- [Operator sample JSON](./item-skin-catalog-by-category-sample.json)
+- [PyDofus audit (auxiliar)](./pydofus-compatibility-audit.md)
+- CLI: `item-skin-catalog-dry-run`, `item-skin-catalog-export-curated`
+- Galería: `Infrastructure/temporal-artifacts/item-skin-catalog/gallery/index.html`
+
 ## Macro 4 / Phase 6 — Item skin catalog (plan)
 
 - [Item skin catalog plan](./item-skin-catalog-plan-phase6.md)
-- [Category map](./item-skin-category-map.md)
-- Dry-run CLI: `item-skin-catalog-dry-run` (sin copia masiva PNG)
-- Carpetas planificadas: `src/assets/item-previews/by-category/*`
+- Dry-run CLI base Phase 6
 
 ## Cuatro superficies en Admin (post Phase 7)
 

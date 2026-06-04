@@ -2,52 +2,47 @@
 
 Generated: `2026-06-04`
 
-## Macro 4 / Phase 6 — Controlled publish + item skin catalog plan
+## Macro 4 / Phase 6B — Item skin catalog by category
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/client-publication-controlled-publish-phase6` |
-| Base | `feature/client-publication-controlled-patch-phase5` (commits `7397c47`, `035bd6c`, `65e83bb`) |
-| Estado | **`READY_FOR_OPERATOR`** |
-| Docs | [client-publication-phase6-controlled-publish.md](../admin-tools/client-publication/client-publication-phase6-controlled-publish.md), [item-skin-catalog-plan-phase6.md](../admin-tools/sprite-preview/item-skin-catalog-plan-phase6.md) |
+| Rama | `feature/item-skin-catalog-by-category-phase6b` |
+| Base | `feature/client-publication-controlled-publish-phase6` |
+| Estado | **`DONE`** |
 
-### Parte A — Publish real (código listo)
+### Entregables
 
-- CLI: `apply-package-to-real-client` (requiere `CONFIRM_PUBLISH=1` + backup client valido)
-- CLI: `validate-real-client`
-- **No** reinicio automatico; ver VPS guide
-- Publish real: solo operador tras `CONFIRM_BACKUP=1`
+- CLI ampliado: `item-skin-catalog-dry-run` → `by-category/item-skin-catalog.json` + galería HTML
+- CLI: `item-skin-catalog-export-curated` (`--category`, `--limit`, `--dry-run`, `--approve-curated-copy`)
+- 95 TypeIds arma excluidos; **dofus: 10** items en catálogo
+- Iconos stats: `src/assets/icons/*.png` en quick-picks del editor
+- PyDofus auditado como auxiliar (no dependencia)
+- Sin copia masiva PNG commiteada; sin tocar `Client2.3.7`
 
-### Parte B — Skin catalog
+### Validación
 
-- CLI: `item-skin-catalog-dry-run` → `Infrastructure/temporal-artifacts/item-skin-catalog/`
-- Excluye armas (`WeaponTypeFilter`)
-- Angular: `src/assets/item-previews/by-category/*/.gitkeep` (sin PNG masivo)
-
-### QA
-
-| Item | Estado |
+| Check | Resultado |
 | --- | --- |
-| Builds pipeline / API / Angular | Verificar en gate |
-| Browser | `PENDING_OPERATOR_BROWSER_QA` |
-| Publish real 12617 | `PENDING_OPERATOR` (backup + CONFIRM_PUBLISH) |
+| Pipeline build | OK |
+| Dry-run 1925 entradas | OK |
+| Export dofus dry-run 10 planned | OK |
+| npm run build | OK |
+| Browser QA | `PENDING_OPERATOR_BROWSER_QA` |
 
 ### Commits sugeridos
 
 ```txt
-feat: add controlled real client publish command
-feat: add item skin catalog dry run
-docs: plan item skin catalog by category
-docs: record controlled client publish qa
+feat: add item skin catalog by category dry run
+docs: audit pydofus compatibility for item previews
 ```
 
-## Macro 4 / Phase 5 — referencia
+## Macro 4 / Phase 6A — Controlled publish
 
-`DONE` — sandbox, UX stats, 3 commits en `feature/client-publication-controlled-patch-phase5`.
+`READY_FOR_OPERATOR` — publish real 12617 pendiente operador (`CONFIRM_PUBLISH`).
 
 ## Repo
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/client-publication-controlled-publish-phase6
+feature/item-skin-catalog-by-category-phase6b
 ```
