@@ -30,6 +30,9 @@ return options.Mode.ToLowerInvariant() switch
     "validate-publication-package" => RunValidatePublicationPackage(repoRoot, paths, options),
     "apply-package-to-sandbox" => RunApplyPackageToSandbox(repoRoot, options),
     "validate-sandbox-client" => RunValidateSandboxClient(repoRoot, options),
+    "apply-package-to-real-client" => RunApplyPackageToRealClient(repoRoot, options),
+    "validate-real-client" => RunValidateRealClient(repoRoot, options),
+    "item-skin-catalog-dry-run" => RunItemSkinCatalogDryRun(repoRoot, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -400,3 +403,65 @@ static string ResolveOutputDirectory(string repoRoot, string output) =>
     Path.IsPathRooted(output)
         ? output
         : Path.GetFullPath(Path.Combine(repoRoot, output));
+
+static string ResolveClientRoot(string repoRoot, PublicationPipelineOptions options) =>
+    string.IsNullOrWhiteSpace(options.ClientDirectory)
+        ? Path.Combine(repoRoot, "Client2.3.7")
+        : ResolveOutputDirectory(repoRoot, options.ClientDirectory!);
+
+static int RunApplyPackageToRealClient(string repoRoot, PublicationPipelineOptions options)
+{
+    var packageDir = string.IsNullOrWhiteSpace(options.PackageDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-package-phase3c", options.TargetItemId.ToString())
+        : ResolveOutputDirectory(repoRoot, options.PackageDirectory!);
+
+    var clientRoot = ResolveClientRoot(repoRoot, options);
+    if (!Directory.Exists(packageDir))
+    {
+        throw new DirectoryNotFoundException($"Paquete no encontrado: {packageDir}");
+    }
+
+    var publisher = new ClientPatchRealPublisher();
+    var result = publisher.ApplyPackageToRealClient(repoRoot, packageDir, clientRoot, options.TargetItemId);
+    Console.WriteLine($"Client: {result.ClientRoot}");
+    Console.WriteLine($"Backup: {result.BackupDirectory}");
+    Console.WriteLine($"Manifest: {result.ManifestPath}");
+    return 0;
+}
+
+static int RunValidateRealClient(string repoRoot, PublicationPipelineOptions options)
+{
+    var clientRoot = ResolveClientRoot(repoRoot, options);
+    var itemId = options.TargetItemId > 0 ? options.TargetItemId : options.ItemId;
+    var publisher = new ClientPatchRealPublisher();
+    var result = publisher.ValidateRealClient(
+        repoRoot,
+        clientRoot,
+        itemId,
+        options.CloneIconId);
+
+    Console.WriteLine($"Client: {clientRoot}");
+    Console.WriteLine($"Valid: {result.IsValid}");
+    Console.WriteLine($"Status: {result.ValidationStatus}");
+    foreach (var reason in result.BlockingReasons)
+    {
+        Console.WriteLine($"BLOCK: {reason}");
+    }
+
+    return result.IsValid ? 0 : 1;
+}
+
+static int RunItemSkinCatalogDryRun(string repoRoot, PublicationPipelineOptions options)
+{
+    var outputDirectory = ResolveOutputDirectory(repoRoot, options.OutputDirectory);
+    var clientRoot = ResolveClientRoot(repoRoot, options);
+    var excludeWeapons = WeaponTypeFilter.ExcludeWeapons(options.ExcludeTypes);
+    var runner = new ItemSkinCatalogDryRunner();
+    var result = runner.Run(repoRoot, outputDirectory, clientRoot, excludeWeapons);
+    Console.WriteLine($"Catalog entries: {result.Summary.CatalogEntries}");
+    Console.WriteLine($"Skipped weapons: {result.Summary.SkippedWeapons}");
+    Console.WriteLine($"With icon preview: {result.Summary.WithIconPreview}");
+    Console.WriteLine($"JSON: {result.JsonPath}");
+    Console.WriteLine($"Markdown: {result.MarkdownPath}");
+    return 0;
+}

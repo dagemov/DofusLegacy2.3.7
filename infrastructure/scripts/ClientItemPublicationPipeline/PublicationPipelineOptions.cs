@@ -16,7 +16,9 @@ internal sealed record PublicationPipelineOptions(
     string EnDescription,
     bool StagePublicationPackage,
     string? PackageDirectory,
-    string? SandboxDirectory)
+    string? SandboxDirectory,
+    string? ClientDirectory,
+    string? ExcludeTypes)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -36,6 +38,8 @@ internal sealed record PublicationPipelineOptions(
         var stagePublicationPackage = false;
         string? packageDirectory = null;
         string? sandboxDirectory = null;
+        string? clientDirectory = null;
+        var excludeTypes = "weapons";
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -89,6 +93,12 @@ internal sealed record PublicationPipelineOptions(
                 case "--sandbox" when index + 1 < args.Length:
                     sandboxDirectory = args[++index];
                     break;
+                case "--client" when index + 1 < args.Length:
+                    clientDirectory = args[++index];
+                    break;
+                case "--exclude-types" when index + 1 < args.Length:
+                    excludeTypes = args[++index];
+                    break;
             }
         }
 
@@ -113,7 +123,9 @@ internal sealed record PublicationPipelineOptions(
             enDescription,
             stagePublicationPackage,
             packageDirectory,
-            sandboxDirectory);
+            sandboxDirectory,
+            clientDirectory,
+            excludeTypes);
     }
 }
 
