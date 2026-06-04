@@ -11,7 +11,8 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 | **3A** | Clases D2O `Item` + round-trip/clone staging | `DONE` |
 | **3B** | D2I writer staging prototype | `DONE` |
 | **3C** | Paquete staging completo + validador | `DONE` |
-| **4** | Patch controlado en copia backup + launcher | `NEXT` |
+| **4** | Backup/recovery pipeline + publish lane (sin publish real) | `DONE` |
+| **5** | Patch controlado en copia backup + launcher | `NEXT` |
 
 ## Documentos
 
@@ -25,6 +26,8 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 - [Phase 3C — staging package](./client-publication-phase3c-staging-package.md)
 - [Package validator](./client-publication-package-validator.md)
 - [Package 12617 report](./client-publication-package-12617-report.md)
+- [Phase 4 — backup/recovery](./client-publication-phase4-backup-recovery.md)
+- [VPS operations guide](./vps-publication-operations-guide.md)
 
 ## Herramientas
 
@@ -82,4 +85,15 @@ dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/Clien
 
 - No modificar `Client2.3.7` original.
 - Staging bajo `Infrastructure/staging-client/` (gitignored).
-- No escribir DB ni reiniciar VPS en Phase 1–3C.
+- Phase 4: backups locales + inventario VPS; restore execute solo sandbox/local.
+- No escribir producción ni modificar `Client2.3.7` real.
+
+## Phase 4 — backup & lane
+
+```powershell
+.\Infrastructure\scripts\PublicationBackup\backup-client.ps1
+.\Infrastructure\scripts\PublicationBackup\update-publish-lane.ps1
+```
+
+API: `GET /api/admin/v1/publication/backup-status`  
+UI: `/admin/publication`

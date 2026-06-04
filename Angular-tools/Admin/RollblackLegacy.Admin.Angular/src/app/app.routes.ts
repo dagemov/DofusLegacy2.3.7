@@ -7,6 +7,13 @@ export const routes: Routes = [
     redirectTo: 'admin/items'
   },
   {
+    path: 'admin/publication',
+    loadComponent: () =>
+      import('./admin/publication/publication-dashboard-page.component').then(
+        (m) => m.PublicationDashboardPageComponent
+      )
+  },
+  {
     path: 'admin/items',
     loadComponent: () =>
       import('./admin/items/items-page.component').then((m) => m.ItemsPageComponent)

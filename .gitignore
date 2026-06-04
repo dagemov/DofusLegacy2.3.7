@@ -60,6 +60,13 @@ Infrastructure/temporal-artifacts/
 infrastructure/temporal-artifacts/
 Infrastructure/staging-client/
 infrastructure/staging-client/
+!Infrastructure/staging-client/publish-lane/
+!Infrastructure/staging-client/publish-lane/**
+!infrastructure/staging-client/publish-lane/
+!infrastructure/staging-client/publish-lane/**
+
+# Publication backups (Phase 4 — local/VPS copies, never commit dumps)
+backups/
 
 # Build results on 'Bin' directories
 **/[Bb]in/*
