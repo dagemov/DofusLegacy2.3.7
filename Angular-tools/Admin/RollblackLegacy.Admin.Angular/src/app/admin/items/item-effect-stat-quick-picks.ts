@@ -3,6 +3,8 @@ import { AdminEffectOptionDto } from './data-access/items.models';
 export interface StatQuickPickDefinition {
   id: string;
   emoji: string;
+  /** Ruta bajo src/assets (p. ej. icons/fire.png). */
+  iconAsset?: string;
   title: string;
   subtitle: string;
   effectId?: number;
@@ -16,6 +18,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'intelligence',
     emoji: '🔥',
+    iconAsset: 'icons/fire.png',
     title: 'Inteligencia',
     subtitle: 'Fuego',
     effectId: 119,
@@ -25,6 +28,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'wisdom',
     emoji: '🌙',
+    iconAsset: 'icons/widsom.png',
     title: 'Sabiduría',
     subtitle: 'Wisdom',
     effectId: 124,
@@ -34,6 +38,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'strength',
     emoji: '🌱',
+    iconAsset: 'icons/force.png',
     title: 'Fuerza',
     subtitle: 'Tierra',
     effectId: 118,
@@ -43,6 +48,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'chance',
     emoji: '💧',
+    iconAsset: 'icons/water.png',
     title: 'Suerte',
     subtitle: 'Agua',
     effectId: 123,
@@ -52,6 +58,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'agility',
     emoji: '🌪️',
+    iconAsset: 'icons/Air.png',
     title: 'Agilidad',
     subtitle: 'Aire',
     effectId: 122,
@@ -61,6 +68,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'vitality',
     emoji: '❤️',
+    iconAsset: 'icons/hp.png',
     title: 'Vitalidad',
     subtitle: 'HP',
     effectId: 125,
@@ -70,6 +78,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'damage',
     emoji: '⚔️',
+    iconAsset: 'icons/neutral.png',
     title: 'Daños',
     subtitle: 'Flat damage',
     effectId: 112,
@@ -79,6 +88,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'range',
     emoji: '🎯',
+    iconAsset: 'icons/Range.png',
     title: 'Alcance',
     subtitle: 'Range',
     effectId: 117,
@@ -88,6 +98,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'mp',
     emoji: '👣',
+    iconAsset: 'icons/PM.png',
     title: 'PM',
     subtitle: 'Movement',
     effectId: 128,
@@ -97,6 +108,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'ap',
     emoji: '⭐',
+    iconAsset: 'icons/PA.png',
     title: 'PA',
     subtitle: 'Action points',
     effectId: 111,
@@ -106,6 +118,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'prospecting',
     emoji: '👁️',
+    iconAsset: 'icons/Prospeccion.png',
     title: 'Prospección',
     subtitle: 'Prospecting',
     effectId: 176,
@@ -151,6 +164,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'critical',
     emoji: '💥',
+    iconAsset: 'icons/iniciative.png',
     title: 'Golpes críticos',
     subtitle: 'Critical hits',
     effectId: 115,
@@ -160,6 +174,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'summons',
     emoji: '🧬',
+    iconAsset: 'icons/summon.png',
     title: 'Invocaciones',
     subtitle: 'Summons',
     effectId: 182,
@@ -169,6 +184,7 @@ export const STAT_QUICK_PICKS: StatQuickPickDefinition[] = [
   {
     id: 'air-damage',
     emoji: '🌪️',
+    iconAsset: 'icons/Air.png',
     title: 'Daño aire',
     subtitle: 'Air damage %',
     labelMatches: ['Danos aire', 'Daños aire', 'damage per air', 'air damage'],

@@ -18,7 +18,11 @@ internal sealed record PublicationPipelineOptions(
     string? PackageDirectory,
     string? SandboxDirectory,
     string? ClientDirectory,
-    string? ExcludeTypes)
+    string? ExcludeTypes,
+    string? Category,
+    int CatalogLimit,
+    bool CatalogDryRun,
+    bool ApproveCuratedCopy)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -40,6 +44,10 @@ internal sealed record PublicationPipelineOptions(
         string? sandboxDirectory = null;
         string? clientDirectory = null;
         var excludeTypes = "weapons";
+        string? category = null;
+        var catalogLimit = 50;
+        var catalogDryRun = false;
+        var approveCuratedCopy = false;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -99,6 +107,18 @@ internal sealed record PublicationPipelineOptions(
                 case "--exclude-types" when index + 1 < args.Length:
                     excludeTypes = args[++index];
                     break;
+                case "--category" when index + 1 < args.Length:
+                    category = args[++index];
+                    break;
+                case "--limit" when index + 1 < args.Length:
+                    catalogLimit = int.Parse(args[++index]);
+                    break;
+                case "--dry-run":
+                    catalogDryRun = true;
+                    break;
+                case "--approve-curated-copy":
+                    approveCuratedCopy = true;
+                    break;
             }
         }
 
@@ -125,7 +145,11 @@ internal sealed record PublicationPipelineOptions(
             packageDirectory,
             sandboxDirectory,
             clientDirectory,
-            excludeTypes);
+            excludeTypes,
+            category,
+            catalogLimit,
+            catalogDryRun,
+            approveCuratedCopy);
     }
 }
 

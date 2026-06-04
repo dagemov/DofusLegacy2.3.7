@@ -33,6 +33,7 @@ return options.Mode.ToLowerInvariant() switch
     "apply-package-to-real-client" => RunApplyPackageToRealClient(repoRoot, options),
     "validate-real-client" => RunValidateRealClient(repoRoot, options),
     "item-skin-catalog-dry-run" => RunItemSkinCatalogDryRun(repoRoot, options),
+    "item-skin-catalog-export-curated" => RunItemSkinCatalogExportCurated(repoRoot, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -463,5 +464,39 @@ static int RunItemSkinCatalogDryRun(string repoRoot, PublicationPipelineOptions 
     Console.WriteLine($"With icon preview: {result.Summary.WithIconPreview}");
     Console.WriteLine($"JSON: {result.JsonPath}");
     Console.WriteLine($"Markdown: {result.MarkdownPath}");
+    Console.WriteLine($"Gallery: {result.GalleryHtmlPath}");
+    return 0;
+}
+
+static int RunItemSkinCatalogExportCurated(string repoRoot, PublicationPipelineOptions options)
+{
+    if (string.IsNullOrWhiteSpace(options.Category))
+    {
+        throw new ArgumentException("--category es obligatorio para item-skin-catalog-export-curated.");
+    }
+
+    var outputDirectory = ResolveOutputDirectory(repoRoot, options.OutputDirectory);
+    var clientRoot = ResolveClientRoot(repoRoot, options);
+    var paths = ClientSkinCatalogPaths.Resolve(repoRoot, clientRoot);
+    var builder = new ItemSkinCatalogBuilder();
+    var catalog = builder.Build(paths, outputDirectory, excludeWeapons: true);
+    var exporter = new ItemSkinCatalogExporter();
+    var export = exporter.ExportCurated(
+        paths,
+        catalog,
+        options.Category!,
+        options.CatalogLimit,
+        options.CatalogDryRun || !options.ApproveCuratedCopy,
+        options.ApproveCuratedCopy);
+
+    Console.WriteLine($"Category: {export.Category}");
+    Console.WriteLine($"Planned: {export.PlannedCopies}");
+    Console.WriteLine($"Copied: {export.Copied}");
+    Console.WriteLine($"DryRun: {export.DryRun}");
+    foreach (var message in export.Messages.Take(20))
+    {
+        Console.WriteLine(message);
+    }
+
     return 0;
 }

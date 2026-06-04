@@ -12,6 +12,8 @@ internal static class WeaponTypeFilter
 
     public static bool IsWeapon(int typeId) => WeaponTypeIds.Contains(typeId);
 
+    public static bool IsWeapon(int typeId, ItemTypeWeaponRegistry registry) => registry.IsWeapon(typeId);
+
     public static bool ExcludeWeapons(string? excludeTypes) =>
         string.IsNullOrWhiteSpace(excludeTypes) ||
         excludeTypes.Contains("weapon", StringComparison.OrdinalIgnoreCase) ||

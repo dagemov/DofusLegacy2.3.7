@@ -16,19 +16,7 @@ internal static class ItemSkinCategoryMap
         [82] = "escudos"
     };
 
-    public static string ResolveCategory(int typeId, int itemSetId)
-    {
-        if (itemSetId > 0)
-        {
-            return "sets";
-        }
-
-        return TypeIdToCategory.TryGetValue(typeId, out var category)
-            ? category
-            : "sin-categoria";
-    }
-
-    public static IReadOnlyList<string> PlannedAngularFolders { get; } =
+    public static IReadOnlyList<string> ExportCategories { get; } =
     [
         "dofus",
         "sombreros",
@@ -39,8 +27,14 @@ internal static class ItemSkinCategoryMap
         "anillos",
         "amuletos",
         "cinturones",
-        "sets",
-        "recursos",
-        "sin-categoria"
+        "recursos"
     ];
+
+    public static string ResolveCategory(int typeId) =>
+        TypeIdToCategory.TryGetValue(typeId, out var category) ? category : "sin-categoria";
+
+    public static bool IsSupportedExportCategory(string category) =>
+        ExportCategories.Contains(category, StringComparer.OrdinalIgnoreCase);
+
+    public static IReadOnlyList<string> PlannedAngularFolders { get; } = ExportCategories;
 }

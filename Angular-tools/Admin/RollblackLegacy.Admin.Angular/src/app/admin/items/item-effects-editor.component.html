@@ -39,7 +39,14 @@
             class="stat-quick-pick btn btn-light border text-start"
             (click)="addFromQuickPick(pick)"
             [disabled]="isSaving">
-            <span class="stat-quick-pick__emoji">{{ pick.emoji }}</span>
+            <img
+              *ngIf="pick.iconAsset"
+              class="stat-quick-pick__icon"
+              [src]="pick.iconAsset"
+              [alt]="pick.title"
+              width="28"
+              height="28" />
+            <span *ngIf="!pick.iconAsset" class="stat-quick-pick__emoji">{{ pick.emoji }}</span>
             <span class="stat-quick-pick__title">{{ pick.title }}</span>
             <span class="stat-quick-pick__subtitle">{{ pick.subtitle }}</span>
           </button>
