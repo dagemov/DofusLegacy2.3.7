@@ -83,7 +83,7 @@ Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
 Macro 3 - Sprite Preview Pipeline: COMPLETE (Phases 1–7 DONE)
-Macro Items Final - Items Builder effects catalog parity: IN_PROGRESS (7D.1 DONE)
+Macro Items Final - Items Builder effects catalog parity: DONE (7D.1–7D.5; browser QA PARTIAL)
 Macro 4 - Spells Builder: DEFERRED (until Macro Items Final closes)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -228,7 +228,7 @@ Goal: **100% functional parity** with `Rollback.Web` item effects editing before
 | 7D.2 Item Effects Catalog API | `PENDING` | [items-final-macro-plan.md](../admin-tools/items-builder/items-final/items-final-macro-plan.md) |
 | 7D.3 Item Effects Editor UX | `DONE` | [items-effects-editor-ui-phase7d3.md](../admin-tools/items-builder/items-final/items-effects-editor-ui-phase7d3.md) |
 | 7D.4 Templates y presets | `PENDING` | same |
-| 7D.5 QA end-to-end | `PENDING` | same |
+| 7D.5 QA end-to-end | `DONE` / browser `PARTIAL` | [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md) |
 
 Branch (7D.1): `feature/items-final-effects-catalog-audit-7d1`
 
@@ -236,10 +236,9 @@ Branch (7D.1): `feature/items-final-effects-catalog-audit-7d1`
 
 The next intended branch order is:
 
-1. Macro Items Final **7D.4** — templates y presets
-2. Macro Items Final **7D.5** — QA end-to-end + PR Macro Items Final
-
-Do **not** start Macro 4 Spells until 7D.5 passes.
+1. Abrir **PR único** Macro Items Final desde `feature/items-final-effects-catalog-audit-7d1`
+2. Browser QA pendiente: ver [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md)
+3. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 

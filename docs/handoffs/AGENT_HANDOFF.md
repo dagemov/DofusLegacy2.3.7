@@ -1,6 +1,6 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-03`
+Generated: `2026-06-04`
 
 ## Repo y rama
 
@@ -9,34 +9,42 @@ C:\Users\Hombr\source\repos\DofusLegacy2.3.7
 feature/items-final-effects-catalog-audit-7d1
 ```
 
-## Macro Items Final
+## Macro Items Final — DONE (API)
 
-| Phase | Commit | Status |
-| --- | --- | --- |
-| 7D.1 Audit | `44632b8` | DONE |
-| 7D.2 Catalog API | `10538e8` | DONE |
-| 7D.3 Editor UX | (pending commit) | DONE |
-| 7D.4 Templates | — | NEXT |
-| 7D.5 QA E2E | — | PENDING |
+| Phase | Commit |
+| --- | --- |
+| 7D.1 | `44632b8` docs: audit final item effects catalog parity |
+| 7D.2 | `10538e8` feat: add full item effects catalog api |
+| 7D.3 | `5a2fe50` feat: add item effects editor parity ui |
+| 7D.4 | `d00ecaa` feat: add item stat templates |
+| 7D.5 | (pending) docs: record final items builder e2e qa |
 
-## 7D.3 entrega
-
-- `ItemEffectsEditorComponent`: catálogo 507, select por fila, add con búsqueda/grupo, Integer/Dice, reorder, unsupported preservado.
-- `npm run build` PASS.
-- API smoke `GET items/12616/effects/edit`: 1 fila (`111` + PA) en DB actual — validar browser en `/admin/items/12616/edit`.
-
-Doc: `docs/admin-tools/items-builder/items-final/items-effects-editor-ui-phase7d3.md`
-
-## Siguiente acción
-
-1. Commit: `feat: add item effects editor parity ui`
-2. Phase 7D.4 — templates/presets (commit separado)
-3. No Spells hasta 7D.5
-
-## Prohibido
+## 7D.5 API smoke (12616)
 
 ```txt
-Macro 4 Spells
-cliente / gameplay
-SunshineItemEffectsCodec rewrite
+PUT preset Dofus Tester QA → 13 effects PASS
+GET reload → 13 effects persist
+7754 detail → IconId 23012, client Dofus Ocre
+7754 publication → PUBLISHED
+12616 publication → NEEDS_CLIENT_PATCH
+```
+
+Browser: PENDING_OPERATOR — checklist en `items-builder-final-e2e-qa-phase7d5.md`
+
+## PR
+
+Abrir **un solo PR** con los 6 commits de la rama. Título sugerido: `Macro Items Final — Items Builder effects parity`
+
+## Siguiente macro
+
+```txt
+Macro 4 Spells — NO hasta merge PR + aprobación explícita
+```
+
+## Builds
+
+```txt
+dotnet build Admin.Api — PASS (sin API en ejecución)
+npm run build — PASS
+Sunshine.sln — PASS si Admin.Api detenido
 ```

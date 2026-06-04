@@ -2,7 +2,7 @@
 
 **Goal:** close Items Builder to **100% functional parity** with `legacy-reference/Rollback.Web` **before** Macro 4 (Spells).
 
-**Status:** `IN_PROGRESS` — Phase 7D.1 audit complete; implementation phases 7D.2–7D.5 pending.
+**Status:** `DONE` (API/build) — browser operator pass `PARTIAL` en [7D.5](./items-builder-final-e2e-qa-phase7d5.md).
 
 ## Phases
 
@@ -12,7 +12,7 @@
 | 7D.2 | (planned) | Full catalog API (`IItemEffectsCatalog`, extend `GET item-effects/options`) | `PENDING` |
 | 7D.3 | [items-effects-editor-ui-phase7d3.md](./items-effects-editor-ui-phase7d3.md) | Angular editor parity (`EffectListEditor` MVP) | `DONE` |
 | 7D.4 | [items-stat-templates-phase7d4.md](./items-stat-templates-phase7d4.md) | Stat templates / presets | `DONE` |
-| 7D.5 | (planned) | End-to-end QA vs Blazor workflows (item `12616`, resist sets, dice rows) | `PENDING` |
+| 7D.5 | [items-builder-final-e2e-qa-phase7d5.md](./items-builder-final-e2e-qa-phase7d5.md) | Final E2E QA + PR gate | `DONE` / browser `PARTIAL` |
 
 ## Master plan
 

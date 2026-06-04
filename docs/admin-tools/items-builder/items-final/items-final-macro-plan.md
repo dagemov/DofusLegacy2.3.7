@@ -80,9 +80,9 @@ Deliverable: [items-effects-catalog-audit-phase7d1.md](./items-effects-catalog-a
 - Optional `POST` apply-template or client-side only initially
 - Must not overwrite `preservedSuffixHex` without confirmation
 
-### Phase 7D.5 — QA end-to-end (`PENDING`)
+### Phase 7D.5 — QA end-to-end (`DONE`)
 
-**Branch suggestion:** `feature/items-final-effects-qa-7d5`
+**Doc:** [items-builder-final-e2e-qa-phase7d5.md](./items-builder-final-e2e-qa-phase7d5.md)
 
 - Item `12616` (ADMIN TEST): add/remove AP, vitality, resist; save; reload; compare detail effects
 - Item with existing dice effects: edit dice fields round-trip

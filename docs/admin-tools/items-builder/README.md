@@ -36,7 +36,7 @@ Phase 8 DONE
 
 Macro 2 - Client Identity Audit Tool: COMPLETE
 Macro 3 - Sprite Preview Pipeline: COMPLETE
-Macro Items Final - Effects catalog parity (7D.1-7D.5): IN_PROGRESS
+Macro Items Final - Effects catalog parity (7D.1-7D.5): DONE (browser QA partial)
 Macro 4 - Spells Builder: DEFERRED (until Items Final closes)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
@@ -139,6 +139,8 @@ Document index:
 - `items-final/README.md` — Macro Items Final (effects catalog parity 7D.1–7D.5)
 - `items-final/items-effects-catalog-audit-phase7d1.md`
 - `items-final/items-effects-editor-ui-phase7d3.md`
+- `items-final/items-stat-templates-phase7d4.md`
+- `items-final/items-builder-final-e2e-qa-phase7d5.md`
 - `items-builder-publish-qa-phase8.md`
 - `items-client-visibility-matrix.md`
 - `items-publish-decision-workflow.md`
