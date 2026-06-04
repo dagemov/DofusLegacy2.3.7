@@ -37,7 +37,7 @@ Phase 8 DONE
 Macro 2 - Client Identity Audit Tool: COMPLETE
 Macro 3 - Sprite Preview Pipeline: COMPLETE
 Macro Items Final - Effects catalog parity (7D.1-7D.5): DONE (browser QA partial)
-Macro 4 - Client Item Publication Pipeline: Phase 1 DONE — [client-publication](../client-publication/README.md)
+Macro 4 - Client Item Publication Pipeline: Phase 5 DONE (sandbox + UX) — [client-publication](../client-publication/README.md), [UX polish Phase 5](./items-final/items-creation-ux-polish-phase5.md)
 Macro Spells Builder: DEFERRED (until Items Final PR merges)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED

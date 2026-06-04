@@ -147,6 +147,66 @@ cd /opt/dofus-2.0.0/docker && docker compose ps
 3. Puerto world publicado (`.env`: `WORLD_PORT`, por defecto `5557`)
 4. Login cliente QA contra host publicado
 
+## Cómo ejecutar backup y reinicio por bash
+
+Desde la raíz del repo en el operador (Linux/macOS/WSL). Por defecto los scripts **no ejecutan** hasta confirmar variables.
+
+### Backup local (repo)
+
+```bash
+cd /ruta/al/repo/DofusLegacy2.3.7
+
+# Plan (dry-run)
+bash Infrastructure/scripts/PublicationBackup/backup-client.sh
+bash Infrastructure/scripts/PublicationBackup/backup-db.sh
+
+# Ejecución real
+export CONFIRM_BACKUP=1
+bash Infrastructure/scripts/PublicationBackup/backup-client.sh
+bash Infrastructure/scripts/PublicationBackup/backup-db.sh
+bash Infrastructure/scripts/PublicationBackup/backup-vps-state.sh
+```
+
+Salidas: `backups/client/`, `backups/db/`, `backups/vps/` (gitignored).
+
+### Backup DB en VPS (script existente)
+
+```bash
+export CONFIRM_BACKUP=1
+bash scripts/vps/backup-before-restart.sh
+```
+
+Genera dump remoto en `/root/backups/sunshine-focused-YYYYMMDD-HHmmss.sql`.
+
+### Validar backup antes de reiniciar
+
+1. Comprobar que existe el último dump: `ls -lh /root/backups/` (en VPS vía SSH).
+2. Local: revisar `backups/client/*/manifest.json` y `checksums.sha256`.
+3. Admin: `GET /api/admin/v1/publication/backup-status` y publish lane `READY`.
+
+### Reinicio seguro del world
+
+```bash
+# Solo plan (no reinicia)
+bash scripts/vps/restart-world-safe.sh
+
+# Reinicio real
+export CONFIRM_RESTART=1
+bash scripts/vps/restart-world-safe.sh
+```
+
+Ruta verificada en repo: `scripts/vps/restart-world-safe.sh` (no bajo `Infrastructure/scripts/`).
+
+### Confirmar auth/world online
+
+```bash
+docker ps -a | grep -E 'sunshine|onelauncher|traefik'
+docker logs --tail 80 sunshine-server
+docker logs --tail 40 sunshine-db
+```
+
+Comprobar puertos auth/world en `.env` del VPS (`AUTH_PORT` / `WORLD_PORT`).
+
 ## Publish lane (local)
 
 ```powershell
