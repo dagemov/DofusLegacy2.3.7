@@ -1,0 +1,19 @@
+@model IReadOnlyList<InvitationBulletViewModel>
+
+<section class="landing-section" aria-labelledby="invitation-heading">
+    <div class="landing-section__inner landing-section__inner--center">
+        <span class="landing-section__eyebrow">Comunidad</span>
+        <h2 class="landing-section__title" id="invitation-heading">Una comunidad nueva, un mundo que despierta</h2>
+        <p class="landing-section__subtitle">Rollblack Legacy invita a aventureros que buscan un servidor privado honesto en Dofus 2.0.0.</p>
+        <div class="invitation-strip__grid">
+            @foreach (var bullet in Model)
+            {
+                <article class="invitation-bullet">
+                    <i class="@bullet.Icon invitation-bullet__icon" aria-hidden="true"></i>
+                    <h3 class="invitation-bullet__title">@bullet.Title</h3>
+                    <p class="invitation-bullet__text">@bullet.Text</p>
+                </article>
+            }
+        </div>
+    </div>
+</section>

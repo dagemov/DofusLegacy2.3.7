@@ -1,0 +1,55 @@
+@model BrandIdentityViewModel
+@inject IFaceAvatarResolver FaceAvatars
+@using RollblackLegacy.Website.Application.Abstractions
+@{
+    string discordUrl = ViewData["DiscordUrl"] as string ?? "#";
+    string betaLabel = ViewData["BetaStatusLabel"] as string ?? "Beta abierta · Online";
+    bool isAuthenticated = User?.Identity?.IsAuthenticated == true;
+    string displayName = User?.FindFirst("nickname")?.Value ?? User?.Identity?.Name ?? "Aventurero";
+    string? facePath = isAuthenticated ? FaceAvatars.ResolvePath(User?.Identity?.Name) : null;
+}
+
+<nav class="navbar" id="navbar" role="banner">
+    <a href="/#inicio" class="nav-brand">
+        <img src="@Model.LogoPath" alt="@Model.Name" />
+        <span>@Model.Name</span>
+    </a>
+
+    <ul class="nav-links d-none d-lg-flex">
+        <li><a href="/#inicio">Inicio</a></li>
+        <li><a href="/#comunidad">Comunidad</a></li>
+        <li><a href="/#pasos">Registro</a></li>
+        <li><a href="@discordUrl" target="_blank" rel="noopener noreferrer">Discord</a></li>
+    </ul>
+
+    <div class="nav-cta-group">
+        <span class="badge-live d-none d-md-inline-flex">@betaLabel</span>
+        @if (isAuthenticated)
+        {
+            @await Html.PartialAsync("~/Views/Shared/Molecules/_AccountChip.cshtml", new AccountChipViewModel
+            {
+                DisplayName = displayName,
+                FacePath = facePath!,
+                Username = User?.Identity?.Name ?? displayName,
+            })
+        }
+        else
+        {
+            <a href="/account/login" class="btn btn-secondary btn--sm">Iniciar sesion</a>
+        }
+        <button class="mobile-menu-btn d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMobile" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<div class="collapse nav-mobile d-lg-none" id="navMobile">
+    <a href="/#inicio">Inicio</a>
+    <a href="/#comunidad">Comunidad</a>
+    <a href="/#pasos">Registro</a>
+    <a href="@discordUrl" target="_blank" rel="noopener noreferrer">Discord</a>
+    @if (!isAuthenticated)
+    {
+        <a href="/account/login" class="btn btn-secondary" style="margin-top:0.5rem;">Iniciar sesion</a>
+    }
+</div>

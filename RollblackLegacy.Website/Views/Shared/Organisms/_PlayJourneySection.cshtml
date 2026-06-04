@@ -1,0 +1,44 @@
+@model PlayJourneyViewModel
+
+<section class="steps-section" id="pasos">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">@Model.Eyebrow</span>
+            <h2 class="section-title">@Model.Title</h2>
+            <p class="section-desc">@Model.Subtitle</p>
+        </div>
+
+        <div class="steps-wrapper">
+            @foreach (var step in Model.Steps)
+            {
+                <div class="step-row">
+                    <div class="step-visual reveal">
+                        <img src="@step.ImagePath" alt="@step.ImageAlt" loading="lazy" />
+                    </div>
+                    <div class="step-content">
+                        <div class="step-number">@step.StepNumber</div>
+                        <h3>@step.Title</h3>
+                        <p>@step.Description</p>
+                        <ul class="step-list">
+                            @foreach (var bullet in step.Bullets)
+                            {
+                                <li>@bullet</li>
+                            }
+                        </ul>
+                        @if (step.Cta is not null)
+                        {
+                            @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", step.Cta)
+                        }
+                        @if (step.StepNumber == 2)
+                        {
+                            <div class="adobe-air-note">
+                                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                                <span>@Model.AdobeAirTitle. <a href="@Model.AdobeAirDownload.Href" target="_blank" rel="noopener noreferrer">@Model.AdobeAirDownload.Label</a></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

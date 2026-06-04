@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using RollblackLegacy.Website.Application.Abstractions;
 using RollblackLegacy.Website.Application.Services;
+using RollblackLegacy.Website.Infrastructure;
 using RollblackLegacy.Website.Infrastructure.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddHttpClient<IOneLauncherApiClient, OneLauncherApiClient>(clie
 
 builder.Services.AddScoped<IAccountRegistrationService, AccountRegistrationService>();
 builder.Services.AddScoped<IAccountLoginService, AccountLoginService>();
+builder.Services.AddSingleton<IFaceAvatarResolver, FaceAvatarResolver>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

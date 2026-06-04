@@ -1,0 +1,14 @@
+@model PlayJourneyViewModel
+
+<section class="cta-banner">
+    <div class="container reveal">
+        <h2>@Model.FinalTitle</h2>
+        <p>@Model.FinalSubtitle</p>
+        <div class="hero-cta">
+            @foreach (var action in Model.FinalActions)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", action)
+            }
+        </div>
+    </div>
+</section>

@@ -16,5 +16,11 @@ public sealed class RegisterAccountPageViewModel
 
     public required string DiscordUrl { get; init; }
 
+    public string LauncherDownloadUrl { get; init; } = "#";
+
+    public string AdobeAirDownloadUrl { get; init; } = "#";
+
+    public string ServerImagePath { get; init; } = "/images/branding/Foto_servidor.png";
+
     public RegisterAccountResultViewModel? Result { get; init; }
 }

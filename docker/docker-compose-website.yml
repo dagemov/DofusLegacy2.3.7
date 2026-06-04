@@ -15,9 +15,13 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       Website__ApiBaseUrl: ${WEBSITE_API_BASE_URL:-http://onelauncher-api:8080}
       Website__DiscordUrl: https://discord.gg/4MJ83yhdp
-      Website__LogoPath: /images/launcher-branding/logo-title.png
-      Website__FaviconPath: /images/launcher-branding/favicon.ico
-      Website__Eyebrow: OneLauncher
+      Website__LogoPath: /images/branding/Logo_server.png
+      Website__FaviconPath: /images/branding/favicon.ico
+      Website__HeroBackgroundPath: /images/branding/Fondo_hero.png
+      Website__Eyebrow: Beta MMORPG
+      Website__Tagline: Servidor privado Dofus 2.0.0
+      Website__LauncherDownloadUrl: https://drive.google.com/file/d/1iR94lJ05QWQalOQWz8KCoN7q3A_aqgDT/view
+      Website__AdobeAirDownloadUrl: https://drive.google.com/file/d/1UKx1KTsLPNQYJdEjSz_FR_ETn_uKqwX1/view?usp=sharing
     depends_on:
       onelauncher-api:
         condition: service_started

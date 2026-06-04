@@ -1,0 +1,18 @@
+@model IReadOnlyList<NewsItemViewModel>
+
+<section class="landing-section" aria-labelledby="features-heading">
+    <div class="landing-section__inner landing-section__inner--center">
+        <span class="landing-section__eyebrow">Por que Rollblack</span>
+        <h2 class="landing-section__title" id="features-heading">La beta que buscabas</h2>
+        <div class="feature-grid">
+            @foreach (var item in Model)
+            {
+                <article class="feature-card">
+                    <span class="feature-card__label">@item.Label</span>
+                    <h3 class="feature-card__title">@item.Title</h3>
+                    <p class="feature-card__text">@item.Summary</p>
+                </article>
+            }
+        </div>
+    </div>
+</section>

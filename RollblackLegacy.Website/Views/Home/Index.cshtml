@@ -2,69 +2,13 @@
 @{
     ViewData["Title"] = "Inicio";
     ViewData["ActiveNav"] = "home";
+    ViewData["BetaStatusLabel"] = Model.BetaStatusLabel;
+    ViewData["IsHomePage"] = true;
 }
 
-<div class="page-stage page-stage--landing">
-    <section class="page-hero page-hero--landing">
-        <div>
-            <div class="page-hero__badges">
-                <span class="page-hero__beta" aria-label="Fase beta">@Model.HeroBadge</span>
-                <span class="page-hero__chip">@Model.Brand.Eyebrow · MMORPG privado</span>
-            </div>
-            <h1 class="page-hero__title page-hero__title--glow">@Model.HeroTitle</h1>
-            <p class="page-hero__subtitle">@Model.HeroSubtitle</p>
-
-            <div class="page-hero__actions">
-                @foreach (var action in Model.HeroActions)
-                {
-                    @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", action)
-                }
-            </div>
-        </div>
-
-        <img src="@Model.Brand.LogoPath" alt="@Model.Brand.Name" class="page-hero__logo" />
-    </section>
-
-    <div class="page-grid page-grid--features">
-        @foreach (var item in Model.NewsItems)
-        {
-            <article class="page-card page-card--feature">
-                <span class="page-card__label">@item.Label</span>
-                <h2 class="page-card__title">@item.Title</h2>
-                <p class="page-card__text">@item.Summary</p>
-            </article>
-        }
-    </div>
-
-    <section class="page-lore" aria-labelledby="lore-heading">
-        <header class="page-lore__header">
-            <span class="page-lore__eyebrow">@Model.Lore.Eyebrow</span>
-            <h2 class="page-lore__title" id="lore-heading">@Model.Lore.Title</h2>
-        </header>
-        @foreach (var paragraph in Model.Lore.Paragraphs)
-        {
-            <p class="page-lore__text">@paragraph</p>
-        }
-    </section>
-
-    <section class="page-panel">
-        <div class="page-panel__heading">
-            <span class="page-panel__eyebrow">Estado del reino</span>
-            <h2 class="page-panel__title">Servicios en beta</h2>
-            <p class="page-panel__subtitle">Telemetria en vivo proximamente. El registro web ya opera contra la API OneLauncher.</p>
-        </div>
-
-        <div class="page-grid page-grid--status">
-            @foreach (var status in Model.ServerStatuses)
-            {
-                <article class="page-card">
-                    <span class="status-pill @(status.IsOnline ? "status-pill--online" : "status-pill--offline")">
-                        @(status.IsOnline ? "Online" : "Offline")
-                    </span>
-                    <h3 class="page-card__title">@status.Name</h3>
-                    <p class="page-card__text"><strong>@status.State</strong> — @status.Summary</p>
-                </article>
-            }
-        </div>
-    </section>
-</div>
+@await Html.PartialAsync("~/Views/Shared/Organisms/_HeroLanding.cshtml", Model)
+@await Html.PartialAsync("~/Views/Shared/Organisms/_CommunitySection.cshtml", Model.InvitationBullets)
+@await Html.PartialAsync("~/Views/Shared/Organisms/_PlayJourneySection.cshtml", Model.PlayJourney)
+@await Html.PartialAsync("~/Views/Shared/Organisms/_CtaBannerSection.cshtml", Model.PlayJourney)
+@await Html.PartialAsync("~/Views/Shared/Organisms/_WhySection.cshtml", Model.FeatureCards)
+@await Html.PartialAsync("~/Views/Shared/Organisms/_DiscordSection.cshtml", Model.CommunityCta)

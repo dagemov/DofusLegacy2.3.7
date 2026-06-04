@@ -1,0 +1,14 @@
+@model CommunityCtaViewModel
+
+<section class="discord-section" id="discord">
+    <div class="container">
+        <div class="discord-card reveal">
+            <div class="discord-icon" aria-hidden="true">
+                @await Html.PartialAsync("~/Views/Shared/Atoms/_DiscordIcon.cshtml")
+            </div>
+            <h2>@Model.Title</h2>
+            <p>@Model.Subtitle</p>
+            @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", Model.DiscordButton)
+        </div>
+    </div>
+</section>
