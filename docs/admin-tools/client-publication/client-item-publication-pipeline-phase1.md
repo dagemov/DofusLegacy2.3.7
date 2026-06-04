@@ -54,7 +54,11 @@ GET /api/admin/v1/items/12617/publication-manifest
 - [x] Angular preview sin botón publicar
 - [x] Sin modificar cliente real / DB / VPS
 
-## Phase 2 (no iniciar sin aprobación)
+## Phase 2
 
-- Prototipo writer en **copia staging** de `Items.d2o` + i18n
-- Validación diff + QA launcher
+Ver [client-publication-phase2.md](./client-publication-phase2.md) — `DONE`.
+
+## Phase 3 (no iniciar sin aprobación)
+
+- Prototipo publisher en **copia staging** (`Item.cs` o writer genérico Admin)
+- Writer D2I aún sin implementación en repo

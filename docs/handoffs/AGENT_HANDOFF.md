@@ -24,7 +24,9 @@ Siguiente paso: aprobación explícita para client patch; luego repetir QA con t
 | API | `GET /api/admin/v1/items/{id}/publication-manifest` |
 | CLI | `Infrastructure/scripts/ClientItemPublicationPipeline` |
 
-Phase 2 (D2O/D2I writer en staging): **NO iniciar** sin aprobación.
+Phase 2 Writer Research: **DONE** — D2OWriter existe pero **no operativo** para `Items.d2o` (falta clase C# `Item`). D2I writer: **no existe**. Ver [client-writer-capability-audit.md](../admin-tools/client-publication/client-writer-capability-audit.md).
+
+Phase 3 (staging publisher): **NO iniciar** sin aprobación — opción A: generar `Item.cs` / opción B: writer genérico Admin.
 
 ## Repo y rama
 
