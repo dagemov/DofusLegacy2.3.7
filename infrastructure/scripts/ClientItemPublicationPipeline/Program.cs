@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using ClientItemPublicationPipeline;
+using ClientItemPublicationPipeline.D2i;
 using ClientItemPublicationPipeline.D2o;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,25 +13,138 @@ using RollblackLegacy.Admin.Infrastructure.DependencyInjection;
 
 var options = PublicationPipelineOptions.Parse(args);
 var repoRoot = RepositoryRootResolver.Resolve(AppContext.BaseDirectory);
+var paths = RepositoryPaths.FromRepoRoot(repoRoot);
 var outputDirectory = ResolveOutputDirectory(repoRoot, options.OutputDirectory);
-var sourceItems = Path.Combine(repoRoot, "Client2.3.7", "data", "common", "Items.d2o");
-
-if (!File.Exists(sourceItems))
-{
-    throw new FileNotFoundException($"Items.d2o no encontrado: {sourceItems}");
-}
 
 return options.Mode.ToLowerInvariant() switch
 {
     "dry-run" => await RunDryRunAsync(repoRoot, options, outputDirectory),
-    "d2o-inspect-class" => RunD2oInspectClass(sourceItems, outputDirectory, options.D2oClassName),
-    "d2o-roundtrip" => RunD2oRoundTrip(sourceItems, outputDirectory),
-    "d2o-clone-item" => RunD2oCloneItem(sourceItems, outputDirectory, options),
+    "d2o-inspect-class" => RunD2oInspectClass(paths.ClientItemsD2oPath, outputDirectory, options.D2oClassName),
+    "d2o-roundtrip" => RunD2oRoundTrip(paths.ClientItemsD2oPath, outputDirectory),
+    "d2o-clone-item" => RunD2oCloneItem(paths.ClientItemsD2oPath, outputDirectory, options),
+    "d2i-inspect" => RunD2iInspect(paths, outputDirectory),
+    "d2i-roundtrip" => RunD2iRoundTrip(paths, outputDirectory),
+    "d2i-append-text" => RunD2iAppendText(paths, outputDirectory, options),
+    "stage-item-publication" => RunStageItemPublication(repoRoot, paths, outputDirectory, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
+static int RunD2iInspect(RepositoryPaths paths, string outputDirectory)
+{
+    EnsureI18nSources(paths);
+    var publisher = new D2iStagingPublisher();
+    var result = publisher.Inspect(paths.ClientI18nEsPath, paths.ClientI18nEnPath, outputDirectory);
+    Console.WriteLine($"ES entries: {result.Es.IndexCount} (max id {result.Es.MaxTextId})");
+    Console.WriteLine($"EN entries: {result.En.IndexCount} (max id {result.En.MaxTextId})");
+    Console.WriteLine($"Report: {result.MarkdownPath}");
+    return 0;
+}
+
+static int RunD2iRoundTrip(RepositoryPaths paths, string outputDirectory)
+{
+    EnsureI18nSources(paths);
+    var publisher = new D2iStagingPublisher();
+    var result = publisher.RoundTrip(paths.ClientI18nEsPath, paths.ClientI18nEnPath, outputDirectory);
+    Console.WriteLine($"ES count: {result.BeforeEsCount} -> {result.AfterEsCount}");
+    Console.WriteLine($"EN count: {result.BeforeEnCount} -> {result.AfterEnCount}");
+    Console.WriteLine($"Success: {result.Success}");
+    Console.WriteLine($"Report: {result.ReportPath}");
+    return result.Success ? 0 : 1;
+}
+
+static int RunD2iAppendText(RepositoryPaths paths, string outputDirectory, PublicationPipelineOptions options)
+{
+    EnsureI18nSources(paths);
+    var publisher = new D2iStagingPublisher();
+    var result = publisher.AppendText(
+        paths.ClientI18nEsPath,
+        paths.ClientI18nEnPath,
+        outputDirectory,
+        options.EsName,
+        options.EsDescription,
+        options.EnName,
+        options.EnDescription);
+
+    Console.WriteLine($"NameId: {result.NameId}");
+    Console.WriteLine($"DescriptionId: {result.DescriptionId}");
+    Console.WriteLine($"Verified: {result.Verified}");
+    Console.WriteLine($"ES: {result.ResolvedEsName}");
+    Console.WriteLine($"EN: {result.ResolvedEnName}");
+    Console.WriteLine($"JSON: {result.JsonPath}");
+    Console.WriteLine($"Markdown: {result.MarkdownPath}");
+
+    if (!options.StagePublicationPackage)
+    {
+        return result.Verified ? 0 : 1;
+    }
+
+    var packageDir = Path.Combine(
+        paths.RepoRoot,
+        "Infrastructure",
+        "staging-client",
+        "publication-phase3b",
+        options.TargetItemId.ToString());
+
+    var package = publisher.TryStagePublicationPackage(
+        paths.RepoRoot,
+        packageDir,
+        options.SourceItemId,
+        options.TargetItemId,
+        result);
+
+    if (package is null)
+    {
+        return 1;
+    }
+
+    Console.WriteLine($"Package: {package.PackageDirectory}");
+    Console.WriteLine($"Manifest: {package.JsonPath}");
+    return result.Verified ? 0 : 1;
+}
+
+static int RunStageItemPublication(
+    string repoRoot,
+    RepositoryPaths paths,
+    string outputDirectory,
+    PublicationPipelineOptions options)
+{
+    EnsureI18nSources(paths);
+    EnsureItemsSource(paths);
+    var publisher = new D2iStagingPublisher();
+    var i18nDir = outputDirectory;
+    var append = publisher.AppendText(
+        paths.ClientI18nEsPath,
+        paths.ClientI18nEnPath,
+        i18nDir,
+        options.EsName,
+        options.EsDescription,
+        options.EnName,
+        options.EnDescription);
+
+    if (!append.Verified)
+    {
+        return 1;
+    }
+
+    var packageDir = string.IsNullOrWhiteSpace(outputDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-phase3b", options.TargetItemId.ToString())
+        : outputDirectory;
+
+    var package = publisher.TryStagePublicationPackage(
+        repoRoot,
+        packageDir,
+        options.SourceItemId,
+        options.TargetItemId,
+        append);
+
+    Console.WriteLine($"Package: {package?.PackageDirectory}");
+    Console.WriteLine($"nameId={package?.NameId} descriptionId={package?.DescriptionId}");
+    return package is not null && append.Verified ? 0 : 1;
+}
+
 static int RunD2oInspectClass(string sourceItems, string outputDirectory, string? focusClass)
 {
+    EnsureItemsSourcePath(sourceItems);
     var publisher = new D2oStagingPublisher();
     var result = publisher.InspectClass(sourceItems, outputDirectory, focusClass);
     Console.WriteLine($"Index entries: {result.IndexCount}");
@@ -42,6 +156,7 @@ static int RunD2oInspectClass(string sourceItems, string outputDirectory, string
 
 static int RunD2oRoundTrip(string sourceItems, string outputDirectory)
 {
+    EnsureItemsSourcePath(sourceItems);
     var publisher = new D2oStagingPublisher();
     var result = publisher.RoundTrip(sourceItems, outputDirectory);
     Console.WriteLine($"Index before: {result.BeforeCount}");
@@ -53,6 +168,7 @@ static int RunD2oRoundTrip(string sourceItems, string outputDirectory)
 
 static int RunD2oCloneItem(string sourceItems, string outputDirectory, PublicationPipelineOptions options)
 {
+    EnsureItemsSourcePath(sourceItems);
     var publisher = new D2oStagingPublisher();
     var result = publisher.CloneItem(
         sourceItems,
@@ -66,7 +182,7 @@ static int RunD2oCloneItem(string sourceItems, string outputDirectory, Publicati
     Console.WriteLine($"Clone {result.SourceItemId} -> {result.TargetItemId}");
     Console.WriteLine($"Target exists: {result.TargetExists}");
     Console.WriteLine($"typeId={result.TypeId} iconId={result.IconId} appearanceId={result.AppearanceId}");
-    Console.WriteLine($"nameId={result.NameId} descriptionId={result.DescriptionId} (i18n pendiente)");
+    Console.WriteLine($"nameId={result.NameId} descriptionId={result.DescriptionId}");
     Console.WriteLine($"Staging: {result.StagingItemsPath}");
     return result.TargetExists ? 0 : 1;
 }
@@ -110,6 +226,24 @@ static async Task<int> RunDryRunAsync(string repoRoot, PublicationPipelineOption
     Console.WriteLine($"JSON: {jsonPath}");
     Console.WriteLine($"Markdown: {mdPath}");
     return 0;
+}
+
+static void EnsureI18nSources(RepositoryPaths paths)
+{
+    if (!File.Exists(paths.ClientI18nEsPath) || !File.Exists(paths.ClientI18nEnPath))
+    {
+        throw new FileNotFoundException("Archivos i18n del cliente no encontrados en Client2.3.7/data/i18n/");
+    }
+}
+
+static void EnsureItemsSource(RepositoryPaths paths) => EnsureItemsSourcePath(paths.ClientItemsD2oPath);
+
+static void EnsureItemsSourcePath(string path)
+{
+    if (!File.Exists(path))
+    {
+        throw new FileNotFoundException($"Items.d2o no encontrado: {path}");
+    }
 }
 
 static string ResolveOutputDirectory(string repoRoot, string output) =>

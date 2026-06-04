@@ -9,7 +9,12 @@ internal sealed record PublicationPipelineOptions(
     int TargetItemId,
     int CloneTypeId,
     int CloneIconId,
-    int CloneAppearanceId)
+    int CloneAppearanceId,
+    string EsName,
+    string EsDescription,
+    string EnName,
+    string EnDescription,
+    bool StagePublicationPackage)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -22,6 +27,11 @@ internal sealed record PublicationPipelineOptions(
         var cloneTypeId = 23;
         var cloneIconId = 23012;
         var cloneAppearanceId = 0;
+        var esName = "Dofus de los Hielos";
+        var esDescription = "Dofus de los Hielos creado para pruebas controladas del pipeline de publicación.";
+        var enName = "Ice Dofus";
+        var enDescription = "Ice Dofus created for controlled publication pipeline testing.";
+        var stagePublicationPackage = false;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -54,6 +64,21 @@ internal sealed record PublicationPipelineOptions(
                 case "--clone-appearance-id" when index + 1 < args.Length:
                     cloneAppearanceId = int.Parse(args[++index]);
                     break;
+                case "--es-name" when index + 1 < args.Length:
+                    esName = args[++index];
+                    break;
+                case "--es-description" when index + 1 < args.Length:
+                    esDescription = args[++index];
+                    break;
+                case "--en-name" when index + 1 < args.Length:
+                    enName = args[++index];
+                    break;
+                case "--en-description" when index + 1 < args.Length:
+                    enDescription = args[++index];
+                    break;
+                case "--stage-publication-package":
+                    stagePublicationPackage = true;
+                    break;
             }
         }
 
@@ -71,7 +96,12 @@ internal sealed record PublicationPipelineOptions(
             targetItemId,
             cloneTypeId,
             cloneIconId,
-            cloneAppearanceId);
+            cloneAppearanceId,
+            esName,
+            esDescription,
+            enName,
+            enDescription,
+            stagePublicationPackage);
     }
 }
 
@@ -100,4 +130,10 @@ internal sealed record RepositoryPaths(string RepoRoot, string AdminApiConfigDir
 {
     public static RepositoryPaths FromRepoRoot(string repoRoot) =>
         new(repoRoot, Path.Combine(repoRoot, "Angular-tools", "Admin", "RollblackLegacy.Admin.Api"));
+
+    public string ClientI18nEsPath => Path.Combine(RepoRoot, "Client2.3.7", "data", "i18n", "i18n_es.d2i");
+
+    public string ClientI18nEnPath => Path.Combine(RepoRoot, "Client2.3.7", "data", "i18n", "i18n_en.d2i");
+
+    public string ClientItemsD2oPath => Path.Combine(RepoRoot, "Client2.3.7", "data", "common", "Items.d2o");
 }

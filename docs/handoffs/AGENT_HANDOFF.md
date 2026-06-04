@@ -2,64 +2,37 @@
 
 Generated: `2026-06-04`
 
-## Macro 4 / Phase 3A — D2O Item class staging
+## Macro 4 / Phase 3B — D2I writer staging
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/client-item-publication-d2o-item-class-phase3a` |
+| Rama | `feature/client-item-publication-d2i-writer-phase3b` |
 | Estado | **`DONE`** |
-| Docs | [client-publication-phase3a-d2o-item-class.md](../admin-tools/client-publication/client-publication-phase3a-d2o-item-class.md) |
+| Docs | [client-publication-phase3b-d2i-writer.md](../admin-tools/client-publication/client-publication-phase3b-d2i-writer.md) |
 
 Resultados:
 
-- Clases `[D2OClass]`: `Item`, `Weapon`, `EffectInstance`, `EffectInstanceInteger`, `EffectInstanceDice` en `Sunshine.Protocol/Tools/D2o/Classes/`.
-- `D2OReader` lee `Items.d2o` (11067 índices).
-- Round-trip staging: índice preservado; item `7754` intacto.
-- Clone staging `7754` → `12617` (`typeId=23`, `iconId=23012`, `appearanceId=0`); `nameId`/`descriptionId` heredados — **i18n pendiente Phase 3B**.
-- Staging: `Infrastructure/staging-client/d2o-phase3a/Items.d2o` (gitignored).
+- `D2iFile` / `D2iTextWriter` — read/write staging `.d2i` (formato documentado).
+- Round-trip: 62710 entradas ES/EN preservadas; `textId 40904` intacto.
+- Append: `nameId=63079`, `descriptionId=63080` (caso Dofus de los Hielos / Ice Dofus).
+- `stage-item-publication` → `Infrastructure/staging-client/publication-phase3b/12617/` (`Items.d2o` + i18n + manifest).
 - Cliente real / VPS / DB: **sin cambios**.
 
-CLI:
+**Siguiente:** Macro 4 / **Phase 3C** — paquete publicación completo (launcher, QA cliente, manifest sin `BLOCKED_I18N_WRITER_MISSING`).
 
-```bash
-dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" -- \
-  --mode d2o-clone-item --source-item-id 7754 --target-item-id 12617 \
-  --output "Infrastructure/staging-client/d2o-phase3a"
-```
+## Macro 4 / Phase 3A — referencia
 
-**Siguiente:** Macro 4 / **Phase 3B** — D2I writer research/prototype.
-
-## Macro 4 — Phase 1–2 (referencia)
-
-| Phase | Estado |
-| --- | --- |
-| 1 dry-run manifest | `DONE` |
-| 2 writer audit | `DONE` |
-
-## QA Dofus de los Hielos
-
-| Campo | Valor |
-| --- | --- |
-| Estado | `BLOCKED_CLIENT_TEMPLATE_MISSING` |
-| Doc | [dofus-hielos-production-qa.md](../admin-tools/items-builder/items-final/dofus-hielos-production-qa.md) |
+Commit `fe5d347` — D2O Item classes, clone `7754`→`12617` en staging.
 
 ## Repo
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/client-item-publication-d2o-item-class-phase3a
-```
-
-## Builds
-
-```txt
-dotnet build "Sunshine net11.0/Sunshine net11.0/Sunshine.sln" /nr:false — PASS
-dotnet build "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" — PASS (net11.0)
-dotnet build "Infrastructure/scripts/ClientD2oWriterResearch/ClientD2oWriterResearch.csproj" — PASS
+feature/client-item-publication-d2i-writer-phase3b
 ```
 
 ## Commit sugerido
 
 ```txt
-feat: add d2o item class staging publisher prototype
+feat: add d2i staging writer prototype
 ```
