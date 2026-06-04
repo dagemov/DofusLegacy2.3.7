@@ -28,6 +28,8 @@ return options.Mode.ToLowerInvariant() switch
     "d2i-append-text" => RunD2iAppendText(paths, outputDirectory, options),
     "stage-item-publication" => RunStageItemPublication(repoRoot, paths, outputDirectory, options),
     "validate-publication-package" => RunValidatePublicationPackage(repoRoot, paths, options),
+    "apply-package-to-sandbox" => RunApplyPackageToSandbox(repoRoot, options),
+    "validate-sandbox-client" => RunValidateSandboxClient(repoRoot, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -346,6 +348,52 @@ static void EnsureItemsSourcePath(string path)
     {
         throw new FileNotFoundException($"Items.d2o no encontrado: {path}");
     }
+}
+
+static int RunApplyPackageToSandbox(string repoRoot, PublicationPipelineOptions options)
+{
+    var packageDir = string.IsNullOrWhiteSpace(options.PackageDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-package-phase3c", options.TargetItemId.ToString())
+        : ResolveOutputDirectory(repoRoot, options.PackageDirectory!);
+
+    var sandboxDir = string.IsNullOrWhiteSpace(options.SandboxDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "client-patch-sandbox", options.TargetItemId.ToString())
+        : ResolveOutputDirectory(repoRoot, options.SandboxDirectory!);
+
+    if (!Directory.Exists(packageDir))
+    {
+        throw new DirectoryNotFoundException($"Paquete no encontrado: {packageDir}");
+    }
+
+    var publisher = new ClientPatchSandboxPublisher();
+    var result = publisher.ApplyPackageToSandbox(repoRoot, packageDir, sandboxDir, options.TargetItemId);
+    Console.WriteLine($"Sandbox: {result.SandboxDirectory}");
+    Console.WriteLine($"Manifest: {result.ManifestPath}");
+    return 0;
+}
+
+static int RunValidateSandboxClient(string repoRoot, PublicationPipelineOptions options)
+{
+    var sandboxDir = string.IsNullOrWhiteSpace(options.SandboxDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "client-patch-sandbox", options.TargetItemId.ToString())
+        : ResolveOutputDirectory(repoRoot, options.SandboxDirectory!);
+
+    if (!Directory.Exists(sandboxDir))
+    {
+        throw new DirectoryNotFoundException($"Sandbox no encontrado: {sandboxDir}");
+    }
+
+    var publisher = new ClientPatchSandboxPublisher();
+    var result = publisher.ValidateSandbox(repoRoot, sandboxDir, options.TargetItemId, options.CloneIconId);
+    Console.WriteLine($"Sandbox: {sandboxDir}");
+    Console.WriteLine($"Valid: {result.IsValid}");
+    Console.WriteLine($"Status: {result.ValidationStatus}");
+    foreach (var reason in result.BlockingReasons)
+    {
+        Console.WriteLine($"BLOCK: {reason}");
+    }
+
+    return result.IsValid ? 0 : 1;
 }
 
 static string ResolveOutputDirectory(string repoRoot, string output) =>

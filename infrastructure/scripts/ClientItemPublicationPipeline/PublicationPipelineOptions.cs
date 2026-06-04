@@ -15,7 +15,8 @@ internal sealed record PublicationPipelineOptions(
     string EnName,
     string EnDescription,
     bool StagePublicationPackage,
-    string? PackageDirectory)
+    string? PackageDirectory,
+    string? SandboxDirectory)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -34,6 +35,7 @@ internal sealed record PublicationPipelineOptions(
         var enDescription = "Ice Dofus created for controlled publication pipeline testing.";
         var stagePublicationPackage = false;
         string? packageDirectory = null;
+        string? sandboxDirectory = null;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -84,6 +86,9 @@ internal sealed record PublicationPipelineOptions(
                 case "--package" when index + 1 < args.Length:
                     packageDirectory = args[++index];
                     break;
+                case "--sandbox" when index + 1 < args.Length:
+                    sandboxDirectory = args[++index];
+                    break;
             }
         }
 
@@ -107,7 +112,8 @@ internal sealed record PublicationPipelineOptions(
             enName,
             enDescription,
             stagePublicationPackage,
-            packageDirectory);
+            packageDirectory,
+            sandboxDirectory);
     }
 }
 

@@ -62,6 +62,8 @@ Infrastructure/staging-client/
 infrastructure/staging-client/
 !Infrastructure/staging-client/publish-lane/
 !Infrastructure/staging-client/publish-lane/**
+!Infrastructure/staging-client/client-patch-sandbox/
+!Infrastructure/staging-client/client-patch-sandbox/**
 !infrastructure/staging-client/publish-lane/
 !infrastructure/staging-client/publish-lane/**
 
