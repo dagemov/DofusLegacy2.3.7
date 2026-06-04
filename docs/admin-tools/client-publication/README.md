@@ -13,6 +13,7 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 | **3C** | Paquete staging completo + validador | `DONE` |
 | **4** | Backup/recovery pipeline + publish lane (sin publish real) | `DONE` |
 | **5** | Sandbox patch + UX creación items + guía bash VPS | `DONE` |
+| **6** | Publish real controlado (12617) + skin catalog dry-run | `READY_FOR_OPERATOR` |
 
 ## Documentos
 
@@ -28,7 +29,9 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 - [Package 12617 report](./client-publication-package-12617-report.md)
 - [Phase 4 — backup/recovery](./client-publication-phase4-backup-recovery.md)
 - [Phase 5 — controlled sandbox](./client-publication-phase5-controlled-sandbox.md)
+- [Phase 6 — controlled publish](./client-publication-phase6-controlled-publish.md)
 - [VPS operations guide](./vps-publication-operations-guide.md)
+- [Item skin catalog plan](../sprite-preview/item-skin-catalog-plan-phase6.md)
 
 ## Herramientas
 
@@ -98,6 +101,20 @@ dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/Clien
 
 API: `GET /api/admin/v1/publication/backup-status`  
 UI: `/admin/publication`
+
+## Phase 6 — publish real (operador)
+
+Requiere `CONFIRM_BACKUP=1` + `CONFIRM_PUBLISH=1`. Ver [Phase 6 doc](./client-publication-phase6-controlled-publish.md).
+
+```bash
+dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" -- \
+  --mode validate-real-client --client "Client2.3.7" --target-item-id 12617
+
+dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" -- \
+  --mode item-skin-catalog-dry-run \
+  --output "Infrastructure/temporal-artifacts/item-skin-catalog" \
+  --exclude-types weapons
+```
 
 ## Phase 5 — sandbox patch (sin cliente real)
 
