@@ -22,7 +22,10 @@ internal sealed record PublicationPipelineOptions(
     string? Category,
     int CatalogLimit,
     bool CatalogDryRun,
-    bool ApproveCuratedCopy)
+    bool ApproveCuratedCopy,
+    string? Categories,
+    string? SourceDirectory,
+    bool OverwriteCuratedCopy)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -48,6 +51,9 @@ internal sealed record PublicationPipelineOptions(
         var catalogLimit = 50;
         var catalogDryRun = false;
         var approveCuratedCopy = false;
+        string? categories = null;
+        string? sourceDirectory = null;
+        var overwriteCuratedCopy = false;
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -119,6 +125,15 @@ internal sealed record PublicationPipelineOptions(
                 case "--approve-curated-copy":
                     approveCuratedCopy = true;
                     break;
+                case "--categories" when index + 1 < args.Length:
+                    categories = args[++index];
+                    break;
+                case "--source" when index + 1 < args.Length:
+                    sourceDirectory = args[++index];
+                    break;
+                case "--overwrite-curated":
+                    overwriteCuratedCopy = true;
+                    break;
             }
         }
 
@@ -149,7 +164,10 @@ internal sealed record PublicationPipelineOptions(
             category,
             catalogLimit,
             catalogDryRun,
-            approveCuratedCopy);
+            approveCuratedCopy,
+            categories,
+            sourceDirectory,
+            overwriteCuratedCopy);
     }
 }
 

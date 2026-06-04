@@ -34,6 +34,8 @@ return options.Mode.ToLowerInvariant() switch
     "validate-real-client" => RunValidateRealClient(repoRoot, options),
     "item-skin-catalog-dry-run" => RunItemSkinCatalogDryRun(repoRoot, options),
     "item-skin-catalog-export-curated" => RunItemSkinCatalogExportCurated(repoRoot, options),
+    "item-preview-extract-by-category" => RunItemPreviewExtractByCategory(repoRoot, options),
+    "item-preview-copy-to-angular" => RunItemPreviewCopyToAngular(repoRoot, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -500,3 +502,66 @@ static int RunItemSkinCatalogExportCurated(string repoRoot, PublicationPipelineO
 
     return 0;
 }
+
+static int RunItemPreviewExtractByCategory(string repoRoot, PublicationPipelineOptions options)
+{
+    var outputDirectory = ResolveOutputDirectory(repoRoot, options.OutputDirectory);
+    var clientRoot = ResolveClientRoot(repoRoot, options);
+    var paths = ClientSkinCatalogPaths.Resolve(repoRoot, clientRoot);
+    var excludeWeapons = WeaponTypeFilter.ExcludeWeapons(options.ExcludeTypes);
+    var categories = ParseCategories(options.Categories);
+    var extractor = new ItemPreviewCategoryExtractor();
+    var result = extractor.Extract(paths, outputDirectory, categories, options.CatalogLimit, excludeWeapons);
+
+    Console.WriteLine($"Cataloged: {result.CatalogedEntries}");
+    Console.WriteLine($"PNG extracted: {result.PngExtracted}");
+    Console.WriteLine($"Extraction errors: {result.ExtractionErrors}");
+    Console.WriteLine($"Weapons excluded: {result.WeaponsExcluded}");
+    foreach (var pair in result.ExtractedByCategory.OrderBy(static p => p.Key, StringComparer.OrdinalIgnoreCase))
+    {
+        Console.WriteLine($"  {pair.Key}: {pair.Value}");
+    }
+
+    Console.WriteLine($"JSON: {result.CatalogJsonPath}");
+    Console.WriteLine($"CSV: {result.CatalogCsvPath}");
+    Console.WriteLine($"Gallery: {result.GalleryHtmlPath}");
+    return result.PngExtracted > 0 ? 0 : 1;
+}
+
+static int RunItemPreviewCopyToAngular(string repoRoot, PublicationPipelineOptions options)
+{
+    var sourceDirectory = string.IsNullOrWhiteSpace(options.SourceDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "temporal-artifacts", "item-skin-catalog", "export")
+        : ResolveOutputDirectory(repoRoot, options.SourceDirectory!);
+
+    var copier = new ItemPreviewAngularCopier();
+    var result = copier.CopyToAngular(
+        repoRoot,
+        sourceDirectory,
+        options.ApproveCuratedCopy,
+        options.OverwriteCuratedCopy,
+        maxCopy: null);
+
+    Console.WriteLine($"Planned: {result.Planned}");
+    Console.WriteLine($"Copied: {result.Copied}");
+    Console.WriteLine($"Skipped existing: {result.SkippedExisting}");
+    Console.WriteLine($"Skipped limit: {result.SkippedLimit}");
+    Console.WriteLine($"Weapons copied: {result.WeaponsCopied}");
+    Console.WriteLine($"Manifest JSON: {result.ManifestJsonPath}");
+    Console.WriteLine($"Manifest MD: {result.ManifestMarkdownPath}");
+    Console.WriteLine($"Assets manifest: {result.AssetsManifestPath}");
+    foreach (var message in result.Messages.Take(15))
+    {
+        Console.WriteLine(message);
+    }
+
+    return result.Copied > 0 && result.WeaponsCopied == 0 ? 0 : 1;
+}
+
+static IReadOnlyList<string> ParseCategories(string? categories) =>
+    string.IsNullOrWhiteSpace(categories)
+        ? []
+        : categories
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Where(static c => c.Length > 0)
+            .ToArray();
