@@ -1,0 +1,16 @@
+{
+  "PublishLaneStatus": "NEEDS_VALIDATION",
+  "TargetItemId": 12617,
+  "StagingPackagePath": "Infrastructure/staging-client/publication-package-phase3c/12617",
+  "LastEvaluatedAtUtc": null,
+  "RequiresClientBackupBeforePublish": true,
+  "ProductionPublishBlocked": true,
+  "BlockingReasons": [
+    "Phase 4: lane operativo; publicacion real sigue bloqueada."
+  ],
+  "Warnings": [],
+  "NextManualSteps": [
+    "Ejecutar backup-client y backup-db con CONFIRM_BACKUP=1.",
+    "Ejecutar update-publish-lane.ps1 tras cada backup o validacion."
+  ]
+}
