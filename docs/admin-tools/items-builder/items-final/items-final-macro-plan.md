@@ -72,9 +72,9 @@ Deliverable: [items-effects-catalog-audit-phase7d1.md](./items-effects-catalog-a
 | Row reorder | Up/down buttons |
 | Unsupported rows | Read-only + warning; no silent drop on save |
 
-### Phase 7D.4 — Templates y presets (`PENDING`)
+### Phase 7D.4 — Templates y presets (`DONE`)
 
-**Branch suggestion:** `feature/items-final-effects-templates-7d4`
+**Doc:** [items-stat-templates-phase7d4.md](./items-stat-templates-phase7d4.md)
 
 - Preset bundles: “Stats PA/PM”, “Full resist %”, “Prospecting / pods”, etc.
 - Optional `POST` apply-template or client-side only initially

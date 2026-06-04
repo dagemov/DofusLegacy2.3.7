@@ -1,5 +1,11 @@
-.effects-add-panel {
+.effects-add-panel,
+.effects-presets-panel {
   background: rgba(0, 0, 0, 0.02);
+}
+
+.preset-preview-list {
+  max-height: 12rem;
+  overflow-y: auto;
 }
 
 .effects-row-stack .effects-row {

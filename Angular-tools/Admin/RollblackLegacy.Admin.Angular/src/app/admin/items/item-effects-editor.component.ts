@@ -17,6 +17,13 @@ import {
   createAdminSuccessFeedback,
   toAdminApiProblem
 } from './data-access/items.models';
+import {
+  ITEM_EFFECT_PRESETS,
+  ItemEffectPresetDefinition,
+  ResolvedPresetLine,
+  formatPresetPreviewLine,
+  resolvePresetLines
+} from './item-effect-presets';
 
 const SERIALIZATION_TYPE_INTEGER = 70;
 const SERIALIZATION_TYPE_DICE = 73;
@@ -52,6 +59,10 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected addSearchTerm = '';
   protected addGroupFilter = '';
   protected readonly editableFormats = EDITABLE_FORMATS;
+  protected readonly presets = ITEM_EFFECT_PRESETS;
+  protected selectedPresetId: string | null = null;
+  protected presetApplyMode: 'append' | 'replace' = 'append';
+  protected presetApplyMessage: string | null = null;
 
   protected get saveFeedback(): AdminFeedback | null {
     if (!this.saveMessage) {
@@ -107,6 +118,35 @@ export class ItemEffectsEditorComponent implements OnChanges {
     });
   }
 
+  protected get selectedPreset(): ItemEffectPresetDefinition | null {
+    if (!this.selectedPresetId) {
+      return null;
+    }
+
+    return this.presets.find((preset) => preset.id === this.selectedPresetId) ?? null;
+  }
+
+  protected get presetPreviewLines(): ResolvedPresetLine[] {
+    const preset = this.selectedPreset;
+    if (!preset) {
+      return [];
+    }
+
+    return resolvePresetLines(preset, this.effectOptionsById, this.effectOptions);
+  }
+
+  protected get presetPreviewSummary(): string[] {
+    return this.presetPreviewLines.map((line) => formatPresetPreviewLine(line));
+  }
+
+  protected get presetHasMissingLines(): boolean {
+    return this.presetPreviewLines.some((line) => line.status === 'missing');
+  }
+
+  protected formatPresetPreviewLine(line: ResolvedPresetLine): string {
+    return formatPresetPreviewLine(line);
+  }
+
   protected get filteredAddOptionGroups(): { group: string; options: AdminEffectOptionDto[] }[] {
     const allowed = new Set(this.filteredAddOptions.map((option) => option.effectId));
 
@@ -146,8 +186,57 @@ export class ItemEffectsEditorComponent implements OnChanges {
       return;
     }
 
-    this.rows = [...this.rows, this.createRowFromOption(option)];
+    this.rows = [...this.rows, this.createRowFromOption(option, 0)];
     this.selectedEffectId = null;
+    this.saveMessage = null;
+    this.refreshView();
+  }
+
+  protected applySelectedPreset(): void {
+    const preset = this.selectedPreset;
+    if (!preset) {
+      return;
+    }
+
+    const resolved = resolvePresetLines(preset, this.effectOptionsById, this.effectOptions);
+    const missing = resolved.filter((line) => line.status === 'missing');
+    if (missing.length > 0) {
+      const proceed = window.confirm(
+        `${missing.length} línea(s) del preset no están en el catálogo cargado. ¿Aplicar solo las líneas resueltas?`
+      );
+      if (!proceed) {
+        return;
+      }
+    }
+
+    const newRows = resolved
+      .filter((line) => line.option)
+      .map((line) => this.createRowFromOption(line.option!, line.entry.value));
+
+    if (newRows.length === 0) {
+      this.presetApplyMessage = 'No se pudo aplicar ninguna línea del preset.';
+      this.refreshView();
+      return;
+    }
+
+    const unsupported = this.rows.filter((row) => !row.isSupported);
+    const supported = this.rows.filter((row) => row.isSupported);
+
+    if (this.presetApplyMode === 'replace' && supported.length > 0) {
+      const confirmed = window.confirm(
+        `Reemplazar ${supported.length} efecto(s) editables. Los efectos no soportados (${unsupported.length}) se conservan. ¿Continuar?`
+      );
+      if (!confirmed) {
+        return;
+      }
+
+      this.rows = [...unsupported, ...newRows];
+    } else {
+      const merged = this.mergeSupportedRows(supported, newRows);
+      this.rows = [...unsupported, ...merged];
+    }
+
+    this.presetApplyMessage = `Preset "${preset.name}" aplicado (${newRows.length} filas, modo ${this.presetApplyMode}).`;
     this.saveMessage = null;
     this.refreshView();
   }
@@ -329,17 +418,30 @@ export class ItemEffectsEditorComponent implements OnChanges {
     this.effectOptionsById = new Map(this.effectOptions.map((option) => [option.effectId, option]));
   }
 
-  private createRowFromOption(option: AdminEffectOptionDto): ItemEffectEditDto {
+  private mergeSupportedRows(
+    existing: ItemEffectEditDto[],
+    incoming: ItemEffectEditDto[]
+  ): ItemEffectEditDto[] {
+    const byEffectId = new Map(existing.map((row) => [row.effectId, row]));
+
+    for (const row of incoming) {
+      byEffectId.set(row.effectId, row);
+    }
+
+    return Array.from(byEffectId.values());
+  }
+
+  private createRowFromOption(option: AdminEffectOptionDto, value: number): ItemEffectEditDto {
     const format = option.format || option.operatorMode;
 
     const row: ItemEffectEditDto = {
-      rowId: `new-${option.effectId}-${Date.now()}`,
+      rowId: `new-${option.effectId}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       serializationTypeId: option.defaultSerializationTypeId,
       effectId: option.effectId,
       label: option.label,
       diceNum: 0,
       diceSide: 0,
-      value: 0,
+      value,
       minValue: 0,
       maxValue: 0,
       operatorMode: format,
