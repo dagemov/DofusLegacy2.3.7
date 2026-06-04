@@ -1,0 +1,120 @@
+@page "/"
+
+<PageTitle>Rollback Portal</PageTitle>
+
+<section class="portal-card realm-hero">
+    <div class="realm-hero__copy">
+        <span class="portal-chip">Portal del aventurero</span>
+        <h1>Tu puerta al mundo Rollback, entre pergaminos, progreso y comunidad.</h1>
+        <p>
+            Este portal vive separado del cliente, pero habla el mismo lenguaje del servidor:
+            acceso claro, cuenta real, herramientas del equipo y una presencia visual mucho mas cercana
+            a un reino fantasy que a un dashboard generico.
+        </p>
+
+        <div class="hero-actions">
+            <AuthorizeView Context="authState">
+                <Authorized>
+                    <a class="portal-button" href="/account">Abrir mi santuario</a>
+                    <AuthorizeView Roles="ADMIN" Context="adminState">
+                        <Authorized>
+                            <a class="portal-button secondary" href="/admin/users">Abrir panel admin</a>
+                        </Authorized>
+                    </AuthorizeView>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="portal-button" href="/login">Entrar al portal</a>
+                    <a class="portal-button secondary" href="/register">Crear cuenta nueva</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <div class="realm-chip-row">
+            <span class="realm-mini-badge">Cuenta del servidor</span>
+            <span class="realm-mini-badge">Sesion web segura</span>
+            <span class="realm-mini-badge">Base lista para crecer</span>
+        </div>
+    </div>
+
+    <div class="realm-hero__visual">
+        <div class="realm-hero__frame">
+            <img class="realm-hero__image" src="assest-img/fondos/ImagenHEros.png" alt="Aventureros fantasy del portal Rollback" />
+        </div>
+        <div class="realm-floating-card">
+            <strong>Un portal con identidad propia</strong>
+            <p>Acceso, soporte y operaciones con una presencia mas calida, artesanal y memorable.</p>
+        </div>
+        <img class="realm-creature realm-creature--blue" src="assest-img/15673.png" alt="" aria-hidden="true" />
+        <img class="realm-creature realm-creature--green" src="assest-img/15717.png" alt="" aria-hidden="true" />
+    </div>
+</section>
+
+<section class="realm-feature-grid">
+    <article class="portal-card realm-feature-card">
+        <span class="realm-feature-card__eyebrow">Acceso</span>
+        <h2>Entrar sin friccion</h2>
+        <p>Login y registro siguen usando la logica real del servidor, pero ahora se presentan como la entrada a un mundo vivo y no como una consola fria.</p>
+    </article>
+
+    <article class="portal-card realm-feature-card">
+        <span class="realm-feature-card__eyebrow">Equipo</span>
+        <h2>Control con personalidad</h2>
+        <p>El panel admin sigue claro y funcional, pero la puerta de entrada del sitio ya marca un tono fantasy/MMO coherente con el universo del proyecto.</p>
+    </article>
+
+    <article class="portal-card realm-feature-card">
+        <span class="realm-feature-card__eyebrow">Escalabilidad</span>
+        <h2>Base lista para mas modulos</h2>
+        <p>Noticias, progreso, soporte, rankings o futuras herramientas pueden apoyarse en esta misma identidad sin rehacer la navegacion ni la auth.</p>
+    </article>
+</section>
+
+<section class="realm-story-grid">
+    <article class="portal-card realm-story-card">
+        <span class="portal-chip">Para jugadores</span>
+        <h2>Una entrada que acompana la aventura</h2>
+        <p>
+            La web no reemplaza al cliente, pero si puede sentirse como parte del mismo universo.
+            El objetivo es que abrir el portal ya transmita progreso, viaje y comunidad.
+        </p>
+
+        <ul class="realm-bullet-list">
+            <li>Cuenta y sesion web conectadas a la base real del auth.</li>
+            <li>Acceso rapido a tu espacio personal sin tocar handlers del cliente.</li>
+            <li>Preparado para sumar soporte, noticias o paneles comunitarios.</li>
+        </ul>
+    </article>
+
+    <article class="portal-card realm-banner-card">
+        <div class="realm-banner-card__media">
+            <div class="realm-banner-card__backdrop"></div>
+            <img class="realm-banner-card__sprite" src="assest-img/1723.png" alt="" aria-hidden="true" />
+        </div>
+        <div class="realm-banner-card__content">
+            <span class="portal-chip">Para el equipo</span>
+            <h2>Herramientas claras, sin alma fintech</h2>
+            <p>
+                La parte publica del sitio ya abre con una identidad mas artesanal y tematizada.
+                Eso deja el camino listo para que el resto del portal evolucione sin perder coherencia.
+            </p>
+
+            <div class="portal-actions">
+                <AuthorizeView Context="authState">
+                    <Authorized>
+                        <AuthorizeView Roles="ADMIN" Context="adminState">
+                            <Authorized>
+                                <a class="portal-button" href="/admin">Ir al panel admin</a>
+                            </Authorized>
+                            <NotAuthorized>
+                                <a class="portal-button" href="/account">Ver mi cuenta</a>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a class="portal-button" href="/login">Entrar al portal</a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </div>
+    </article>
+</section>

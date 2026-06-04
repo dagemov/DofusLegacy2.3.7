@@ -1,0 +1,117 @@
+@inject AdminItemCatalogService ItemCatalogService
+
+<div class="admin-subcard item-picker-shell">
+    <div class="section-heading compact">
+        <div>
+            <h3>@Title</h3>
+            <p class="muted-copy">@Description</p>
+        </div>
+        <button class="portal-button secondary" type="button" @onclick="SearchAsync">Buscar</button>
+    </div>
+
+    <div class="admin-toolbar item-picker-toolbar">
+        <input class="field-input admin-search" @bind="_search" placeholder="Buscar por id, nombre o iconId..." />
+    </div>
+
+    <div class="item-facet-row">
+        <button class="portal-chip selectable @GetFacetCss(string.Empty)" type="button" @onclick="() => SelectFacet(string.Empty)">Todos</button>
+        @foreach (var facet in _facets)
+        {
+            <button class="portal-chip selectable @GetFacetCss(facet.Key)" type="button" @onclick="() => SelectFacet(facet.Key)">@facet.Label</button>
+        }
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="empty-state compact"><p>Buscando items...</p></div>
+    }
+    else if (_results.Count == 0)
+    {
+        <div class="empty-state compact"><p>@EmptyMessage</p></div>
+    }
+    else
+    {
+        <div class="item-picker-results">
+            @foreach (var item in _results)
+            {
+                <article class="item-picker-card">
+                    <div class="item-picker-preview">
+                        <GameAssetPreview EntityType="AdminEntityType.Item"
+                                          EntityId="@item.Id"
+                                          AppearanceId="@item.AppearanceId"
+                                          ManualImageUrl="@item.ManualPreviewImageUrl"
+                                          CategoryLabel="@item.TypeLabel"
+                                          PlaceholderLabel="@item.PreviewFallbackLabel"
+                                          AltText="@ItemAdminService.FormatDisplayNameWithId(item.Name, item.Id)"
+                                          CssClass="compact"
+                                          ShowMeta="false" />
+                    </div>
+                    <div class="item-picker-copy">
+                        <strong>@ItemAdminService.FormatDisplayNameWithId(item.Name, item.Id)</strong>
+                        <span>@item.TypeLabel · lvl @item.Level · @item.Price.ToString("N0")k</span>
+                        <small>IconId cliente: @(item.ClientIconId?.ToString() ?? "sin dato")</small>
+                    </div>
+                    <button class="portal-button" type="button" @onclick="() => SelectAsync(item)">Agregar</button>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private readonly IReadOnlyList<ItemTypeFacet> _facets = ItemTypeFacetCatalogService.GetFacets();
+    private List<ItemListItem> _results = new();
+    private string _search = string.Empty;
+    private string _selectedFacetKey = string.Empty;
+    private bool _isLoading;
+
+    [Parameter] public string Title { get; set; } = "Agregar item";
+    [Parameter] public string Description { get; set; } = "Busca por id, nombre, tipo o iconId y agregalo al set sin memorizar IDs a mano.";
+    [Parameter] public string EmptyMessage { get; set; } = "No hubo items que coincidan con este filtro.";
+    [Parameter] public IReadOnlyCollection<short> ExcludedItemIds { get; set; } = Array.Empty<short>();
+    [Parameter] public EventCallback<ItemListItem> OnItemSelected { get; set; }
+
+    protected override async Task OnParametersSetAsync() =>
+        await SearchAsync();
+
+    private async Task SearchAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            _results = (await ItemCatalogService.SearchAsync(new ItemCatalogQuery
+            {
+                Search = _search,
+                Types = ResolveSelectedTypes(),
+                ExcludedItemIds = ExcludedItemIds,
+                MaxResults = 16,
+            })).ToList();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task SelectAsync(ItemListItem item)
+    {
+        if (OnItemSelected.HasDelegate)
+            await OnItemSelected.InvokeAsync(item);
+    }
+
+    private async Task SelectFacet(string key)
+    {
+        _selectedFacetKey = key;
+        await SearchAsync();
+    }
+
+    private string GetFacetCss(string key) =>
+        string.Equals(_selectedFacetKey, key, StringComparison.OrdinalIgnoreCase)
+            ? "selected"
+            : string.Empty;
+
+    private IReadOnlyCollection<ItemType> ResolveSelectedTypes() =>
+        string.IsNullOrWhiteSpace(_selectedFacetKey)
+            ? Array.Empty<ItemType>()
+            : ItemTypeFacetCatalogService.ResolveTypes(_selectedFacetKey);
+}

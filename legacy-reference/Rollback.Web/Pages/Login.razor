@@ -1,0 +1,90 @@
+@page "/login"
+@attribute [AllowAnonymous]
+
+<PageTitle>Entrar</PageTitle>
+
+<section class="auth-grid auth-scene auth-scene--login">
+    <article class="portal-card auth-card auth-card--form">
+        <span class="portal-chip">Acceso al reino</span>
+        <h1>Entra y vuelve al mundo Rollback</h1>
+        <p class="auth-subtitle">
+            Usa las mismas credenciales base de tu cuenta del servidor. La web crea su propia sesion por cookie y mantiene el acceso separado del cliente.
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(Error))
+        {
+            <div class="alert-panel error">@Error</div>
+        }
+
+        @if (LoggedOut is true)
+        {
+            <div class="alert-panel success">Has salido del portal correctamente.</div>
+        }
+
+        <form method="post" action="/auth/login" class="auth-form">
+            <input type="hidden" name="returnUrl" value="@SafeReturnUrl" />
+
+            <div class="field-group">
+                <label class="field-label" for="login">Login</label>
+                <input class="field-input" id="login" name="login" autocomplete="username" placeholder="Tu nombre de cuenta" />
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="password">Contrasena</label>
+                <input class="field-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Tu clave del portal" />
+            </div>
+
+            <button type="submit" class="portal-button">Entrar</button>
+        </form>
+
+        <div class="realm-chip-row">
+            <span class="realm-mini-badge">Sesion segura</span>
+            <span class="realm-mini-badge">Cuenta real del servidor</span>
+            <span class="realm-mini-badge">Acceso web independiente</span>
+        </div>
+    </article>
+
+    <article class="portal-card auth-card auth-card--lore">
+        <div class="auth-card__media auth-card__media--login">
+            <img class="auth-card__image" src="assest-img/fondos/ImagenHEros.png" alt="Grupo de aventureros fantasy del portal" />
+            <img class="auth-card__sprite auth-card__sprite--blue" src="assest-img/15673.png" alt="" aria-hidden="true" />
+        </div>
+
+        <div class="auth-card__copy">
+            <span class="portal-chip">Nuevo aventurero</span>
+            <h2>Empieza la travesia con una cuenta lista</h2>
+            <p class="muted-copy">
+                El registro crea la cuenta en las bases reales del auth y world sin tocar el cliente ni romper el flujo del servidor.
+            </p>
+
+            <ul class="realm-bullet-list">
+                <li>Acceso claro desde desktop o mobile.</li>
+                <li>Base visual mas inmersiva y menos corporativa.</li>
+                <li>Puerta limpia al portal y al futuro panel admin.</li>
+            </ul>
+
+            <div class="portal-actions">
+                <a class="portal-button secondary" href="/register">Crear cuenta</a>
+            </div>
+        </div>
+    </article>
+</section>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "loggedOut")]
+    public bool? LoggedOut { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+    private string SafeReturnUrl =>
+        !string.IsNullOrWhiteSpace(ReturnUrl) && ReturnUrl.StartsWith("/", StringComparison.Ordinal) && !ReturnUrl.StartsWith("//", StringComparison.Ordinal)
+            ? ReturnUrl
+            : "/account";
+}

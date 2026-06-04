@@ -1,0 +1,885 @@
+@page "/admin/spells"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@using Rollback.Admin.Models.Common
+@using Rollback.Admin.Models.GameEffects
+@using Rollback.Admin.Models.Spells
+@using Rollback.World.CustomEnums
+@inject SpellAdminService SpellAdminService
+@inject SpellPublishOrchestrator SpellPublishOrchestrator
+@inject SpellAdminSchemaService SpellAdminSchemaService
+@inject SpellEffectCatalogService SpellEffectCatalogService
+
+<PageTitle>Hechizos</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Hechizos</span>
+            <h1>Hechizos</h1>
+            <p class="muted-copy">Identidad de hechizo desde referencia sana y comportamiento desde el runtime actual, filtrado al dominio clasico de 12 razas.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status) || !string.IsNullOrWhiteSpace(_warning) || !string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="admin-toast-stack" aria-live="polite" aria-atomic="true">
+            @if (!string.IsNullOrWhiteSpace(_status))
+            {
+                <div class="admin-toast success" role="status">@_status</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_warning))
+            {
+                <div class="admin-toast warning" role="status">@_warning</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_error))
+            {
+                <div class="admin-toast error" role="alert">@_error</div>
+            }
+        </div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar por id, nombre, tipo o IconId..." @bind="_query.Search" />
+                <select class="field-input compact-select" @bind="_typeFilterValue">
+                    <option value="">Todos los tipos</option>
+                    @foreach (var typeOption in _typeOptions)
+                    {
+                        <option value="@typeOption.Id">@typeOption.Label</option>
+                    }
+                </select>
+                <label class="admin-checkbox compact">
+                    <input type="checkbox" @bind="_onlyWithCriticalEffects" />
+                    <span>Solo con efectos criticos</span>
+                </label>
+                <button class="portal-button secondary" type="button" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" type="button" @onclick="() => CreateNewAsync()">Nuevo hechizo</button>
+            </div>
+            <div class="field-note">Listado ordenado por Id ascendente. La identidad sale primero de la referencia sana; el cliente actual queda solo como fallback auxiliar y los hechizos modernos quedan fuera del dominio valido.</div>
+
+            @if (_spells is null)
+            {
+                <div class="empty-state"><p>Cargando hechizos...</p></div>
+            }
+            else if (_spells.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No se encontraron hechizos.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack spell-catalog-stack">
+                    @foreach (var spell in _spells.Items)
+                    {
+                        <button class="admin-list-card spell-catalog-card @(_selectedSpellId == spell.Id ? "selected" : string.Empty)" type="button" @onclick="() => LoadSpellAsync(spell.Id)">
+                            <div class="spell-catalog-copy">
+                                <strong>@SpellAdminService.FormatDisplayNameWithId(spell.Name, spell.Id)</strong>
+                                <span>@spell.TypeLabel - @spell.LevelCount nivel(es)</span>
+                                <small>#@spell.Id - IconId: @(spell.DisplayIconId?.ToString() ?? "sin dato") - @spell.Audit.IdentitySourceLabel</small>
+                                <div class="chip-row">
+                                    <span class="portal-chip subtle @GetAuditChipCss(spell.Audit.Status)">@spell.Audit.StatusLabel</span>
+                                    <span class="portal-chip subtle">@spell.Audit.DomainLabel</span>
+                                    @if (spell.CriticalLevelCount > 0)
+                                    {
+                                        <span class="portal-chip subtle">@spell.CriticalLevelCount con critico</span>
+                                    }
+                                </div>
+                            </div>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_spells.Page" TotalPages="@_spells.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            @{
+                var orderedLevels = GetOrderedLevels();
+                var activeLevel = GetSelectedLevel();
+            }
+
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedSpellId.HasValue ? $"Editar hechizo #{_form.Id}" : "Nuevo hechizo")</h2>
+                    <p class="muted-copy">El panel separa identidad y comportamiento: referencia sana para nombre/descripcion/icono/tipo esperado, runtime actual para flags, niveles y efectos binarios.</p>
+                </div>
+                <div class="portal-actions spell-header-actions">
+                    <span class="portal-chip subtle spell-level-count">@_form.Audit.StatusLabel</span>
+                    <span class="portal-chip subtle">@_form.Audit.DomainLabel</span>
+                    <button class="portal-button @(_isSaving ? "is-busy" : string.Empty)" type="button" @onclick="SaveAsync" disabled="@(_isSaving || !_form.RuntimeExists)">
+                        @(_isSaving ? "Guardando hechizo..." : "Guardar hechizo")
+                    </button>
+                    @if (_selectedSpellId.HasValue)
+                    {
+                        <button class="portal-button danger" type="button" @onclick="DeleteAsync" disabled="@(_isSaving || _references.HasBlockingReferences || !_form.RuntimeExists)">Eliminar</button>
+                    }
+                </div>
+            </div>
+
+            <div class="admin-grid spell-editor-layout">
+                <section class="admin-subcard spell-editor-main">
+                    <div class="admin-form-grid two">
+                        <div class="field-group">
+                            <label class="field-label">Id de plantilla SQL</label>
+                            <input class="field-input"
+                                   type="number"
+                                   min="1"
+                                   max="@short.MaxValue"
+                                   value="@_spellIdInput"
+                                   @oninput="UpdateSpellIdInputAsync"
+                                   readonly="@_selectedSpellId.HasValue" />
+                            <div class="field-note">Este es el `Id` del hechizo en `spells_templates`. No es `IconId` ni `spells_levels.Id`.</div>
+                            @if (!string.IsNullOrWhiteSpace(_spellIdStatus))
+                            {
+                                <div class="field-note @GetSpellIdStatusCss()">@_spellIdStatus</div>
+                            }
+                            @if (_typedSpellIdExists && !_selectedSpellId.HasValue)
+                            {
+                                <button class="portal-button secondary compact" type="button" @onclick="LoadTypedExistingSpellAsync">Cargar hechizo existente</button>
+                            }
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Tipo</label>
+                            <select class="field-input" value="@_form.TypeId" @onchange="OnTypeChanged" disabled="@(!_form.RuntimeExists)">
+                                @foreach (var typeOption in _typeOptions)
+                                {
+                                    <option value="@typeOption.Id">@typeOption.Label</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard">
+                        <div class="section-heading compact">
+                            <div>
+                                <h3>Asignacion por clase</h3>
+                                <p class="muted-copy">Esta relacion se guarda en <code>breeds_spells</code> y controla que razas clasicas aprenden o sincronizan este hechizo.</p>
+                            </div>
+                        </div>
+
+                        <div class="spell-flag-grid">
+                            @foreach (var breedOption in _breedOptions)
+                            {
+                                var breedId = int.Parse(breedOption.Value);
+                                <label class="admin-checkbox">
+                                    <input type="checkbox"
+                                           checked="@_form.AssignedBreedIds.Contains(breedId)"
+                                           @onchange="args => ToggleBreed(breedId, args)"
+                                           disabled="@(!_form.RuntimeExists)" />
+                                    <span>@breedOption.Label</span>
+                                </label>
+                            }
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Clases asignadas</label>
+                                <input class="field-input" value="@GetAssignedBreedsSummary()" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Clases segun referencia</label>
+                                <input class="field-input" value="@GetReferenceBreedsSummary()" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard item-name-panel">
+                        <div class="item-name-panel-head">
+                            <div>
+                                <strong>@SpellAdminService.FormatDisplayNameWithId(_form.Name, _form.Id)</strong>
+                                <div class="muted-copy">Tipo runtime: @GetCurrentTypeLabel()</div>
+                            </div>
+                            <div class="chip-row">
+                                <span class="portal-chip subtle @GetAuditChipCss(_form.Audit.Status)">@_form.Audit.StatusLabel</span>
+                                <span class="portal-chip subtle">@_form.Audit.IdentitySourceLabel</span>
+                                <span class="portal-chip subtle">IconId @(_form.DisplayIconId?.ToString() ?? "sin dato")</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Nombre manual admin</label>
+                                <input class="field-input" @bind="_form.OverrideName" placeholder="Dejar vacio para usar referencia o fallback" />
+                                <div class="field-note">Si el fallback del cliente esta mal, aqui puedes fijar el nombre legacy correcto. Luego el display resuelto usara este valor.</div>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Descripcion manual admin</label>
+                                <textarea class="field-input field-textarea" @bind="_form.OverrideDescription" placeholder="Descripcion manual opcional"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Nombre visible resuelto</label>
+                                <input class="field-input" value="@_form.Name" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Descripcion visible resuelta</label>
+                                <textarea class="field-input field-textarea" readonly>@_form.Description</textarea>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Nombre de referencia</label>
+                                <input class="field-input" value="@_form.ReferenceName" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Descripcion de referencia</label>
+                                <textarea class="field-input field-textarea" readonly>@_form.ReferenceDescription</textarea>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Nombre fallback del cliente</label>
+                                <input class="field-input" value="@_form.ClientName" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Descripcion fallback del cliente</label>
+                                <textarea class="field-input field-textarea" readonly>@_form.ClientDescription</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!_form.RuntimeExists)
+                    {
+                        <div class="field-note warning">Este hechizo existe en la referencia sana del dominio clasico, pero no tiene runtime cargado en el servidor. Queda marcado como candidato de reconstruccion controlada y por eso no se puede editar ni guardar todavia.</div>
+                    }
+
+                    @if (_form.RuntimeExists)
+                    {
+                    <section class="admin-subcard spell-level-nav-card">
+                        <div class="section-heading compact">
+                            <div>
+                                <h3>Niveles</h3>
+                                <p class="muted-copy">Trabaja un nivel a la vez para que la edicion sea mas clara y no se convierta en un formulario gigante.</p>
+                            </div>
+                            <div class="portal-actions spell-level-actions">
+                                <button class="portal-button secondary" type="button" @onclick="AddLevel">Agregar nivel</button>
+                                <button class="portal-button secondary" type="button" @onclick="RemoveLastLevel" disabled="@(_form.Levels.Count <= 1)">Quitar ultimo nivel</button>
+                            </div>
+                        </div>
+
+                        <div class="spell-level-selector">
+                            @foreach (var level in orderedLevels)
+                            {
+                                <button class="spell-level-pill @(level.LevelNumber == _selectedLevelNumber ? "selected" : string.Empty)" type="button" @onclick="() => SelectLevel(level.LevelNumber)">
+                                    <strong>Nivel @level.LevelNumber</strong>
+                                    <small>@BuildLevelPillSummary(level)</small>
+                                </button>
+                            }
+                        </div>
+                    </section>
+                    }
+
+                    @if (activeLevel is not null)
+                    {
+                        <section class="admin-subcard spell-level-card" @key="activeLevel.LevelNumber">
+                            <div class="section-heading compact">
+                                <div>
+                                    <h3>Nivel @activeLevel.LevelNumber</h3>
+                                    <p class="muted-copy">`spells_levels.Id`: @(activeLevel.Id > 0 ? activeLevel.Id : "nuevo")</p>
+                                </div>
+                                <div class="chip-row">
+                                    <span class="portal-chip subtle">@activeLevel.APCost PA</span>
+                                    <span class="portal-chip subtle">Rango @activeLevel.MinRange a @activeLevel.MaxRange</span>
+                                    <span class="portal-chip subtle">@activeLevel.Effects.Count efectos</span>
+                                    @if (activeLevel.CriticalEffects.Count > 0)
+                                    {
+                                        <span class="portal-chip subtle">@activeLevel.CriticalEffects.Count criticos</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="admin-form-grid four">
+                                <div class="field-group"><label class="field-label">Costo de PA</label><input class="field-input" type="number" min="0" @bind="activeLevel.APCost" /></div>
+                                <div class="field-group"><label class="field-label">Nivel minimo jugador</label><input class="field-input" type="number" min="1" @bind="activeLevel.MinPlayerLevel" /></div>
+                                <div class="field-group"><label class="field-label">Rango minimo</label><input class="field-input" type="number" @bind="activeLevel.MinRange" /></div>
+                                <div class="field-group"><label class="field-label">Rango maximo</label><input class="field-input" type="number" @bind="activeLevel.MaxRange" /></div>
+                            </div>
+
+                            <div class="admin-form-grid four">
+                                <div class="field-group"><label class="field-label">Lanzamientos por turno</label><input class="field-input" type="number" min="0" @bind="activeLevel.MaxCastPerTurn" /></div>
+                                <div class="field-group"><label class="field-label">Lanzamientos por objetivo</label><input class="field-input" type="number" min="0" @bind="activeLevel.MaxCastPerTarget" /></div>
+                                <div class="field-group"><label class="field-label">Tiempo de recarga</label><input class="field-input" type="number" min="0" @bind="activeLevel.MinCastInterval" /></div>
+                                <div class="field-group"><label class="field-label">Critico %</label><input class="field-input" type="number" @bind="activeLevel.CriticalHitProbability" /></div>
+                            </div>
+
+                            <div class="admin-form-grid two spell-secondary-stats-grid">
+                                <div class="field-group"><label class="field-label">Fracaso critico</label><input class="field-input" type="number" @bind="activeLevel.CriticalFailureProbability" /></div>
+                            </div>
+
+                            <div class="spell-flag-grid">
+                                <label class="admin-checkbox"><input type="checkbox" @bind="activeLevel.CastInLine" /><span>Lanzamiento en linea</span></label>
+                                <label class="admin-checkbox"><input type="checkbox" @bind="activeLevel.CastTestLOS" /><span>Linea de vision</span></label>
+                                <label class="admin-checkbox"><input type="checkbox" @bind="activeLevel.NeedFreeCell" /><span>Necesita celda libre</span></label>
+                                <label class="admin-checkbox"><input type="checkbox" @bind="activeLevel.RangeCanBeBoosted" /><span>Rango modificable</span></label>
+                                <label class="admin-checkbox"><input type="checkbox" @bind="activeLevel.CriticalFailureEndsTurn" /><span>Fallo critico termina turno</span></label>
+                            </div>
+
+                            <div class="admin-grid admin-grid-two spell-state-grid">
+                                <ShortIdCollectionEditor Values="activeLevel.StatesRequired"
+                                                         Title="Estados requeridos"
+                                                         Description="Si algun estado falta, el hechizo no deberia poder lanzarse."
+                                                         Placeholder="Estado requerido"
+                                                         AddButtonLabel="Agregar requerido"
+                                                         EmptyMessage="Este nivel no exige estados previos." />
+
+                                <ShortIdCollectionEditor Values="activeLevel.StatesForbidden"
+                                                         Title="Estados prohibidos"
+                                                         Description="Si alguno esta presente, el hechizo queda bloqueado."
+                                                         Placeholder="Estado prohibido"
+                                                         AddButtonLabel="Agregar prohibido"
+                                                         EmptyMessage="Este nivel no bloquea estados concretos." />
+                            </div>
+
+                            <EffectListEditor Rows="activeLevel.Effects"
+                                              Title="Efectos normales"
+                                              Description="Este editor escribe `BinaryEffects`. Para hechizos el admin mantiene formato `Dice`, que es el que el runtime carga como `EffectDice[]`."
+                                              EmptyMessage="Todavia no hay efectos normales."
+                                              AddButtonLabel="Agregar efecto"
+                                              AllowedKinds="_spellEffectKinds"
+                                              Options="_spellEffectOptions"
+                                              DefaultEffectId="_spellDefaultEffectId" />
+
+                            <EffectListEditor Rows="activeLevel.CriticalEffects"
+                                              Title="Efectos criticos"
+                                              Description="Estos efectos se aplican cuando el hechizo entra en golpe critico."
+                                              EmptyMessage="Todavia no hay efectos criticos."
+                                              AddButtonLabel="Agregar efecto critico"
+                                              AllowedKinds="_spellEffectKinds"
+                                              Options="_spellEffectOptions"
+                                              DefaultEffectId="_spellDefaultEffectId" />
+
+                            <div class="portal-actions spell-footer-actions">
+                                <button class="portal-button @(_isSaving ? "is-busy" : string.Empty)" type="button" @onclick="SaveAsync" disabled="@(_isSaving || !_form.RuntimeExists)">
+                                    @(_isSaving ? "Guardando hechizo..." : "Guardar hechizo")
+                                </button>
+                                @if (_selectedSpellId.HasValue)
+                                {
+                                    <button class="portal-button danger" type="button" @onclick="DeleteAsync" disabled="@(_isSaving || _references.HasBlockingReferences || !_form.RuntimeExists)">Eliminar</button>
+                                }
+                            </div>
+                        </section>
+                    }
+                </section>
+
+                <aside class="admin-subcard spell-editor-side">
+                    <h3>Contexto y referencias</h3>
+
+                    <div class="admin-subcard">
+                        <strong>Referencia sana</strong>
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">NameId / DescriptionId</label>
+                                <input class="field-input" value="@($"{_form.ReferenceNameId?.ToString() ?? "sin dato"} / {_form.ReferenceDescriptionId?.ToString() ?? "sin dato"}")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">TypeId / IconId</label>
+                                <input class="field-input" value="@($"{_form.ReferenceTypeId?.ToString() ?? "sin dato"} / {_form.ReferenceIconId?.ToString() ?? "sin dato"}")" readonly />
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">SpellLevelsIdsCSV esperado</label>
+                            <textarea class="field-input field-textarea" readonly>@_form.ReferenceLevelIdsCsv</textarea>
+                        </div>
+                        <div class="field-note">Esta capa es la fuente primaria de identidad para el dominio clasico de 12 razas. El cliente ya no se usa como verdad principal.</div>
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Fallback cliente</strong>
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Tipo / IconId cliente</label>
+                                <input class="field-input" value="@GetClientFallbackSummary()" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Identity source</label>
+                                <input class="field-input" value="@_form.Audit.IdentitySourceLabel" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Referencias del servidor</strong>
+                        <div class="spell-reference-grid">
+                            <div><span>Personajes</span><strong>@_references.CharacterCount</strong></div>
+                            <div><span>Razas</span><strong>@_references.BreedCount</strong></div>
+                            <div><span>Monstruos</span><strong>@_references.MonsterCount</strong></div>
+                            <div><span>NPC que ensenan hechizos</span><strong>@_references.NpcLearnReplyCount</strong></div>
+                        </div>
+                        <div class="field-note">Nivel maximo usado hoy: @_references.MaxReferencedLevel</div>
+                        @if (_references.HasBlockingReferences)
+                        {
+                            <div class="field-note warning">La eliminacion queda bloqueada mientras existan referencias directas en personajes, razas, monstruos o NPCs.</div>
+                        }
+                        else
+                        {
+                            <div class="field-note success">No hay referencias bloqueantes. Si eliminas, tambien se borraran `spells_levels` asociados.</div>
+                        }
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Diff tecnico</strong>
+                        <div class="field-note">@_form.Audit.Summary</div>
+                        <div class="field-note">Runtime levels: @(_form.RuntimeLevelIdsCsv.Length > 0 ? _form.RuntimeLevelIdsCsv : "sin runtime")</div>
+                        <div class="field-note">Referencia levels: @(_form.ReferenceLevelIdsCsv.Length > 0 ? _form.ReferenceLevelIdsCsv : "sin referencia")</div>
+                        @if (_form.Audit.HeaderDifferences.Count > 0)
+                        {
+                            <ul class="portal-list compact">
+                                @foreach (var difference in _form.Audit.HeaderDifferences)
+                                {
+                                    <li>@difference</li>
+                                }
+                            </ul>
+                        }
+                        @if (_form.Audit.LevelDifferences.Count > 0)
+                        {
+                            <ul class="portal-list compact">
+                                @foreach (var difference in _form.Audit.LevelDifferences.Take(12))
+                                {
+                                    <li>@difference</li>
+                                }
+                            </ul>
+                            @if (_form.Audit.LevelDifferences.Count > 12)
+                            {
+                                <div class="field-note">Se muestran 12 diferencias de nivel; hay @(_form.Audit.LevelDifferences.Count - 12) adicionales.</div>
+                            }
+                        }
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Reglas del editor</strong>
+                        <ul class="portal-list compact">
+                            <li>La identidad visible del spell viene primero de la referencia sana filtrada al dominio clasico.</li>
+                            <li>El orden real del runtime sigue saliendo de `spells_templates.SpellLevelsCSV`.</li>
+                            <li>Cada nivel sigue escribiendo flags jugables reales en `spells_levels`.</li>
+                            <li>La lista de efectos se muestra filtrada a opciones utiles para combate, pero sigue respetando efectos especiales ya presentes.</li>
+                            <li>Los efectos de hechizo se fuerzan a formato `Dice` porque el runtime los carga como `EffectDice[]`.</li>
+                            <li>No puedes reducir la cantidad de niveles por debajo del maximo ya usado por personajes o monstruos.</li>
+                            <li>Los hechizos modernos quedan excluidos del dominio valido y los faltantes en runtime se muestran solo como candidatos de reconstruccion.</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private readonly IReadOnlyList<EffectEditorKind> _spellEffectKinds = new[] { EffectEditorKind.Dice };
+    private AdminPagedResult<SpellListItem>? _spells;
+    private SpellEditModel _form = new();
+    private SpellReferenceSummary _references = new();
+    private IReadOnlyList<SpellTypeOption> _typeOptions = Array.Empty<SpellTypeOption>();
+    private IReadOnlyList<AdminLookupOption> _breedOptions = Array.Empty<AdminLookupOption>();
+    private IReadOnlyList<GameEffectOption> _spellEffectOptions = Array.Empty<GameEffectOption>();
+    private short? _selectedSpellId;
+    private sbyte? _typeFilterValue;
+    private EffectId _spellDefaultEffectId = EffectId.EffectDamageNeutral;
+    private bool _onlyWithCriticalEffects;
+    private bool _isSaving;
+    private bool _typedSpellIdExists;
+    private bool _isCheckingTypedSpellId;
+    private int _typedSpellIdCheckVersion;
+    private int _selectedLevelNumber = 1;
+    private string? _status;
+    private string? _warning;
+    private string? _error;
+    private string _spellIdInput = string.Empty;
+    private string? _spellIdStatus;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _typeOptions = SpellAdminService.GetTypeOptions();
+        _breedOptions = SpellAdminService.GetBreedOptions();
+        _spellEffectOptions = SpellEffectCatalogService.GetOptions();
+        _spellDefaultEffectId = SpellEffectCatalogService.GetDefaultEffectId();
+        await ReloadAsync();
+        await CreateNewAsync();
+    }
+
+    private async Task ReloadAsync() =>
+        _spells = await SpellAdminService.GetPagedAsync(_query, _typeFilterValue, _onlyWithCriticalEffects);
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task LoadSpellAsync(short spellId, bool preserveFeedback = false, int? preferredLevelNumber = null)
+    {
+        var spell = await SpellAdminService.GetByIdAsync(spellId);
+        if (spell is null)
+        {
+            _error = $"No se encontro el hechizo #{spellId}.";
+            return;
+        }
+
+        _selectedSpellId = spellId;
+        _form = spell;
+        _spellIdInput = spell.Id.ToString();
+        _typedSpellIdExists = true;
+        _spellIdStatus = $"Editando el hechizo existente #{spell.Id}.";
+        _references = await SpellAdminService.GetReferencesAsync(spellId);
+        EnsureSelectedLevel(preferredLevelNumber);
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task CreateNewAsync(bool preserveFeedback = false)
+    {
+        var defaultType = _typeOptions.FirstOrDefault();
+        _selectedSpellId = null;
+        _form = new SpellEditModel
+        {
+            Id = await SpellAdminService.GetNextAvailableIdAsync(),
+            TypeId = defaultType?.Id ?? 0,
+            TypeLabel = defaultType?.Label ?? "Tipo 0",
+            Levels = new List<SpellLevelEditModel>
+            {
+                SpellAdminSchemaService.CreateDefaultLevel(1),
+            },
+        };
+        _references = new SpellReferenceSummary();
+        _spellIdInput = _form.Id.ToString();
+        _typedSpellIdExists = false;
+        EnsureSelectedLevel(1);
+        await RefreshTypedSpellIdStateAsync();
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (!TryApplySpellIdInput(out var idError))
+        {
+            _error = idError;
+            return;
+        }
+
+        try
+        {
+            _isSaving = true;
+            _error = null;
+
+            var existedBeforeSave = await SpellAdminService.GetByIdAsync(_form.Id) is not null;
+            var selectedLevelNumber = _selectedLevelNumber;
+            var saveResult = await SpellPublishOrchestrator.SaveAndPublishAsync(_form);
+
+            _selectedSpellId = _form.Id;
+            _status = existedBeforeSave
+                ? $"Hechizo #{_form.Id} actualizado."
+                : $"Hechizo #{_form.Id} creado.";
+            _warning = saveResult.HasWarnings || saveResult.HasInfos
+                ? string.Join(" ", saveResult.Warnings.Concat(saveResult.Infos))
+                : null;
+            _error = null;
+            await ReloadAsync();
+            await LoadSpellAsync(_form.Id, preserveFeedback: true, preferredLevelNumber: selectedLevelNumber);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (!_selectedSpellId.HasValue)
+            return;
+
+        try
+        {
+            await SpellAdminService.DeleteAsync(_selectedSpellId.Value);
+            _status = $"Hechizo #{_selectedSpellId.Value} eliminado.";
+            _warning = null;
+            _error = null;
+            await CreateNewAsync(preserveFeedback: true);
+            await ReloadAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private void AddLevel()
+    {
+        var nextLevelNumber = _form.Levels.Count + 1;
+        var lastLevel = _form.Levels.OrderBy(level => level.LevelNumber).LastOrDefault();
+        _form.Levels.Add(lastLevel is null
+            ? SpellAdminSchemaService.CreateDefaultLevel(nextLevelNumber)
+            : SpellAdminSchemaService.CloneLevel(lastLevel, nextLevelNumber));
+
+        EnsureSelectedLevel(nextLevelNumber);
+    }
+
+    private void RemoveLastLevel()
+    {
+        if (_form.Levels.Count <= 1)
+            return;
+
+        var lastLevel = _form.Levels.OrderBy(level => level.LevelNumber).Last();
+        _form.Levels.Remove(lastLevel);
+        EnsureSelectedLevel(_form.Levels.OrderBy(level => level.LevelNumber).Last().LevelNumber);
+    }
+
+    private void SelectLevel(int levelNumber) =>
+        EnsureSelectedLevel(levelNumber);
+
+    private IReadOnlyList<SpellLevelEditModel> GetOrderedLevels() =>
+        _form.Levels
+            .OrderBy(level => level.LevelNumber)
+            .ToArray();
+
+    private SpellLevelEditModel? GetSelectedLevel()
+    {
+        EnsureSelectedLevel();
+        return _form.Levels.FirstOrDefault(level => level.LevelNumber == _selectedLevelNumber)
+            ?? _form.Levels.OrderBy(level => level.LevelNumber).FirstOrDefault();
+    }
+
+    private void EnsureSelectedLevel(int? preferredLevelNumber = null)
+    {
+        if (_form.Levels.Count == 0)
+        {
+            _selectedLevelNumber = 1;
+            return;
+        }
+
+        var levelNumber = preferredLevelNumber ?? _selectedLevelNumber;
+        if (_form.Levels.Any(level => level.LevelNumber == levelNumber))
+        {
+            _selectedLevelNumber = levelNumber;
+            return;
+        }
+
+        _selectedLevelNumber = _form.Levels
+            .OrderBy(level => level.LevelNumber)
+            .First()
+            .LevelNumber;
+    }
+
+    private static string BuildLevelPillSummary(SpellLevelEditModel level)
+    {
+        var critText = level.CriticalEffects.Count > 0
+            ? $", {level.CriticalEffects.Count} crit."
+            : string.Empty;
+        return $"{level.APCost} PA, {level.Effects.Count} ef.{critText}";
+    }
+
+    private async Task UpdateSpellIdInputAsync(ChangeEventArgs args)
+    {
+        _spellIdInput = args.Value?.ToString() ?? string.Empty;
+        await RefreshTypedSpellIdStateAsync();
+    }
+
+    private async Task RefreshTypedSpellIdStateAsync()
+    {
+        if (_selectedSpellId.HasValue)
+        {
+            _typedSpellIdExists = true;
+            _spellIdStatus = $"Editando el hechizo existente #{_form.Id}.";
+            _isCheckingTypedSpellId = false;
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_spellIdInput))
+        {
+            _typedSpellIdExists = false;
+            _spellIdStatus = "Escribe un Id de template SQL para crear el hechizo.";
+            _isCheckingTypedSpellId = false;
+            return;
+        }
+
+        if (!int.TryParse(_spellIdInput.Trim(), out var parsedId))
+        {
+            _typedSpellIdExists = false;
+            _spellIdStatus = "El Id del hechizo debe ser numerico.";
+            _isCheckingTypedSpellId = false;
+            return;
+        }
+
+        if (parsedId <= 0 || parsedId > short.MaxValue)
+        {
+            _typedSpellIdExists = false;
+            _spellIdStatus = $"El Id debe estar entre 1 y {short.MaxValue}.";
+            _isCheckingTypedSpellId = false;
+            return;
+        }
+
+        var currentCheck = ++_typedSpellIdCheckVersion;
+        _isCheckingTypedSpellId = true;
+        _spellIdStatus = "Validando si el Id ya existe...";
+        var exists = await SpellAdminService.ExistsAsync((short)parsedId);
+        if (currentCheck != _typedSpellIdCheckVersion)
+            return;
+
+        _isCheckingTypedSpellId = false;
+        _typedSpellIdExists = exists;
+        _spellIdStatus = exists
+            ? $"El hechizo #{parsedId} ya existe. Si guardas, lo actualizaras."
+            : $"El Id #{parsedId} esta libre. Se creara un hechizo nuevo.";
+    }
+
+    private async Task LoadTypedExistingSpellAsync()
+    {
+        if (!TryApplySpellIdInput(out _))
+            return;
+
+        if (_form.Id <= 0 || !await SpellAdminService.ExistsAsync(_form.Id))
+            return;
+
+        await LoadSpellAsync(_form.Id, preserveFeedback: true);
+    }
+
+    private bool TryApplySpellIdInput(out string? error)
+    {
+        error = null;
+
+        if (_selectedSpellId.HasValue)
+        {
+            if (_form.Id <= 0)
+            {
+                error = "El hechizo cargado no tiene un Id valido.";
+                return false;
+            }
+
+            _spellIdInput = _form.Id.ToString();
+            return true;
+        }
+
+        if (string.IsNullOrWhiteSpace(_spellIdInput))
+        {
+            error = "El hechizo necesita un Id de template SQL. No puede ir vacio.";
+            return false;
+        }
+
+        if (!int.TryParse(_spellIdInput.Trim(), out var parsedId))
+        {
+            error = "El Id del hechizo debe ser numerico.";
+            return false;
+        }
+
+        if (parsedId <= 0 || parsedId > short.MaxValue)
+        {
+            error = $"El Id del hechizo debe estar entre 1 y {short.MaxValue}.";
+            return false;
+        }
+
+        _form.Id = (short)parsedId;
+        _spellIdInput = _form.Id.ToString();
+        return true;
+    }
+
+    private Task OnTypeChanged(ChangeEventArgs args)
+    {
+        if (!sbyte.TryParse(args.Value?.ToString(), out var typeId))
+            return Task.CompletedTask;
+
+        _form.TypeId = typeId;
+        _form.TypeLabel = _typeOptions.FirstOrDefault(option => option.Id == typeId)?.Label ?? $"Tipo {typeId}";
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleBreed(int breedId, ChangeEventArgs args)
+    {
+        var isChecked = args.Value switch
+        {
+            bool boolValue => boolValue,
+            string stringValue when bool.TryParse(stringValue, out var parsed) => parsed,
+            _ => false,
+        };
+        if (isChecked)
+        {
+            if (!_form.AssignedBreedIds.Contains(breedId))
+                _form.AssignedBreedIds.Add(breedId);
+        }
+        else
+        {
+            _form.AssignedBreedIds.RemoveAll(value => value == breedId);
+        }
+
+        _form.AssignedBreedIds = _form.AssignedBreedIds
+            .Distinct()
+            .OrderBy(value => value)
+            .ToList();
+
+        return Task.CompletedTask;
+    }
+
+    private string GetAssignedBreedsSummary() =>
+        BuildBreedSummary(_form.AssignedBreedIds);
+
+    private string GetReferenceBreedsSummary() =>
+        BuildBreedSummary(_form.ReferenceBreedIds);
+
+    private string BuildBreedSummary(IEnumerable<int> breedIds)
+    {
+        var labels = breedIds
+            .Distinct()
+            .OrderBy(value => value)
+            .Select(value => _breedOptions.FirstOrDefault(option => option.Value == value.ToString())?.Label ?? $"Clase {value}")
+            .ToArray();
+
+        return labels.Length == 0
+            ? "sin asignacion"
+            : string.Join(", ", labels);
+    }
+
+    private string GetCurrentTypeLabel() =>
+        _typeOptions.FirstOrDefault(option => option.Id == _form.TypeId)?.Label
+        ?? _form.TypeLabel
+        ?? $"Tipo {_form.TypeId}";
+
+    private string GetClientFallbackSummary()
+    {
+        var typeText = _form.ClientName.Length > 0
+            ? GetCurrentTypeLabel()
+            : "sin dato";
+
+        return $"{typeText} / {_form.ClientIconId?.ToString() ?? "sin dato"}";
+    }
+
+    private static string GetAuditChipCss(SpellAuditStatus status) =>
+        status switch
+        {
+            SpellAuditStatus.Aligned => "audit-aligned",
+            SpellAuditStatus.MetadataMissing => "audit-metadata-missing",
+            SpellAuditStatus.RuntimeDrift => "audit-runtime-drift",
+            SpellAuditStatus.MissingRuntime => "audit-missing-runtime",
+            SpellAuditStatus.ExcludedModernClass => "audit-excluded-modern",
+            _ => "audit-ambiguous",
+        };
+
+    private string GetSpellIdStatusCss()
+    {
+        if (_isCheckingTypedSpellId)
+            return string.Empty;
+
+        return _typedSpellIdExists
+            ? "warning"
+            : "success";
+    }
+}

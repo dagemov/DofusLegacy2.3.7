@@ -1,0 +1,32 @@
+@inherits LayoutComponentBase
+
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar-brand">
+            <div class="admin-brand-mark">R</div>
+            <div>
+                <strong>Rollback Admin</strong>
+                <small>Backoffice del servidor</small>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <NavLink class="admin-nav-link" href="/admin" Match="NavLinkMatch.All">Resumen</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/users">Usuarios</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/monsters">Monstruos</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/monster-families">Familias</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/monster-groups">Grupos</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/spawns">Mapas y spawns</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/items">Items</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/npcs">NPCs</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/vendors">NPC Vendors</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/sets">Sets</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/spells">Spells</NavLink>
+            <NavLink class="admin-nav-link" href="/admin/characters">Characters Admin</NavLink>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        @Body
+    </main>
+</div>

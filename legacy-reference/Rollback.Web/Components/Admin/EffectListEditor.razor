@@ -1,0 +1,361 @@
+@inject GameEffectEditorService EffectEditorService
+
+<div class="admin-subcard item-effects-panel">
+    <div class="section-heading compact">
+        <div>
+            <h3>@Title</h3>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p class="muted-copy">@Description</p>
+            }
+        </div>
+        <button class="portal-button" type="button" @onclick="AddEffectRow">@AddButtonLabel</button>
+    </div>
+
+    @if (Rows.Count == 0)
+    {
+        <div class="empty-state compact"><p>@EmptyMessage</p></div>
+    }
+    else
+    {
+        <div class="item-effects-stack">
+            @foreach (var row in Rows)
+            {
+                <article class="item-effect-row" @key="row.RowId">
+                    <div class="item-effect-row-head">
+                        <div class="item-effect-title">
+                            <strong>@row.DisplayName</strong>
+                            <small>#@((int)row.EffectId)</small>
+                        </div>
+                        <div class="item-effect-actions">
+                            <button class="portal-button secondary compact" type="button" @onclick="() => MoveRow(row.RowId, -1)">Subir</button>
+                            <button class="portal-button secondary compact" type="button" @onclick="() => MoveRow(row.RowId, 1)">Bajar</button>
+                            <button class="portal-button danger compact" type="button" @onclick="() => RemoveEffectRow(row.RowId)">@RemoveButtonLabel</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-grid three">
+                        <div class="field-group">
+                            <label class="field-label">Efecto</label>
+                            <select class="field-input" value="@((int)row.EffectId)" @onchange="args => UpdateEffectId(row, args.Value?.ToString())">
+                                @foreach (var effectGroup in _effectOptionGroups)
+                                {
+                                    <optgroup label="@effectGroup.Label">
+                                        @foreach (var effectOption in effectGroup.Options)
+                                        {
+                                            <option value="@((int)effectOption.EffectId)">@effectOption.Label</option>
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                        </div>
+                        @if (EffectiveAllowedKinds.Count > 1)
+                        {
+                            <div class="field-group">
+                                <label class="field-label">Formato</label>
+                                <select class="field-input" value="@((int)row.Kind)" @onchange="args => UpdateEffectKind(row, args.Value?.ToString())">
+                                    @foreach (var kind in EffectiveAllowedKinds)
+                                    {
+                                        <option value="@((int)kind)">@GetKindLabel(kind)</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="field-group">
+                                <label class="field-label">Formato</label>
+                                <input class="field-input" value="@GetKindLabel(EffectiveAllowedKinds[0])" readonly />
+                            </div>
+                        }
+                        <div class="field-group">
+                            <label class="field-label">Peso aleatorio</label>
+                            <input class="field-input" type="number" min="0" @bind="row.Random" />
+                        </div>
+                    </div>
+
+                    @if (row.Kind == EffectEditorKind.Integer)
+                    {
+                        <div class="admin-form-grid three">
+                            <div class="field-group">
+                                <label class="field-label">Valor</label>
+                                <input class="field-input" type="number" @bind="row.Value" />
+                            </div>
+                        </div>
+                    }
+                    else if (row.Kind == EffectEditorKind.Dice)
+                    {
+                        <div class="admin-form-grid three">
+                            <div class="field-group">
+                                <label class="field-label">Valor</label>
+                                <input class="field-input" type="number" @bind="row.Value" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Minimo</label>
+                                <input class="field-input" type="number" @bind="row.MinValue" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Maximo</label>
+                                <input class="field-input" type="number" @bind="row.MaxValue" />
+                            </div>
+                        </div>
+                    }
+                    else if (row.Kind == EffectEditorKind.String)
+                    {
+                        <div class="field-group">
+                            <label class="field-label">Texto</label>
+                            <input class="field-input" @bind="row.TextValue" />
+                        </div>
+                    }
+                    else if (row.Kind == EffectEditorKind.Duration)
+                    {
+                        <div class="admin-form-grid three">
+                            <div class="field-group"><label class="field-label">Dias</label><input class="field-input" type="number" @bind="row.DurationDays" /></div>
+                            <div class="field-group"><label class="field-label">Horas</label><input class="field-input" type="number" @bind="row.DurationHours" /></div>
+                            <div class="field-group"><label class="field-label">Minutos</label><input class="field-input" type="number" @bind="row.DurationMinutes" /></div>
+                        </div>
+                    }
+                    else if (row.Kind == EffectEditorKind.Date)
+                    {
+                        <div class="field-group">
+                            <label class="field-label">Fecha</label>
+                            <input class="field-input" type="datetime-local" value="@FormatDate(row.DateValue)" @onchange="args => UpdateEffectDate(row, args.Value?.ToString())" />
+                        </div>
+                    }
+                    else if (row.Kind == EffectEditorKind.Mount)
+                    {
+                        <div class="admin-form-grid three">
+                            <div class="field-group"><label class="field-label">Id de montura</label><input class="field-input" type="number" @bind="row.MountId" /></div>
+                            <div class="field-group"><label class="field-label">Expiracion (ms)</label><input class="field-input" type="number" @bind="row.MountExpirationDate" /></div>
+                            <div class="field-group"><label class="field-label">Id de modelo</label><input class="field-input" type="number" @bind="row.MountModelId" /></div>
+                        </div>
+                    }
+
+                    <details class="item-effect-advanced">
+                        <summary>Parametros avanzados</summary>
+                        <div class="admin-form-grid four">
+                            <div class="field-group">
+                                <label class="field-label">Duracion</label>
+                                <input class="field-input" type="number" @bind="row.Duration" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Tipo de objetivo</label>
+                                <input class="field-input" type="number" value="@((int)row.TargetType)" @onchange="args => UpdateEffectTargetType(row, args.Value?.ToString())" />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Forma</label>
+                                <select class="field-input" value="@((int)row.Shape)" @onchange="args => UpdateEffectShape(row, args.Value?.ToString())">
+                                    @foreach (var shape in _spellShapes)
+                                    {
+                                        <option value="@((int)shape)">@shape</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Tamano de zona</label>
+                                <input class="field-input" type="number" min="0" max="255" @bind="row.ZoneSize" />
+                            </div>
+                        </div>
+                    </details>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private const string LegacyGroupLabel = "Otros ya usados";
+
+    private readonly IReadOnlyList<EffectEditorKind> _allEffectKinds = Enum.GetValues<EffectEditorKind>().Cast<EffectEditorKind>().ToArray();
+    private readonly IReadOnlyList<SpellShape> _spellShapes = Enum.GetValues<SpellShape>().Cast<SpellShape>().OrderBy(x => (int)x).ToArray();
+    private IReadOnlyList<GameEffectOption> _effectOptions = Array.Empty<GameEffectOption>();
+    private IReadOnlyList<EffectOptionGroup> _effectOptionGroups = Array.Empty<EffectOptionGroup>();
+
+    [Parameter, EditorRequired] public List<GameEffectEditRow> Rows { get; set; } = new();
+    [Parameter] public string Title { get; set; } = "Efectos";
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public string EmptyMessage { get; set; } = "Todavia no hay efectos cargados.";
+    [Parameter] public string AddButtonLabel { get; set; } = "Agregar efecto";
+    [Parameter] public string RemoveButtonLabel { get; set; } = "Quitar";
+    [Parameter] public IReadOnlyList<EffectEditorKind>? AllowedKinds { get; set; }
+    [Parameter] public IReadOnlyList<GameEffectOption>? Options { get; set; }
+    [Parameter] public EffectId? DefaultEffectId { get; set; }
+
+    private IReadOnlyList<EffectEditorKind> EffectiveAllowedKinds =>
+        AllowedKinds ?? _allEffectKinds;
+
+    protected override void OnParametersSet()
+    {
+        if (AllowedKinds is null || AllowedKinds.Count == 0)
+            AllowedKinds = _allEffectKinds;
+
+        RefreshEffectOptions();
+
+        foreach (var row in Rows)
+        {
+            EnsureRowOption(row);
+            CoerceAllowedKind(row);
+        }
+    }
+
+    private void AddEffectRow()
+    {
+        var effectId = ResolveDefaultEffectId();
+        var row = EffectEditorService.CreateDefaultRow(effectId);
+        CoerceAllowedKind(row);
+        Rows.Add(row);
+        RefreshEffectOptions();
+    }
+
+    private void RemoveEffectRow(Guid rowId)
+    {
+        var row = Rows.FirstOrDefault(x => x.RowId == rowId);
+        if (row is null)
+            return;
+
+        Rows.Remove(row);
+        RefreshEffectOptions();
+    }
+
+    private void MoveRow(Guid rowId, int direction)
+    {
+        var index = Rows.FindIndex(x => x.RowId == rowId);
+        if (index < 0)
+            return;
+
+        var newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= Rows.Count)
+            return;
+
+        (Rows[index], Rows[newIndex]) = (Rows[newIndex], Rows[index]);
+    }
+
+    private void UpdateEffectId(GameEffectEditRow row, string? rawValue)
+    {
+        if (!int.TryParse(rawValue, out var effectId))
+            return;
+
+        row.EffectId = (EffectId)effectId;
+        var option = _effectOptions.FirstOrDefault(x => x.EffectId == row.EffectId);
+        row.Kind = option?.SuggestedKind ?? EffectEditorKind.Integer;
+        CoerceAllowedKind(row);
+        EffectEditorService.UpdateDisplay(row);
+        RefreshEffectOptions();
+    }
+
+    private void UpdateEffectKind(GameEffectEditRow row, string? rawValue)
+    {
+        if (int.TryParse(rawValue, out var kind))
+        {
+            row.Kind = (EffectEditorKind)kind;
+            CoerceAllowedKind(row);
+        }
+    }
+
+    private void RefreshEffectOptions()
+    {
+        var baseOptions = (Options is { Count: > 0 } ? Options : EffectEditorService.GetOptions())
+            .ToDictionary(x => x.EffectId, x => x);
+
+        foreach (var row in Rows.Where(x => x.EffectId != 0))
+        {
+            if (baseOptions.ContainsKey(row.EffectId))
+                continue;
+
+            baseOptions[row.EffectId] = new GameEffectOption
+            {
+                EffectId = row.EffectId,
+                Label = string.IsNullOrWhiteSpace(row.DisplayName)
+                    ? EffectEditorService.CreateDefaultRow(row.EffectId).DisplayName
+                    : row.DisplayName,
+                SuggestedKind = row.Kind,
+                SortPriority = int.MaxValue,
+                GroupLabel = LegacyGroupLabel,
+            };
+        }
+
+        _effectOptions = baseOptions.Values
+            .OrderBy(x => x.SortPriority)
+            .ThenBy(x => x.Label, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        _effectOptionGroups = _effectOptions
+            .GroupBy(x => x.GroupLabel)
+            .OrderBy(group => group.Min(option => option.SortPriority))
+            .ThenBy(group => group.Key, StringComparer.OrdinalIgnoreCase)
+            .Select(group => new EffectOptionGroup(group.Key, group.ToArray()))
+            .ToArray();
+    }
+
+    private void EnsureRowOption(GameEffectEditRow row)
+    {
+        if (_effectOptions.Any(x => x.EffectId == row.EffectId))
+            return;
+
+        var fallbackEffectId = ResolveDefaultEffectId();
+        row.EffectId = fallbackEffectId;
+        var option = _effectOptions.FirstOrDefault(x => x.EffectId == fallbackEffectId);
+        row.Kind = option?.SuggestedKind ?? EffectiveAllowedKinds[0];
+        CoerceAllowedKind(row);
+        EffectEditorService.UpdateDisplay(row);
+    }
+
+    private EffectId ResolveDefaultEffectId()
+    {
+        if (DefaultEffectId.HasValue && _effectOptions.Any(x => x.EffectId == DefaultEffectId.Value))
+            return DefaultEffectId.Value;
+
+        if (_effectOptions.Count > 0)
+            return _effectOptions[0].EffectId;
+
+        return EffectId.EffectAddVitality;
+    }
+
+    private static string FormatDate(DateTime? dateValue) =>
+        dateValue.HasValue
+            ? dateValue.Value.ToString("yyyy-MM-ddTHH:mm")
+            : string.Empty;
+
+    private static void UpdateEffectDate(GameEffectEditRow row, string? rawValue)
+    {
+        row.DateValue = DateTime.TryParse(rawValue, out var parsed)
+            ? parsed
+            : null;
+    }
+
+    private static void UpdateEffectTargetType(GameEffectEditRow row, string? rawValue)
+    {
+        if (int.TryParse(rawValue, out var targetType))
+            row.TargetType = (SpellTargetType)targetType;
+    }
+
+    private static void UpdateEffectShape(GameEffectEditRow row, string? rawValue)
+    {
+        if (int.TryParse(rawValue, out var shape))
+            row.Shape = (SpellShape)shape;
+    }
+
+    private void CoerceAllowedKind(GameEffectEditRow row)
+    {
+        if (EffectiveAllowedKinds.Count == 0)
+            return;
+
+        if (!EffectiveAllowedKinds.Contains(row.Kind))
+            row.Kind = EffectiveAllowedKinds[0];
+    }
+
+    private static string GetKindLabel(EffectEditorKind kind) =>
+        kind switch
+        {
+            EffectEditorKind.Integer => "Numero",
+            EffectEditorKind.Dice => "Dados",
+            EffectEditorKind.String => "Texto",
+            EffectEditorKind.Duration => "Duracion",
+            EffectEditorKind.Date => "Fecha",
+            EffectEditorKind.Mount => "Montura",
+            EffectEditorKind.Base => "Base",
+            _ => kind.ToString(),
+        };
+
+    private sealed record EffectOptionGroup(string Label, IReadOnlyList<GameEffectOption> Options);
+}

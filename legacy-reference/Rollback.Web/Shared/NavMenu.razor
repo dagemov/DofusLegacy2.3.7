@@ -1,0 +1,36 @@
+<nav class="portal-nav">
+    <div class="portal-branding">
+        <NavLink class="portal-brand" href="/" Match="NavLinkMatch.All">
+            <span class="portal-brand-mark">R</span>
+            <span class="portal-brand-copy">
+                <small class="portal-brand-overline">Servidor fantasy rollback</small>
+                <strong>Rollback Portal</strong>
+                <small>Cuenta, aventura y herramientas del reino</small>
+            </span>
+        </NavLink>
+    </div>
+
+    <div class="portal-links">
+        <NavLink class="portal-link" href="/" Match="NavLinkMatch.All">Inicio</NavLink>
+
+        <AuthorizeView Context="authState">
+            <Authorized>
+                <NavLink class="portal-link" href="/account">Mi cuenta</NavLink>
+
+                <AuthorizeView Roles="ADMIN" Context="adminState">
+                    <Authorized>
+                        <NavLink class="portal-link" href="/admin">Panel admin</NavLink>
+                    </Authorized>
+                </AuthorizeView>
+
+                <form method="post" action="/auth/logout" class="portal-inline-form">
+                    <button type="submit" class="portal-link portal-link-button">Salir</button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <NavLink class="portal-link" href="/login">Entrar</NavLink>
+                <NavLink class="portal-link portal-link-accent" href="/register">Crear cuenta</NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</nav>

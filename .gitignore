@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 *.env
+appsettings.Development.local.json
+appsettings.Development.local.backup.json
+appsettings.Development.vps.local.json
 
 # SSH keys (never commit)
 SSH/
@@ -51,6 +54,10 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+
+# Admin offline tools — generated audit/extraction outputs (never commit)
+Infrastructure/temporal-artifacts/
+infrastructure/temporal-artifacts/
 
 # Build results on 'Bin' directories
 **/[Bb]in/*

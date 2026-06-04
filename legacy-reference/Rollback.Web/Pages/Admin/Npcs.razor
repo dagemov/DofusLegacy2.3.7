@@ -1,0 +1,336 @@
+@page "/admin/npcs"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@using Rollback.Admin.Models.Npcs
+@inject NpcAdminService NpcAdminService
+@inject NpcSkinCatalogService NpcSkinCatalogService
+
+<PageTitle>NPCs</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">NPCs</span>
+            <h1>NPCs</h1>
+            <p class="muted-copy">Crea templates visibles, con skin válida, acción primaria y spawn persistido en mapa/celda real.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar por id, nombre o look..." @bind="_query.Search" />
+                <button class="portal-button secondary" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" @onclick="CreateNewAsync">Nuevo NPC</button>
+            </div>
+
+            @if (_listResult is null)
+            {
+                <div class="empty-state"><p>Cargando NPCs...</p></div>
+            }
+            else if (_listResult.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No se encontraron NPCs.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack">
+                    @foreach (var npc in _listResult.Items)
+                    {
+                        <button class="admin-list-card @(_selectedNpcId == npc.Id ? "selected" : string.Empty)" @onclick="() => LoadNpcAsync(npc.Id)">
+                            <strong>@npc.Name [#@npc.Id]</strong>
+                            <span>@npc.ActionLabel Â· @npc.GenderLabel Â· spawns @npc.SpawnCount</span>
+                            <small>@(npc.MapId.HasValue ? $"mapa {npc.MapId} celda {npc.CellId}" : "sin spawn persistido")</small>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_listResult.Page" TotalPages="@_listResult.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedNpcId.HasValue ? $"Editar NPC #{_form.Id}" : "Nuevo NPC")</h2>
+                    <p class="muted-copy">Guardar actualiza template + acción primaria + spawn y publica el nombre al cliente.</p>
+                </div>
+            </div>
+
+            <div class="admin-form-grid two">
+                <div class="field-group">
+                    <label class="field-label">Id</label>
+                    <input class="field-input" type="number" min="1" @bind="_form.Id" readonly="@_selectedNpcId.HasValue" />
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Género</label>
+                    <select class="field-input" @bind="_form.Gender">
+                        <option value="false">Masculino</option>
+                        <option value="true">Femenino</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Nombre runtime</label>
+                <input class="field-input" @bind="_form.Name" />
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Skin / EntityLook</strong>
+                        <p class="muted-copy">Puedes escribir el look manualmente o reutilizar un look válido de NPC/monstruo.</p>
+                    </div>
+                </div>
+
+                <div class="admin-inline-tools">
+                    <input class="field-input admin-search" placeholder="Buscar skin por id, nombre o look..." @bind="_skinSearch" />
+                    <button class="portal-button secondary" @onclick="SearchSkinsAsync">Buscar skin</button>
+                </div>
+
+                @if (_skinResults.Count > 0)
+                {
+                    <div class="admin-lookup-list">
+                        @foreach (var skin in _skinResults)
+                        {
+                            <button class="admin-lookup-item" @onclick="() => SelectSkin(skin)">
+                                @skin.DisplayName [#@skin.SampleId] Â· @skin.SourceLabel
+                            </button>
+                        }
+                    </div>
+                }
+
+                <div class="field-group">
+                    <label class="field-label">EntityLookString</label>
+                    <textarea class="field-input admin-textarea" @bind="_form.EntityLookString"></textarea>
+                </div>
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Acción primaria</strong>
+                        <p class="muted-copy">En esta fase soportamos Shop y Talk de forma segura; el resto puede usarse por alias manual si ya existe en runtime.</p>
+                    </div>
+                </div>
+
+                <div class="admin-form-grid two">
+                    <div class="field-group">
+                        <label class="field-label">Modo</label>
+                        <select class="field-input" @bind="_form.PrimaryActionMode">
+                            <option value="@NpcPrimaryActionMode.Shop">Shop</option>
+                            <option value="@NpcPrimaryActionMode.Talk">Talk</option>
+                            <option value="@NpcPrimaryActionMode.Raw">Raw</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Prioridad</label>
+                        <input class="field-input" type="number" min="0" @bind="_form.Priority" />
+                    </div>
+                </div>
+
+                @if (_form.PrimaryActionMode == NpcPrimaryActionMode.Shop)
+                {
+                    <div class="field-group">
+                        <label class="field-label">Puede vender al NPC</label>
+                        <select class="field-input" @bind="_form.ShopCanSell">
+                            <option value="false">No</option>
+                            <option value="true">Sí</option>
+                        </select>
+                    </div>
+                }
+                else if (_form.PrimaryActionMode == NpcPrimaryActionMode.Talk)
+                {
+                    <div class="field-group">
+                        <label class="field-label">MessageId inicial</label>
+                        <input class="field-input" type="number" min="1" @bind="_form.TalkMessageId" />
+                    </div>
+                }
+                else
+                {
+                    <div class="admin-form-grid two">
+                        <div class="field-group">
+                            <label class="field-label">Alias runtime</label>
+                            <input class="field-input" @bind="_form.PrimaryActionAlias" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">ParametersCSV</label>
+                            <input class="field-input" @bind="_form.PrimaryActionParameters" />
+                        </div>
+                    </div>
+                }
+
+                <div class="field-group">
+                    <label class="field-label">StringCriterion</label>
+                    <input class="field-input" @bind="_form.StringCriterion" placeholder="Opcional" />
+                </div>
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Spawn persistido</strong>
+                        <p class="muted-copy">Mapa/celda de spawn real. Para pruebas rápidas puedes combinar esto con `.mapinfo` y `.invonpc`.</p>
+                    </div>
+                </div>
+
+                <div class="admin-form-grid three">
+                    <div class="field-group">
+                        <label class="field-label">MapId</label>
+                        <input class="field-input" type="number" min="1" @bind="_form.MapId" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">CellId</label>
+                        <input class="field-input" type="number" min="1" @bind="_form.CellId" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Direction</label>
+                        <input class="field-input" type="number" min="0" max="7" @bind="_form.Direction" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="portal-actions">
+                <button class="portal-button" @onclick="SaveAsync">Guardar NPC</button>
+                @if (_selectedNpcId.HasValue)
+                {
+                    <button class="portal-button danger" @onclick="DeleteAsync">Eliminar</button>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<NpcListItem>? _listResult;
+    private NpcEditModel _form = new();
+    private short? _selectedNpcId;
+    private string _skinSearch = string.Empty;
+    private IReadOnlyList<NpcSkinOption> _skinResults = Array.Empty<NpcSkinOption>();
+    private string? _status;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadAsync();
+        await CreateNewAsync();
+    }
+
+    private async Task ReloadAsync() =>
+        _listResult = await NpcAdminService.GetPagedAsync(_query);
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task LoadNpcAsync(short npcId)
+    {
+        var npc = await NpcAdminService.GetByIdAsync(npcId);
+        if (npc is null)
+        {
+            _error = $"No se encontró el NPC #{npcId}.";
+            return;
+        }
+
+        _selectedNpcId = npcId;
+        _form = npc;
+        _status = null;
+        _error = null;
+    }
+
+    private async Task CreateNewAsync()
+    {
+        _selectedNpcId = null;
+        _form = new NpcEditModel
+        {
+            Id = await NpcAdminService.GetNextAvailableIdAsync(),
+            Name = "NPC nuevo",
+            Direction = 1,
+            PrimaryActionMode = NpcPrimaryActionMode.Shop,
+            PrimaryActionAlias = "Shop",
+            PrimaryActionParameters = "false",
+        };
+        _skinResults = Array.Empty<NpcSkinOption>();
+        _status = null;
+        _error = null;
+    }
+
+    private async Task SearchSkinsAsync() =>
+        _skinResults = await NpcSkinCatalogService.SearchAsync(_skinSearch);
+
+    private void SelectSkin(NpcSkinOption option)
+    {
+        _form.EntityLookString = option.EntityLookString;
+        _form.Gender = option.Gender;
+    }
+
+    private async Task SaveAsync()
+    {
+        _error = Validate(_form);
+        if (!string.IsNullOrWhiteSpace(_error))
+            return;
+
+        try
+        {
+            await NpcAdminService.SaveAsync(_form);
+            _selectedNpcId = _form.Id;
+            _status = $"NPC #{_form.Id} guardado y publicado al cliente.";
+            await ReloadAsync();
+            await LoadNpcAsync(_form.Id);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (!_selectedNpcId.HasValue)
+            return;
+
+        await NpcAdminService.DeleteAsync(_selectedNpcId.Value);
+        _status = $"NPC #{_selectedNpcId.Value} eliminado.";
+        await ReloadAsync();
+        await CreateNewAsync();
+    }
+
+    private static string? Validate(NpcEditModel model)
+    {
+        if (model.Id <= 0)
+            return "El Id del NPC debe ser mayor a 0.";
+
+        if (string.IsNullOrWhiteSpace(model.Name))
+            return "El nombre del NPC es obligatorio.";
+
+        if (string.IsNullOrWhiteSpace(model.EntityLookString))
+            return "EntityLookString es obligatorio.";
+
+        if (model.MapId <= 0)
+            return "MapId debe ser mayor a 0.";
+
+        if (model.CellId <= 0)
+            return "CellId debe ser mayor a 0.";
+
+        if (model.PrimaryActionMode == NpcPrimaryActionMode.Talk && model.TalkMessageId is not > 0)
+            return "Talk necesita un MessageId inicial válido.";
+
+        if (model.PrimaryActionMode == NpcPrimaryActionMode.Raw && string.IsNullOrWhiteSpace(model.PrimaryActionAlias))
+            return "El modo Raw necesita un alias runtime.";
+
+        return null;
+    }
+}

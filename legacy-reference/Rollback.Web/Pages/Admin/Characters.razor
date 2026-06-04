@@ -1,0 +1,180 @@
+@page "/admin/characters"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@using Rollback.Admin.Services
+@inject CharacterAdminService CharacterAdminService
+@inject IAccountPortalService AccountPortalService
+
+<PageTitle>Characters Admin</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Characters Admin</span>
+            <h1>Characters Admin</h1>
+            <p class="muted-copy">Vista operativa de personajes con ajustes rapidos de kamas, nivel y special spells reservados para staff/admin.</p>
+            <p class="muted-copy">`Spell RollBack` es el carril visible y cliente-safe para QA/admin. `Doom` y `Matanza` quedan congelados hasta cerrar compatibilidad completa con la UI del cliente.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    <article class="portal-card">
+        <div class="admin-toolbar">
+            <input class="field-input admin-search" placeholder="Buscar personaje..." @bind="_query.Search" />
+            <button class="portal-button secondary" @onclick="ReloadAsync">Buscar</button>
+        </div>
+
+        @if (_characters is null)
+        {
+            <div class="empty-state"><p>Cargando personajes...</p></div>
+        }
+        else if (_characters.Items.Count == 0)
+        {
+            <div class="empty-state"><p>No hay personajes.</p></div>
+        }
+        else
+        {
+            <div class="character-admin-list">
+                @foreach (var character in _characters.Items)
+                {
+                    <article class="character-admin-card">
+                        <div class="character-admin-head">
+                            <div>
+                                <strong>@character.Name</strong>
+                                <div class="muted-copy">#@character.Id - cuenta #@character.AccountId - @character.AccountRole - @character.Breed - nivel @character.Level - mapa @character.MapId</div>
+                            </div>
+                        </div>
+
+                        <div class="character-admin-actions">
+                            <div class="character-inline-form">
+                                <label class="field-label">Kamas</label>
+                                <input class="field-input compact" type="number" min="0" @bind="_kamasByCharacter[character.Id]" />
+                                <button class="portal-button secondary" @onclick="() => SaveKamasAsync(character.Id)">Guardar kamas</button>
+                            </div>
+                            <div class="character-inline-form">
+                                <label class="field-label">Nivel</label>
+                                <input class="field-input compact" type="number" min="1" max="200" @bind="_levelByCharacter[character.Id]" />
+                                <button class="portal-button secondary" @onclick="() => SaveLevelAsync(character.Id)">Guardar nivel</button>
+                            </div>
+                            <div class="character-inline-form">
+                                <label class="field-label">Special spells</label>
+                                <div class="muted-copy">
+                                    @(character.AssignedSpecialSpells.Count == 0
+                                        ? "Sin spells especiales asignados."
+                                        : string.Join(", ", character.AssignedSpecialSpells.Select(x => x.Name)))
+                                </div>
+                                @if (character.AssignedSpecialSpells.Count > 0)
+                                {
+                                    <div class="muted-copy">
+                                        @string.Join(" | ", character.AssignedSpecialSpells.Select(x => $"{x.ModeLabel} - {x.ClientCompatibilityLabel}"))
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="muted-copy">Sin special spells activos. Usa `Spell RollBack` para QA visible en cliente; `Doom` y `Matanza` quedan congelados.</div>
+                                }
+                                <div class="portal-actions">
+                                    @foreach (var specialSpell in _availableSpecialSpells)
+                                    {
+                                        if (character.HasSpecialSpell(specialSpell.SpellId))
+                                        {
+                                            <button class="portal-button danger"
+                                                    disabled="@(!character.CanRevokeAdminSpell)"
+                                                    @onclick="() => RevokeSpecialSpellAsync(character.Id, specialSpell.SpellId)">
+                                                Quitar @specialSpell.Name
+                                            </button>
+                                        }
+                                        else if (!specialSpell.CanAssignFromAdmin)
+                                        {
+                                            <button class="portal-button secondary" disabled="true">
+                                                @specialSpell.Name (Congelado)
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="portal-button secondary"
+                                                    disabled="@(!character.CanGrantAdminSpell)"
+                                                    @onclick="() => GrantSpecialSpellAsync(character.Id, specialSpell.SpellId)">
+                                                Agregar @specialSpell.Name
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                                @if (!character.CanGrantAdminSpell)
+                                {
+                                    <div class="muted-copy">Solo personajes vinculados a cuentas staff/admin pueden recibir estos special spells.</div>
+                                }
+                                else
+                                {
+                                    <div class="muted-copy">Solo `Spell RollBack` queda habilitado para asignacion visible segura. `Doom` y `Matanza` se muestran congelados para evitar otra regresion de cliente.</div>
+                                }
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+            <AdminPager Page="@_characters.Page" TotalPages="@_characters.TotalPages" OnPageChanged="ChangePageAsync" />
+        }
+    </article>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<AdminCharacterListItem>? _characters;
+    private IReadOnlyList<AdminSpecialSpellDefinition> _availableSpecialSpells = Array.Empty<AdminSpecialSpellDefinition>();
+    private readonly Dictionary<int, int> _kamasByCharacter = new();
+    private readonly Dictionary<int, byte> _levelByCharacter = new();
+    private string? _status;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _availableSpecialSpells = CharacterAdminService.GetAvailableSpecialSpells();
+        await ReloadAsync();
+    }
+
+    private async Task ReloadAsync()
+    {
+        _characters = await CharacterAdminService.GetPagedAsync(_query);
+        foreach (var character in _characters.Items)
+        {
+            _kamasByCharacter[character.Id] = character.Kamas;
+            _levelByCharacter[character.Id] = character.Level;
+        }
+    }
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task SaveKamasAsync(int characterId)
+    {
+        await AccountPortalService.SetCharacterKamasAsync(characterId, _kamasByCharacter[characterId]);
+        _status = $"Kamas actualizados para el personaje #{characterId}.";
+        await ReloadAsync();
+    }
+
+    private async Task SaveLevelAsync(int characterId)
+    {
+        await AccountPortalService.SetCharacterLevelAsync(characterId, _levelByCharacter[characterId]);
+        _status = $"Nivel actualizado para el personaje #{characterId}.";
+        await ReloadAsync();
+    }
+
+    private async Task GrantSpecialSpellAsync(int characterId, short spellId)
+    {
+        _status = await CharacterAdminService.GrantSpecialSpellAsync(characterId, spellId);
+        await ReloadAsync();
+    }
+
+    private async Task RevokeSpecialSpellAsync(int characterId, short spellId)
+    {
+        _status = await CharacterAdminService.RevokeSpecialSpellAsync(characterId, spellId);
+        await ReloadAsync();
+    }
+}

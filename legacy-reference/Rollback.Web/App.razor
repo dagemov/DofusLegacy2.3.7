@@ -1,0 +1,22 @@
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <RouteAccessGuard />
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Pagina no encontrada</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <section class="portal-card empty-state">
+                    <h1>Pagina no encontrada</h1>
+                    <p>La ruta que buscas no existe dentro del portal.</p>
+                    <a class="portal-button" href="/">Volver al inicio</a>
+                </section>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

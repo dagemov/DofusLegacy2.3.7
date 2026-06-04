@@ -1,0 +1,85 @@
+@page "/admin/monster-families"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject MonsterFamilyCatalogService MonsterFamilyCatalogService
+
+<PageTitle>Familias de monstruos</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Monster Families</span>
+            <h1>Familias de monstruos</h1>
+            <p class="muted-copy">Catalogo base por familia/race para poblamiento y Dungeon Builder. Esta primera version es read-only y usa el runtime actual.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <article class="portal-card">
+        <div class="section-heading">
+            <div>
+                <h2>Catalogo vivo</h2>
+                <p class="muted-copy">Sirve para detectar familias disponibles, rangos de nivel y muestras antes de crear grupos o dungeons custom.</p>
+            </div>
+            <button class="portal-button secondary" @onclick="ReloadAsync">Recargar</button>
+        </div>
+
+        @if (_families is null)
+        {
+            <div class="empty-state"><p>Cargando familias...</p></div>
+        }
+        else if (_families.Count == 0)
+        {
+            <div class="empty-state"><p>No se encontraron familias de monstruos.</p></div>
+        }
+        else
+        {
+            <table class="accounts-table admin-table">
+                <thead>
+                    <tr>
+                        <th>Familia</th>
+                        <th>Monstruos</th>
+                        <th>Rango</th>
+                        <th>Muestras</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var family in _families)
+                    {
+                        <tr>
+                            <td><strong>@family.Label</strong></td>
+                            <td>@family.MonsterCount</td>
+                            <td>@family.MinLevel - @family.MaxLevel</td>
+                            <td>@family.SampleMonsters</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </article>
+</section>
+
+@code {
+    private IReadOnlyList<MonsterFamilyCatalogItem>? _families;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync() =>
+        await ReloadAsync();
+
+    private async Task ReloadAsync()
+    {
+        try
+        {
+            _families = await MonsterFamilyCatalogService.GetFamiliesAsync();
+            _error = null;
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+}

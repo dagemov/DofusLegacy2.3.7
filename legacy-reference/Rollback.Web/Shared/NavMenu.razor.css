@@ -1,0 +1,110 @@
+.portal-nav {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.portal-branding {
+    flex: 1;
+}
+
+.portal-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--portal-cream);
+    text-decoration: none;
+}
+
+.portal-brand:hover {
+    color: var(--portal-gold);
+}
+
+.portal-brand strong,
+.portal-brand small {
+    display: block;
+    line-height: 1.1;
+}
+
+.portal-brand small {
+    color: var(--portal-muted);
+}
+
+.portal-brand-mark {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 220, 140, 0.35);
+    background: radial-gradient(circle at top, rgba(250, 203, 110, 0.45), rgba(73, 48, 16, 0.65));
+    color: var(--portal-gold);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.portal-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.portal-links ::deep .portal-link,
+.portal-link-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 222, 163, 0.15);
+    background: rgba(18, 23, 33, 0.58);
+    color: var(--portal-cream);
+    text-decoration: none;
+    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.portal-links ::deep a.active {
+    border-color: rgba(255, 211, 126, 0.45);
+    background: rgba(110, 74, 24, 0.48);
+    color: var(--portal-gold);
+}
+
+.portal-links ::deep .portal-link:hover,
+.portal-link-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 211, 126, 0.45);
+    color: var(--portal-gold);
+}
+
+.portal-links ::deep .portal-link-accent {
+    background: linear-gradient(180deg, rgba(149, 101, 31, 0.85), rgba(86, 56, 19, 0.88));
+    border-color: rgba(255, 215, 140, 0.45);
+}
+
+.portal-inline-form {
+    margin: 0;
+}
+
+.portal-link-button {
+    font: inherit;
+    cursor: pointer;
+}
+
+@media (max-width: 720px) {
+    .portal-nav {
+        width: min(100% - 1rem, 1120px);
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .portal-links {
+        justify-content: flex-start;
+    }
+}
