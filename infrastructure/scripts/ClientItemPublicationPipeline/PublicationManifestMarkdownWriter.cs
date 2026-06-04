@@ -28,6 +28,12 @@ internal static class PublicationManifestMarkdownWriter
         body.AppendLine($"| DescriptionId | {manifest.DescriptionId} |");
         body.AppendLine($"| SourceTemplateItemId | {manifest.SourceTemplateItemId?.ToString() ?? "(none)"} |");
         body.AppendLine($"| StagingOutputPath | `{manifest.StagingOutputPath}` |");
+        body.AppendLine($"| StagingPackageStatus | `{manifest.StagingPackageStatus}` |");
+        body.AppendLine($"| StagingPackagePath | `{manifest.StagingPackagePath ?? "(none)"}` |");
+        body.AppendLine($"| StagingValidationStatus | `{manifest.StagingValidationStatus ?? "(none)"}` |");
+        body.AppendLine();
+        AppendList(body, "StagingWarnings", manifest.StagingWarnings);
+        AppendList(body, "NextManualSteps", manifest.NextManualSteps);
         body.AppendLine();
         body.AppendLine("## Effects");
         body.AppendLine();

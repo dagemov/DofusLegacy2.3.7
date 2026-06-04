@@ -144,72 +144,54 @@ internal sealed class D2iStagingPublisher
         string packageDirectory,
         int sourceItemId,
         int targetItemId,
-        D2iAppendTextResult i18nResult)
+        D2iAppendTextResult i18nResult,
+        int typeId = 23,
+        int iconId = 23012,
+        int appearanceId = 0)
     {
         var sourceItems = Path.Combine(repoRoot, "Client2.3.7", "data", "common", "Items.d2o");
-        var d2oPublisher = new D2o.D2oStagingPublisher();
-        var d2oDir = Path.Combine(packageDirectory, "d2o-work");
-        Directory.CreateDirectory(d2oDir);
+        var clientRoot = Path.Combine(repoRoot, "Client2.3.7");
+        var adminByIcon = Path.Combine(
+            repoRoot,
+            "Angular-tools",
+            "Admin",
+            "RollblackLegacy.Admin.Angular",
+            "src",
+            "assets",
+            "item-previews",
+            "by-icon");
+        var itemTypes = Path.Combine(clientRoot, "data", "common", "ItemTypes.d2o");
 
-        var clone = d2oPublisher.CloneItem(
-            sourceItems,
-            d2oDir,
-            sourceItemId,
-            targetItemId,
-            typeId: 23,
-            iconId: 23012,
-            appearanceId: 0);
+        var builder = new Package.PublicationPackageBuilder();
+        var build = builder.Build(
+            new Package.PublicationPackageBuildRequest(
+                repoRoot,
+                packageDirectory,
+                sourceItems,
+                clientRoot,
+                adminByIcon,
+                itemTypes,
+                sourceItemId,
+                targetItemId,
+                typeId,
+                iconId,
+                appearanceId,
+                i18nResult));
 
-        var stagingItems = clone.StagingItemsPath;
-        var reader = new Sunshine.Protocol.Tools.D2o.D2OReader(stagingItems);
-        var item = reader.ReadObject<D2oItem>(targetItemId, true)
-            ?? throw new InvalidOperationException($"Item {targetItemId} no encontrado tras clone.");
-        reader.Close();
-
-        item.nameId = i18nResult.NameId;
-        item.descriptionId = i18nResult.DescriptionId;
-
-        using (var writer = new Sunshine.Protocol.Tools.D2o.D2OWriter(stagingItems))
-        {
-            writer.StartWriting(backupFile: false);
-            writer.Write(item, targetItemId);
-            writer.EndWriting();
-        }
-
-        Directory.CreateDirectory(packageDirectory);
-        var packageItems = Path.Combine(packageDirectory, "Items.d2o");
-        var packageEs = Path.Combine(packageDirectory, "i18n_es.d2i");
-        var packageEn = Path.Combine(packageDirectory, "i18n_en.d2i");
-        WriteFileCopy(stagingItems, packageItems);
-        WriteFileCopy(i18nResult.StagingEsPath, packageEs);
-        WriteFileCopy(i18nResult.StagingEnPath, packageEn);
-
-        var manifest = new
-        {
-            ItemId = targetItemId,
-            SourceTemplateItemId = sourceItemId,
-            i18nResult.NameId,
-            i18nResult.DescriptionId,
-            IdModel = "Mismo textId en i18n_es.d2i e i18n_en.d2i; texto distinto por archivo.",
-            ItemsD2o = packageItems,
-            I18nEs = packageEs,
-            I18nEn = packageEn,
-            i18nResult.Verified
-        };
-
-        var jsonPath = Path.Combine(packageDirectory, "publication-package-manifest.json");
-        var mdPath = Path.Combine(packageDirectory, "publication-package-manifest.md");
-        File.WriteAllText(jsonPath, JsonSerializer.Serialize(manifest, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
-        File.WriteAllText(mdPath, BuildPackageMarkdown(manifest, i18nResult), Encoding.UTF8);
-
-        return new StagePublicationPackageResult(packageDirectory, jsonPath, mdPath, i18nResult.NameId, i18nResult.DescriptionId);
+        var jsonPath = Path.Combine(packageDirectory, Package.PublicationPackagePaths.ManifestJson);
+        var mdPath = Path.Combine(packageDirectory, Package.PublicationPackagePaths.ManifestMarkdown);
+        return new StagePublicationPackageResult(
+            build.PackageDirectory,
+            jsonPath,
+            mdPath,
+            build.NameId,
+            build.DescriptionId,
+            build.ValidationPassed,
+            build.ValidationStatus);
     }
 
     private static string HashFile(string path) =>
         Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
-
-    private static void WriteFileCopy(string sourcePath, string destinationPath) =>
-        File.WriteAllBytes(destinationPath, File.ReadAllBytes(sourcePath));
 
     private static string BuildInspectMarkdown(D2iInspectResult es, D2iInspectResult en) =>
         $"""
@@ -264,8 +246,6 @@ internal sealed class D2iStagingPublisher
         - EN name: {r.ResolvedEnName}
         """;
 
-    private static string BuildPackageMarkdown(object manifest, D2iAppendTextResult i18n) =>
-        $"# Publication package staging\n\nItem 12617 — nameId `{i18n.NameId}`, descriptionId `{i18n.DescriptionId}`.\n\nVerified i18n: `{i18n.Verified}`.\n";
 }
 
 internal sealed record D2iInspectBundleResult(D2iInspectResult Es, D2iInspectResult En, string MarkdownPath);
@@ -310,4 +290,6 @@ internal sealed record StagePublicationPackageResult(
     string JsonPath,
     string MarkdownPath,
     int NameId,
-    int DescriptionId);
+    int DescriptionId,
+    bool ValidationPassed,
+    string ValidationStatus);

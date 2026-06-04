@@ -177,6 +177,12 @@ export interface ItemPublicationManifestDto {
   blockingReasons: string[];
   clientRootPath?: string | null;
   stagingOutputPath?: string | null;
+  stagingPackageStatus: string;
+  stagingPackagePath?: string | null;
+  stagingPackageId?: string | null;
+  stagingValidationStatus?: string | null;
+  stagingWarnings: string[];
+  nextManualSteps: string[];
   generatedAtUtc: string;
 }
 

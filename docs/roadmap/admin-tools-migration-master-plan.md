@@ -245,11 +245,12 @@ The next intended branch order is:
 
 1. Abrir **PR único** Macro Items Final desde `feature/items-final-effects-catalog-audit-7d1`
 2. Browser QA pendiente: ver [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md)
-3. **Macro 4 Phase 3C** — full staging publication package + launcher/QA (`NEXT`)
+3. **Macro 4 Phase 4** — controlled client patch in backup copy + launcher lane (`NEXT`)
 4. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
 
 Macro 4 Phase 3A: **`DONE`** — D2O Item classes + clone staging.  
-Macro 4 Phase 3B (`feature/client-item-publication-d2i-writer-phase3b`): **`DONE`** — `D2iFile` writer, append textos ES/EN, paquete `publication-phase3b/12617/`.
+Macro 4 Phase 3B (`feature/client-item-publication-d2i-writer-phase3b`): **`DONE`** — `D2iFile` writer, append textos ES/EN.  
+Macro 4 Phase 3C (`feature/client-item-publication-staging-package-phase3c`): **`DONE`** — paquete `publication-package-phase3c/12617/`, validador CLI, API/Angular staging status.
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 

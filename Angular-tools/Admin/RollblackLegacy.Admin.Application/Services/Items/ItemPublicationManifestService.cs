@@ -1,6 +1,7 @@
 using System.Text;
 using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
+using RollblackLegacy.Admin.Application.Models.Items;
 using RollblackLegacy.Admin.Contracts.Items;
 
 namespace RollblackLegacy.Admin.Application.Services.Items;
@@ -12,15 +13,18 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
     private readonly IItemsAdminReadService _itemsAdminReadService;
     private readonly IClientItemIdentityReadService _clientItemIdentityReadService;
     private readonly IItemClientPublicationInspector _publicationInspector;
+    private readonly IStagingPublicationPackageProbe _stagingPackageProbe;
 
     public ItemPublicationManifestService(
         IItemsAdminReadService itemsAdminReadService,
         IClientItemIdentityReadService clientItemIdentityReadService,
-        IItemClientPublicationInspector publicationInspector)
+        IItemClientPublicationInspector publicationInspector,
+        IStagingPublicationPackageProbe stagingPackageProbe)
     {
         _itemsAdminReadService = itemsAdminReadService;
         _clientItemIdentityReadService = clientItemIdentityReadService;
         _publicationInspector = publicationInspector;
+        _stagingPackageProbe = stagingPackageProbe;
     }
 
     public async Task<ItemPublicationManifestDto> GetManifestAsync(int itemId, CancellationToken cancellationToken = default)
@@ -28,6 +32,7 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
         var detail = await _itemsAdminReadService.GetItemAsync(itemId, cancellationToken);
         var identity = await _clientItemIdentityReadService.GetItemAsync(itemId, cancellationToken);
         var inspection = await _publicationInspector.InspectAsync(itemId, detail.TypeId, cancellationToken);
+        var staging = _stagingPackageProbe.Probe(itemId);
 
         var clientKnown = inspection.TemplateKnown && identity.ClientKnown;
         var states = new List<string>();
@@ -35,12 +40,16 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
         var requiredActions = new List<string>();
         var filesToPatch = new List<string>();
         var risks = BuildDefaultRisks();
+        var stagingWarnings = staging.Warnings.ToList();
+        var nextManualSteps = staging.NextManualSteps.ToList();
 
         var nameEs = FirstNonEmpty(identity.ClientNameEs.Text, detail.ResolvedName, identity.DbName);
         var nameEn = FirstNonEmpty(identity.ClientNameEn.Text, identity.DbName);
         var typeName = FirstNonEmpty(identity.ClientTypeNameEs, detail.TypeName);
         var effectsSummary = BuildEffectsSummary(detail.Effects);
         var sourceTemplateItemId = ResolveSourceTemplateItemId(clientKnown, detail.TypeId);
+        var stagingPath = staging.StagingPackagePath
+            ?? $"Infrastructure/staging-client/publication-package-phase3c/{itemId}";
 
         if (!inspection.ClientDataAvailable)
         {
@@ -56,17 +65,15 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
         }
         else
         {
-            states.Add(ItemPublicationManifestStates.BlockedClientWriterMissing);
-            states.Add(ItemPublicationManifestStates.BlockedI18nWriterMissing);
-            blockingReasons.Add("Sunshine.Protocol incluye D2OWriter sin clase Item tipada ni pipeline validado para Items.d2o.");
-            blockingReasons.Add("No existe D2I writer documentado en el repo para i18n_es.d2i / i18n_en.d2i.");
-            requiredActions.Add($"Añadir template {itemId} en Items.d2o (staging copy, no Client2.3.7 original).");
-            requiredActions.Add("Asignar nameId/descriptionId y textos ES/EN en i18n_es.d2i e i18n_en.d2i.");
-            requiredActions.Add("Regenerar lane de launcher/patch (data.meta, VerInfo.rec) tras Phase 2+.");
+            ApplyStagingPackageState(states, blockingReasons, requiredActions, filesToPatch, staging, itemId);
 
-            filesToPatch.Add("data/common/Items.d2o");
-            filesToPatch.Add("data/i18n/i18n_es.d2i");
-            filesToPatch.Add("data/i18n/i18n_en.d2i");
+            if (string.Equals(staging.StagingPackageStatus, StagingPublicationPackageStatuses.NoPackageGenerated, StringComparison.Ordinal))
+            {
+                requiredActions.Add($"Generar paquete staging: --mode stage-item-publication --item-id {itemId} --output {stagingPath}");
+                filesToPatch.Add("data/common/Items.d2o");
+                filesToPatch.Add("data/i18n/i18n_es.d2i");
+                filesToPatch.Add("data/i18n/i18n_en.d2i");
+            }
 
             if (!inspection.TypeKnown)
             {
@@ -91,8 +98,8 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
 
             if (!identity.DescriptionEs.Exists || !identity.DescriptionEn.Exists)
             {
-                states.Add(ItemPublicationManifestStates.BlockedI18nWriterMissing);
-                blockingReasons.Add($"DescriptionId {detail.DescriptionId} no resuelve en i18n ES/EN para el nombre de item en cliente.");
+                blockingReasons.Add($"DescriptionId {detail.DescriptionId} no resuelve en i18n ES/EN del cliente de referencia (DB/runtime).");
+                requiredActions.Add("Los textos del paquete staging deben validarse con validate-publication-package.");
             }
 
             if (sourceTemplateItemId.HasValue)
@@ -101,7 +108,7 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
             }
 
             states.Add(ItemPublicationManifestStates.BlockedManualReview);
-            blockingReasons.Add("Phase 1 solo permite dry-run; la publicación automática está deshabilitada.");
+            blockingReasons.Add("Publicación automática al cliente real sigue deshabilitada (Phase 3C = staging + validación).");
         }
 
         if (detail.AppearanceId > 0 && identity.Appearance.Exists == false)
@@ -115,8 +122,9 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
             filesToPatch.Add("data/common/Appearances.d2o");
         }
 
-        var primaryState = ResolvePrimaryState(clientKnown, states);
-        var stagingPath = $"Infrastructure/temporal-artifacts/client-item-publication/{itemId}";
+        blockingReasons.AddRange(staging.BlockingReasons.Where(reason => !blockingReasons.Contains(reason, StringComparer.Ordinal)));
+
+        var primaryState = ResolvePrimaryState(clientKnown, states, staging);
 
         return new ItemPublicationManifestDto(
             detail.ItemId,
@@ -141,14 +149,62 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
             blockingReasons.Distinct(StringComparer.Ordinal).ToArray(),
             inspection.ClientRootPath,
             stagingPath,
+            staging.StagingPackageStatus,
+            staging.StagingPackagePath,
+            staging.StagingPackageId,
+            staging.StagingValidationStatus,
+            stagingWarnings,
+            nextManualSteps,
             DateTimeOffset.UtcNow);
     }
 
-    private static string ResolvePrimaryState(bool clientKnown, IReadOnlyList<string> states)
+    private static void ApplyStagingPackageState(
+        List<string> states,
+        List<string> blockingReasons,
+        List<string> requiredActions,
+        List<string> filesToPatch,
+        StagingPublicationPackageProbeResult staging,
+        int itemId)
+    {
+        switch (staging.StagingPackageStatus)
+        {
+            case StagingPublicationPackageStatuses.ReadyForControlledPublish:
+                states.Add(ItemPublicationManifestStates.ReadyForControlledPublish);
+                requiredActions.Add("Paquete staging validado; Phase 4 aplicará patch solo en copia backup.");
+                break;
+            case StagingPublicationPackageStatuses.NeedsValidation:
+                states.Add(ItemPublicationManifestStates.StagingPackageNeedsValidation);
+                requiredActions.Add($"Validar paquete: --mode validate-publication-package --package {staging.StagingPackagePath}");
+                break;
+            case StagingPublicationPackageStatuses.PackageAvailableInStaging:
+                states.Add(ItemPublicationManifestStates.StagingPackageNeedsValidation);
+                blockingReasons.Add($"Paquete staging detectado para item {itemId}; falta validación o el reporte es inválido.");
+                break;
+            default:
+                blockingReasons.Add("No hay paquete de publicación generado en staging (publication-package-phase3c).");
+                break;
+        }
+    }
+
+    private static string ResolvePrimaryState(
+        bool clientKnown,
+        IReadOnlyList<string> states,
+        StagingPublicationPackageProbeResult staging)
     {
         if (clientKnown)
         {
             return ItemPublicationManifestStates.ReadyToStage;
+        }
+
+        if (string.Equals(staging.StagingPackageStatus, StagingPublicationPackageStatuses.ReadyForControlledPublish, StringComparison.Ordinal))
+        {
+            return ItemPublicationManifestStates.ReadyForControlledPublish;
+        }
+
+        if (string.Equals(staging.StagingPackageStatus, StagingPublicationPackageStatuses.NeedsValidation, StringComparison.Ordinal)
+            || string.Equals(staging.StagingPackageStatus, StagingPublicationPackageStatuses.PackageAvailableInStaging, StringComparison.Ordinal))
+        {
+            return ItemPublicationManifestStates.StagingPackageNeedsValidation;
         }
 
         if (states.Contains(ItemPublicationManifestStates.BlockedUnknownType, StringComparer.Ordinal))
@@ -159,16 +215,6 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
         if (states.Contains(ItemPublicationManifestStates.BlockedInvalidIcon, StringComparer.Ordinal))
         {
             return ItemPublicationManifestStates.BlockedInvalidIcon;
-        }
-
-        if (states.Contains(ItemPublicationManifestStates.BlockedClientWriterMissing, StringComparer.Ordinal))
-        {
-            return ItemPublicationManifestStates.BlockedClientWriterMissing;
-        }
-
-        if (states.Contains(ItemPublicationManifestStates.BlockedI18nWriterMissing, StringComparer.Ordinal))
-        {
-            return ItemPublicationManifestStates.BlockedI18nWriterMissing;
         }
 
         if (states.Contains(ItemPublicationManifestStates.BlockedManualReview, StringComparer.Ordinal))
@@ -229,7 +275,7 @@ public sealed class ItemPublicationManifestService : IItemPublicationManifestSer
         "Publicar Items.d2o sin i18n puede dejar tooltips vacíos.",
         "Parchear solo archivos locales sin launcher deja clientes QA desactualizados.",
         "Sobrescribir Client2.3.7 original rompe la línea base del workspace.",
-        "Phase 1 no ejecuta escritura; validar siempre en copia staging."
+        "Phase 3C valida staging; no sustituye QA runtime ni patch controlado (Phase 4)."
     ];
 
     private static string? FirstNonEmpty(params string?[] values)

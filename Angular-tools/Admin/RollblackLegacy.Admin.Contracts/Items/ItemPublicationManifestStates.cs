@@ -11,4 +11,6 @@ public static class ItemPublicationManifestStates
     public const string BlockedUnknownType = "BLOCKED_UNKNOWN_TYPE";
     public const string BlockedInvalidIcon = "BLOCKED_INVALID_ICON";
     public const string BlockedManualReview = "BLOCKED_MANUAL_REVIEW";
+    public const string StagingPackageNeedsValidation = "STAGING_PACKAGE_NEEDS_VALIDATION";
+    public const string ReadyForControlledPublish = "READY_FOR_CONTROLLED_PUBLISH";
 }

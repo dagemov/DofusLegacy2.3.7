@@ -23,4 +23,10 @@ public sealed record ItemPublicationManifestDto(
     IReadOnlyList<string> BlockingReasons,
     string? ClientRootPath,
     string? StagingOutputPath,
+    string StagingPackageStatus,
+    string? StagingPackagePath,
+    string? StagingPackageId,
+    string? StagingValidationStatus,
+    IReadOnlyList<string> StagingWarnings,
+    IReadOnlyList<string> NextManualSteps,
     DateTimeOffset GeneratedAtUtc);

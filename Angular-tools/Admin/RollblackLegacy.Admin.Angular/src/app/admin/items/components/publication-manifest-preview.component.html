@@ -5,7 +5,7 @@
         <p class="text-uppercase small fw-semibold text-secondary mb-1">Publication Manifest Preview</p>
         <h3 class="h5 mb-1">Dry-run de publicación cliente</h3>
         <p class="text-secondary mb-0 small">
-          Phase 1 — solo lectura. No hay botón de publicar ni escritura en cliente/DB.
+          Phase 3C — paquete staging + validación. No hay botón de publicar ni escritura en cliente real/DB.
         </p>
       </div>
       <div *ngIf="manifest" class="d-flex flex-wrap gap-2 align-content-start">
@@ -29,10 +29,30 @@
         </div>
         <div class="col-12 col-md-6">
           <div class="rounded-3 status-box">
-            <div class="text-uppercase fw-semibold text-secondary mb-1">Staging</div>
-            <div class="text-break">{{ manifest.stagingOutputPath || '(sin ruta)' }}</div>
+            <div class="text-uppercase fw-semibold text-secondary mb-1">Staging package</div>
+            <div class="fw-semibold">{{ manifest.stagingPackageStatus }}</div>
+            <div *ngIf="manifest.stagingValidationStatus" class="text-secondary">
+              Validation: {{ manifest.stagingValidationStatus }}
+            </div>
+            <div *ngIf="manifest.stagingPackageId" class="text-secondary text-break">PackageId: {{ manifest.stagingPackageId }}</div>
+            <div class="text-break">{{ manifest.stagingPackagePath || manifest.stagingOutputPath || '(sin ruta)' }}</div>
             <div class="text-break text-secondary">{{ manifest.clientRootPath || 'Client root no disponible' }}</div>
           </div>
+        </div>
+      </div>
+
+      <div class="row g-4" *ngIf="manifest.stagingWarnings.length || manifest.nextManualSteps.length">
+        <div class="col-12 col-xl-6" *ngIf="manifest.stagingWarnings.length">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">StagingWarnings</p>
+          <ul class="mb-0 ps-3 d-grid gap-1 small">
+            <li *ngFor="let warning of manifest.stagingWarnings">{{ warning }}</li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6" *ngIf="manifest.nextManualSteps.length">
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">NextManualSteps</p>
+          <ol class="mb-0 ps-3 d-grid gap-1 small">
+            <li *ngFor="let step of manifest.nextManualSteps">{{ step }}</li>
+          </ol>
         </div>
       </div>
 

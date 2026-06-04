@@ -10,8 +10,8 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 | **2** | Writer research + PoC staging | `DONE` |
 | **3A** | Clases D2O `Item` + round-trip/clone staging | `DONE` |
 | **3B** | D2I writer staging prototype | `DONE` |
-| **3C** | Paquete publicación completo + launcher/QA | `NEXT` |
-| 3 | Launcher patch lane + QA cliente | `PENDING` |
+| **3C** | Paquete staging completo + validador | `DONE` |
+| **4** | Patch controlado en copia backup + launcher | `NEXT` |
 
 ## Documentos
 
@@ -22,6 +22,9 @@ Macro 4 — publicar items custom del Items Builder al cliente **sin** depender 
 - [Phase 3B — D2I research](./client-publication-phase3b-d2i-writer-research.md)
 - [Formato D2I](./client-d2i-format-notes.md)
 - [Append D2I report](./client-d2i-append-report.md)
+- [Phase 3C — staging package](./client-publication-phase3c-staging-package.md)
+- [Package validator](./client-publication-package-validator.md)
+- [Package 12617 report](./client-publication-package-12617-report.md)
 
 ## Herramientas
 
@@ -58,21 +61,25 @@ dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/Clien
   --en-description "Ice Dofus created for controlled publication pipeline testing."
 ```
 
-Paquete staging D2O + D2I (12617):
+Paquete staging Phase 3C (layout `data/common` + `data/i18n`, 12617):
 
 ```bash
 dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" -- \
   --mode stage-item-publication \
-  --output "Infrastructure/staging-client/publication-phase3b/12617" \
+  --output "Infrastructure/staging-client/publication-package-phase3c/12617" \
   --source-item-id 7754 --target-item-id 12617 \
   --es-name "Dofus de los Hielos" \
   --es-description "Dofus de los Hielos creado para pruebas controladas del pipeline de publicación." \
   --en-name "Ice Dofus" \
   --en-description "Ice Dofus created for controlled publication pipeline testing."
+
+dotnet run --project "Infrastructure/scripts/ClientItemPublicationPipeline/ClientItemPublicationPipeline.csproj" -- \
+  --mode validate-publication-package \
+  --package "Infrastructure/staging-client/publication-package-phase3c/12617"
 ```
 
 ## Reglas
 
 - No modificar `Client2.3.7` original.
 - Staging bajo `Infrastructure/staging-client/` (gitignored).
-- No escribir DB ni reiniciar VPS en Phase 1–3B.
+- No escribir DB ni reiniciar VPS en Phase 1–3C.

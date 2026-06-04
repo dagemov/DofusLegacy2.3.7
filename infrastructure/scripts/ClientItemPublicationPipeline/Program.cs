@@ -3,6 +3,7 @@ using System.Text.Json;
 using ClientItemPublicationPipeline;
 using ClientItemPublicationPipeline.D2i;
 using ClientItemPublicationPipeline.D2o;
+using ClientItemPublicationPipeline.Package;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +27,7 @@ return options.Mode.ToLowerInvariant() switch
     "d2i-roundtrip" => RunD2iRoundTrip(paths, outputDirectory),
     "d2i-append-text" => RunD2iAppendText(paths, outputDirectory, options),
     "stage-item-publication" => RunStageItemPublication(repoRoot, paths, outputDirectory, options),
+    "validate-publication-package" => RunValidatePublicationPackage(repoRoot, paths, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -82,7 +84,7 @@ static int RunD2iAppendText(RepositoryPaths paths, string outputDirectory, Publi
         paths.RepoRoot,
         "Infrastructure",
         "staging-client",
-        "publication-phase3b",
+        "publication-package-phase3c",
         options.TargetItemId.ToString());
 
     var package = publisher.TryStagePublicationPackage(
@@ -90,7 +92,10 @@ static int RunD2iAppendText(RepositoryPaths paths, string outputDirectory, Publi
         packageDir,
         options.SourceItemId,
         options.TargetItemId,
-        result);
+        result,
+        options.CloneTypeId,
+        options.CloneIconId,
+        options.CloneAppearanceId);
 
     if (package is null)
     {
@@ -127,7 +132,7 @@ static int RunStageItemPublication(
     }
 
     var packageDir = string.IsNullOrWhiteSpace(outputDirectory)
-        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-phase3b", options.TargetItemId.ToString())
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-package-phase3c", options.TargetItemId.ToString())
         : outputDirectory;
 
     var package = publisher.TryStagePublicationPackage(
@@ -135,11 +140,108 @@ static int RunStageItemPublication(
         packageDir,
         options.SourceItemId,
         options.TargetItemId,
-        append);
+        append,
+        options.CloneTypeId,
+        options.CloneIconId,
+        options.CloneAppearanceId);
 
     Console.WriteLine($"Package: {package?.PackageDirectory}");
     Console.WriteLine($"nameId={package?.NameId} descriptionId={package?.DescriptionId}");
-    return package is not null && append.Verified ? 0 : 1;
+    Console.WriteLine($"Validation: {package?.ValidationStatus} (ok={package?.ValidationPassed})");
+    return package is not null && append.Verified && package.ValidationPassed ? 0 : 1;
+}
+
+static int RunValidatePublicationPackage(string repoRoot, RepositoryPaths paths, PublicationPipelineOptions options)
+{
+    var packageDirectory = string.IsNullOrWhiteSpace(options.PackageDirectory)
+        ? Path.Combine(repoRoot, "Infrastructure", "staging-client", "publication-package-phase3c", options.TargetItemId.ToString())
+        : ResolveOutputDirectory(repoRoot, options.PackageDirectory!);
+
+    if (!Directory.Exists(packageDirectory))
+    {
+        throw new DirectoryNotFoundException($"Paquete no encontrado: {packageDirectory}");
+    }
+
+    var clientRoot = Path.Combine(repoRoot, "Client2.3.7");
+    var adminByIcon = Path.Combine(
+        repoRoot,
+        "Angular-tools",
+        "Admin",
+        "RollblackLegacy.Admin.Angular",
+        "src",
+        "assets",
+        "item-previews",
+        "by-icon");
+
+    var validator = new PublicationPackageValidator();
+    var result = validator.Validate(
+        new PublicationPackageValidationRequest(
+            packageDirectory,
+            repoRoot,
+            clientRoot,
+            adminByIcon,
+            Path.Combine(clientRoot, "data", "common", "ItemTypes.d2o"),
+            options.TargetItemId > 0 ? options.TargetItemId : options.ItemId,
+            options.CloneTypeId,
+            null,
+            null,
+            options.CloneAppearanceId));
+
+    PublicationPackageChecksumWriter.WriteChecksumsFile(packageDirectory, result.Checksums);
+
+    PublicationPackageManifestDocument? manifest = null;
+    var manifestPath = Path.Combine(packageDirectory, PublicationPackagePaths.ManifestJson);
+    if (File.Exists(manifestPath))
+    {
+        try
+        {
+            manifest = System.Text.Json.JsonSerializer.Deserialize<PublicationPackageManifestDocument>(
+                File.ReadAllText(manifestPath),
+                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+        catch
+        {
+            manifest = null;
+        }
+    }
+
+    manifest ??= new PublicationPackageManifestDocument
+    {
+        PackageId = $"staging-publication-{options.TargetItemId}-revalidate",
+        CreatedAt = DateTimeOffset.UtcNow,
+        TargetItemId = options.TargetItemId > 0 ? options.TargetItemId : options.ItemId,
+        IsProductionPackage = false
+    };
+
+    validator.WriteReports(packageDirectory, result, manifest with
+    {
+        ValidationStatus = result.ValidationStatus,
+        BlockingReasons = result.BlockingReasons,
+        Warnings = result.Warnings,
+        NextManualSteps = result.NextManualSteps,
+        Checksums = result.Checksums,
+        GeneratedFiles =
+        [
+            PublicationPackagePaths.ItemsRelative,
+            PublicationPackagePaths.I18nEsRelative,
+            PublicationPackagePaths.I18nEnRelative
+        ]
+    });
+
+    Console.WriteLine($"Package: {packageDirectory}");
+    Console.WriteLine($"Valid: {result.IsValid}");
+    Console.WriteLine($"Status: {result.ValidationStatus}");
+    foreach (var reason in result.BlockingReasons)
+    {
+        Console.WriteLine($"BLOCK: {reason}");
+    }
+
+    foreach (var warning in result.Warnings)
+    {
+        Console.WriteLine($"WARN: {warning}");
+    }
+
+    return result.IsValid ? 0 : 1;
 }
 
 static int RunD2oInspectClass(string sourceItems, string outputDirectory, string? focusClass)

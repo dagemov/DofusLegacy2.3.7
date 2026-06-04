@@ -17,7 +17,10 @@ export class PublicationManifestPreviewComponent {
   protected get primaryStateBadgeClass(): string {
     switch ((this.manifest?.primaryState || '').toUpperCase()) {
       case 'READY_TO_STAGE':
+      case 'READY_FOR_CONTROLLED_PUBLISH':
         return 'text-bg-success';
+      case 'STAGING_PACKAGE_NEEDS_VALIDATION':
+        return 'text-bg-info';
       case 'BLOCKED_INVALID_ICON':
       case 'BLOCKED_UNKNOWN_TYPE':
         return 'text-bg-warning';
