@@ -1,0 +1,5023 @@
+﻿{
+  "generatedAtUtc": "2026-06-04T11:25:11.873111+00:00",
+  "phase": "phase6c",
+  "sourceExportDirectory": "C:\\Users\\Hombr\\source\\repos\\DofusLegacy2.3.7\\Infrastructure\\temporal-artifacts\\item-skin-catalog\\export",
+  "angularByCategoryRoot": "C:\\Users\\Hombr\\source\\repos\\DofusLegacy2.3.7\\Angular-tools\\Admin\\RollblackLegacy.Admin.Angular\\src\\assets\\item-previews\\by-category",
+  "totalCataloged": 1925,
+  "totalPngExtracted": 500,
+  "totalCopiedToAngular": 500,
+  "skippedExisting": 0,
+  "skippedLimit": 0,
+  "weaponsCopied": 0,
+  "copyLimit": 500,
+  "approvedCopy": true,
+  "overwriteCurated": false,
+  "byCategory": {
+    "dofus": [
+      {
+        "itemId": 694,
+        "iconId": 23001,
+        "category": "dofus",
+        "nameEs": "Dofus P\u00FArpura",
+        "nameEn": "Crimson Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23001.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 737,
+        "iconId": 23002,
+        "category": "dofus",
+        "nameEs": "Dofus Esmeralda",
+        "nameEn": "Emerald Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23002.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 739,
+        "iconId": 23003,
+        "category": "dofus",
+        "nameEs": "Dofus Turquesa",
+        "nameEn": "Turquoise Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23003.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 972,
+        "iconId": 23006,
+        "category": "dofus",
+        "nameEs": "Dofus Zanahowia",
+        "nameEn": "Cawwot Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23006.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6980,
+        "iconId": 23004,
+        "category": "dofus",
+        "nameEs": "Dofus Vulbis",
+        "nameEn": "Vulbis Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23004.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7112,
+        "iconId": 23008,
+        "category": "dofus",
+        "nameEs": "Dofus Salpicado",
+        "nameEn": "Black-Spotted Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23008.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7113,
+        "iconId": 23009,
+        "category": "dofus",
+        "nameEs": "Dofawa",
+        "nameEn": "Dofawa",
+        "previewPath": "/assets/item-previews/by-category/dofus/23009.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7754,
+        "iconId": 23012,
+        "category": "dofus",
+        "nameEs": "Dofus Ocre",
+        "nameEn": "Ochre Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23012.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8072,
+        "iconId": 23010,
+        "category": "dofus",
+        "nameEs": "Dofus Kalipto",
+        "nameEn": "Kaliptus Dofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23010.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10907,
+        "iconId": 23017,
+        "category": "dofus",
+        "nameEs": "[WIP]Dokille",
+        "nameEn": "Grofus",
+        "previewPath": "/assets/item-previews/by-category/dofus/23017.png",
+        "copied": true,
+        "skippedExisting": false
+      }
+    ],
+    "capas": [
+      {
+        "itemId": 677,
+        "iconId": 17011,
+        "category": "capas",
+        "nameEs": "Capa del Pirata",
+        "nameEn": "Pirate Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17011.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 744,
+        "iconId": 17001,
+        "category": "capas",
+        "nameEs": "Capa de Bowis",
+        "nameEn": "Bowisse\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17001.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 754,
+        "iconId": 17017,
+        "category": "capas",
+        "nameEs": "Capa del vampiro",
+        "nameEn": "Vampire Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17017.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 758,
+        "iconId": 17002,
+        "category": "capas",
+        "nameEs": "Capa del Justiciero",
+        "nameEn": "Dispenser of Justice Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17002.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 759,
+        "iconId": 17003,
+        "category": "capas",
+        "nameEs": "Capa del Pohoyo Titiritasado",
+        "nameEn": "Chogreloting Cheeken Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17003.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 772,
+        "iconId": 17004,
+        "category": "capas",
+        "nameEs": "Capa Yespada",
+        "nameEn": "Swashbucloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17004.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 773,
+        "iconId": 17005,
+        "category": "capas",
+        "nameEs": "Capa Elini",
+        "nameEn": "Ellinie Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17005.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 774,
+        "iconId": 17007,
+        "category": "capas",
+        "nameEs": "Capa Uleto",
+        "nameEn": "Cape Ulais",
+        "previewPath": "/assets/item-previews/by-category/capas/17007.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 775,
+        "iconId": 17181,
+        "category": "capas",
+        "nameEs": "Capa Bilidad",
+        "nameEn": "Cape Ability",
+        "previewPath": "/assets/item-previews/by-category/capas/17181.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 776,
+        "iconId": 17008,
+        "category": "capas",
+        "nameEs": "Capa Sulacorp",
+        "nameEn": "Sin Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17008.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 777,
+        "iconId": 17010,
+        "category": "capas",
+        "nameEs": "Capa del Gallo Umbo",
+        "nameEn": "Salt \u0027n\u0027 Battery Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17010.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 778,
+        "iconId": 17184,
+        "category": "capas",
+        "nameEs": "Capa de Mori Arty",
+        "nameEn": "Mori Arty\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17184.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 779,
+        "iconId": 17012,
+        "category": "capas",
+        "nameEs": "Capa M\u00E1jyka",
+        "nameEn": "Maj\u0027Hic Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17012.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 781,
+        "iconId": 17185,
+        "category": "capas",
+        "nameEs": "Capa Tulaci\u00F3n",
+        "nameEn": "Itou Lascione Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17185.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 790,
+        "iconId": 17183,
+        "category": "capas",
+        "nameEs": "Capa de Buena Esperanza",
+        "nameEn": "Cape of Good Hope",
+        "previewPath": "/assets/item-previews/by-category/capas/17183.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 932,
+        "iconId": 17013,
+        "category": "capas",
+        "nameEs": "Peque\u00F1a Capa de Rojez",
+        "nameEn": "Small Redness Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17013.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 933,
+        "iconId": 17190,
+        "category": "capas",
+        "nameEs": "Capa de Rojez",
+        "nameEn": "Redness Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17190.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 934,
+        "iconId": 17189,
+        "category": "capas",
+        "nameEs": "Gran Capa de Rojez",
+        "nameEn": "Great Redness Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17189.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 935,
+        "iconId": 17018,
+        "category": "capas",
+        "nameEs": "Peque\u00F1a Capa Azulada",
+        "nameEn": "Small Bluish Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17018.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 936,
+        "iconId": 17191,
+        "category": "capas",
+        "nameEs": "Capa Azulada",
+        "nameEn": "Bluish Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17191.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 937,
+        "iconId": 17192,
+        "category": "capas",
+        "nameEs": "Gran Capa Azulada",
+        "nameEn": "Great Bluish Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17192.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 945,
+        "iconId": 17015,
+        "category": "capas",
+        "nameEs": "Peque\u00F1a Capa Oscura",
+        "nameEn": "Small Dark Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17015.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 946,
+        "iconId": 17193,
+        "category": "capas",
+        "nameEs": "Capa Oscura",
+        "nameEn": "Dark Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17193.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 947,
+        "iconId": 17194,
+        "category": "capas",
+        "nameEs": "Gran Capa Oscura",
+        "nameEn": "Great Dark Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17194.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 948,
+        "iconId": 17016,
+        "category": "capas",
+        "nameEs": "Abracapa",
+        "nameEn": "Treecloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17016.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 953,
+        "iconId": 17019,
+        "category": "capas",
+        "nameEs": "Capa del tofu loco",
+        "nameEn": "Mad Tofu Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17019.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 954,
+        "iconId": 17195,
+        "category": "capas",
+        "nameEs": "La Samulay",
+        "nameEn": "Poak Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17195.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 955,
+        "iconId": 17182,
+        "category": "capas",
+        "nameEs": "Capa Ylar",
+        "nameEn": "Cape Hillary",
+        "previewPath": "/assets/item-previews/by-category/capas/17182.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 956,
+        "iconId": 17196,
+        "category": "capas",
+        "nameEs": "Capa Mariya",
+        "nameEn": "Cape Rice",
+        "previewPath": "/assets/item-previews/by-category/capas/17196.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 967,
+        "iconId": 17078,
+        "category": "capas",
+        "nameEs": "Capa Fulgurante",
+        "nameEn": "Dazzling Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17078.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 971,
+        "iconId": 17021,
+        "category": "capas",
+        "nameEs": "Capa del Wey Wabbit",
+        "nameEn": "Wa Wabbit\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17021.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1021,
+        "iconId": 17022,
+        "category": "capas",
+        "nameEs": "Alas de madera",
+        "nameEn": "Wooden Wings",
+        "previewPath": "/assets/item-previews/by-category/capas/17022.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1500,
+        "iconId": 17186,
+        "category": "capas",
+        "nameEs": "La Moketa",
+        "nameEn": "Carpet Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17186.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1693,
+        "iconId": 17187,
+        "category": "capas",
+        "nameEs": "Capa de Mano Lito",
+        "nameEn": "Jules Yanos\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17187.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1695,
+        "iconId": 17009,
+        "category": "capas",
+        "nameEs": "Capa de Elya Wood",
+        "nameEn": "Elya Wood\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17009.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1910,
+        "iconId": 17033,
+        "category": "capas",
+        "nameEs": "Capa Uginak",
+        "nameEn": "Ouginak Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17033.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2061,
+        "iconId": 17197,
+        "category": "capas",
+        "nameEs": "Capa del Cuerbok",
+        "nameEn": "Crow Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17197.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2118,
+        "iconId": 17020,
+        "category": "capas",
+        "nameEs": "Capa Brakmariana",
+        "nameEn": "Brakmarian Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17020.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2119,
+        "iconId": 17034,
+        "category": "capas",
+        "nameEs": "Capa bontariana",
+        "nameEn": "Bontarian Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17034.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2380,
+        "iconId": 17035,
+        "category": "capas",
+        "nameEs": "Capa de dolo",
+        "nameEn": "Mushd Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17035.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2381,
+        "iconId": 17036,
+        "category": "capas",
+        "nameEs": "Capa Flotadora",
+        "nameEn": "Flowing Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17036.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2382,
+        "iconId": 17037,
+        "category": "capas",
+        "nameEs": "Capa Zono",
+        "nameEn": "Maimpa Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17037.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2383,
+        "iconId": 17038,
+        "category": "capas",
+        "nameEs": "Capa Sangu\u00EDnea",
+        "nameEn": "Kwag\u0027U Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17038.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2385,
+        "iconId": 17039,
+        "category": "capas",
+        "nameEs": "La Pastosa",
+        "nameEn": "Grazor",
+        "previewPath": "/assets/item-previews/by-category/capas/17039.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2386,
+        "iconId": 17040,
+        "category": "capas",
+        "nameEs": "La Harapa",
+        "nameEn": "Rags",
+        "previewPath": "/assets/item-previews/by-category/capas/17040.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2387,
+        "iconId": 17041,
+        "category": "capas",
+        "nameEs": "La Peluda",
+        "nameEn": "Hairy Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17041.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2412,
+        "iconId": 17042,
+        "category": "capas",
+        "nameEs": "Kwapa de Llamas",
+        "nameEn": "Fire Kwape",
+        "previewPath": "/assets/item-previews/by-category/capas/17042.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2413,
+        "iconId": 17043,
+        "category": "capas",
+        "nameEs": "Abrakapa",
+        "nameEn": "Treecapa",
+        "previewPath": "/assets/item-previews/by-category/capas/17043.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2414,
+        "iconId": 17044,
+        "category": "capas",
+        "nameEs": "Capa Jalosa",
+        "nameEn": "Gobball Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17044.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2445,
+        "iconId": 17046,
+        "category": "capas",
+        "nameEs": "Capa Jalosa Real",
+        "nameEn": "Royal Gobball Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17046.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2446,
+        "iconId": 17047,
+        "category": "capas",
+        "nameEs": "Gelocapa",
+        "nameEn": "Jellicape",
+        "previewPath": "/assets/item-previews/by-category/capas/17047.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2473,
+        "iconId": 17048,
+        "category": "capas",
+        "nameEs": "Capa del Aventurero",
+        "nameEn": "Adventurer Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17048.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2489,
+        "iconId": 17049,
+        "category": "capas",
+        "nameEs": "Vegacapa",
+        "nameEn": "Vegicape",
+        "previewPath": "/assets/item-previews/by-category/capas/17049.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2517,
+        "iconId": 17050,
+        "category": "capas",
+        "nameEs": "Megacapa",
+        "nameEn": "Megacape",
+        "previewPath": "/assets/item-previews/by-category/capas/17050.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2518,
+        "iconId": 17051,
+        "category": "capas",
+        "nameEs": "Capa Viewtiful",
+        "nameEn": "Viootifool Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17051.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2532,
+        "iconId": 17052,
+        "category": "capas",
+        "nameEs": "Caracapa",
+        "nameEn": "Caracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17052.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2534,
+        "iconId": 17053,
+        "category": "capas",
+        "nameEs": "Kwapa de Hielo",
+        "nameEn": "Ice Kwape",
+        "previewPath": "/assets/item-previews/by-category/capas/17053.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2547,
+        "iconId": 17056,
+        "category": "capas",
+        "nameEs": "Cuerbokapa Mastralis",
+        "nameEn": "Mastralis Croak",
+        "previewPath": "/assets/item-previews/by-category/capas/17056.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2629,
+        "iconId": 17055,
+        "category": "capas",
+        "nameEs": "Caracapa Minotoris",
+        "nameEn": "Caracape Minotoris",
+        "previewPath": "/assets/item-previews/by-category/capas/17055.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6449,
+        "iconId": 17054,
+        "category": "capas",
+        "nameEs": "Cuerbokapa",
+        "nameEn": "Crowcape",
+        "previewPath": "/assets/item-previews/by-category/capas/17054.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6707,
+        "iconId": 17063,
+        "category": "capas",
+        "nameEs": "Capa de la Momia Nova",
+        "nameEn": "Mummy Nova\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17063.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6712,
+        "iconId": 17082,
+        "category": "capas",
+        "nameEs": "Capa Huchina",
+        "nameEn": "Horn Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17082.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6720,
+        "iconId": 17058,
+        "category": "capas",
+        "nameEs": "Capa del Hombre Oso",
+        "nameEn": "Bearman\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17058.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6756,
+        "iconId": 17064,
+        "category": "capas",
+        "nameEs": "Kwapa de Tierra",
+        "nameEn": "Earth Kwape",
+        "previewPath": "/assets/item-previews/by-category/capas/17064.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6757,
+        "iconId": 17062,
+        "category": "capas",
+        "nameEs": "Kwapa del Viento",
+        "nameEn": "Wind Kwape",
+        "previewPath": "/assets/item-previews/by-category/capas/17062.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6763,
+        "iconId": 17061,
+        "category": "capas",
+        "nameEs": "Mazorracapa",
+        "nameEn": "Ambusherot",
+        "previewPath": "/assets/item-previews/by-category/capas/17061.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6775,
+        "iconId": 17070,
+        "category": "capas",
+        "nameEs": "Capa de Farle",
+        "nameEn": "Farle\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17070.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6795,
+        "iconId": 17065,
+        "category": "capas",
+        "nameEs": "Capucha de los Campos",
+        "nameEn": "Purple Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17065.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6800,
+        "iconId": 17198,
+        "category": "capas",
+        "nameEs": "Capa Banal",
+        "nameEn": "Basic Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17198.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6801,
+        "iconId": 17199,
+        "category": "capas",
+        "nameEs": "Capa Invernal",
+        "nameEn": "Winter Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17199.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6811,
+        "iconId": 17060,
+        "category": "capas",
+        "nameEs": "Capa del Jefe Bwork",
+        "nameEn": "Chief Bwork Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17060.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6886,
+        "iconId": 17059,
+        "category": "capas",
+        "nameEs": "Capa de los Mercenarios de Astrub",
+        "nameEn": "Astrub Mercenary Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17059.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6922,
+        "iconId": 17076,
+        "category": "capas",
+        "nameEs": "Capa del Champi Champ",
+        "nameEn": "Mush Mush Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17076.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6927,
+        "iconId": 17075,
+        "category": "capas",
+        "nameEs": "Capa de prespic",
+        "nameEn": "Prespic Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17075.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6931,
+        "iconId": 17077,
+        "category": "capas",
+        "nameEs": "Crujicapa",
+        "nameEn": "Crackler Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17077.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6940,
+        "iconId": 17074,
+        "category": "capas",
+        "nameEs": "Escaracapa verde",
+        "nameEn": "Green Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17074.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6941,
+        "iconId": 17073,
+        "category": "capas",
+        "nameEs": "Escaracapa azul",
+        "nameEn": "Blue Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17073.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6942,
+        "iconId": 17072,
+        "category": "capas",
+        "nameEs": "Escaracapa roja",
+        "nameEn": "Red Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17072.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6943,
+        "iconId": 17071,
+        "category": "capas",
+        "nameEs": "Escaracapa blanca",
+        "nameEn": "White Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17071.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6954,
+        "iconId": 17099,
+        "category": "capas",
+        "nameEs": "Capa del Mediulubo",
+        "nameEn": "Boowolf Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17099.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6993,
+        "iconId": 17079,
+        "category": "capas",
+        "nameEs": "Capa Gada",
+        "nameEn": "Hallelujah Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17079.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6994,
+        "iconId": 17080,
+        "category": "capas",
+        "nameEs": "Capa Gorrogoma",
+        "nameEn": "Hooded Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17080.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6995,
+        "iconId": 17081,
+        "category": "capas",
+        "nameEs": "Capa Dhora",
+        "nameEn": "Graytess Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17081.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7011,
+        "iconId": 17083,
+        "category": "capas",
+        "nameEs": "Capa del Deseo Pelotero",
+        "nameEn": "Desire o\u0027Ball Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17083.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7137,
+        "iconId": 17200,
+        "category": "capas",
+        "nameEs": "Capa Huccino",
+        "nameEn": "Cape Huccino",
+        "previewPath": "/assets/item-previews/by-category/capas/17200.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7138,
+        "iconId": 17091,
+        "category": "capas",
+        "nameEs": "Ortiz",
+        "nameEn": "Nettlez",
+        "previewPath": "/assets/item-previews/by-category/capas/17091.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7174,
+        "iconId": 17089,
+        "category": "capas",
+        "nameEs": "Capa Pandawushu",
+        "nameEn": "Pandawushu Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17089.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7230,
+        "iconId": 17113,
+        "category": "capas",
+        "nameEs": "Capa Akwadala",
+        "nameEn": "Akwadala Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17113.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7231,
+        "iconId": 17112,
+        "category": "capas",
+        "nameEs": "Capa Tierradala",
+        "nameEn": "Terrdala Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17112.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7232,
+        "iconId": 17111,
+        "category": "capas",
+        "nameEs": "Capa Fuegodala",
+        "nameEn": "Feudala Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17111.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7233,
+        "iconId": 17114,
+        "category": "capas",
+        "nameEs": "Capa Airedala",
+        "nameEn": "Aerdala Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17114.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7340,
+        "iconId": 17084,
+        "category": "capas",
+        "nameEs": "Capa del Kitsu",
+        "nameEn": "Kitsou Wrap",
+        "previewPath": "/assets/item-previews/by-category/capas/17084.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7515,
+        "iconId": 17092,
+        "category": "capas",
+        "nameEs": "Capa Itanflam",
+        "nameEn": "Cape Tenfuture",
+        "previewPath": "/assets/item-previews/by-category/capas/17092.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7552,
+        "iconId": 17090,
+        "category": "capas",
+        "nameEs": "Capapavo",
+        "nameEn": "Turkocape",
+        "previewPath": "/assets/item-previews/by-category/capas/17090.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7884,
+        "iconId": 17093,
+        "category": "capas",
+        "nameEs": "Capa del jalatranki",
+        "nameEn": "Gobkool Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17093.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7999,
+        "iconId": 17094,
+        "category": "capas",
+        "nameEs": "Capapi\u00F1a",
+        "nameEn": "Pineapple Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17094.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8007,
+        "iconId": 17095,
+        "category": "capas",
+        "nameEs": "Capa del Koalak",
+        "nameEn": "Koalak Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17095.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8068,
+        "iconId": 17096,
+        "category": "capas",
+        "nameEs": "Capa del Campe\u00F3n",
+        "nameEn": "Champion Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17096.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8112,
+        "iconId": 17097,
+        "category": "capas",
+        "nameEs": "Capa del tofu",
+        "nameEn": "Tofu Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17097.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8117,
+        "iconId": 17098,
+        "category": "capas",
+        "nameEs": "Escaracapa dorada",
+        "nameEn": "Golden Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17098.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8134,
+        "iconId": 17100,
+        "category": "capas",
+        "nameEs": "Escaracapa negra",
+        "nameEn": "Black Scaracape",
+        "previewPath": "/assets/item-previews/by-category/capas/17100.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8181,
+        "iconId": 17101,
+        "category": "capas",
+        "nameEs": "Crujicapa Legendaria",
+        "nameEn": "Legendary Crackler Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17101.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8231,
+        "iconId": 17103,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo rojo",
+        "nameEn": "Red Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17103.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8232,
+        "iconId": 17104,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo azul",
+        "nameEn": "Blue Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17104.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8233,
+        "iconId": 17105,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo verde",
+        "nameEn": "Green Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17105.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8234,
+        "iconId": 17106,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo violeta",
+        "nameEn": "Purple Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17106.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8235,
+        "iconId": 17108,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo rosa",
+        "nameEn": "Pink Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17108.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8236,
+        "iconId": 17107,
+        "category": "capas",
+        "nameEs": "Capa del p\u00EDo amarillo",
+        "nameEn": "Yellow Piwi Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17107.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8258,
+        "iconId": 17109,
+        "category": "capas",
+        "nameEs": "Capa de Esponja",
+        "nameEn": "Sponge Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17109.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8265,
+        "iconId": 17110,
+        "category": "capas",
+        "nameEs": "Capa del Maxilubo",
+        "nameEn": "Moowolf Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17110.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8279,
+        "iconId": 17117,
+        "category": "capas",
+        "nameEs": "Capa del Minotauroro",
+        "nameEn": "Minotoror Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17117.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8280,
+        "iconId": 17116,
+        "category": "capas",
+        "nameEs": "Capa del Minotot",
+        "nameEn": "Minotot Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17116.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8281,
+        "iconId": 17118,
+        "category": "capas",
+        "nameEs": "Capa del Dragocerdo",
+        "nameEn": "Dragon Pig Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17118.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8286,
+        "iconId": 17115,
+        "category": "capas",
+        "nameEs": "Capa de Dragohuevo",
+        "nameEn": "Dreggon Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17115.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8302,
+        "iconId": 17120,
+        "category": "capas",
+        "nameEs": "Capa de Shika",
+        "nameEn": "Shika\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17120.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8333,
+        "iconId": 17119,
+        "category": "capas",
+        "nameEs": "Capa de Chanta Klaus",
+        "nameEn": "Father Kwismas Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17119.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8366,
+        "iconId": 17121,
+        "category": "capas",
+        "nameEs": "Capa del Cap\u00F3n Turcito Rojo",
+        "nameEn": "Little Red Waddling Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17121.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8416,
+        "iconId": 17122,
+        "category": "capas",
+        "nameEs": "Capa del Mominotauro",
+        "nameEn": "Mumminotor Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17122.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8443,
+        "iconId": 17123,
+        "category": "capas",
+        "nameEs": "Capa de la Rata Negra",
+        "nameEn": "Black Rat Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17123.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8452,
+        "iconId": 17124,
+        "category": "capas",
+        "nameEs": "Capa de la Rata Blanca",
+        "nameEn": "White Rat Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17124.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8458,
+        "iconId": 17125,
+        "category": "capas",
+        "nameEs": "Capa ceremonial del Amo de las Ratas",
+        "nameEn": "Lord of the Rats\u0027 Ceremonial Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17125.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8464,
+        "iconId": 17126,
+        "category": "capas",
+        "nameEs": "Abrakapa Ancestral",
+        "nameEn": "Ancestral Treecape",
+        "previewPath": "/assets/item-previews/by-category/capas/17126.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8472,
+        "iconId": 17127,
+        "category": "capas",
+        "nameEs": "Capa gastada del Roble Blando",
+        "nameEn": "Worn Soft Oak Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17127.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8521,
+        "iconId": 17128,
+        "category": "capas",
+        "nameEs": "La capa colorada",
+        "nameEn": "The Red Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17128.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8532,
+        "iconId": 17129,
+        "category": "capas",
+        "nameEs": "Capa del Cunejo Hastiado",
+        "nameEn": "Indifferent Coney Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17129.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8534,
+        "iconId": 17130,
+        "category": "capas",
+        "nameEs": "La Capa Slok",
+        "nameEn": "Cape S\u0027loque",
+        "previewPath": "/assets/item-previews/by-category/capas/17130.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8639,
+        "iconId": 17131,
+        "category": "capas",
+        "nameEs": "Capa Yaso",
+        "nameEn": "Cloak Orporal",
+        "previewPath": "/assets/item-previews/by-category/capas/17131.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8640,
+        "iconId": 17133,
+        "category": "capas",
+        "nameEs": "Capa Gar",
+        "nameEn": "Cape of Spades",
+        "previewPath": "/assets/item-previews/by-category/capas/17133.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8641,
+        "iconId": 17140,
+        "category": "capas",
+        "nameEs": "Capa Migodel Oajeno",
+        "nameEn": "F-Ha(r)t",
+        "previewPath": "/assets/item-previews/by-category/capas/17140.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8642,
+        "iconId": 17141,
+        "category": "capas",
+        "nameEs": "Capa Tic-tac",
+        "nameEn": "Cap Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17141.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8643,
+        "iconId": 17134,
+        "category": "capas",
+        "nameEs": "Capa Labrita",
+        "nameEn": "Cape Sulitis",
+        "previewPath": "/assets/item-previews/by-category/capas/17134.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8644,
+        "iconId": 17139,
+        "category": "capas",
+        "nameEs": "Capit\u00F3n",
+        "nameEn": "Cape o\u0027Tbelly",
+        "previewPath": "/assets/item-previews/by-category/capas/17139.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8645,
+        "iconId": 17138,
+        "category": "capas",
+        "nameEs": "Cap\u0027Ytal",
+        "nameEn": "Cape Ytal",
+        "previewPath": "/assets/item-previews/by-category/capas/17138.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8646,
+        "iconId": 17137,
+        "category": "capas",
+        "nameEs": "Capa Lina",
+        "nameEn": "Cape Anama",
+        "previewPath": "/assets/item-previews/by-category/capas/17137.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8647,
+        "iconId": 17142,
+        "category": "capas",
+        "nameEs": "Capa Weira",
+        "nameEn": "Cape Wuera",
+        "previewPath": "/assets/item-previews/by-category/capas/17142.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8648,
+        "iconId": 17132,
+        "category": "capas",
+        "nameEs": "Capulko",
+        "nameEn": "Cape Hulco",
+        "previewPath": "/assets/item-previews/by-category/capas/17132.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8649,
+        "iconId": 17136,
+        "category": "capas",
+        "nameEs": "Capa Docia",
+        "nameEn": "Cape Adossia",
+        "previewPath": "/assets/item-previews/by-category/capas/17136.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8650,
+        "iconId": 17135,
+        "category": "capas",
+        "nameEs": "S\u0027capa Toria",
+        "nameEn": "Cape Hernaum",
+        "previewPath": "/assets/item-previews/by-category/capas/17135.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8818,
+        "iconId": 17143,
+        "category": "capas",
+        "nameEs": "Soberana capa del Rey Stropajo",
+        "nameEn": "Mopy King Sovereign Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17143.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8819,
+        "iconId": 17144,
+        "category": "capas",
+        "nameEs": "Capa de Stropajo",
+        "nameEn": "Ouassingue Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17144.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8866,
+        "iconId": 17145,
+        "category": "capas",
+        "nameEs": "Poderosa Capa Fulgurante",
+        "nameEn": "Powerful Dazzling Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17145.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8867,
+        "iconId": 17146,
+        "category": "capas",
+        "nameEs": "Capa del Mopet",
+        "nameEn": "Moopet Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17146.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8876,
+        "iconId": 17147,
+        "category": "capas",
+        "nameEs": "Velo de tinta",
+        "nameEn": "Inky Veil",
+        "previewPath": "/assets/item-previews/by-category/capas/17147.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9121,
+        "iconId": 17148,
+        "category": "capas",
+        "nameEs": "Cape Shika",
+        "nameEn": "x",
+        "previewPath": "/assets/item-previews/by-category/capas/17148.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9141,
+        "iconId": 17154,
+        "category": "capas",
+        "nameEs": "Capiseta",
+        "nameEn": "Ragoat",
+        "previewPath": "/assets/item-previews/by-category/capas/17154.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9142,
+        "iconId": 17150,
+        "category": "capas",
+        "nameEs": "Caperuza musc\u00E1rida",
+        "nameEn": "Deadly Night Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17150.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9180,
+        "iconId": 17151,
+        "category": "capas",
+        "nameEs": "Caperforada",
+        "nameEn": "Chee Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17151.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9195,
+        "iconId": 17152,
+        "category": "capas",
+        "nameEs": "Capabizcocho",
+        "nameEn": "K Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17152.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9196,
+        "iconId": 17153,
+        "category": "capas",
+        "nameEs": "Capa Saymassa",
+        "nameEn": "Beanie Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17153.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9404,
+        "iconId": 17155,
+        "category": "capas",
+        "nameEs": "Capa Kacebzz",
+        "nameEn": "Beezing Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17155.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9407,
+        "iconId": 17156,
+        "category": "capas",
+        "nameEs": "Capa-corchos",
+        "nameEn": "Cork Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17156.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9411,
+        "iconId": 17157,
+        "category": "capas",
+        "nameEs": "Capa del Bosque del Este",
+        "nameEn": "Eastern Wood Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17157.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9415,
+        "iconId": 17158,
+        "category": "capas",
+        "nameEs": "Capa Gria",
+        "nameEn": "Citrus Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17158.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9451,
+        "iconId": 17159,
+        "category": "capas",
+        "nameEs": "Capa Cristalina",
+        "nameEn": "Crystalline Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17159.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9456,
+        "iconId": 17160,
+        "category": "capas",
+        "nameEs": "Capomp\u00F3n",
+        "nameEn": "Bobblecape",
+        "previewPath": "/assets/item-previews/by-category/capas/17160.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9480,
+        "iconId": 17161,
+        "category": "capas",
+        "nameEs": "Poshocapa",
+        "nameEn": "Caposh",
+        "previewPath": "/assets/item-previews/by-category/capas/17161.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9485,
+        "iconId": 17162,
+        "category": "capas",
+        "nameEs": "Cigacapa",
+        "nameEn": "Cicapeda",
+        "previewPath": "/assets/item-previews/by-category/capas/17162.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9540,
+        "iconId": 17163,
+        "category": "capas",
+        "nameEs": "Capa del Padrino",
+        "nameEn": "The Godfather\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17163.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9569,
+        "iconId": 17164,
+        "category": "capas",
+        "nameEs": "Capa del Black Wab",
+        "nameEn": "Black Wab Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17164.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9654,
+        "iconId": 17165,
+        "category": "capas",
+        "nameEs": "Capa del Director Kuno",
+        "nameEn": "Alowa Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17165.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9660,
+        "iconId": 17166,
+        "category": "capas",
+        "nameEs": "Capa de Sliat",
+        "nameEn": "Slait Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17166.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9933,
+        "iconId": 17167,
+        "category": "capas",
+        "nameEs": "Capa de Tor Nyquete",
+        "nameEn": "Siks Wonn Ein Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17167.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10058,
+        "iconId": 17168,
+        "category": "capas",
+        "nameEs": "Capa de Vampyro",
+        "nameEn": "Vampyre Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17168.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10174,
+        "iconId": 17169,
+        "category": "capas",
+        "nameEs": "Babcapa",
+        "nameEn": "Slugly Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17169.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10185,
+        "iconId": 17170,
+        "category": "capas",
+        "nameEs": "Capa de Noke",
+        "nameEn": "Noke\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17170.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10686,
+        "iconId": 17171,
+        "category": "capas",
+        "nameEs": "Capa Goldpex",
+        "nameEn": "Haks Or Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17171.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10800,
+        "iconId": 17201,
+        "category": "capas",
+        "nameEs": "Capa de principiante",
+        "nameEn": "Novice Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17201.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10830,
+        "iconId": 17172,
+        "category": "capas",
+        "nameEs": "Capa banana",
+        "nameEn": "Banana Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17172.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10846,
+        "iconId": 17173,
+        "category": "capas",
+        "nameEs": "Ferocapa",
+        "nameEn": "Phero-Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17173.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10957,
+        "iconId": 17174,
+        "category": "capas",
+        "nameEs": "Capa de El Cuervo negro",
+        "nameEn": "The Black Crow\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17174.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10989,
+        "iconId": 17175,
+        "category": "capas",
+        "nameEs": "Escarchocapa",
+        "nameEn": "Frost Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17175.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11045,
+        "iconId": 17179,
+        "category": "capas",
+        "nameEs": "Capa Stinencia",
+        "nameEn": "Youllbea Mantle",
+        "previewPath": "/assets/item-previews/by-category/capas/17179.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11050,
+        "iconId": 17177,
+        "category": "capas",
+        "nameEs": "Capa de mandarina",
+        "nameEn": "Clementine Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17177.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11056,
+        "iconId": 17178,
+        "category": "capas",
+        "nameEs": "Capa Estr\u00F3bilo",
+        "nameEn": "Pynekone Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17178.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11078,
+        "iconId": 17176,
+        "category": "capas",
+        "nameEs": "Capa de Lonn",
+        "nameEn": "Lonne\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17176.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11086,
+        "iconId": 17209,
+        "category": "capas",
+        "nameEs": "Capa de Gadj\u00E8t",
+        "nameEn": "Gadjet\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17209.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11089,
+        "iconId": 17202,
+        "category": "capas",
+        "nameEs": "Capa de Grilyan",
+        "nameEn": "Grillian\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17202.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11372,
+        "iconId": 17210,
+        "category": "capas",
+        "nameEs": "Capapel",
+        "nameEn": "Paper Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17210.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11376,
+        "iconId": 17220,
+        "category": "capas",
+        "nameEs": "Capluma",
+        "nameEn": "Feather Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17220.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11382,
+        "iconId": 17225,
+        "category": "capas",
+        "nameEs": "Capa pinz",
+        "nameEn": "Poppinz Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17225.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11393,
+        "iconId": 17227,
+        "category": "capas",
+        "nameEs": "Caprisionero",
+        "nameEn": "Prisoner Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17227.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11397,
+        "iconId": 17204,
+        "category": "capas",
+        "nameEs": "Capa de murciego",
+        "nameEn": "Borbacape",
+        "previewPath": "/assets/item-previews/by-category/capas/17204.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11401,
+        "iconId": 17226,
+        "category": "capas",
+        "nameEs": "Capa de pino k\u00EDo",
+        "nameEn": "Pinokio Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17226.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11418,
+        "iconId": 17180,
+        "category": "capas",
+        "nameEs": "Capa de Mismal",
+        "nameEn": "Jon Lemon\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17180.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11472,
+        "iconId": 17203,
+        "category": "capas",
+        "nameEs": "Granizapa",
+        "nameEn": "Hail Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17203.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11580,
+        "iconId": 17205,
+        "category": "capas",
+        "nameEs": "Capa del Morsag\u00FCino Real",
+        "nameEn": "Royal Pingwin Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17205.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11581,
+        "iconId": 17207,
+        "category": "capas",
+        "nameEs": "Capa del Obsidiantre",
+        "nameEn": "Obsidemon Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17207.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11605,
+        "iconId": 17206,
+        "category": "capas",
+        "nameEs": "Capa Aritxosa",
+        "nameEn": "Cape Ricious",
+        "previewPath": "/assets/item-previews/by-category/capas/17206.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11606,
+        "iconId": 17208,
+        "category": "capas",
+        "nameEs": "Capa Utivante",
+        "nameEn": "Cape Tivate",
+        "previewPath": "/assets/item-previews/by-category/capas/17208.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11708,
+        "iconId": 17211,
+        "category": "capas",
+        "nameEs": "Capa de Tengu g\u00E9lifux",
+        "nameEn": "Tengu Snowfoux Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17211.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11712,
+        "iconId": 17213,
+        "category": "capas",
+        "nameEs": "Capa de Cil",
+        "nameEn": "Korriander Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17213.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11719,
+        "iconId": 17214,
+        "category": "capas",
+        "nameEs": "Capa de Golostr\u00F3n Real",
+        "nameEn": "Celestial Bearbarian Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17214.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11726,
+        "iconId": 16298,
+        "category": "capas",
+        "nameEs": "Capa Tinaje",
+        "nameEn": "Preposter Wrap",
+        "previewPath": "/assets/item-previews/by-category/capas/16298.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11727,
+        "iconId": 17215,
+        "category": "capas",
+        "nameEs": "Capa Pilla",
+        "nameEn": "Rough Lee Robe",
+        "previewPath": "/assets/item-previews/by-category/capas/17215.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11728,
+        "iconId": 17217,
+        "category": "capas",
+        "nameEs": "Capa Icultor",
+        "nameEn": "Eculture Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17217.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11817,
+        "iconId": 17212,
+        "category": "capas",
+        "nameEs": "Capa de Perceblando",
+        "nameEn": "Percimol\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17212.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11980,
+        "iconId": 17218,
+        "category": "capas",
+        "nameEs": "Capa de Boostacho",
+        "nameEn": "Boostache\u0027s Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17218.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12070,
+        "iconId": 17219,
+        "category": "capas",
+        "nameEs": "Capa de Nelwynn",
+        "nameEn": "Nelween\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17219.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12087,
+        "iconId": 17224,
+        "category": "capas",
+        "nameEs": "Capa jalamutante",
+        "nameEn": "Mastic Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17224.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12093,
+        "iconId": 17221,
+        "category": "capas",
+        "nameEs": "Capa de Lario",
+        "nameEn": "Cantile\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17221.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12108,
+        "iconId": 17222,
+        "category": "capas",
+        "nameEs": "Capa del profesor Xa",
+        "nameEn": "Professor Xa\u0027s Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17222.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12117,
+        "iconId": 17223,
+        "category": "capas",
+        "nameEs": "Capa de Fuji g\u00E9lifux",
+        "nameEn": "Fuji Snowfoux Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17223.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12371,
+        "iconId": 17230,
+        "category": "capas",
+        "nameEs": "Capa de marran\u00E1rgola",
+        "nameEn": "Gorgoyle Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17230.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12378,
+        "iconId": 17231,
+        "category": "capas",
+        "nameEs": "Capa Pelosa",
+        "nameEn": "Hir Cape",
+        "previewPath": "/assets/item-previews/by-category/capas/17231.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12387,
+        "iconId": 17228,
+        "category": "capas",
+        "nameEs": "Capa Horcado",
+        "nameEn": "Hanging Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17228.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12388,
+        "iconId": 17229,
+        "category": "capas",
+        "nameEs": "Capa Aircusi\u00F3n",
+        "nameEn": "Bangin\u0027 Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17229.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12398,
+        "iconId": 17232,
+        "category": "capas",
+        "nameEs": "Capa del aprendiz",
+        "nameEn": "Apprentice Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17232.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12413,
+        "iconId": 17234,
+        "category": "capas",
+        "nameEs": "Capa de cascasauriador",
+        "nameEn": "Saurosheller Cloak",
+        "previewPath": "/assets/item-previews/by-category/capas/17234.png",
+        "copied": true,
+        "skippedExisting": false
+      }
+    ],
+    "sombreros": [
+      {
+        "itemId": 629,
+        "iconId": 16001,
+        "category": "sombreros",
+        "nameEs": "Sombrero Puntiagudo",
+        "nameEn": "Pointed Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16001.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 696,
+        "iconId": 16002,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Paletoso",
+        "nameEn": "Slob Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16002.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 697,
+        "iconId": 16003,
+        "category": "sombreros",
+        "nameEs": "Mistetas",
+        "nameEn": "Makroute",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16003.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 698,
+        "iconId": 16004,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Selecci\u00F3n de Hoguarts",
+        "nameEn": "Sortingat Hogwat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16004.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 699,
+        "iconId": 16005,
+        "category": "sombreros",
+        "nameEs": "El Etreuma",
+        "nameEn": "The Troma",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16005.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 700,
+        "iconId": 16006,
+        "category": "sombreros",
+        "nameEs": "Pandawa",
+        "nameEn": "Pandawa",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16006.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 701,
+        "iconId": 16007,
+        "category": "sombreros",
+        "nameEs": "El Oiram",
+        "nameEn": "The Oiram",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16007.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 702,
+        "iconId": 16008,
+        "category": "sombreros",
+        "nameEs": "Kritter",
+        "nameEn": "Kritter",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16008.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 703,
+        "iconId": 16009,
+        "category": "sombreros",
+        "nameEs": "Dora",
+        "nameEn": "Dora",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16009.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 704,
+        "iconId": 16010,
+        "category": "sombreros",
+        "nameEs": "Dantgul",
+        "nameEn": "Eachure Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16010.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 705,
+        "iconId": 16011,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Traumatizante",
+        "nameEn": "Tromatising Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16011.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 706,
+        "iconId": 16012,
+        "category": "sombreros",
+        "nameEs": "Crystralobola",
+        "nameEn": "Crystaloball",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16012.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 707,
+        "iconId": 16013,
+        "category": "sombreros",
+        "nameEs": "MinotauKorno",
+        "nameEn": "Minot\u0027Horn",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16013.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 708,
+        "iconId": 16014,
+        "category": "sombreros",
+        "nameEs": "Jud",
+        "nameEn": "Pilbocks Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16014.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 709,
+        "iconId": 16015,
+        "category": "sombreros",
+        "nameEs": "Lorko Kasko",
+        "nameEn": "Lorko Kasko",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16015.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 710,
+        "iconId": 16016,
+        "category": "sombreros",
+        "nameEs": "Korko Klako",
+        "nameEn": "Korko Klako",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16016.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 711,
+        "iconId": 16017,
+        "category": "sombreros",
+        "nameEs": "Juik Kramp",
+        "nameEn": "Jouik Krampe",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16017.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 712,
+        "iconId": 16018,
+        "category": "sombreros",
+        "nameEs": "Gulliver",
+        "nameEn": "Gulliver",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16018.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 940,
+        "iconId": 16020,
+        "category": "sombreros",
+        "nameEs": "Depedador",
+        "nameEn": "Farter",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16020.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 941,
+        "iconId": 16022,
+        "category": "sombreros",
+        "nameEs": "Pa\u00F1uelo Komuntot",
+        "nameEn": "Komintot Headband",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16022.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 942,
+        "iconId": 16023,
+        "category": "sombreros",
+        "nameEs": "Alisador",
+        "nameEn": "Smoother",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16023.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 969,
+        "iconId": 16021,
+        "category": "sombreros",
+        "nameEs": "Corona del Wey Wabbit",
+        "nameEn": "Wa Wabbit\u0027s Crown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16021.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 976,
+        "iconId": 16024,
+        "category": "sombreros",
+        "nameEs": "Calawaza",
+        "nameEn": "Pumpkwin",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16024.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1019,
+        "iconId": 16025,
+        "category": "sombreros",
+        "nameEs": "Casco",
+        "nameEn": "Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16025.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1088,
+        "iconId": 16026,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Kan\u00EDbola",
+        "nameEn": "Kanniball Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16026.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1090,
+        "iconId": 16027,
+        "category": "sombreros",
+        "nameEs": "Astrosombrero",
+        "nameEn": "Astrowig",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16027.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1904,
+        "iconId": 16028,
+        "category": "sombreros",
+        "nameEs": "Dragosombrero blanco",
+        "nameEn": "White Dreggheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16028.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1907,
+        "iconId": 16030,
+        "category": "sombreros",
+        "nameEs": "Orejas de conejo",
+        "nameEn": "Bunny Ears",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16030.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 1908,
+        "iconId": 16031,
+        "category": "sombreros",
+        "nameEs": "Casco del chafer",
+        "nameEn": "Chafer Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16031.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2070,
+        "iconId": 16058,
+        "category": "sombreros",
+        "nameEs": "Shako",
+        "nameEn": "Shako",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16058.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2094,
+        "iconId": 16033,
+        "category": "sombreros",
+        "nameEs": "Mistetas Oscuro",
+        "nameEn": "Dark Makroute",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16033.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2095,
+        "iconId": 16034,
+        "category": "sombreros",
+        "nameEs": "El Oso",
+        "nameEn": "The Bear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16034.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2096,
+        "iconId": 16035,
+        "category": "sombreros",
+        "nameEs": "Dora Oscura de Bravo",
+        "nameEn": "Brave\u0027s Dark Dora",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16035.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2097,
+        "iconId": 16036,
+        "category": "sombreros",
+        "nameEs": "Champo",
+        "nameEn": "Champo",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16036.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2104,
+        "iconId": 16037,
+        "category": "sombreros",
+        "nameEs": "T\u00E9melo",
+        "nameEn": "Daudgee",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16037.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2157,
+        "iconId": 16038,
+        "category": "sombreros",
+        "nameEs": "Clint",
+        "nameEn": "Clint",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16038.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2409,
+        "iconId": 16039,
+        "category": "sombreros",
+        "nameEs": "Kwakosombrero de Llamas",
+        "nameEn": "Fire Kwak Headdress",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16039.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2410,
+        "iconId": 16040,
+        "category": "sombreros",
+        "nameEs": "Abracaska",
+        "nameEn": "Treechelmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16040.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2411,
+        "iconId": 16041,
+        "category": "sombreros",
+        "nameEs": "Sombrero del jalat\u00F3",
+        "nameEn": "Gobball Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16041.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2438,
+        "iconId": 16042,
+        "category": "sombreros",
+        "nameEs": "Jalasombrero real",
+        "nameEn": "Royal Gobball Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16042.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2447,
+        "iconId": 16043,
+        "category": "sombreros",
+        "nameEs": "Gelosombrero",
+        "nameEn": "Jelleadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16043.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2474,
+        "iconId": 16044,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Aventurero",
+        "nameEn": "Adventurer Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16044.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2485,
+        "iconId": 16045,
+        "category": "sombreros",
+        "nameEs": "Vegasombrero",
+        "nameEn": "Vegadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16045.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2519,
+        "iconId": 16046,
+        "category": "sombreros",
+        "nameEs": "Megasombrero",
+        "nameEn": "Megahelmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16046.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2520,
+        "iconId": 16047,
+        "category": "sombreros",
+        "nameEs": "Casco Viewtiful",
+        "nameEn": "Viootifool Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16047.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2531,
+        "iconId": 16048,
+        "category": "sombreros",
+        "nameEs": "Caparasombrero",
+        "nameEn": "Caracap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16048.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2535,
+        "iconId": 16049,
+        "category": "sombreros",
+        "nameEs": "Kwakosombrero de Hielo",
+        "nameEn": "Ice Kwak Headdress",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16049.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2546,
+        "iconId": 16050,
+        "category": "sombreros",
+        "nameEs": "Cuerbosombrero",
+        "nameEn": "Crow Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16050.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 2641,
+        "iconId": 16051,
+        "category": "sombreros",
+        "nameEs": "Toady",
+        "nameEn": "Toady",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16051.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6472,
+        "iconId": 16055,
+        "category": "sombreros",
+        "nameEs": "Dragosombrero dorado",
+        "nameEn": "Golden Dreggheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16055.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6473,
+        "iconId": 16057,
+        "category": "sombreros",
+        "nameEs": "Dragosombrero de zafiro",
+        "nameEn": "Sapphire Dreggheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16057.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6474,
+        "iconId": 16056,
+        "category": "sombreros",
+        "nameEs": "Dragosombrero negro",
+        "nameEn": "Black Dreggheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16056.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6477,
+        "iconId": 16090,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Minero Oscuro",
+        "nameEn": "Dark Miner Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16090.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6481,
+        "iconId": 16061,
+        "category": "sombreros",
+        "nameEs": "Dora Bora",
+        "nameEn": "Dora Bora",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16061.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6482,
+        "iconId": 16059,
+        "category": "sombreros",
+        "nameEs": "Korko Kusko",
+        "nameEn": "Korko Kousto",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16059.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6483,
+        "iconId": 16091,
+        "category": "sombreros",
+        "nameEs": "Casco del Bwork de Bronce",
+        "nameEn": "Bronze Bwork Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16091.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6500,
+        "iconId": 16052,
+        "category": "sombreros",
+        "nameEs": "Orejas de wabbit",
+        "nameEn": "Wabbit Ears",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16052.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6660,
+        "iconId": 16053,
+        "category": "sombreros",
+        "nameEs": "Sombrero de novio",
+        "nameEn": "Groom Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16053.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6662,
+        "iconId": 16054,
+        "category": "sombreros",
+        "nameEs": "Sombrero de novia",
+        "nameEn": "Bride Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16054.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6719,
+        "iconId": 16064,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Hombre Oso",
+        "nameEn": "Bearman\u0027s Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16064.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6760,
+        "iconId": 16071,
+        "category": "sombreros",
+        "nameEs": "Kwakosombrero de Tierra",
+        "nameEn": "Earth Kwak Headdress",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16071.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6761,
+        "iconId": 16069,
+        "category": "sombreros",
+        "nameEs": "Kwakosombrero del Viento",
+        "nameEn": "Wind Kwak Headdress",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16069.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6764,
+        "iconId": 16068,
+        "category": "sombreros",
+        "nameEs": "Mazorrasombrero",
+        "nameEn": "Ambusheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16068.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6778,
+        "iconId": 16067,
+        "category": "sombreros",
+        "nameEs": "Farlasombrero",
+        "nameEn": "Farle\u0027s Straw Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16067.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6797,
+        "iconId": 16070,
+        "category": "sombreros",
+        "nameEs": "Sombrero Campestre",
+        "nameEn": "Florheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16070.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6802,
+        "iconId": 16073,
+        "category": "sombreros",
+        "nameEs": "Orejeras",
+        "nameEn": "Earmuffs",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16073.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6813,
+        "iconId": 16065,
+        "category": "sombreros",
+        "nameEs": "Casco del Jefe Bwork",
+        "nameEn": "Chief Bwork Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16065.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6834,
+        "iconId": 16066,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Jefe Cocodrail",
+        "nameEn": "Chief Crocodyl Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16066.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6863,
+        "iconId": 16072,
+        "category": "sombreros",
+        "nameEs": "Casco de los Mercenarios de Astrub",
+        "nameEn": "Astrub Mercenary Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16072.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6913,
+        "iconId": 16083,
+        "category": "sombreros",
+        "nameEs": "Araknosombrero",
+        "nameEn": "Arachelmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16083.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6917,
+        "iconId": 16080,
+        "category": "sombreros",
+        "nameEs": "Moskitogarruleto",
+        "nameEn": "Moskabuto",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16080.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6921,
+        "iconId": 16084,
+        "category": "sombreros",
+        "nameEs": "Champisombrero",
+        "nameEn": "Musheadgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16084.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6926,
+        "iconId": 16081,
+        "category": "sombreros",
+        "nameEs": "Sombrero del prespic",
+        "nameEn": "Prespwig",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16081.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6930,
+        "iconId": 16085,
+        "category": "sombreros",
+        "nameEs": "Casco del crujidor",
+        "nameEn": "Crackler Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16085.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6936,
+        "iconId": 16078,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero verde",
+        "nameEn": "Green Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16078.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6937,
+        "iconId": 16077,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero rojo",
+        "nameEn": "Red Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16077.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6938,
+        "iconId": 16079,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero blanco",
+        "nameEn": "White Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16079.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6939,
+        "iconId": 16076,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero azul",
+        "nameEn": "Blue Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16076.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6952,
+        "iconId": 16131,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Mediulubo",
+        "nameEn": "Boowolf Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16131.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6958,
+        "iconId": 16082,
+        "category": "sombreros",
+        "nameEs": "Genial\u00EDsimo Sombrero de Turtoga",
+        "nameEn": "Brilliant Hermiturtlook",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16082.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6988,
+        "iconId": 16092,
+        "category": "sombreros",
+        "nameEs": "Sulik",
+        "nameEn": "Sulik",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16092.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6989,
+        "iconId": 16086,
+        "category": "sombreros",
+        "nameEs": "Krokop",
+        "nameEn": "Nee Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16086.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6990,
+        "iconId": 16087,
+        "category": "sombreros",
+        "nameEs": "Falena",
+        "nameEn": "Mothat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16087.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6991,
+        "iconId": 16088,
+        "category": "sombreros",
+        "nameEs": "Guayaba",
+        "nameEn": "Guavhat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16088.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 6992,
+        "iconId": 16089,
+        "category": "sombreros",
+        "nameEs": "Kanip\u00EDo",
+        "nameEn": "Kannipiwi",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16089.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7034,
+        "iconId": 16093,
+        "category": "sombreros",
+        "nameEs": "Casco del Maestro Nabur",
+        "nameEn": "Master Nabur Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16093.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7038,
+        "iconId": 16094,
+        "category": "sombreros",
+        "nameEs": "Corona del Rey Gelax",
+        "nameEn": "King Jellix\u0027s Crown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16094.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7056,
+        "iconId": 16095,
+        "category": "sombreros",
+        "nameEs": "Krepita",
+        "nameEn": "Kracker Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16095.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7058,
+        "iconId": 16096,
+        "category": "sombreros",
+        "nameEs": "Octovius",
+        "nameEn": "Octovius",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16096.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7109,
+        "iconId": 16103,
+        "category": "sombreros",
+        "nameEs": "Larvasombrero",
+        "nameEn": "Larvhat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16103.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7141,
+        "iconId": 16111,
+        "category": "sombreros",
+        "nameEs": "Holuna",
+        "nameEn": "Himune",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16111.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7142,
+        "iconId": 16112,
+        "category": "sombreros",
+        "nameEs": "Piruk",
+        "nameEn": "Paperb\u0027 Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16112.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7143,
+        "iconId": 16123,
+        "category": "sombreros",
+        "nameEs": "Solomonk",
+        "nameEn": "Solomonk",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16123.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7144,
+        "iconId": 16116,
+        "category": "sombreros",
+        "nameEs": "Paliducha",
+        "nameEn": "Palishat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16116.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7145,
+        "iconId": 16115,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Gaddi",
+        "nameEn": "Gaddie\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16115.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7146,
+        "iconId": 16114,
+        "category": "sombreros",
+        "nameEs": "La Bertoza",
+        "nameEn": "Lullibye",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16114.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7150,
+        "iconId": 16109,
+        "category": "sombreros",
+        "nameEs": "La Muleta",
+        "nameEn": "Krutch",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16109.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7151,
+        "iconId": 16108,
+        "category": "sombreros",
+        "nameEs": "Kolososo",
+        "nameEn": "Clay-headed Giant\u0027s Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16108.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7152,
+        "iconId": 16110,
+        "category": "sombreros",
+        "nameEs": "Kan\u00EDstero",
+        "nameEn": "Wheritz Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16110.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7177,
+        "iconId": 16102,
+        "category": "sombreros",
+        "nameEs": "Pa\u00F1uelo Pandawushu",
+        "nameEn": "Pandawushu Headband",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16102.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7226,
+        "iconId": 16146,
+        "category": "sombreros",
+        "nameEs": "Sombrero Akwadala",
+        "nameEn": "Akwadala Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16146.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7227,
+        "iconId": 16147,
+        "category": "sombreros",
+        "nameEs": "Sombrero Tierradala",
+        "nameEn": "Terrdala Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16147.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7228,
+        "iconId": 16145,
+        "category": "sombreros",
+        "nameEs": "Sombrero Fuegodala",
+        "nameEn": "Feudala Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16145.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7229,
+        "iconId": 16148,
+        "category": "sombreros",
+        "nameEs": "Sombrero Airedala",
+        "nameEn": "Aerdala Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16148.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7339,
+        "iconId": 16097,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Kitsu",
+        "nameEn": "Kitsou Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16097.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7422,
+        "iconId": 16117,
+        "category": "sombreros",
+        "nameEs": "Mascarapi\u00F1a",
+        "nameEn": "Pineapple Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16117.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7516,
+        "iconId": 16121,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Bimd\u0027Ulo",
+        "nameEn": "Bimd\u0027Oule Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16121.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7553,
+        "iconId": 16118,
+        "category": "sombreros",
+        "nameEs": "Sombropavo",
+        "nameEn": "Turkohat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16118.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7680,
+        "iconId": 16120,
+        "category": "sombreros",
+        "nameEs": "Ugahlureta",
+        "nameEn": "Ougaat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16120.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7886,
+        "iconId": 16119,
+        "category": "sombreros",
+        "nameEs": "Sombrero del jalatranki",
+        "nameEn": "Gobkool Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16119.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7887,
+        "iconId": 16122,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Trankitronko",
+        "nameEn": "Koolich Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16122.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 7921,
+        "iconId": 16154,
+        "category": "sombreros",
+        "nameEs": "Corona del Tofu Real",
+        "nameEn": "Royal Tofu Crown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16154.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8009,
+        "iconId": 16125,
+        "category": "sombreros",
+        "nameEs": "Sombrero del koalak",
+        "nameEn": "Koalak Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16125.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8069,
+        "iconId": 16127,
+        "category": "sombreros",
+        "nameEs": "Casco del Campe\u00F3n",
+        "nameEn": "Champion Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16127.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8114,
+        "iconId": 16128,
+        "category": "sombreros",
+        "nameEs": "Kaskofu",
+        "nameEn": "Helmetofu",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16128.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8116,
+        "iconId": 16129,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero dorado",
+        "nameEn": "Golden Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16129.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8125,
+        "iconId": 16130,
+        "category": "sombreros",
+        "nameEs": "Bob del Campesino",
+        "nameEn": "Farmer Sunhat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16130.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8133,
+        "iconId": 16132,
+        "category": "sombreros",
+        "nameEs": "Escarasombrero negro",
+        "nameEn": "Black Scara Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16132.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8147,
+        "iconId": 16133,
+        "category": "sombreros",
+        "nameEs": "Casco del crujidor legendario",
+        "nameEn": "Legendary Crackler Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16133.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8162,
+        "iconId": 16134,
+        "category": "sombreros",
+        "nameEs": "Calawaza",
+        "nameEn": "Pumpkwin Head",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16134.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8163,
+        "iconId": 16135,
+        "category": "sombreros",
+        "nameEs": "Kabuto",
+        "nameEn": "Kabuto",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16135.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8243,
+        "iconId": 16137,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo rojo",
+        "nameEn": "Red Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16137.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8244,
+        "iconId": 16138,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo azul",
+        "nameEn": "Blue Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16138.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8245,
+        "iconId": 16139,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo violeta",
+        "nameEn": "Purple Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16139.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8246,
+        "iconId": 16140,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo verde",
+        "nameEn": "Green Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16140.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8247,
+        "iconId": 16141,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo amarillo",
+        "nameEn": "Yellow Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16141.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8248,
+        "iconId": 16142,
+        "category": "sombreros",
+        "nameEs": "Sombrero de p\u00EDo rosa",
+        "nameEn": "Pink Piwi Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16142.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8259,
+        "iconId": 16143,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Esponja",
+        "nameEn": "Sponge Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16143.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8260,
+        "iconId": 16124,
+        "category": "sombreros",
+        "nameEs": "Pa\u00F1uelo kalipto",
+        "nameEn": "Kaliptus Headband",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16124.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8267,
+        "iconId": 16144,
+        "category": "sombreros",
+        "nameEs": "Casco del Maxilubo",
+        "nameEn": "Moowolf Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16144.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8284,
+        "iconId": 16151,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Minotot",
+        "nameEn": "Minotot Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16151.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8285,
+        "iconId": 16150,
+        "category": "sombreros",
+        "nameEs": "Casco del dragocerdo",
+        "nameEn": "Dragon Pig Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16150.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8287,
+        "iconId": 16149,
+        "category": "sombreros",
+        "nameEs": "Casco Dragohuevo",
+        "nameEn": "Dreggon Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16149.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8304,
+        "iconId": 16156,
+        "category": "sombreros",
+        "nameEs": "Shikasombrero",
+        "nameEn": "Shika\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16156.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8325,
+        "iconId": 16157,
+        "category": "sombreros",
+        "nameEs": "Sombrero del mominotauro",
+        "nameEn": "Mumminotor Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16157.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8330,
+        "iconId": 16152,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Dragohuevo volador",
+        "nameEn": "Flying Dreggon Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16152.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8331,
+        "iconId": 16153,
+        "category": "sombreros",
+        "nameEs": "Sombrero de la Dragosa",
+        "nameEn": "Dragostess Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16153.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8334,
+        "iconId": 16155,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Chanta Klaus",
+        "nameEn": "Father Kwismas Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16155.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8441,
+        "iconId": 16159,
+        "category": "sombreros",
+        "nameEs": "Billreola",
+        "nameEn": "Billalo",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16159.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8442,
+        "iconId": 16158,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de la Rata Negra",
+        "nameEn": "Black Rat Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16158.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8451,
+        "iconId": 16160,
+        "category": "sombreros",
+        "nameEs": "Sombrero de la rata blanca",
+        "nameEn": "White Rat Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16160.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8457,
+        "iconId": 16173,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara ceremonial del Amo de las Ratas",
+        "nameEn": "Lord of the Rats\u0027 Ceremonial Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16173.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8463,
+        "iconId": 16174,
+        "category": "sombreros",
+        "nameEs": "Abracaska Ancestral",
+        "nameEn": "Ancestral Treechelmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16174.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8474,
+        "iconId": 16166,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Roble Blando",
+        "nameEn": "Soft Oak Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16166.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8530,
+        "iconId": 16167,
+        "category": "sombreros",
+        "nameEs": "Simbreria",
+        "nameEn": "Ruskie Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16167.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8531,
+        "iconId": 16168,
+        "category": "sombreros",
+        "nameEs": "Cunejosombrero",
+        "nameEn": "Coney Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16168.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8533,
+        "iconId": 16169,
+        "category": "sombreros",
+        "nameEs": "El Flud",
+        "nameEn": "Flud",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16169.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8558,
+        "iconId": 16170,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Cunejo",
+        "nameEn": "Coney Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16170.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8559,
+        "iconId": 16171,
+        "category": "sombreros",
+        "nameEs": "El HmmMmmMmmm",
+        "nameEn": "The HmmMmmmMmmm",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16171.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8569,
+        "iconId": 16172,
+        "category": "sombreros",
+        "nameEs": "Doro le Black",
+        "nameEn": "Doro L. Blak",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16172.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8619,
+        "iconId": 16175,
+        "category": "sombreros",
+        "nameEs": "Casco Moasdicho",
+        "nameEn": "Hat Ariutokinabot",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16175.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8628,
+        "iconId": 16185,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Tah\u00FAr",
+        "nameEn": "Ukando Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16185.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8629,
+        "iconId": 16179,
+        "category": "sombreros",
+        "nameEs": "Multricornio",
+        "nameEn": "Hat Tsokey",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16179.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8630,
+        "iconId": 16177,
+        "category": "sombreros",
+        "nameEs": "Diapa Sombrero",
+        "nameEn": "Hatter Lily",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16177.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8631,
+        "iconId": 16184,
+        "category": "sombreros",
+        "nameEs": "Gorro del Maestro Piezo",
+        "nameEn": "Hat Wisholdoo",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16184.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8632,
+        "iconId": 16178,
+        "category": "sombreros",
+        "nameEs": "Gorra Bano",
+        "nameEn": "Cap Ricott",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16178.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8633,
+        "iconId": 16180,
+        "category": "sombreros",
+        "nameEs": "Sombrervido",
+        "nameEn": "Cap Rayer",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16180.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8634,
+        "iconId": 16181,
+        "category": "sombreros",
+        "nameEs": "Capucha Apino",
+        "nameEn": "Cool Hood",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16181.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8635,
+        "iconId": 16176,
+        "category": "sombreros",
+        "nameEs": "Casco Locado",
+        "nameEn": "Helmet Hicc",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16176.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8636,
+        "iconId": 16186,
+        "category": "sombreros",
+        "nameEs": "Gorro del pr\u00EDncipe Robin",
+        "nameEn": "Robbie Hoodie Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16186.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8637,
+        "iconId": 16182,
+        "category": "sombreros",
+        "nameEs": "Sombrerillo del Lazarillo",
+        "nameEn": "Zinda Hood",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16182.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8638,
+        "iconId": 16183,
+        "category": "sombreros",
+        "nameEs": "Alfue Gorro",
+        "nameEn": "Sthood",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16183.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8678,
+        "iconId": 16187,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Nodoymas",
+        "nameEn": "Satanass Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16187.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8699,
+        "iconId": 16188,
+        "category": "sombreros",
+        "nameEs": "Tocado de tynril",
+        "nameEn": "Tynril Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16188.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8704,
+        "iconId": 16190,
+        "category": "sombreros",
+        "nameEs": "El Nahits",
+        "nameEn": "Jester Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16190.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8820,
+        "iconId": 16191,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara del Sargento Zoth",
+        "nameEn": "Zoth Sergeant Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16191.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8821,
+        "iconId": 16192,
+        "category": "sombreros",
+        "nameEs": "Gorro del Disc\u00EDpulo Zoth",
+        "nameEn": "Zoth Disciple Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16192.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8822,
+        "iconId": 16193,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara del Abrajidor claro",
+        "nameEn": "Light Treeckler Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16193.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8823,
+        "iconId": 16194,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara del Abrajidor oscuro",
+        "nameEn": "Dark Treeckler Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16194.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8824,
+        "iconId": 16195,
+        "category": "sombreros",
+        "nameEs": "Kascorakol",
+        "nameEn": "Snailmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16195.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8828,
+        "iconId": 16196,
+        "category": "sombreros",
+        "nameEs": "Peluca de pohoyo",
+        "nameEn": "Cheeken Wig",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16196.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8829,
+        "iconId": 16197,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Barbrusa",
+        "nameEn": "Barbrossa\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16197.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8839,
+        "iconId": 16199,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Bod\u00FA Thierry",
+        "nameEn": "Thierry Voodoo Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16199.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8840,
+        "iconId": 16200,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Bod\u00FA Jav",
+        "nameEn": "Jav Voodoo Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16200.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8841,
+        "iconId": 16201,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Bod\u00FA Cerbat",
+        "nameEn": "Sarbak Voodoo Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16201.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8842,
+        "iconId": 16202,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Bod\u00FA Arquero",
+        "nameEn": "Archer Voodoo Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16202.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8843,
+        "iconId": 16203,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Crocodail Dandi",
+        "nameEn": "Crocodyl Dandy\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16203.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8844,
+        "iconId": 16204,
+        "category": "sombreros",
+        "nameEs": "Soberana capucha del Rey Stropajo",
+        "nameEn": "Mopy King Sovereign Hood",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16204.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8845,
+        "iconId": 16205,
+        "category": "sombreros",
+        "nameEs": "Capucha de Stropajo",
+        "nameEn": "Ouassingue Hood",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16205.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8846,
+        "iconId": 16206,
+        "category": "sombreros",
+        "nameEs": "Sombrero de la Chavala Zoth",
+        "nameEn": "Zoth Girl Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16206.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8847,
+        "iconId": 16207,
+        "category": "sombreros",
+        "nameEs": "Casco del Guerrero Zoth",
+        "nameEn": "Zoth Warrior Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16207.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8848,
+        "iconId": 16208,
+        "category": "sombreros",
+        "nameEs": "Tocado del Maestro Zoth",
+        "nameEn": "Zoth Master Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16208.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 8989,
+        "iconId": 16209,
+        "category": "sombreros",
+        "nameEs": "Casco de Tufo A\u00E9reo",
+        "nameEn": "Air Pikoko Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16209.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9120,
+        "iconId": 16210,
+        "category": "sombreros",
+        "nameEs": "Chapeau Shika",
+        "nameEn": "x",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16210.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9147,
+        "iconId": 16221,
+        "category": "sombreros",
+        "nameEs": "Gorro\u0027Ngo",
+        "nameEn": "Mush Ombrero",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16221.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9181,
+        "iconId": 16212,
+        "category": "sombreros",
+        "nameEs": "Casco L\u00E9rico",
+        "nameEn": "Batouta Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16212.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9184,
+        "iconId": 16213,
+        "category": "sombreros",
+        "nameEs": "Casco de G\u00E1lgarion",
+        "nameEn": "Galgarion\u0027s Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16213.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9185,
+        "iconId": 16214,
+        "category": "sombreros",
+        "nameEs": "Sombrero de G\u00FAltar",
+        "nameEn": "Goultard\u0027s Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16214.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9187,
+        "iconId": 16215,
+        "category": "sombreros",
+        "nameEs": "Peluca de Maestro Negro Jack",
+        "nameEn": "Master Black Jack\u0027s Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16215.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9188,
+        "iconId": 16216,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Pep\u00EDtox",
+        "nameEn": "Pepitoo\u0027s Sombrero",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16216.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9189,
+        "iconId": 16217,
+        "category": "sombreros",
+        "nameEs": "Cuernos de XVII",
+        "nameEn": "XVII\u0027s Horns",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16217.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9190,
+        "iconId": 16218,
+        "category": "sombreros",
+        "nameEs": "Peluca de ocra Crarbonizado",
+        "nameEn": "Cra\u0027s Burnt Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16218.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9194,
+        "iconId": 16219,
+        "category": "sombreros",
+        "nameEs": "Caskogalleta",
+        "nameEn": "K Cap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16219.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9197,
+        "iconId": 16220,
+        "category": "sombreros",
+        "nameEs": "Sombrero Saymassa",
+        "nameEn": "Beanie Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16220.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9394,
+        "iconId": 16222,
+        "category": "sombreros",
+        "nameEs": "Blopisetombrero",
+        "nameEn": "Mitch Shroom",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16222.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9395,
+        "iconId": 16223,
+        "category": "sombreros",
+        "nameEs": "Bloprona Real",
+        "nameEn": "Royal Bloprown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16223.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9405,
+        "iconId": 16224,
+        "category": "sombreros",
+        "nameEs": "Caskabeja",
+        "nameEn": "Bee Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16224.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9406,
+        "iconId": 16225,
+        "category": "sombreros",
+        "nameEs": "Gochobits",
+        "nameEn": "Piggibits",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16225.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9410,
+        "iconId": 16226,
+        "category": "sombreros",
+        "nameEs": "Sombrero del Bosque del Este",
+        "nameEn": "Eastern Wood Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16226.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9414,
+        "iconId": 16227,
+        "category": "sombreros",
+        "nameEs": "Limogorro",
+        "nameEn": "Lemon Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16227.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9418,
+        "iconId": 16228,
+        "category": "sombreros",
+        "nameEs": "Tocado Cristalino",
+        "nameEn": "Crystalline Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16228.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9457,
+        "iconId": 16229,
+        "category": "sombreros",
+        "nameEs": "Pompombrero",
+        "nameEn": "Bobbl\u0027Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16229.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9461,
+        "iconId": 16230,
+        "category": "sombreros",
+        "nameEs": "El Kim",
+        "nameEn": "The Kim",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16230.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9471,
+        "iconId": 16231,
+        "category": "sombreros",
+        "nameEs": "Sombrero de San Valent\u00F3n",
+        "nameEn": "St. Ballotwine\u0027s Day Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16231.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9479,
+        "iconId": 16232,
+        "category": "sombreros",
+        "nameEs": "Poshopeinado",
+        "nameEn": "Poshat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16232.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9486,
+        "iconId": 16233,
+        "category": "sombreros",
+        "nameEs": "Cigacofia",
+        "nameEn": "Cicad\u0027Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16233.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9541,
+        "iconId": 16234,
+        "category": "sombreros",
+        "nameEs": "Sombrero Borsalino del Padrino",
+        "nameEn": "The Godfather\u0027s Fedora",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16234.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9567,
+        "iconId": 16235,
+        "category": "sombreros",
+        "nameEs": "Gorro del Black Wab",
+        "nameEn": "Black Wab Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16235.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9652,
+        "iconId": 16236,
+        "category": "sombreros",
+        "nameEs": "Cinta para el pelo del Director Kuno",
+        "nameEn": "Alowa Headband",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16236.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9653,
+        "iconId": 16237,
+        "category": "sombreros",
+        "nameEs": "Gorrump",
+        "nameEn": "Kwakap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16237.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9663,
+        "iconId": 16238,
+        "category": "sombreros",
+        "nameEs": "Orejillas de Sliat",
+        "nameEn": "Slait Nears",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16238.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9924,
+        "iconId": 16239,
+        "category": "sombreros",
+        "nameEs": "Cuernos de Grandaiser",
+        "nameEn": "Bedazzling Horns",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16239.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9930,
+        "iconId": 16240,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de Tor Nyquete",
+        "nameEn": "Siks Wonn Ein Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16240.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9931,
+        "iconId": 16241,
+        "category": "sombreros",
+        "nameEs": "Peluca galaktiko taktikonik",
+        "nameEn": "Slamdance Mullet Hairdo",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16241.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9936,
+        "iconId": 16242,
+        "category": "sombreros",
+        "nameEs": "Darth Casco",
+        "nameEn": "Darth Vaydhat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16242.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 9937,
+        "iconId": 16243,
+        "category": "sombreros",
+        "nameEs": "Charlomb\u00EDn",
+        "nameEn": "The Chatlin",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16243.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10102,
+        "iconId": 16244,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de Vampyro",
+        "nameEn": "Vampyre Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16244.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10170,
+        "iconId": 16246,
+        "category": "sombreros",
+        "nameEs": "Chispocasco",
+        "nameEn": "Chisp Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16246.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10175,
+        "iconId": 16247,
+        "category": "sombreros",
+        "nameEs": "Baborrito",
+        "nameEn": "Slugly Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16247.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10183,
+        "iconId": 16248,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Solar",
+        "nameEn": "Solaris Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16248.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10184,
+        "iconId": 16249,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de Noke",
+        "nameEn": "Noke\u0027s Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16249.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10188,
+        "iconId": 16250,
+        "category": "sombreros",
+        "nameEs": "Casco del extraterrestre",
+        "nameEn": "Oxo Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16250.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10414,
+        "iconId": 16251,
+        "category": "sombreros",
+        "nameEs": "Corona Koninginnedag",
+        "nameEn": "Koninginnedag Crown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16251.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10552,
+        "iconId": 16245,
+        "category": "sombreros",
+        "nameEs": "Ugorro",
+        "nameEn": "Ughat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16245.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10553,
+        "iconId": 16252,
+        "category": "sombreros",
+        "nameEs": "Casco de Tolot",
+        "nameEn": "Toot\u0027s Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16252.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10554,
+        "iconId": 16253,
+        "category": "sombreros",
+        "nameEs": "Casco de Beneji",
+        "nameEn": "Benji\u0027s Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16253.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10685,
+        "iconId": 16254,
+        "category": "sombreros",
+        "nameEs": "Casco Goldpex",
+        "nameEn": "Haks Or Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16254.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10801,
+        "iconId": 16264,
+        "category": "sombreros",
+        "nameEs": "Casco de principiante",
+        "nameEn": "Novice Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16264.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10828,
+        "iconId": 16255,
+        "category": "sombreros",
+        "nameEs": "Casco de j\u00E1labol",
+        "nameEn": "Gobbowl Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16255.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10834,
+        "iconId": 16256,
+        "category": "sombreros",
+        "nameEs": "Ushanka Guau",
+        "nameEn": "Barking M\u0027hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16256.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10958,
+        "iconId": 16259,
+        "category": "sombreros",
+        "nameEs": "Casco de El Cuervo Negro",
+        "nameEn": "The Black Crow\u0027s Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16259.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 10988,
+        "iconId": 16260,
+        "category": "sombreros",
+        "nameEs": "Escarchosombrero",
+        "nameEn": "Frost Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16260.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11043,
+        "iconId": 16265,
+        "category": "sombreros",
+        "nameEs": "Gorro Kalipsis",
+        "nameEn": "Capocalypse",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16265.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11049,
+        "iconId": 16262,
+        "category": "sombreros",
+        "nameEs": "Sombrero de mandarina",
+        "nameEn": "Clementine Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16262.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11055,
+        "iconId": 16263,
+        "category": "sombreros",
+        "nameEs": "Sombrero Estr\u00F3bilo",
+        "nameEn": "Pynekone Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16263.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11079,
+        "iconId": 16261,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Lonn",
+        "nameEn": "Lonne\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16261.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11084,
+        "iconId": 16282,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Gadj\u00E8t",
+        "nameEn": "Gadjet\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16282.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11088,
+        "iconId": 16270,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Grilyan",
+        "nameEn": "Grillian\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16270.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11373,
+        "iconId": 16283,
+        "category": "sombreros",
+        "nameEs": "Sombrero de papel",
+        "nameEn": "Paper Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16283.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11377,
+        "iconId": 16302,
+        "category": "sombreros",
+        "nameEs": "Sombrero pluma",
+        "nameEn": "Feather Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16302.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11383,
+        "iconId": 16307,
+        "category": "sombreros",
+        "nameEs": "Sombrero pinz",
+        "nameEn": "Poppinz Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16307.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11394,
+        "iconId": 16309,
+        "category": "sombreros",
+        "nameEs": "Prisiombrero",
+        "nameEn": "Prisoner Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16309.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11398,
+        "iconId": 16269,
+        "category": "sombreros",
+        "nameEs": "Sombrero de murciego",
+        "nameEn": "Borbahat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16269.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11402,
+        "iconId": 16308,
+        "category": "sombreros",
+        "nameEs": "Sombrero de pino k\u00EDo",
+        "nameEn": "Pinokio Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16308.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11420,
+        "iconId": 16266,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Mismal",
+        "nameEn": "Jon Lemon\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16266.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11474,
+        "iconId": 16268,
+        "category": "sombreros",
+        "nameEs": "Congelorra",
+        "nameEn": "Sleet Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16268.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11571,
+        "iconId": 16271,
+        "category": "sombreros",
+        "nameEs": "Tocado del Jalamut Real",
+        "nameEn": "Royal Mastogob Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16271.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11572,
+        "iconId": 16275,
+        "category": "sombreros",
+        "nameEs": "Coronadel Morsag\u00FCino Real",
+        "nameEn": "Royal Pingwin Crown",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16275.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11573,
+        "iconId": 16272,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Ben el Ripata",
+        "nameEn": "Buck Anear\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16272.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11574,
+        "iconId": 16281,
+        "category": "sombreros",
+        "nameEs": "Casco del Obsidiantre",
+        "nameEn": "Obsidemon Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16281.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11598,
+        "iconId": 16273,
+        "category": "sombreros",
+        "nameEs": "Casco de la ardilla de las nieves",
+        "nameEn": "Cromagmunk Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16273.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11599,
+        "iconId": 16274,
+        "category": "sombreros",
+        "nameEs": "Casco de frig\u00F3quero",
+        "nameEn": "Frighog Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16274.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11600,
+        "iconId": 16279,
+        "category": "sombreros",
+        "nameEs": "Fantom\u00E1scara",
+        "nameEn": "Yuara Pirate Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16279.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11601,
+        "iconId": 16278,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de harpirata",
+        "nameEn": "Harpy Pirate Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16278.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11602,
+        "iconId": 16277,
+        "category": "sombreros",
+        "nameEs": "Sombrero Pourri",
+        "nameEn": "Pope Ory Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16277.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11603,
+        "iconId": 16276,
+        "category": "sombreros",
+        "nameEs": "Sombrero Tiche rasgado",
+        "nameEn": "Tatty Bim Bonnet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16276.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11604,
+        "iconId": 16280,
+        "category": "sombreros",
+        "nameEs": "Sombrero Stapokaliptik",
+        "nameEn": "Postapocalypte Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16280.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11707,
+        "iconId": 16284,
+        "category": "sombreros",
+        "nameEs": "Sombrero de g\u00E9lifux",
+        "nameEn": "Tengu Snowfoux Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16284.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11715,
+        "iconId": 16292,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Tejossus",
+        "nameEn": "Kolosso Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16292.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11718,
+        "iconId": 16289,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara  de Golosotr\u00F3n Real",
+        "nameEn": "Celestial Bearbarian Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16289.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11723,
+        "iconId": 16291,
+        "category": "sombreros",
+        "nameEs": "Sombrero de buen aporte",
+        "nameEn": "Punchinello\u0027s Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16291.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11724,
+        "iconId": 16297,
+        "category": "sombreros",
+        "nameEs": "Traviesombrero",
+        "nameEn": "Mischief Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16297.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11725,
+        "iconId": 16290,
+        "category": "sombreros",
+        "nameEs": "Gorra L\u0027mwada",
+        "nameEn": "Somnambulist\u0027s Nightcap",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16290.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11804,
+        "iconId": 16287,
+        "category": "sombreros",
+        "nameEs": "Blue Tofu",
+        "nameEn": "Blue Tofu",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16287.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11813,
+        "iconId": 16286,
+        "category": "sombreros",
+        "nameEs": "Ornigorra",
+        "nameEn": "Platypus Helmet",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16286.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11818,
+        "iconId": 16285,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara de Perceblando",
+        "nameEn": "Percimol\u0027s Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16285.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11854,
+        "iconId": 16288,
+        "category": "sombreros",
+        "nameEs": "Sombrero de Stroud",
+        "nameEn": "Stroud\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16288.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11982,
+        "iconId": 16299,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara del kan\u00EDbola Daldrrak",
+        "nameEn": "Kanniball Andchain\u0027s Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16299.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 11993,
+        "iconId": 16296,
+        "category": "sombreros",
+        "nameEs": "Gorro de Popol el pulpo",
+        "nameEn": "Pol the Octopus\u0027s Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16296.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12021,
+        "iconId": 16300,
+        "category": "sombreros",
+        "nameEs": "Corona de Kwoknan",
+        "nameEn": "Kwakwa Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16300.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12058,
+        "iconId": 16301,
+        "category": "sombreros",
+        "nameEs": "Sombraldero",
+        "nameEn": "Cauldron Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16301.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12106,
+        "iconId": 16304,
+        "category": "sombreros",
+        "nameEs": "Tocado de Boreal",
+        "nameEn": "Borealis\u0027s Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16304.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12116,
+        "iconId": 16306,
+        "category": "sombreros",
+        "nameEs": "Corona de Golostr\u00F3n Real",
+        "nameEn": "Celestial Bearbarian Headdress",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16306.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12118,
+        "iconId": 16305,
+        "category": "sombreros",
+        "nameEs": "Tocado de Fuji g\u00E9lifux",
+        "nameEn": "Fuji Snowfoux Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16305.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12350,
+        "iconId": 16310,
+        "category": "sombreros",
+        "nameEs": "Tymbal",
+        "nameEn": "Rogueraider",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16310.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12377,
+        "iconId": 16313,
+        "category": "sombreros",
+        "nameEs": "Sombrero Peloso",
+        "nameEn": "Hir Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16313.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12385,
+        "iconId": 16311,
+        "category": "sombreros",
+        "nameEs": "Bandana burlona",
+        "nameEn": "Hoodwink Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16311.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12386,
+        "iconId": 16312,
+        "category": "sombreros",
+        "nameEs": "M\u00E1scara Rpone",
+        "nameEn": "Arpone Mask",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16312.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12417,
+        "iconId": 16314,
+        "category": "sombreros",
+        "nameEs": "Sombrero vulkaniano",
+        "nameEn": "Vulkanian Hat",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16314.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12418,
+        "iconId": 16317,
+        "category": "sombreros",
+        "nameEs": "Tocado de Grozilla",
+        "nameEn": "Grozilla Headgear",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16317.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12464,
+        "iconId": 16315,
+        "category": "sombreros",
+        "nameEs": "Bor\u00E1scara",
+        "nameEn": "Boratt",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16315.png",
+        "copied": true,
+        "skippedExisting": false
+      },
+      {
+        "itemId": 12504,
+        "iconId": 16316,
+        "category": "sombreros",
+        "nameEs": "Bandana de Pandaulina",
+        "nameEn": "Pandalida Headband",
+        "previewPath": "/assets/item-previews/by-category/sombreros/16316.png",
+        "copied": true,
+        "skippedExisting": false
+      }
+    ]
+  }
+}

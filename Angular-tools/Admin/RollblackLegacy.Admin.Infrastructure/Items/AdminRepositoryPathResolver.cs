@@ -47,6 +47,12 @@ public static class AdminRepositoryPathResolver
     public static string ResolveAdminAngularByIconRoot(string contentRootPath) =>
         Path.Combine(ResolveAdminAngularItemPreviewsRoot(contentRootPath), "by-icon");
 
+    public static string ResolveAdminAngularByCategoryRoot(string contentRootPath) =>
+        Path.Combine(ResolveAdminAngularItemPreviewsRoot(contentRootPath), "by-category");
+
+    public static string ResolveAdminAngularCategoryManifestPath(string contentRootPath) =>
+        Path.Combine(ResolveAdminAngularByCategoryRoot(contentRootPath), "catalog-manifest.json");
+
     public static string ResolveAdminAngularByAppearanceRoot(string contentRootPath) =>
         Path.Combine(ResolveAdminAngularItemPreviewsRoot(contentRootPath), "by-appearance");
 

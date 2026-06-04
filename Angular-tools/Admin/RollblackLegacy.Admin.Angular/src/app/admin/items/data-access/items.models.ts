@@ -23,9 +23,27 @@ export interface ItemSearchRequest {
   pageSize: number;
 }
 
+export type ItemIconCatalogMode = 'by-icon' | 'by-category';
+
+export const ITEM_ICON_CATEGORY_OPTIONS = [
+  { id: 'dofus', label: 'Dofus' },
+  { id: 'sombreros', label: 'Sombreros' },
+  { id: 'capas', label: 'Capas' },
+  { id: 'botas', label: 'Botas' },
+  { id: 'mascotas', label: 'Mascotas' },
+  { id: 'escudos', label: 'Escudos' },
+  { id: 'anillos', label: 'Anillos' },
+  { id: 'amuletos', label: 'Amuletos' },
+  { id: 'cinturones', label: 'Cinturones' },
+  { id: 'recursos', label: 'Recursos' }
+] as const;
+
 export interface ItemIconSearchRequest {
   search?: string;
+  itemId?: number;
   iconId?: number;
+  catalogMode?: ItemIconCatalogMode;
+  category?: string;
   page: number;
   pageSize: number;
 }
@@ -45,6 +63,10 @@ export interface ItemIconOptionDto {
   hasPreview: boolean;
   linkedItemCount?: number | null;
   sampleItemNames: string[];
+  category?: string | null;
+  nameEs?: string | null;
+  nameEn?: string | null;
+  sampleItemId?: number | null;
 }
 
 export interface ItemIconSelection {
@@ -348,6 +370,7 @@ export function createEmptyItemSearchRequest(): ItemSearchRequest {
 
 export function createEmptyItemIconSearchRequest(): ItemIconSearchRequest {
   return {
+    catalogMode: 'by-category',
     page: 1,
     pageSize: 24
   };

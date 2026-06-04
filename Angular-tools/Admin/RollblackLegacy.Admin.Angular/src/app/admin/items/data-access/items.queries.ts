@@ -1,6 +1,11 @@
 import { ParamMap, Params } from '@angular/router';
 
-import { ItemSearchRequest, createEmptyItemSearchRequest } from './items.models';
+import {
+  ItemIconSearchRequest,
+  ItemSearchRequest,
+  createEmptyItemIconSearchRequest,
+  createEmptyItemSearchRequest
+} from './items.models';
 
 export const DEFAULT_ITEMS_PAGE_SIZE = 20;
 
@@ -51,6 +56,50 @@ export function toItemQueryParams(request: ItemSearchRequest): Params {
   }
 
   return params;
+}
+
+export function toItemIconQueryParams(request: ItemIconSearchRequest): Params {
+  const query = normalizeItemIconSearchRequest(request);
+  const params: Params = {
+    page: query.page,
+    pageSize: query.pageSize
+  };
+
+  if (query.search) {
+    params['search'] = query.search;
+  }
+
+  if (query.itemId) {
+    params['itemId'] = query.itemId;
+  }
+
+  if (query.iconId) {
+    params['iconId'] = query.iconId;
+  }
+
+  if (query.catalogMode) {
+    params['catalogMode'] = query.catalogMode;
+  }
+
+  if (query.category) {
+    params['category'] = query.category;
+  }
+
+  return params;
+}
+
+export function normalizeItemIconSearchRequest(request: ItemIconSearchRequest): ItemIconSearchRequest {
+  const defaults = createEmptyItemIconSearchRequest();
+
+  return {
+    search: normalizeOptionalText(request.search),
+    itemId: normalizePositiveInt(request.itemId),
+    iconId: normalizePositiveInt(request.iconId),
+    catalogMode: request.catalogMode === 'by-icon' ? 'by-icon' : 'by-category',
+    category: normalizeOptionalText(request.category),
+    page: normalizePositiveInt(request.page) ?? defaults.page,
+    pageSize: normalizePageSize(request.pageSize) ?? defaults.pageSize
+  };
 }
 
 export function normalizeItemSearchRequest(request: ItemSearchRequest): ItemSearchRequest {

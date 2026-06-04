@@ -24,7 +24,7 @@ import {
   ItemEffectsUpdateRequest,
   ItemEffectsUpdateResultDto
 } from './items.models';
-import { toItemQueryParams } from './items.queries';
+import { toItemIconQueryParams, toItemQueryParams } from './items.queries';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +50,7 @@ export class ItemsApi {
     return this.httpClient.get<ItemPagedResultDto<ItemIconOptionDto>>(
       `${this.baseUrl}/item-icons`,
       {
-        params: toItemQueryParams(request)
+        params: toItemIconQueryParams(request)
       }
     );
   }
