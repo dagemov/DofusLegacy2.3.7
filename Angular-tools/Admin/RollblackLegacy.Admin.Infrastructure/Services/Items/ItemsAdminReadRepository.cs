@@ -103,6 +103,14 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         return new AdminPagedItemsReadModel(totalCount, items);
     }
 
+    public Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default)
+    {
+        var manifestPath = AdminRepositoryPathResolver.ResolveAdminAngularCategoryManifestPath(_hostEnvironment.ContentRootPath);
+        var categoryRoot = AdminRepositoryPathResolver.ResolveAdminAngularByCategoryRoot(_hostEnvironment.ContentRootPath);
+        var reader = new ItemPreviewCatalogManifestReader();
+        return Task.FromResult(reader.LoadCategoryStats(manifestPath, categoryRoot));
+    }
+
     public async Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(
         ItemIconSearchRequest request,
         CancellationToken cancellationToken = default)
@@ -167,11 +175,7 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         }
 
         var filtered = options
-            .Where(x => string.IsNullOrWhiteSpace(request.Category) ||
-                        string.Equals(x.Category, request.Category, StringComparison.OrdinalIgnoreCase))
-            .Where(x => !request.ItemId.HasValue || x.SampleItemId == request.ItemId.Value)
-            .Where(x => !request.IconId.HasValue || x.IconId == request.IconId.Value)
-            .Where(x => normalizedSearch is null || MatchesCategorySearch(x, normalizedSearch))
+            .Where(x => MatchesCategoryFilters(x, request))
             .OrderBy(x => x.Category, StringComparer.OrdinalIgnoreCase)
             .ThenBy(x => x.IconId)
             .ToList();
@@ -405,6 +409,49 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         }
 
         return option.SampleItemNames.Any(name => name.Contains(search, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool MatchesCategoryFilters(ItemIconOptionDto option, ItemIconSearchRequest request)
+    {
+        if (!string.IsNullOrWhiteSpace(request.Category) &&
+            !string.Equals(option.Category, request.Category, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (request.ItemId.HasValue && option.SampleItemId != request.ItemId.Value)
+        {
+            return false;
+        }
+
+        if (request.IconId.HasValue && option.IconId != request.IconId.Value)
+        {
+            return false;
+        }
+
+        var nameEs = NormalizeSearch(request.NameEs);
+        if (nameEs is not null &&
+            !(option.NameEs?.Contains(nameEs, StringComparison.OrdinalIgnoreCase) == true ||
+              option.SampleItemNames.Any(n => n.Contains(nameEs, StringComparison.OrdinalIgnoreCase))))
+        {
+            return false;
+        }
+
+        var nameEn = NormalizeSearch(request.NameEn);
+        if (nameEn is not null &&
+            !(option.NameEn?.Contains(nameEn, StringComparison.OrdinalIgnoreCase) == true ||
+              option.SampleItemNames.Any(n => n.Contains(nameEn, StringComparison.OrdinalIgnoreCase))))
+        {
+            return false;
+        }
+
+        var search = NormalizeSearch(request.Search);
+        if (search is not null && !MatchesCategorySearch(option, search))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private static bool MatchesCategorySearch(ItemIconOptionDto option, string search)

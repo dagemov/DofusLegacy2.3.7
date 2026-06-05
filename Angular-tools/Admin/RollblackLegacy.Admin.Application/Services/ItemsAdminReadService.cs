@@ -52,6 +52,9 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         return _repository.SearchIconsAsync(request, cancellationToken);
     }
 
+    public Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default) =>
+        _repository.GetIconCategoryStatsAsync(cancellationToken);
+
     public async Task<ItemDetailDto> GetItemAsync(int itemId, CancellationToken cancellationToken = default)
     {
         EnsurePositiveItemId(itemId);

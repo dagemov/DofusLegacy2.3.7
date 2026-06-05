@@ -36,6 +36,7 @@ return options.Mode.ToLowerInvariant() switch
     "item-skin-catalog-export-curated" => RunItemSkinCatalogExportCurated(repoRoot, options),
     "item-preview-extract-by-category" => RunItemPreviewExtractByCategory(repoRoot, options),
     "item-preview-copy-to-angular" => RunItemPreviewCopyToAngular(repoRoot, options),
+    "item-preview-expand-categories" => RunItemPreviewExpandCategories(repoRoot, options),
     _ => throw new ArgumentException($"Modo no soportado: {options.Mode}")
 };
 
@@ -557,6 +558,60 @@ static int RunItemPreviewCopyToAngular(string repoRoot, PublicationPipelineOptio
 
     return result.Copied > 0 && result.WeaponsCopied == 0 ? 0 : 1;
 }
+
+static int RunItemPreviewExpandCategories(string repoRoot, PublicationPipelineOptions options)
+{
+    var outputDirectory = ResolveOutputDirectory(
+        repoRoot,
+        ShouldUseDefaultExpansionOutput(options.OutputDirectory)
+            ? "Infrastructure/temporal-artifacts/item-skin-catalog/export-phase6d"
+            : options.OutputDirectory);
+
+    var targetCategories = ParseCategories(options.Categories);
+    if (targetCategories.Count == 0)
+    {
+        targetCategories = ItemPreviewCategoryExpansion.Phase6dCategoryPriority;
+    }
+
+    var skipCategories = ParseCategories(options.SkipCategories);
+    if (skipCategories.Count == 0)
+    {
+        skipCategories = ItemPreviewCategoryExpansion.DefaultSkipCategories;
+    }
+
+    var limit = options.CatalogLimit >= 100 ? options.CatalogLimit : 1500;
+    var expander = new ItemPreviewCategoryExpansion();
+    var result = expander.Expand(
+        repoRoot,
+        outputDirectory,
+        targetCategories,
+        skipCategories,
+        limit,
+        options.ApproveCuratedCopy,
+        options.OverwriteCuratedCopy);
+
+    Console.WriteLine($"New PNG extracted: {result.NewPngExtracted}");
+    Console.WriteLine($"PNG skipped (existing): {result.PngSkippedExisting}");
+    Console.WriteLine($"Copied to Angular: {result.CopiedToAngular}");
+    Console.WriteLine($"Total PNG in Angular: {result.TotalPngInAngular}");
+    Console.WriteLine($"Extraction errors: {result.ExtractionErrors}");
+    foreach (var pair in result.TotalByCategory.OrderBy(static p => p.Key, StringComparer.OrdinalIgnoreCase))
+    {
+        Console.WriteLine($"  {pair.Key}: {pair.Value}");
+    }
+
+    Console.WriteLine($"Manifest: {result.ManifestPath}");
+    foreach (var message in result.Messages.Take(10))
+    {
+        Console.WriteLine(message);
+    }
+
+    return result.TotalPngInAngular >= 1000 ? 0 : 1;
+}
+
+static bool ShouldUseDefaultExpansionOutput(string outputDirectory) =>
+    string.IsNullOrWhiteSpace(outputDirectory) ||
+    outputDirectory.Contains("client-item-publication", StringComparison.OrdinalIgnoreCase);
 
 static IReadOnlyList<string> ParseCategories(string? categories) =>
     string.IsNullOrWhiteSpace(categories)

@@ -25,7 +25,8 @@ internal sealed record PublicationPipelineOptions(
     bool ApproveCuratedCopy,
     string? Categories,
     string? SourceDirectory,
-    bool OverwriteCuratedCopy)
+    bool OverwriteCuratedCopy,
+    string? SkipCategories)
 {
     public static PublicationPipelineOptions Parse(string[] args)
     {
@@ -54,6 +55,7 @@ internal sealed record PublicationPipelineOptions(
         string? categories = null;
         string? sourceDirectory = null;
         var overwriteCuratedCopy = false;
+        var skipCategories = "dofus,sombreros,capas";
 
         for (var index = 0; index < args.Length; index++)
         {
@@ -134,6 +136,9 @@ internal sealed record PublicationPipelineOptions(
                 case "--overwrite-curated":
                     overwriteCuratedCopy = true;
                     break;
+                case "--skip-categories" when index + 1 < args.Length:
+                    skipCategories = args[++index];
+                    break;
             }
         }
 
@@ -167,7 +172,8 @@ internal sealed record PublicationPipelineOptions(
             approveCuratedCopy,
             categories,
             sourceDirectory,
-            overwriteCuratedCopy);
+            overwriteCuratedCopy,
+            skipCategories);
     }
 }
 

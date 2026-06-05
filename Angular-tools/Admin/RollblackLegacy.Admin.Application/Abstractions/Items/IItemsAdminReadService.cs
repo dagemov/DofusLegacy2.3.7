@@ -9,6 +9,8 @@ public interface IItemsAdminReadService
 
     Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(ItemIconSearchRequest request, CancellationToken cancellationToken = default);
 
+    Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default);
+
     Task<ItemDetailDto> GetItemAsync(int itemId, CancellationToken cancellationToken = default);
 
     Task<ItemClientIdentityDto> GetIdentityAsync(int itemId, CancellationToken cancellationToken = default);

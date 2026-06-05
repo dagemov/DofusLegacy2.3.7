@@ -6,6 +6,10 @@ public sealed class ItemIconSearchRequest
 {
     public string? Search { get; set; }
 
+    public string? NameEs { get; set; }
+
+    public string? NameEn { get; set; }
+
     [Range(1, int.MaxValue)]
     public int? ItemId { get; set; }
 
