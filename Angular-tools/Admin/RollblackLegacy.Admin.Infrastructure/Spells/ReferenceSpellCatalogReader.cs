@@ -38,8 +38,8 @@ public sealed class ReferenceSpellCatalogReader
 
         var texts = LoadI18nTexts(i18nPath);
         var typeLabels = LoadTypeLabels(typesPath, texts);
-        var levelInfoBySpellId = LoadLevelInfo(levelsPath);
-        var spellsById = LoadSpellTemplates(templatesPath, texts, typeLabels, levelInfoBySpellId);
+        var levelsById = LoadReferenceLevels(levelsPath, out var levelsBySpellId);
+        var spellsById = LoadSpellTemplates(templatesPath, texts, typeLabels, levelsById, levelsBySpellId);
         var classicSpellIds = spellsById.Values
             .Where(spell => spell.HasClassicBreedLevels)
             .Select(spell => spell.SpellId)
@@ -57,7 +57,8 @@ public sealed class ReferenceSpellCatalogReader
         string templatesPath,
         IReadOnlyDictionary<int, string> texts,
         IReadOnlyDictionary<int, string> typeLabels,
-        IReadOnlyDictionary<short, ReferenceSpellLevelInfo> levelInfoBySpellId)
+        IReadOnlyDictionary<int, ReferenceSpellLevelEntry> levelsById,
+        IReadOnlyDictionary<short, IReadOnlyList<ReferenceSpellLevelEntry>> levelsBySpellId)
     {
         var result = new Dictionary<short, ReferenceSpellCatalogEntry>();
         foreach (var values in EnumerateInsertValues(templatesPath, "spells_templates"))
@@ -78,57 +79,103 @@ public sealed class ReferenceSpellCatalogReader
             var typeId = ToInt32(values[3]);
             var iconId = ToInt32(values[8]);
             var levelsCsv = values[9];
-            levelInfoBySpellId.TryGetValue(spellId, out var levelInfo);
+            var orderedLevelIds = ParseCsvInts(levelsCsv);
+            var spellLevels = orderedLevelIds
+                .Where(levelId => levelsById.ContainsKey(levelId))
+                .Select(levelId => levelsById[levelId])
+                .ToArray();
+
+            if (spellLevels.Length == 0 &&
+                levelsBySpellId.TryGetValue(spellId, out var groupedLevels))
+            {
+                spellLevels = groupedLevels.ToArray();
+            }
+
+            var breedIds = spellLevels
+                .Select(level => level.SpellBreed)
+                .Where(value => value > 0)
+                .Distinct()
+                .OrderBy(value => value)
+                .ToArray();
+            var levelsLookup = spellLevels.ToDictionary(level => level.LevelId);
 
             result[spellId] = new ReferenceSpellCatalogEntry(
                 spellId,
                 texts.TryGetValue(nameId, out var name) ? name : null,
                 texts.TryGetValue(descriptionId, out var description) ? description : null,
+                nameId > 0 ? nameId : null,
+                descriptionId > 0 ? descriptionId : null,
                 typeId,
                 typeLabels.TryGetValue(typeId, out var typeLabel) ? typeLabel : null,
                 iconId > 0 ? iconId : null,
-                levelInfo?.BreedIds ?? Array.Empty<int>(),
+                breedIds,
                 CountCsv(levelsCsv),
-                levelInfo?.HasClassicBreedLevels ?? false);
+                breedIds.Any(value => value is >= 1 and <= 12),
+                NormalizeCsv(levelsCsv),
+                orderedLevelIds,
+                levelsLookup);
         }
 
         return result;
     }
 
-    private static IReadOnlyDictionary<short, ReferenceSpellLevelInfo> LoadLevelInfo(string levelsPath)
+    private static IReadOnlyDictionary<int, ReferenceSpellLevelEntry> LoadReferenceLevels(
+        string levelsPath,
+        out IReadOnlyDictionary<short, IReadOnlyList<ReferenceSpellLevelEntry>> levelsBySpellId)
     {
-        var breedsBySpellId = new Dictionary<short, HashSet<int>>();
+        var result = new Dictionary<int, ReferenceSpellLevelEntry>();
+        var grouped = new Dictionary<short, List<ReferenceSpellLevelEntry>>();
         foreach (var values in EnumerateInsertValues(levelsPath, "spells_levels"))
         {
-            if (values.Count < 3)
+            if (values.Count < 29)
             {
                 continue;
             }
 
+            var levelId = ToInt32(values[0]);
             var spellId = ToInt16(values[1]);
-            var spellBreed = ToInt32(values[2]);
-            if (spellId <= 0)
+            if (levelId <= 0 || spellId <= 0)
             {
                 continue;
             }
 
-            if (!breedsBySpellId.TryGetValue(spellId, out var breeds))
+            var level = new ReferenceSpellLevelEntry(
+                levelId,
+                spellId,
+                ToInt32(values[2]),
+                ToInt32(values[3]),
+                ToInt32(values[25]),
+                ToInt32(values[4]),
+                ToBoolean(values[5]),
+                ToBoolean(values[7]),
+                ToBoolean(values[11]),
+                ToBoolean(values[14]),
+                ToBoolean(values[22]),
+                ToInt32(values[8]),
+                ToInt32(values[10]),
+                ToInt32(values[16]),
+                ToInt32(values[17]),
+                ToInt32(values[18]),
+                ToInt32(values[21]),
+                NormalizeCsv(values[9]),
+                NormalizeCsv(values[26]),
+                HasSerializedPayload(values[27]),
+                HasSerializedPayload(values[28]));
+
+            result[levelId] = level;
+            if (!grouped.TryGetValue(spellId, out var spellLevels))
             {
-                breeds = new HashSet<int>();
-                breedsBySpellId[spellId] = breeds;
+                spellLevels = new List<ReferenceSpellLevelEntry>();
+                grouped[spellId] = spellLevels;
             }
 
-            if (spellBreed > 0)
-            {
-                breeds.Add(spellBreed);
-            }
+            spellLevels.Add(level);
         }
 
-        return breedsBySpellId.ToDictionary(
+        levelsBySpellId = grouped.ToDictionary(
             pair => pair.Key,
-            pair => new ReferenceSpellLevelInfo(
-                pair.Value.OrderBy(value => value).ToArray(),
-                pair.Value.Any(value => value is >= 1 and <= 12)));
+            pair => (IReadOnlyList<ReferenceSpellLevelEntry>)pair.Value.ToArray());
+        return result;
     }
 
     private static IReadOnlyDictionary<int, string> LoadTypeLabels(
@@ -310,6 +357,41 @@ public sealed class ReferenceSpellCatalogReader
         return candidates.FirstOrDefault(Directory.Exists);
     }
 
+    private static string NormalizeCsv(string? csv) =>
+        string.Join(
+            ",",
+            (csv ?? string.Empty)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                .Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    private static int[] ParseCsvInts(string? csv) =>
+        NormalizeCsv(csv)
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(value => int.TryParse(value, out var parsed) ? parsed : 0)
+            .Where(value => value > 0)
+            .ToArray();
+
+    private static bool HasSerializedPayload(string? value)
+    {
+        var normalized = (value ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(normalized))
+        {
+            return false;
+        }
+
+        if (string.Equals(normalized, "null", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (normalized.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+        {
+            normalized = normalized[2..];
+        }
+
+        return normalized.Any(character => character != '0');
+    }
+
     private static int CountCsv(string? csv)
     {
         return (csv ?? string.Empty)
@@ -340,6 +422,10 @@ public sealed class ReferenceSpellCatalogReader
             : 0;
     }
 
+    private static bool ToBoolean(string value) =>
+        string.Equals(value, "1", StringComparison.Ordinal) ||
+        string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+
     internal sealed record ReferenceSpellCatalogSnapshot(
         IReadOnlyDictionary<short, ReferenceSpellCatalogEntry> SpellsById,
         IReadOnlyDictionary<int, string> TypeLabels,
@@ -360,14 +446,38 @@ public sealed class ReferenceSpellCatalogReader
         short SpellId,
         string? Name,
         string? Description,
+        int? NameId,
+        int? DescriptionId,
         int TypeId,
         string? TypeLabel,
         int? IconId,
         IReadOnlyList<int> BreedIds,
         int LevelCount,
-        bool HasClassicBreedLevels);
+        bool HasClassicBreedLevels,
+        string SpellLevelsIdsCsv,
+        IReadOnlyList<int> OrderedLevelIds,
+        IReadOnlyDictionary<int, ReferenceSpellLevelEntry> LevelsById);
 
-    private sealed record ReferenceSpellLevelInfo(
-        IReadOnlyList<int> BreedIds,
-        bool HasClassicBreedLevels);
+    internal sealed record ReferenceSpellLevelEntry(
+        int LevelId,
+        short SpellId,
+        int SpellBreed,
+        int ApCost,
+        int MinRange,
+        int MaxRange,
+        bool CastInLine,
+        bool CastTestLos,
+        bool NeedFreeCell,
+        bool RangeCanBeBoosted,
+        bool CriticalFailureEndsTurn,
+        int CriticalHitProbability,
+        int CriticalFailureProbability,
+        int MaxCastPerTurn,
+        int MaxCastPerTarget,
+        int MinCastInterval,
+        int MinPlayerLevel,
+        string StatesRequiredCsv,
+        string StatesForbiddenCsv,
+        bool HasEffects,
+        bool HasCriticalEffects);
 }

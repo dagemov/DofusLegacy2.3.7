@@ -1,6 +1,35 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-05`
+Generated: `2026-06-04`
+
+## Macro 5 / Phase 3 - Spell Detail API
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/item-preview-category-expansion-phase6d` |
+| Base | `feature/item-preview-massive-extraction-phase6c` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- Endpoint `GET /api/admin/v1/spells/{spellId}`
+- Contratos `SpellDetailDto`, `SpellReferenceMetadataDto`, `SpellLevelSummaryDto`
+- Read models de detalle y niveles read-only
+- Repositorio/reader con compatibilidad para `spells` actual y `spells_templates` legacy
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase3-detail-api.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `FAILED_EXTERNAL_LOCK` |
+| Causa registrada | DLLs del Admin API bloqueadas por Visual Studio (`RollblackLegacy.Admin.Api`) |
+| Estado de compilacion del cambio | `COMPILED_BEFORE_COPY_LOCK` |
+
+### Siguiente
+
+- Macro 5 / Phase 4: Spell Levels API
+- Alcance esperado: contratos de nivel mas ricos, orden/consistencia de niveles y lectura dedicada sin write API
 
 ## Macro Items Final Plus - Preview + Sets + Stat icons
 

@@ -1,0 +1,26 @@
+namespace RollblackLegacy.Admin.Application.Models.Spells;
+
+public sealed record AdminSpellLevelSummaryReadModel(
+    int LevelNumber,
+    int? RuntimeLevelId,
+    int? ReferenceLevelId,
+    int MinPlayerLevel,
+    int ApCost,
+    int MinRange,
+    int MaxRange,
+    bool CastInLine,
+    bool CastTestLos,
+    bool NeedFreeCell,
+    bool RangeCanBeBoosted,
+    bool CriticalFailureEndsTurn,
+    int CriticalHitProbability,
+    int CriticalFailureProbability,
+    int MaxCastPerTurn,
+    int MaxCastPerTarget,
+    int MinCastInterval,
+    IReadOnlyList<short> StatesRequired,
+    IReadOnlyList<short> StatesForbidden,
+    bool HasEffects,
+    bool HasCriticalEffects,
+    bool RuntimeAvailable,
+    bool ReferenceAvailable);

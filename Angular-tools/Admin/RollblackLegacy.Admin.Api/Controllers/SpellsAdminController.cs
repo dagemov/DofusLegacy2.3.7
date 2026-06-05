@@ -24,4 +24,15 @@ public sealed class SpellsAdminController : ControllerBase
         var result = await _spellsAdminReadService.SearchAsync(request, cancellationToken);
         return Ok(result);
     }
+
+    [HttpGet("{spellId:int}")]
+    [ProducesResponseType(typeof(SpellDetailDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<SpellDetailDto>> GetSpell(
+        [FromRoute] short spellId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _spellsAdminReadService.GetByIdAsync(spellId, cancellationToken);
+        return Ok(result);
+    }
 }
