@@ -24,6 +24,16 @@ export const routes: Routes = [
       import('./admin/item-sets/item-sets-page.component').then((m) => m.ItemSetsPageComponent)
   },
   {
+    path: 'admin/item-sets/new',
+    loadComponent: () =>
+      import('./admin/item-sets/item-set-write-page.component').then((m) => m.ItemSetWritePageComponent)
+  },
+  {
+    path: 'admin/item-sets/:setId/edit',
+    loadComponent: () =>
+      import('./admin/item-sets/item-set-write-page.component').then((m) => m.ItemSetWritePageComponent)
+  },
+  {
     path: 'admin/item-sets/:setId',
     loadComponent: () =>
       import('./admin/item-sets/item-set-detail-page.component').then((m) => m.ItemSetDetailPageComponent)
