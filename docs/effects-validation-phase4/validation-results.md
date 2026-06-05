@@ -1,13 +1,13 @@
 # Fase 4 — Resultados de validación
 
-Completar tras pruebas en **`develop-build`** (VPS Docker). Estado inicial: **PENDING** en todos los escenarios.
+Completar tras pruebas en **`devp`** (VPS Docker). Estado inicial: **PENDING** en todos los escenarios.
 
 ## Entorno de ejecución
 
 | Campo | Valor |
 |-------|--------|
 | Fecha test | *(completar)* |
-| Rama / SHA | `develop-build` @ *(SHA)* |
+| Rama / SHA | `devp` @ *(SHA)* |
 | Tester | *(nombre)* |
 | Cliente | 2.3.7 → `174.138.35.107:2450` / `:5557` |
 | Logs | `/opt/dofus-2.0.0-build/docker/logs/fights/{fightId}.log` |
@@ -108,7 +108,7 @@ Completar tras pruebas en **`develop-build`** (VPS Docker). Estado inicial: **PE
 | PASS | 0 |
 | FAIL | 0 |
 | PENDING | 28 |
-| Compila (`develop-compile`) | **OK** @ `dad4332` |
+| Compila (`devp-compile`) | **OK** @ `f6c79fc` |
 
 ## Fallos → acción
 
@@ -117,7 +117,7 @@ Si un escenario marca **FAIL**:
 1. Identificar **capa** (no hechizo) en [test-scenarios.md](./test-scenarios.md).
 2. Documentar causa en esta tabla (columna Evidencia + nota).
 3. Si requiere código: commit por capa en rama nueva (no mezclar hechizos).
-4. Re-test en `develop-build` y actualizar fila a PASS.
+4. Re-test en `devp` (VPS) y actualizar fila a PASS.
 
 ## Enlaces
 

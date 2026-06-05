@@ -1,6 +1,6 @@
 # Fase 4: Validación funcional
 
-Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback y plantilla de resultados. Los tests los ejecuta el equipo en `develop-build` (Docker VPS).
+Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback y plantilla de resultados. Los tests los ejecuta el equipo en `devp` (Docker VPS).
 
 ## Metadatos
 
@@ -8,11 +8,11 @@ Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback 
 |-------|--------|
 | Duración estimada | ~4 h |
 | Rama feature | `feature/effects-validation-phase4` |
-| Rama compile local | `develop-compile` @ `dad4332` (build OK) |
-| Rama test runtime | `develop-build` (VPS) |
+| Rama compile local | `devp-compile` @ `f6c79fc` (build OK) |
+| Rama test runtime | `devp` (VPS) |
 | Documentación | `docs/effects-validation-phase4/` |
 | Fases previas | [Fase 1](../effects-audit-phase1/) · [Fase 2](../effects-catalog-phase2/) · [Fase 3](../effects-engine-fix-phase3/) |
-| Integración Fase 3 | PR #17 mergeado en `develop` @ `dad4332` |
+| Integración Fase 3 | PR #28 → `devp` (Fase 3 engine-fix) |
 
 ## Filosofía de corrección (obligatoria)
 
@@ -39,15 +39,15 @@ En esta fase los escenarios usan nombres de jugador solo como **casos de prueba*
 
 ```mermaid
 flowchart LR
-  develop[develop]
-  compile[develop-compile_local]
-  build[develop-build_VPS]
+  devp[devp]
+  compile[devp-compile_local]
+  build[devp_VPS]
   phase4[feature/effects-validation-phase4]
-  develop --> compile
-  develop --> phase4
+  devp --> compile
+  devp --> phase4
   compile -->|docker_build| compileOK[Compile_OK]
   build -->|tests_manuales| results[validation-results.md]
-  phase4 -->|PR| develop
+  phase4 -->|PR| devp
 ```
 
 Ver [BRANCHING.md](../BRANCHING.md).
@@ -61,7 +61,7 @@ Ver [BRANCHING.md](../BRANCHING.md).
 | Logger | `FIGHT_COMBAT_LOG_ENABLED=true` en `.env` |
 | Logs combate | `docker/logs/fights/{fightId}.log` |
 
-## Compile gate (`develop-compile`)
+## Compile gate (`devp-compile`)
 
 | Criterio | Estado |
 |----------|--------|
@@ -72,8 +72,8 @@ Ver [BRANCHING.md](../BRANCHING.md).
 
 - [x] Escenarios documentados por capa (no por hechizo como fix)
 - [x] Hilos de código Sunshine + referencia Rollback
-- [x] Compilación verificada en `develop-compile`
-- [ ] Resultados in-game en `validation-results.md` (equipo / `develop-build`)
+- [x] Compilación verificada en `devp-compile`
+- [ ] Resultados in-game en `validation-results.md` (equipo / `devp` en VPS)
 - [ ] Bosses / empujes: gaps Ola 2 documentados si FAIL
 
 ## Alcance
