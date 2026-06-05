@@ -105,11 +105,23 @@ export interface ItemPreviewStateDto {
   fallbackUsed: string;
 }
 
+export interface ItemSetSearchRequest {
+  search?: string;
+  minLevel?: number;
+  maxLevel?: number;
+  minParts?: number;
+  maxParts?: number;
+  page: number;
+  pageSize: number;
+}
+
 export interface ItemSetListItemDto {
   setId: number;
   name: string;
+  level: number;
   itemCount: number;
   bonusTierCount: number;
+  previewItemIcons: string[];
 }
 
 export interface ItemSetBonusEffectDto {
@@ -117,7 +129,34 @@ export interface ItemSetBonusEffectDto {
   label: string;
   protocolName: string;
   value: number;
+  diceNum?: number | null;
+  diceSide?: number | null;
   format: string;
+}
+
+export interface ItemSetBonusEffectWriteDto {
+  effectId: number;
+  value: number;
+  diceNum?: number | null;
+  diceSide?: number | null;
+  format: string;
+}
+
+export interface ItemSetBonusTierWriteDto {
+  pieceCount: number;
+  effects: ItemSetBonusEffectWriteDto[];
+}
+
+export interface ItemSetWriteRequest {
+  name: string;
+  level: number;
+  itemIds: number[];
+  bonusTiers: ItemSetBonusTierWriteDto[];
+}
+
+export interface ItemSetWriteResultDto {
+  setId: number;
+  message: string;
 }
 
 export interface ItemSetBonusTierDto {
@@ -133,15 +172,24 @@ export interface ItemSetMemberDto {
   typeName: string;
   iconId: number;
   previewState: ItemPreviewStateDto;
+  previewPath?: string | null;
   publicationSummary?: string | null;
 }
 
 export interface ItemSetDetailDto {
   setId: number;
   name: string;
+  level: number;
   bonusIsSecret: boolean;
   items: ItemSetMemberDto[];
   bonusTiers: ItemSetBonusTierDto[];
+}
+
+export function createEmptyItemSetSearchRequest(): ItemSetSearchRequest {
+  return {
+    page: 1,
+    pageSize: 20
+  };
 }
 
 export interface ItemAppearancePreviewStateDto {
