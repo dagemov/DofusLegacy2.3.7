@@ -35,11 +35,31 @@ export const ITEM_ICON_CATEGORY_OPTIONS = [
   { id: 'anillos', label: 'Anillos' },
   { id: 'amuletos', label: 'Amuletos' },
   { id: 'cinturones', label: 'Cinturones' },
-  { id: 'recursos', label: 'Recursos' }
+  { id: 'recursos', label: 'Recursos' },
+  { id: 'trofeos', label: 'Trofeos' },
+  { id: 'consumibles', label: 'Consumibles' }
 ] as const;
+
+export interface ItemIconCategoryStatDto {
+  category: string;
+  label: string;
+  count: number;
+  lastExtractionUtc?: string | null;
+  previewSource: string;
+}
+
+export interface ItemIconCategoryStatsDto {
+  totalPngInAngular: number;
+  totalCataloged: number;
+  weaponsExcluded: number;
+  previewSource: string;
+  categories: ItemIconCategoryStatDto[];
+}
 
 export interface ItemIconSearchRequest {
   search?: string;
+  nameEs?: string;
+  nameEn?: string;
   itemId?: number;
   iconId?: number;
   catalogMode?: ItemIconCatalogMode;

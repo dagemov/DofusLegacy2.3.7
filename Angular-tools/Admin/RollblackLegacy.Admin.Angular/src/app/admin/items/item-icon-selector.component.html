@@ -4,7 +4,7 @@
       <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-start">
         <div>
           <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
-          <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Phase 6C</p>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Phase 6D</p>
           <h2 class="h4 mb-2">Selector visual de iconos (Icon Preview)</h2>
           <p class="text-secondary mb-0">
             Catálogo por categoría desde D2P (sin armas) o inventario curado por
@@ -42,27 +42,55 @@
         </button>
       </div>
 
+      <div *ngIf="query.catalogMode !== 'by-icon' && categoryStats.length > 0" class="d-flex flex-wrap gap-2">
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="!query.category"
+          [class.btn-outline-secondary]="!!query.category"
+          type="button"
+          (click)="selectCategory(undefined)">
+          Todas ({{ totalPngInAngular }})
+        </button>
+        <button
+          *ngFor="let stat of categoryStats"
+          class="btn btn-sm"
+          [class.btn-primary]="query.category === stat.category"
+          [class.btn-outline-secondary]="query.category !== stat.category"
+          type="button"
+          (click)="selectCategory(stat.category)">
+          {{ stat.label }} ({{ stat.count }})
+        </button>
+      </div>
+
       <form class="row g-3" (ngSubmit)="applyFilters()">
         <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
           <label class="form-label" for="category">Categoría</label>
           <select id="category" name="category" class="form-select" [(ngModel)]="filters.category">
-            <option [ngValue]="undefined">Todas las categorías</option>
-            <option *ngFor="let option of categoryOptions" [ngValue]="option.id">{{ option.label }}</option>
+            <option [ngValue]="undefined">Todas las categorías ({{ totalPngInAngular }})</option>
+            <option *ngFor="let option of categoryOptions" [ngValue]="option.id">
+              {{ categoryOptionLabel(option.id, option.label) }}
+            </option>
           </select>
         </div>
 
-        <div class="col-12" [class.col-lg-8]="query.catalogMode !== 'by-icon'" [class.col-lg-6]="query.catalogMode === 'by-icon'">
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="nameEs">Nombre ES</label>
+          <input id="nameEs" name="nameEs" [(ngModel)]="filters.nameEs" class="form-control" placeholder="Dofus de los Hielos" />
+        </div>
+
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="nameEn">Nombre EN</label>
+          <input id="nameEn" name="nameEn" [(ngModel)]="filters.nameEn" class="form-control" placeholder="Ice Dofus" />
+        </div>
+
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode === 'by-icon'">
           <label class="form-label" for="search">Buscar</label>
           <input
             id="search"
             name="search"
             [(ngModel)]="filters.search"
             class="form-control"
-            [placeholder]="
-              query.catalogMode === 'by-icon'
-                ? 'IconId o nombre de item vinculado'
-                : 'Nombre ES, nombre EN, ItemId o IconId'
-            " />
+            placeholder="IconId o nombre de item vinculado" />
         </div>
 
         <div class="col-6 col-lg-3" *ngIf="query.catalogMode !== 'by-icon'">

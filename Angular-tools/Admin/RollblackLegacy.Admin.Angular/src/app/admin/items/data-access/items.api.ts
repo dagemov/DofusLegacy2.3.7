@@ -7,6 +7,7 @@ import {
   AdminOptionDto,
   ItemClientIdentityDto,
   ItemDetailDto,
+  ItemIconCategoryStatsDto,
   ItemIconOptionDto,
   ItemIconSearchRequest,
   ItemListItemDto,
@@ -53,6 +54,10 @@ export class ItemsApi {
         params: toItemIconQueryParams(request)
       }
     );
+  }
+
+  getItemIconCategoryStats(): Observable<ItemIconCategoryStatsDto> {
+    return this.httpClient.get<ItemIconCategoryStatsDto>(`${this.baseUrl}/item-icons/category-stats`);
   }
 
   getItem(itemId: number): Observable<ItemDetailDto> {

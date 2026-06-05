@@ -69,6 +69,14 @@ export function toItemIconQueryParams(request: ItemIconSearchRequest): Params {
     params['search'] = query.search;
   }
 
+  if (query.nameEs) {
+    params['nameEs'] = query.nameEs;
+  }
+
+  if (query.nameEn) {
+    params['nameEn'] = query.nameEn;
+  }
+
   if (query.itemId) {
     params['itemId'] = query.itemId;
   }
@@ -93,6 +101,8 @@ export function normalizeItemIconSearchRequest(request: ItemIconSearchRequest): 
 
   return {
     search: normalizeOptionalText(request.search),
+    nameEs: normalizeOptionalText(request.nameEs),
+    nameEn: normalizeOptionalText(request.nameEn),
     itemId: normalizePositiveInt(request.itemId),
     iconId: normalizePositiveInt(request.iconId),
     catalogMode: request.catalogMode === 'by-icon' ? 'by-icon' : 'by-category',

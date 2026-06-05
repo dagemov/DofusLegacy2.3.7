@@ -22,6 +22,7 @@ import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
   ITEM_ICON_CATEGORY_OPTIONS,
+  ItemIconCategoryStatDto,
   ItemIconCatalogMode,
   ItemIconOptionDto,
   ItemIconSearchRequest,
@@ -63,8 +64,12 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
   protected problem: AdminApiProblem | null = null;
   protected isLoading = false;
   protected readonly categoryOptions = ITEM_ICON_CATEGORY_OPTIONS;
+  protected categoryStats: ItemIconCategoryStatDto[] = [];
+  protected totalPngInAngular = 0;
 
   ngOnInit(): void {
+    this.loadCategoryStats();
+
     if (this.embedded) {
       const initialRequest = normalizeItemIconSearchRequest({
         ...createEmptyItemIconSearchRequest(),
@@ -82,6 +87,8 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
         switchMap((paramMap) => {
           const request = normalizeItemIconSearchRequest({
             search: normalizeOptionalText(paramMap.get('search') ?? undefined),
+            nameEs: normalizeOptionalText(paramMap.get('nameEs') ?? undefined),
+            nameEn: normalizeOptionalText(paramMap.get('nameEn') ?? undefined),
             itemId: normalizePositiveInt(paramMap.get('itemId') ?? undefined),
             iconId: normalizePositiveInt(paramMap.get('iconId') ?? undefined),
             catalogMode: readCatalogMode(paramMap.get('catalogMode')),
@@ -225,6 +232,24 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
       : '/assets/item-previews/by-category';
   }
 
+  protected categoryOptionLabel(categoryId: string, fallbackLabel: string): string {
+    const stat = this.categoryStats.find((entry) => entry.category === categoryId);
+    if (!stat || stat.count <= 0) {
+      return fallbackLabel;
+    }
+
+    return `${fallbackLabel} (${stat.count})`;
+  }
+
+  protected selectCategory(categoryId: string | undefined): void {
+    this.navigateWithQuery({
+      ...this.query,
+      catalogMode: 'by-category',
+      category: categoryId,
+      page: 1
+    });
+  }
+
   protected setCatalogMode(mode: ItemIconCatalogMode): void {
     this.navigateWithQuery({
       ...this.query,
@@ -285,6 +310,14 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
       queryParams['search'] = normalized.search;
     }
 
+    if (normalized.nameEs) {
+      queryParams['nameEs'] = normalized.nameEs;
+    }
+
+    if (normalized.nameEn) {
+      queryParams['nameEn'] = normalized.nameEn;
+    }
+
     if (normalized.itemId) {
       queryParams['itemId'] = normalized.itemId;
     }
@@ -339,6 +372,26 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
         });
       })
     );
+  }
+
+  private loadCategoryStats(): void {
+    this.itemsFacade
+      .getItemIconCategoryStats()
+      .pipe(
+        catchError(() => of(null)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((stats) => {
+        if (!stats) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.categoryStats = stats.categories;
+          this.totalPngInAngular = stats.totalPngInAngular;
+          this.refreshView();
+        });
+      });
   }
 
   private refreshView(): void {

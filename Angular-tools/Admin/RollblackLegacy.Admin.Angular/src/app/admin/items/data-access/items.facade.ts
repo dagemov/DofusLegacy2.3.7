@@ -6,6 +6,7 @@ import {
   ItemClientIdentityDto,
   ItemDetailBundle,
   ItemDetailDto,
+  ItemIconCategoryStatsDto,
   ItemIconOptionDto,
   ItemIconSearchRequest,
   ItemListItemDto,
@@ -54,6 +55,10 @@ export class ItemsFacade {
     request: ItemIconSearchRequest
   ): Observable<ItemPagedResultDto<ItemIconOptionDto>> {
     return this.itemsApi.getItemIcons(request);
+  }
+
+  getItemIconCategoryStats(): Observable<ItemIconCategoryStatsDto> {
+    return this.itemsApi.getItemIconCategoryStats();
   }
 
   getItem(itemId: number): Observable<ItemDetailDto> {
