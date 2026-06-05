@@ -8,8 +8,4 @@ public interface ISpellsAdminReadRepository
     Task<AdminPagedSpellsReadModel> SearchAsync(
         SpellCatalogSearchRequest request,
         CancellationToken cancellationToken = default);
-
-    Task<AdminSpellDetailReadModel?> GetByIdAsync(
-        short spellId,
-        CancellationToken cancellationToken = default);
 }

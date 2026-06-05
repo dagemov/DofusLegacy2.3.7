@@ -34,21 +34,6 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
             items);
     }
 
-    public async Task<SpellDetailDto> GetByIdAsync(
-        short spellId,
-        CancellationToken cancellationToken = default)
-    {
-        EnsurePositiveSpellId(spellId);
-
-        var detail = await _repository.GetByIdAsync(spellId, cancellationToken);
-        if (detail is null)
-        {
-            throw new AdminEntityNotFoundException("spell", spellId.ToString());
-        }
-
-        return MapDetail(detail);
-    }
-
     private static SpellCatalogItemDto MapItem(AdminSpellCatalogReadModel item)
     {
         return new SpellCatalogItemDto(
@@ -64,62 +49,6 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
             item.LevelCount,
             item.RuntimeAvailable,
             item.ReferenceAvailable);
-    }
-
-    private static SpellDetailDto MapDetail(AdminSpellDetailReadModel detail)
-    {
-        return new SpellDetailDto(
-            detail.SpellId,
-            detail.Name,
-            detail.Description,
-            detail.TypeId,
-            detail.TypeLabel,
-            detail.IconId,
-            detail.Breeds
-                .Select(breed => new SpellBreedSummaryDto(breed.BreedId, breed.Label))
-                .ToList(),
-            detail.LevelCount,
-            detail.RuntimeAvailable,
-            detail.ReferenceAvailable,
-            detail.Reference is null
-                ? null
-                : new SpellReferenceMetadataDto(
-                    detail.Reference.SourceDescription,
-                    detail.Reference.Name,
-                    detail.Reference.Description,
-                    detail.Reference.NameId,
-                    detail.Reference.DescriptionId,
-                    detail.Reference.TypeId,
-                    detail.Reference.TypeLabel,
-                    detail.Reference.IconId,
-                    detail.Reference.BreedIds.ToList(),
-                    detail.Reference.LevelCount),
-            detail.Levels
-                .Select(level => new SpellLevelSummaryDto(
-                    level.LevelNumber,
-                    level.RuntimeLevelId,
-                    level.ReferenceLevelId,
-                    level.MinPlayerLevel,
-                    level.ApCost,
-                    level.MinRange,
-                    level.MaxRange,
-                    level.CastInLine,
-                    level.CastTestLos,
-                    level.NeedFreeCell,
-                    level.RangeCanBeBoosted,
-                    level.CriticalFailureEndsTurn,
-                    level.CriticalHitProbability,
-                    level.CriticalFailureProbability,
-                    level.MaxCastPerTurn,
-                    level.MaxCastPerTarget,
-                    level.MinCastInterval,
-                    level.StatesRequired.ToList(),
-                    level.StatesForbidden.ToList(),
-                    level.HasEffects,
-                    level.HasCriticalEffects,
-                    level.RuntimeAvailable,
-                    level.ReferenceAvailable))
-                .ToList());
     }
 
     private static void ValidateRequest(SpellCatalogSearchRequest request)
@@ -159,22 +88,6 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
                     ["typeId"] = new[]
                     {
                         "typeId no puede ser negativo."
-            }
-                });
-        }
-    }
-
-    private static void EnsurePositiveSpellId(short spellId)
-    {
-        if (spellId <= 0)
-        {
-            throw new AdminValidationException(
-                "El spell solicitado no es valido.",
-                new Dictionary<string, string[]>
-                {
-                    ["spellId"] = new[]
-                    {
-                        "spellId debe ser mayor que cero."
                     }
                 });
         }
