@@ -259,6 +259,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\SummonedClone.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\RogueImageFighter.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\SummonedMonster.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\SummonedStaticMonster.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\SlaveFighter.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\TaxCollectorFighter.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\PrismFighter.cs" />
@@ -1423,6 +1424,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\ReducCooldown.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\RogueSpecialEffects.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\SpiritualLeash.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\Kill.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Shield\Shield.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Shield\ShieldPercent.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\SpellEffectHandler.cs" />
@@ -1539,6 +1541,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Mounts\MountCertificateFactory.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Social\SocialRelationManager.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Spells\Effect.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Diagnostics\FightCombatLogger.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Fight.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Mechanics\FrigostBossMechanics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Types\FightPvM.cs" />
