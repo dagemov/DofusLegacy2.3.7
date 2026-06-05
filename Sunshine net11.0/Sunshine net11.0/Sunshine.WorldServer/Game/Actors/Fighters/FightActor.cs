@@ -21,6 +21,7 @@ using Sunshine.WorldServer.Game.Fights.Teams;
 using Sunshine.WorldServer.Game.Effects.Spells.Damages;
 using Sunshine.WorldServer.Game.Actors.Look;
 using Sunshine.WorldServer.Game.Fights.Buffs;
+using Sunshine.WorldServer.Game.Fights.Buffs.Customs;
 using Sunshine.WorldServer.Game.Actors.Characters.Spells;
 using Sunshine.WorldServer.Game.Fights.Buffs.Spells;
 using Sunshine.WorldServer.Game.Fights.History;
@@ -357,6 +358,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Fight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
                 Fight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_BEGIN);
                 Fight.EndSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP, ActionsEnum.ACTION_FIGHT_TRIGGER_GLYPH);
+                TriggerFightBuffs(BuffTriggerType.TURN_BEGIN);
                 ContextHandler.SendGameFightSynchronizeMessage(Fight.Clients, Fight.GetAllFighters());
                 foreach (CharacterFighter fighter in Fight.GetAllFighters(x => x is CharacterFighter))
                     fighter.Character.RefreshStats();
@@ -1950,8 +1952,17 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 characterFighter.Character?.RefreshStats();
         }
 
+        public void TriggerFightBuffs(BuffTriggerType trigger, object token = null)
+        {
+            foreach (var buff in GetBuffs(x => x is TriggerBuff).Cast<TriggerBuff>().ToArray())
+                buff.TryTrigger(trigger, token);
+        }
+
         public void RemoveBuff(Buff buff, bool dispell = true)
         {
+            if (buff is TriggerBuff triggerBuff)
+                triggerBuff.TryTrigger(BuffTriggerType.BUFF_ENDED);
+
             this.FreeBuffId(buff.Id);
             this.m_buffList.Remove(buff);
             ActionsHandler.SendGameActionFightDispellEffectMessage(Fight.Clients, buff.Caster, buff.Target, buff);
