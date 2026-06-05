@@ -1,53 +1,61 @@
 # Fase 3 — Checklist de validación
 
-> Esqueleto — marcar en commit #7 tras test VPS.
-
 ## Entorno
 
-- Rama: `develop-build` @ VPS `/opt/dofus-2.0.0-build`
-- Puertos: 2450 / 5557
-- Logs: `runtime/logs/fights/{fightId}.log` con `FIGHT_COMBAT_LOG_ENABLED=true`
+| Campo | Valor |
+|-------|--------|
+| Rama | `develop-build` |
+| Path VPS | `/opt/dofus-2.0.0-build` |
+| Puertos | 2450 / 5557 |
+| Logger | `FIGHT_COMBAT_LOG_ENABLED=true` |
 
 ## Por categoría
 
-### DOT / robo HP (commit #1)
+### DOT / robo HP (commit `e85d26d`)
 
-- [ ] Veneno: tick cada turno del portador
-- [ ] Robo multi-turno: daño + cura 50% al caster por tick
-- [ ] Log: evento `TRIGGER` `TURN_BEGIN` + `DAMAGE`
+- [x] Código: `Duration != 0` → `TriggerBuff` `TURN_BEGIN`
+- [x] Código: dispatch en `StartTurn`
+- [ ] In-game: veneno tick por turno
+- [ ] In-game: robo 50% al caster cada tick
+- [ ] Log: `TRIGGER type=TURN_BEGIN` + `DAMAGE`
 
-### Muerte instantánea (commit #2)
+### Muerte instantánea (commit `b0a7b5f`)
 
-- [ ] Glifo/trampa con `Effect_Kill`: pisar celda mata
-- [ ] Log: evento `KILL`
+- [x] Código: handler `Effect_Kill` registrado
+- [ ] In-game: glifo/trampa kill mata al pisar celda
+- [ ] Log: `event=KILL`
 
-### Castigos (commit #3)
+### Castigos (commit `d7529d6`)
 
-- [ ] `Effect_Punishment`: bonus al recibir daño
-- [ ] Tope por ronda (`DiceFace`) respetado
-- [ ] Log: `PUNISHMENT` o `DAMAGE` + variación stats
+- [x] Código: tope por ronda `DiceFace`
+- [x] Código: stat desde `Effect.DiceNum` (sin `SpellIdEnum`)
+- [ ] In-game: bonus al recibir daño
+- [ ] In-game: tope por ronda visible
 
-### Invocaciones (commit #4)
+### Invocaciones (commit `8b32ee9`)
 
-- [ ] Invocación estática (`CanPlay=false`): no ejecuta IA
-- [ ] Suicida (`UseSummonSlot=false`): muere al fin de su turno
-- [ ] Log: `SUMMON_DIE` / fin de turno
+- [x] Código: `SummonedStaticMonster` (`CanPlay=false`)
+- [x] Código: `DiesAtTurnEnd` (`UseSummonSlot=false`)
+- [ ] In-game: bloqueadora estática sin turno IA
+- [ ] In-game: suicida muere al fin de turno
+- [ ] Log: `SUMMON_DIE`
 
-### Logger (commit #6)
+### Logger (commit `c646296`)
 
-- [ ] Archivo por `fightId` creado
-- [ ] Cast + `EffectId` registrados
-- [ ] Fan-out socket en mensajes clave
+- [x] Código: `FightCombatLogger` + hooks
+- [ ] VPS: archivo `runtime/logs/fights/{id}.log`
+- [ ] VPS: eventos cast/socket en pelea de prueba
 
 ## Lectura de logs
 
 ```
-[timestamp] fight=123 event=CAST spell=42 effect=StealHPWater duration=3
-[timestamp] fight=123 event=TRIGGER type=TURN_BEGIN buff=7 target=456
-[timestamp] fight=123 event=DAMAGE src=456 tgt=789 amount=42
-[timestamp] fight=123 event=SOCKET msg=GameActionFightSpellCastMessage recipients=2
+[2026-05-30 12:00:00.000] fight=42 event=CAST caster=1 spell=180 cell=256
+[2026-05-30 12:00:00.100] fight=42 event=DISPATCH caster=1 spell=180 effect=Effect_StealHPWater duration=3
+[2026-05-30 12:00:05.000] fight=42 event=TRIGGER type=TURN_BEGIN buff=3 target=2 effect=Effect_StealHPWater
+[2026-05-30 12:00:05.050] fight=42 event=DAMAGE src=1 tgt=2 amount=35 school=Water
+[2026-05-30 12:00:05.100] fight=42 event=SOCKET msg=GameActionFightSpellCastMessage recipients=2
 ```
 
 ## Restaurar prod
 
-Tras sesión: stop build → `compose up` desde `/opt/dofus-2.0.0` (ver docs VPS).
+Tras sesión: `docker stop` contenedor build → `docker compose up` desde `/opt/dofus-2.0.0/docker`.

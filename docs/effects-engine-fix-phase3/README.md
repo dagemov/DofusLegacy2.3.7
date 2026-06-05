@@ -55,7 +55,7 @@ Ver [BRANCHING.md](../BRANCHING.md): `feature/*` → merge local `develop-compil
 
 ## Validación VPS
 
-Registro en `docs/vps-build-validation/*-phase3-*.md` (post-test).
+Registro: [20260530-develop-build-phase3-c646296.md](../vps-build-validation/20260530-develop-build-phase3-c646296.md)
 
 ## Alcance explícito
 
