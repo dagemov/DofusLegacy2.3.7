@@ -4,5 +4,5 @@ namespace RollblackLegacy.Admin.Application.Abstractions.Items;
 
 public interface IItemPreviewStateResolver
 {
-    ItemPreviewStateDto Resolve(int? itemId, int? iconId);
+    ItemPreviewStateDto Resolve(int? itemId, int? iconId, int? typeId = null);
 }

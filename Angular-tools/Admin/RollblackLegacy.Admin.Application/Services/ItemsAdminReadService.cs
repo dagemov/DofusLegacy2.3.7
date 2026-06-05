@@ -167,7 +167,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
     private ItemListItemDto MapListItem(AdminItemListReadModel item)
     {
-        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId);
+        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId, item.TypeId);
         var warnings = BuildWarnings(
             item.ResolvedName,
             item.TypeName,
@@ -196,7 +196,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         AdminItemDetailReadModel item,
         CancellationToken cancellationToken)
     {
-        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId);
+        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId, item.TypeId);
         ClientItemIdentityCheckResultDto? identityCheck = null;
         try
         {

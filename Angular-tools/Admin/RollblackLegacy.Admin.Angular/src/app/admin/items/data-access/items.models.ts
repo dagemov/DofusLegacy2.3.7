@@ -99,9 +99,49 @@ export interface ItemPreviewStateDto {
   byItemPath: string;
   byIconPath: string;
   manualPath: string;
+  byCategoryPath?: string;
   previewSource: string;
   resolvedPath?: string | null;
   fallbackUsed: string;
+}
+
+export interface ItemSetListItemDto {
+  setId: number;
+  name: string;
+  itemCount: number;
+  bonusTierCount: number;
+}
+
+export interface ItemSetBonusEffectDto {
+  effectId: number;
+  label: string;
+  protocolName: string;
+  value: number;
+  format: string;
+}
+
+export interface ItemSetBonusTierDto {
+  pieceCount: number;
+  tierLabel: string;
+  effects: ItemSetBonusEffectDto[];
+}
+
+export interface ItemSetMemberDto {
+  itemId: number;
+  name: string;
+  typeId: number;
+  typeName: string;
+  iconId: number;
+  previewState: ItemPreviewStateDto;
+  publicationSummary?: string | null;
+}
+
+export interface ItemSetDetailDto {
+  setId: number;
+  name: string;
+  bonusIsSecret: boolean;
+  items: ItemSetMemberDto[];
+  bonusTiers: ItemSetBonusTierDto[];
 }
 
 export interface ItemAppearancePreviewStateDto {
@@ -414,6 +454,7 @@ export function createUnknownPreviewState(): ItemPreviewStateDto {
     byItemPath: '',
     byIconPath: '',
     manualPath: '',
+    byCategoryPath: '',
     previewSource: 'PLACEHOLDER',
     resolvedPath: null,
     fallbackUsed: 'PLACEHOLDER'

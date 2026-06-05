@@ -69,6 +69,8 @@ export class ItemPreviewCardComponent implements OnChanges {
         return 'Ruta por item';
       case 'BY_ICON':
         return 'Ruta por icono';
+      case 'BY_CATEGORY':
+        return 'Catálogo por categoría';
       default:
         return 'Placeholder';
     }
@@ -80,6 +82,8 @@ export class ItemPreviewCardComponent implements OnChanges {
         return 'Ninguno';
       case 'BY_ICON':
         return 'Fallback por IconId';
+      case 'BY_CATEGORY':
+        return 'Fallback por categoría';
       default:
         return 'Fallback placeholder';
     }
