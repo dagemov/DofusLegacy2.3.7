@@ -3,7 +3,7 @@
 | Campo | Valor |
 |-------|--------|
 | Fecha | 2026-05-30 |
-| Rama | `develop-build` |
+| Rama | `devp` |
 | Commit | `c646296` (Fase 3: commits #0–#6 + docs #7) |
 | VPS | `174.138.35.107` |
 | Path test | `/opt/dofus-2.0.0-build` |
@@ -17,7 +17,7 @@
 
 1. Backup imagen prod si sunshine activo desde prod
 2. `docker stop sunshine-server` (liberar 2450/5557)
-3. `cd /opt/dofus-2.0.0-build && git fetch && git checkout develop-build && git pull`
+3. `cd /opt/dofus-2.0.0-build && git fetch && git checkout devp && git pull`
 4. `cd docker && docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine`
 5. `FIGHT_COMBAT_LOG_ENABLED=true docker compose … up -d sunshine`
 6. Verificar logs: efectos cargados, puertos 2450/5557, pelea de prueba + `runtime/logs/fights/`
@@ -27,12 +27,15 @@
 
 | Criterio | Estado |
 |----------|--------|
-| Build Docker | *(actualizar tras ejecución)* |
-| Runtime boot | *(actualizar tras ejecución)* |
-| EffectsLoader | *(actualizar tras ejecución)* |
-| FightCombatLogger | *(actualizar tras ejecución)* |
-| Cliente in-game | *(requiere test humano)* |
-| Restauración prod | *(al cerrar sesión)* |
+| Build Docker | **OK** (~50 s) |
+| Runtime boot | **OK** — READY en 38.75 s |
+| EffectsLoader | **162** efectos cargados |
+| Puertos 2450/5557 | **OK** |
+| FightCombatLogger | **OK** — `FIGHT_COMBAT_LOG_ENABLED=true` en contenedor; ruta `docker/logs/fights/` escribible |
+| Logs combate previo | **No** — test anterior a fix (runtime `:ro` + env sobrescrito a `false`) |
+| Logs combate post-fix | **Pendiente** — 1 pelea corta tras fix para generar `{fightId}.log` |
+| Cliente in-game | **Pendiente** — checklist humano en `validation-checklist.md` |
+| Restauración prod | **Pendiente** — devp activo para test |
 
 ## Commits incluidos
 
