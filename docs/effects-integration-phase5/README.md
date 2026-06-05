@@ -1,6 +1,6 @@
 # Fase 5: Integración al servidor principal
 
-Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`, todo el trabajo queda en **PRs abiertas** hacia `develop` — sin merge automático.
+Cierre del pipeline de reparación del motor de efectos. Tras migración a **`devp`**, todo el trabajo queda en **PRs abiertas** hacia `devp` — sin merge automático.
 
 ## Metadatos
 
@@ -8,61 +8,65 @@ Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`
 |-------|--------|
 | Duración estimada | ~2 h |
 | Rama feature | `feature/effects-integration-phase5` |
-| Rama integración | `develop` @ `1f998cd` (= `main`, post-reset 2026-06-05) |
-| PR Fase 5 | [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) — **abierta** |
+| Rama integración | `devp` @ `cf69aa1` (items builder PR #15) |
+| PR Fase 5 | #30 → **`devp`** — **abierta** |
 | Documentación | `docs/effects-integration-phase5/` |
 
 ## Política origin
 
 | Regla | Detalle |
 |-------|---------|
-| PRs | Solo hacia `develop`; **permanecen abiertas** hasta merge manual |
+| PRs | Solo hacia **`devp`**; **permanecen abiertas** hasta merge manual |
 | Merge | **Prohibido** por agente/script |
 | Cerrar PRs | **Prohibido** — permanecen abiertas hasta merge manual |
-| `develop` | Recreada desde `main`; pipeline en PRs #19, #21–#24 |
-| `origin/develop-build` | Eliminada |
+| `origin/develop` | Eliminada tras verificar PRs #26–#30 |
+| `origin/develop-build` | Eliminada previamente |
 
-## PRs del pipeline (todas abiertas)
+## PRs del pipeline (todas abiertas → `devp`)
 
-| PR | Fase | Head | Estado |
-|----|------|------|--------|
-| [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | 1 Auditoría | `feature/effects-audit-phase1` | abierta |
-| [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 Catálogo | `feature/effects-catalog-phase2` | abierta |
-| [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 Motor | `feature/effects-engine-fix-phase3` | abierta |
-| [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 Validación | `feature/effects-validation-phase4` | abierta |
-| [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | 5 Integración | `feature/effects-integration-phase5` | abierta |
+| PR | Fase | Head | Base |
+|----|------|------|------|
+| #26 | 1 Auditoría | `feature/effects-audit-phase1` | **`devp`** |
+| #27 | 2 Catálogo | `feature/effects-catalog-phase2` | **`devp`** |
+| #28 | 3 Motor | `feature/effects-engine-fix-phase3` | **`devp`** |
+| #29 | 4 Validación | `feature/effects-validation-phase4` | **`devp`** |
+| #30 | 5 Integración | `feature/effects-integration-phase5` | **`devp`** |
 
 ## Índice
 
 | Archivo | Contenido |
 |---------|-----------|
-| [deployment-notes.md](./deployment-notes.md) | Reset develop, PRs, compile/runtime gate |
+| [deployment-notes.md](./deployment-notes.md) | Migración `devp`, PRs, compile/runtime gate |
 | [regression-checklist.md](./regression-checklist.md) | Compilación, arranque, PvM, PvP, dungeons |
+| [../admin-commands.md](../admin-commands.md) | Comandos in-game y roles admin |
 
-## Modelo de ramas (post-reset)
+## Modelo de ramas
 
 ```mermaid
 flowchart LR
-  main[main_1f998cd]
-  develop[develop_igual_main]
-  main --> develop
-  develop -->|PR21_abierta| f1[phase1]
-  develop -->|PR22_abierta| f2[phase2]
-  develop -->|PR23_abierta| f3[phase3]
-  develop -->|PR24_abierta| f4[phase4]
-  develop -->|PR19_abierta| f5[phase5]
+  devp[devp_cf69aa1]
+  compile[devp-compile_local]
+  vps[VPS_checkout_devp]
+  devp -->|PR26_abierta| f1[phase1]
+  devp -->|PR27_abierta| f2[phase2]
+  devp -->|PR28_abierta| f3[phase3]
+  devp -->|PR29_abierta| f4[phase4]
+  devp -->|PR30_abierta| f5[phase5]
+  devp --> compile
+  devp --> vps
 ```
 
 ## Criterios de aceptación
 
-- [x] `origin/develop` recreada desde `main`
-- [x] PRs #19, #21–#24 abiertas (`base=develop`)
-- [x] PR #19 reabierta (no cerrar PRs del pipeline)
-- [x] VPS/local sincronizados a `develop` @ `1f998cd`
+- [x] Ramas `feature/*` recreadas desde `devp` (cherry-pick por fase)
+- [x] Compile gate Fase 3 OK en `devp-compile`
+- [x] `BRANCHING.md` actualizado a flujo `devp`
+- [ ] PRs #26–#30 abiertas (`base=devp`)
+- [ ] VPS test sincronizado a `devp`
 - [ ] Merge manual por el equipo (orden 1→5) cuando aprueben
-- [ ] Regression checklist tras merge PR #23+ en VPS
+- [ ] Regression checklist tras merge PR #28+ en VPS
 
 ## Riesgos
 
-- VPS sin fixes Fase 3 hasta merge manual PR #23.
+- Conflictos cherry-pick con items builder en `devp` — resolver por capa efectos.
 - Escenarios Ola 2 (bosses/empujes) documentados en Fase 4 — no bloquean apertura de PRs.

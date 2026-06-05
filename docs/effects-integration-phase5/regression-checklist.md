@@ -1,12 +1,12 @@
 # Fase 5 — Checklist de regresión
 
-Ejecutar en entorno **VPS test** (`/opt/dofus-2.0.0-build`) con checkout de **`develop`** (rama `origin/develop-build` eliminada). Mapea escenarios de [test-scenarios.md](../effects-validation-phase4/test-scenarios.md).
+Ejecutar en entorno **VPS test** (`/opt/dofus-2.0.0-build`) con checkout de **`devp`**. Mapea escenarios de [test-scenarios.md](../effects-validation-phase4/test-scenarios.md).
 
 ## Entorno
 
 | Campo | Valor |
 |-------|--------|
-| Rama código | `develop` @ *(SHA post PR #19)* |
+| Rama código | `devp` @ *(SHA post migración)* |
 | Path VPS | `/opt/dofus-2.0.0-build` |
 | Puertos | 2450 / 5557 |
 | Cliente | 2.3.7 → `174.138.35.107:2450` / `:5557` |
@@ -17,7 +17,7 @@ Ejecutar en entorno **VPS test** (`/opt/dofus-2.0.0-build`) con checkout de **`d
 
 ## A. Compilación
 
-- [ ] `develop-compile` merge `develop` → `docker compose build sunshine` **OK**
+- [ ] `devp-compile` merge Fase 3 → `docker compose build sunshine` **OK**
 - [ ] Sin `.cs` nuevos sin `<Compile Include>` en `Sunshine.csproj` (lección Fase 3)
 - [ ] Registro en `docs/vps-build-validation/`
 
@@ -26,7 +26,7 @@ Ejecutar en entorno **VPS test** (`/opt/dofus-2.0.0-build`) con checkout de **`d
 ## B. Arranque
 
 - [ ] Contenedor `sunshine-server` **Up**
-- [ ] Log: EffectsLoader ~**161** efectos
+- [ ] Log: EffectsLoader ~**162** efectos
 - [ ] Auth **2450** accesible
 - [ ] World **5557** accesible
 - [ ] Login cliente OK
@@ -77,26 +77,25 @@ Bosses en `FrigostBossMechanics.cs`:
 | [ ] Estados timed | Obsidiantre | 2924 | B-02 | | |
 | [ ] Fase invulnerabilidad | Kolosso | 2986 | B-02 | | |
 
-**Criterio:** PASS en capas Fase 3 (summon/kill/DOT) aplicables. FAIL en B-01/B-03 → etiqueta **Ola 2**; no bloquea merge en `develop` si A–D pasan.
+**Criterio:** PASS en capas Fase 3 (summon/kill/DOT) aplicables. FAIL en B-01/B-03 → etiqueta **Ola 2**; no bloquea merge en `devp` si A–D pasan.
 
 ---
 
 ## F. Cierre integración
 
 - [ ] `validation-results.md` actualizado (PASS/FAIL/PENDING por ID)
-- [ ] Registro VPS: `docs/vps-build-validation/YYYYMMDD-develop-integration-phase5-{sha}.md`
-- [ ] `BRANCHING.md` refleja: solo PRs a `develop`; sin `origin/develop-build`
-- [ ] `git ls-remote --heads origin develop-build` → vacío
-- [ ] PRs pipeline #14–#19: todas `base=develop`
+- [ ] Registro VPS: `docs/vps-build-validation/YYYYMMDD-devp-compile-phase3-{sha}.md`
+- [ ] `BRANCHING.md` refleja: solo PRs a **`devp`**
+- [ ] `origin/develop` eliminada
+- [ ] PRs pipeline #26–#30: todas `base=devp`
 
 ---
 
 ## Orden de ejecución recomendado
 
-1. Compile gate local (`develop-compile`)
-2. VPS: backup → stop prod si necesario → `git pull develop` → build/up
+1. Compile gate local (`devp-compile`)
+2. VPS: backup → stop prod si necesario → `git checkout devp` → build/up
 3. Smoke B (arranque)
 4. Smoke C + D (PvM/PvP) — equipo in-game
 5. Smoke E (dungeons) — equipo in-game
-6. Restaurar prod si aplica
-7. Completar sección F y abrir/mergear PR #19
+6. Actualizar `validation-results.md` y registro VPS

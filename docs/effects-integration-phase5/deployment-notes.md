@@ -1,6 +1,6 @@
 # Fase 5 — Notas de despliegue e integración
 
-Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No incluye release a `main` ni deploy prod VPS.
+Procedimiento para cerrar el pipeline de efectos en **`devp`** (origin). No incluye release a `main` ni deploy prod VPS.
 
 ## Política de merge (obligatoria)
 
@@ -8,81 +8,70 @@ Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No i
 |-------|---------|
 | Subir PRs | Sí — visibles en GitHub |
 | Merge automático | **No** — ni por agente ni por script |
-| Cerrar PRs | **No** — las PR del pipeline deben permanecer **abiertas** en `develop` |
+| Cerrar PRs | **No** — las PR del pipeline deben permanecer **abiertas** en `devp` |
 | Quién mergea | Solo el equipo, manualmente, tras revisión |
 
-Si `develop` quedó inconsistente, resetear desde `main` (ver sección 2) y reabrir PRs — **sin mergear** en la operación.
-
-## 1. PRs abiertas — pipeline efectos (post-reset 2026-06-05)
+## 1. PRs abiertas — pipeline efectos (→ `devp`)
 
 | Orden | PR | Head | Base | Estado |
 |-------|-----|------|------|--------|
-| 1 | [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | `feature/effects-audit-phase1` | `develop` | **abierta** |
-| 2 | [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | `feature/effects-catalog-phase2` | `develop` | **abierta** |
-| 3 | [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
-| 4 | [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | `feature/effects-validation-phase4` | `develop` | **abierta** |
-| 5 | [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | `feature/effects-integration-phase5` | `develop` | **abierta** |
+| 1 | #26 | `feature/effects-audit-phase1` | **`devp`** | **abierta** |
+| 2 | #27 | `feature/effects-catalog-phase2` | **`devp`** | **abierta** |
+| 3 | #28 | `feature/effects-engine-fix-phase3` | **`devp`** | **abierta** |
+| 4 | #29 | `feature/effects-validation-phase4` | **`devp`** | **abierta** |
+| 5 | #30 | `feature/effects-integration-phase5` | **`devp`** | **abierta** |
 
-PR #19 reabierta tras cierre accidental. PR #25 (duplicado) cerrada. PRs #14–#18: historial del `develop` anterior.
+PRs #14–#25 (base `develop`): historial cerrado. Ramas recreadas desde `devp` @ `cf69aa1`.
 
-**Regla:** ningún PR del pipeline con `base=main` ni `base=develop-build`.
+**Regla:** ningún PR del pipeline con `base=main`.
 
 ### Verificación PRs abiertas
 
 ```powershell
-$credOut = "protocol=https`nhost=github.com`n`n" | git credential fill 2>$null
-$token = ($credOut | Select-String '^password=(.+)$').Matches.Groups[1].Value
-$headers = @{ Authorization = "Bearer $token"; Accept = 'application/vnd.github+json' }
-Invoke-RestMethod -Uri "https://api.github.com/repos/dagemov/DofusLegacy2.3.7/pulls?state=open" -Headers $headers |
-  ForEach-Object { "$($_.number) base=$($_.base.ref) head=$($_.head.ref)" }
+gh pr list --state open --base devp --json number,headRefName,baseRefName
 ```
 
-## 2. Reset de `develop` desde `main` (ejecutado)
+## 2. Migración `develop` → `devp` (ejecutada)
 
-```powershell
-git push origin --delete develop
-git push origin 1f998cd:refs/heads/develop
-git ls-remote --heads origin develop main   # mismo SHA
-```
+Metodología: cada `feature/effects-*-phaseN` = `devp` + commits de esa fase (cherry-pick, sin merge commits).
 
-VPS:
+| Paso | Acción |
+|------|--------|
+| Backup | Tags `backup/effects-phase1-pre-devp`, `backup/effects-phase5-pre-devp` |
+| Base | `origin/devp` @ `cf69aa1` |
+| Compile gate | `devp-compile` merge Fase 3 → `docker compose build sunshine` **OK** |
+| Force-push | 5 ramas `feature/*` a origin |
+| Eliminar | `origin/develop` **después** de abrir PRs #26–#30 |
+
+VPS sync:
 
 ```bash
 cd /opt/dofus-2.0.0-build
-git fetch origin +refs/heads/develop:refs/remotes/origin/develop
-git reset --hard origin/develop
+git fetch origin +refs/heads/devp:refs/remotes/origin/devp
+git checkout devp
+git reset --hard origin/devp
 ```
 
-**Efecto:** `develop` === `main`. Fixes Fase 3 no están en `develop` hasta merge manual PR #23.
+## 3. Higiene origin
 
-## 3. Higiene origin — `develop-build` eliminada
+| Rama | Estado |
+|------|--------|
+| `origin/develop-build` | Eliminada previamente |
+| `origin/develop` | Eliminar tras verificar PRs abiertas a `devp` |
+| `origin/devp` | **Única** rama de integración |
 
-La rama remota `develop-build` no forma parte del flujo. Procedimiento ejecutado:
-
-```powershell
-git push origin --delete develop-build
-git ls-remote --heads origin develop-build   # debe devolver vacío
-```
-
-### Tras el borrado
+### Tras migración
 
 | Entorno | Acción |
 |---------|--------|
-| **Local** | Conservar rama `develop-build` como sandbox (`git branch`); **no** `git push` |
-| **VPS test** | `/opt/dofus-2.0.0-build` hace checkout de **`develop`** |
+| **Local compile** | `devp-compile` (no pushear) |
+| **VPS test** | `/opt/dofus-2.0.0-build` checkout **`devp`** |
 
-```bash
-cd /opt/dofus-2.0.0-build
-git fetch origin
-git checkout develop
-git pull origin develop
-```
-
-## 4. Compile gate (tras merge manual PR #23)
+## 4. Compile gate (`devp-compile`)
 
 ```powershell
-git checkout develop-compile
-git merge develop
+git checkout devp-compile
+git merge feature/effects-engine-fix-phase3
 cd docker
 docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine
 ```
@@ -93,18 +82,18 @@ docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine
 | Errores CS | Ninguno |
 | Imagen | `sunshine-emu-sunshine:latest` |
 
-Registrar en `docs/vps-build-validation/YYYYMMDD-develop-compile-phase5-{sha}.md`.
+Registros: `docs/vps-build-validation/20260530-develop-build-phase3-c646296.md`, `20260605-develop-compile-phase4-dad4332.md`.
 
 ## 5. Runtime gate (VPS test — no prod)
 
 Path: `/opt/dofus-2.0.0-build`  
-Rama: **`develop`** (no `develop-build` en origin)
+Rama: **`devp`**
 
 1. Backup `sunshine-server`:
    - `/opt/backups/sunshine-server-YYYYMMDD-HHMM.json`
    - imagen `sunshine:prod-backup-YYYYMMDD-HHMM`
 2. `docker stop sunshine-server` (liberar 2450 / 5557).
-3. `git pull origin develop` en el path test.
+3. `git fetch && git checkout devp && git reset --hard origin/devp`.
 4. Build y arranque:
    ```bash
    cd /opt/dofus-2.0.0-build/docker
@@ -117,7 +106,7 @@ Rama: **`develop`** (no `develop-build` en origin)
      -f docker-compose.vps.yml \
      up -d sunshine
    ```
-5. Verificar en logs: EffectsLoader ~**161** efectos; puertos **2450** / **5557**.
+5. Verificar en logs: EffectsLoader ~**162** efectos; puertos **2450** / **5557**.
 6. Tras tests: restaurar prod desde `/opt/dofus-2.0.0/docker` si se detuvo el contenedor prod.
 
 Ver [regression-checklist.md](./regression-checklist.md).
@@ -126,10 +115,10 @@ Ver [regression-checklist.md](./regression-checklist.md).
 
 | Entorno | `FIGHT_COMBAT_LOG_ENABLED` | Logs combate |
 |---------|---------------------------|--------------|
-| VPS test (`develop`) | `true` | `docker/logs/fights/{fightId}.log` |
+| VPS test (`devp`) | `true` | `docker/logs/fights/{fightId}.log` |
 | Prod futuro (`/opt/dofus-2.0.0`) | `false` (recomendado) | deshabilitado |
 
-## 7. Contenido pendiente de integrar (vía PRs #21–#25)
+## 7. Contenido integrado (vía PRs #26–#30)
 
 ### Código (Fase 3)
 
@@ -141,10 +130,12 @@ Ver [regression-checklist.md](./regression-checklist.md).
 | Invocaciones | `Game/Actors/Fighters/SummonedStaticMonster.cs`, `Summon.cs` |
 | Logger | `Game/Fights/Diagnostics/FightCombatLogger.cs` |
 
-### Documentación
+### Documentación y admin
 
 - `docs/effects-audit-phase1/` … `docs/effects-integration-phase5/`
 - `docs/vps-build-validation/`
+- `docs/admin-commands.md`
+- `docker/grant-admin-maestro-yaco.sql`
 
 ## 8. Rollback (referencia — prod futuro)
 
@@ -155,11 +146,8 @@ No ejecutar en Fase 5. Para deploy futuro en `/opt/dofus-2.0.0`:
 3. `docker compose … up -d --build sunshine`
 4. Verificar puertos; si falla, `docker compose up` con imagen backup
 
-Patrón: [20260605-develop-build-4d12fde.md](../vps-build-validation/20260605-develop-build-4d12fde.md).
-
 ## 9. Fuera de alcance
 
-- PR `develop` → `main`
+- PR `devp` → `main`
 - `docker compose up` en `/opt/dofus-2.0.0` (prod)
-- Push de `develop-build` a origin
 - Fixes Ola 2 (`FrigostBossMechanics` completo, empujes)

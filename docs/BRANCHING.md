@@ -1,73 +1,63 @@
 # Flujo de ramas — DofusLegacy 2.3.7
 
-Convención acordada para desarrollo en este repositorio.
+Convención acordada para desarrollo en este repositorio (migración pipeline efectos → **`devp`**, 2026-05-30).
 
 ## Ramas
 
 | Rama | Uso |
 |------|-----|
 | `main` | Producción / releases estables |
-| `develop` | **Integración** — destino de PRs `feature/*` (recreada desde `main`) |
-| `feature/*` | Entregable por fase → PR a `develop` |
-| **`develop-compile`** | **Solo local** — compile gate Docker |
-| **`develop-build`** | **Solo local / VPS** — sandbox runtime; **no existe en origin** |
+| **`devp`** | **Integración** — destino de PRs `feature/*` (items builder + pipeline efectos) |
+| `feature/*` | Entregable por fase → PR a **`devp`** |
+| **`devp-compile`** | **Solo local** — compile gate Docker (no se pushea) |
+| VPS test | `/opt/dofus-2.0.0-build` — checkout **`devp`** |
 
-## Política origin (2026-06-05)
+## Política origin
 
 | Regla | Detalle |
 |-------|---------|
-| PRs en GitHub | Solo hacia **`develop`** |
+| PRs en GitHub | Solo hacia **`devp`** |
 | Merge | **Solo manual** por el equipo — nunca por agente/script |
-| Cerrar PRs | **No** cerrar PRs del pipeline — deben permanecer **abiertas** en `develop` |
-| `develop` | Recreada desde `main` @ `1f998cd` (reset pipeline efectos) |
-| `origin/develop-build` | Eliminada — no pushear |
-| `develop` → `main` | Fuera de alcance hasta acuerdo del equipo |
+| Cerrar PRs | **No** cerrar PRs del pipeline — deben permanecer **abiertas** en `devp` |
+| `origin/develop` | **Eliminada** tras abrir PRs #26–#30 |
+| `origin/develop-build` | Eliminada previamente — no pushear |
+| `devp` → `main` | Fuera de alcance hasta acuerdo del equipo |
 
-## PRs abiertas — pipeline efectos
+## PRs abiertas — pipeline efectos (→ `devp`)
 
 | PR | Fase | Head | Base | Estado |
 |----|------|------|------|--------|
-| [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | 1 | `feature/effects-audit-phase1` | `develop` | **abierta** |
-| [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 | `feature/effects-catalog-phase2` | `develop` | **abierta** |
-| [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
-| [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 | `feature/effects-validation-phase4` | `develop` | **abierta** |
-| [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | 5 | `feature/effects-integration-phase5` | `develop` | **abierta** |
+| #26 (est.) | 1 | `feature/effects-audit-phase1` | **`devp`** | **abierta** |
+| #27 | 2 | `feature/effects-catalog-phase2` | **`devp`** | **abierta** |
+| #28 | 3 | `feature/effects-engine-fix-phase3` | **`devp`** | **abierta** |
+| #29 | 4 | `feature/effects-validation-phase4` | **`devp`** | **abierta** |
+| #30 | 5 | `feature/effects-integration-phase5` | **`devp`** | **abierta** |
 
-PRs históricas #14–#18: cerradas/mergeadas en el `develop` anterior. Tras reset, el trabajo vive en **#19, #21–#24** (todas abiertas). PR #25 fue duplicado de #19 y quedó cerrada.
+PRs históricas #14–#25 (base `develop`): cerradas. El trabajo vive en las ramas `feature/*` recreadas desde `devp` @ `cf69aa1`.
 
-**Orden de merge recomendado (manual):** #21 → #22 → #23 → #24 → #19.
+**Orden de merge recomendado (manual):** #26 → #27 → #28 → #29 → #30.
 
 ## Flujo habitual
 
-1. `develop` = línea de integración (hoy igual a `main` hasta merges manuales).
-2. Crear `feature/*` desde `develop`.
-3. Abrir **PR → `develop`** — dejar **abierta** hasta revisión.
+1. `devp` = línea de integración (base actual: `cf69aa1`, items builder PR #15).
+2. Crear `feature/*` desde `devp`.
+3. Abrir **PR → `devp`** — dejar **abierta** hasta revisión.
 4. Merge **solo** cuando el equipo apruebe (en orden 1→5 para el pipeline efectos).
-5. Tests runtime en sandbox `develop-build` o VPS `/opt/dofus-2.0.0-build`.
+5. Tests runtime en VPS `/opt/dofus-2.0.0-build` con checkout **`devp`**.
 
-## Reset de `develop` (ejecutado 2026-06-05)
+## Tags de respaldo (pre-migración)
 
-```powershell
-git push origin --delete develop
-git push origin 1f998cd:refs/heads/develop
-```
-
-VPS sync:
-
-```bash
-cd /opt/dofus-2.0.0-build
-git fetch origin +refs/heads/develop:refs/remotes/origin/develop
-git reset --hard origin/develop
-```
+| Tag | Contenido |
+|-----|-----------|
+| `backup/effects-phase1-pre-devp` | Tip anterior `feature/effects-audit-phase1` |
+| `backup/effects-phase5-pre-devp` | Tip anterior `feature/effects-integration-phase5` |
 
 ## Test VPS (sandbox)
 
 1. Backup `sunshine-server` si aplica
-2. Checkout `develop` en `/opt/dofus-2.0.0-build`
+2. Checkout **`devp`** en `/opt/dofus-2.0.0-build`
 3. `docker compose build sunshine && up -d sunshine`
 4. Puertos **2450** / **5557**
-
-**Nota:** Tras el reset, `develop` no incluye fixes Fase 3 hasta merge manual de PR #23.
 
 Ver [effects-integration-phase5/README.md](./effects-integration-phase5/README.md).
 
@@ -75,11 +65,19 @@ Ver [effects-integration-phase5/README.md](./effects-integration-phase5/README.m
 
 ```powershell
 git fetch origin
-git checkout develop
-git reset --hard origin/develop
+git checkout devp
+git reset --hard origin/devp
 
-git checkout develop-compile
-git merge develop
+git checkout devp-compile
+git merge feature/effects-engine-fix-phase3
 cd docker
 docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine
+```
+
+```bash
+# VPS test
+cd /opt/dofus-2.0.0-build
+git fetch origin +refs/heads/devp:refs/remotes/origin/devp
+git checkout devp
+git reset --hard origin/devp
 ```
