@@ -1,6 +1,6 @@
 # Fase 5: Integración al servidor principal
 
-Cierre del pipeline de reparación del motor de efectos (fases 1–4). Integración vía **PRs solo hacia `develop`** en origin; validación compile/runtime en entornos locales y VPS test.
+Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`, todo el trabajo queda en **PRs abiertas** hacia `develop` — sin merge automático.
 
 ## Metadatos
 
@@ -8,83 +8,60 @@ Cierre del pipeline de reparación del motor de efectos (fases 1–4). Integraci
 |-------|--------|
 | Duración estimada | ~2 h |
 | Rama feature | `feature/effects-integration-phase5` |
-| Rama integración | `develop` @ `8750b57` (post PR #18) |
-| Rama compile local | `develop-compile` |
-| Sandbox runtime | `develop-build` (local) / VPS `/opt/dofus-2.0.0-build` checkout **`develop`** |
+| Rama integración | `develop` @ `1f998cd` (= `main`, post-reset 2026-06-05) |
+| PR Fase 5 | [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) — **abierta** |
 | Documentación | `docs/effects-integration-phase5/` |
-| Fases previas | [Fase 1](../effects-audit-phase1/) · [Fase 2](../effects-catalog-phase2/) · [Fase 3](../effects-engine-fix-phase3/) · [Fase 4](../effects-validation-phase4/) |
 
-## Política origin (acordada)
+## Política origin
 
 | Regla | Detalle |
 |-------|---------|
-| PRs en GitHub | **Solo hacia `develop`** (features Fases 1–5) |
-| `main` | Sin PR en esta fase |
-| `origin/develop-build` | **Eliminada** (2026-05-30); sandbox local/VPS sin push |
-| Prod VPS `/opt/dofus-2.0.0` | Fuera de alcance Fase 5 |
+| PRs | Solo hacia `develop`; **permanecen abiertas** hasta merge manual |
+| Merge | **Prohibido** por agente/script |
+| `develop` | Recreada desde `main`; pipeline en PRs #21–#25 |
+| `origin/develop-build` | Eliminada |
+
+## PRs del pipeline (todas abiertas)
+
+| PR | Fase | Head | Estado |
+|----|------|------|--------|
+| [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | 1 Auditoría | `feature/effects-audit-phase1` | abierta |
+| [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 Catálogo | `feature/effects-catalog-phase2` | abierta |
+| [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 Motor | `feature/effects-engine-fix-phase3` | abierta |
+| [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 Validación | `feature/effects-validation-phase4` | abierta |
+| [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | 5 Integración | `feature/effects-integration-phase5` | abierta |
 
 ## Índice
 
 | Archivo | Contenido |
 |---------|-----------|
-| [deployment-notes.md](./deployment-notes.md) | Cadena PRs, higiene origin, compile/runtime gate, rollback |
-| [regression-checklist.md](./regression-checklist.md) | Compilación, arranque, PvM, PvP, dungeons críticas |
+| [deployment-notes.md](./deployment-notes.md) | Reset develop, PRs, compile/runtime gate |
+| [regression-checklist.md](./regression-checklist.md) | Compilación, arranque, PvM, PvP, dungeons |
 
-## Modelo de ramas
+## Modelo de ramas (post-reset)
 
 ```mermaid
 flowchart LR
-  subgraph origin [origin_GitHub]
-    DEV[develop]
-  end
-  subgraph local [local_VPS]
-    COMPILE[develop-compile]
-    BUILD[develop-build_sandbox]
-    VPS["/opt/dofus-2.0.0-build"]
-  end
-  F5[feature/effects-integration-phase5]
-  F5 -->|PR19| DEV
-  DEV --> COMPILE
-  DEV --> BUILD
-  DEV --> VPS
+  main[main_1f998cd]
+  develop[develop_igual_main]
+  main --> develop
+  develop -->|PR21_abierta| f1[phase1]
+  develop -->|PR22_abierta| f2[phase2]
+  develop -->|PR23_abierta| f3[phase3]
+  develop -->|PR24_abierta| f4[phase4]
+  develop -->|PR25_abierta| f5[phase5]
 ```
 
-Ver [BRANCHING.md](../BRANCHING.md).
+## Criterios de aceptación
 
-## PRs del pipeline efectos
+- [x] `origin/develop` recreada desde `main`
+- [x] PRs #21–#25 abiertas (`base=develop`)
+- [x] PRs #19/#20 cerradas sin merge
+- [x] VPS/local sincronizados a `develop` @ `1f998cd`
+- [ ] Merge manual por el equipo (orden 1→5) cuando aprueben
+- [ ] Regression checklist tras merge PR #23+ en VPS
 
-| PR | Rama head | Base | Estado |
-|----|-----------|------|--------|
-| #14 | `feature/effects-audit-phase1` | `develop` | mergeado |
-| #16 | `feature/effects-catalog-phase2` | `develop` | mergeado |
-| #17 | `feature/effects-engine-fix-phase3` | `develop` | mergeado |
-| #18 | `feature/effects-validation-phase4` | `develop` | mergeado @ `8750b57` |
-| #19 | `feature/effects-integration-phase5` | `develop` | pendiente |
+## Riesgos
 
-## Qué queda en `develop` tras Fase 5
-
-- **Código Fase 3:** DOT (`HpSteal`), kill (`Kill.cs`), castigos (`PunishmentBuff`), invocaciones (`SummonedStaticMonster`, `DiesAtTurnEnd`), logger (`FightCombatLogger`).
-- **Docs:** fases 1–5 en `docs/`.
-- **Sin** release a `main` ni deploy prod VPS en esta entrega.
-
-## Riesgos conocidos (Ola 2)
-
-- Bosses Frigost (`FrigostBossMechanics`) — escenarios B-01/B-03 pueden quedar PENDING/FAIL.
-- Empujes / secuencias (`ActiveSequenceCount`, `ReadyChecker`) — escenarios E-01–E-04.
-- No bloquean merge en `develop` si smoke A–D del [regression-checklist](./regression-checklist.md) pasa.
-
-## Criterios de aceptación Fase 5
-
-- [x] PRs pipeline auditadas: `base=develop`
-- [x] `origin/develop-build` eliminada
-- [x] PR #18 mergeado en `develop`
-- [ ] Docs Fase 5 + `BRANCHING.md` actualizado
-- [ ] Compile gate OK post-merge
-- [ ] PR #19 → `develop`
-- [ ] Regression checklist ejecutado en VPS test (checkout `develop`)
-
-## Alcance
-
-**Incluido:** documentación de integración, higiene de ramas origin, compile gate, checklist de regresión.
-
-**Excluido:** PR `develop` → `main`; deploy Docker en `/opt/dofus-2.0.0`; fixes Ola 2 masivos.
+- VPS sin fixes Fase 3 hasta merge manual PR #23.
+- Escenarios Ola 2 (bosses/empujes) documentados en Fase 4 — no bloquean apertura de PRs.
