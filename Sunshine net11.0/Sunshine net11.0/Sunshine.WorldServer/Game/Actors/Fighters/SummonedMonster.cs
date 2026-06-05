@@ -13,6 +13,7 @@ using Sunshine.WorldServer.Game.Fights.Teams;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Handlers.Actions;
 using Sunshine.WorldServer.Handlers.Context;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +96,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
         public virtual void Die(FightActor byFighter = null)
         {
+            FightCombatLogger.LogSummonDie(Fight, this, byFighter ?? this);
             OnDead(this, byFighter == null ? this : byFighter);
         }
 

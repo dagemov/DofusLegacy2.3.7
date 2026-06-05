@@ -34,6 +34,7 @@ using Sunshine.WorldServer.Game.Effects.Spells;
 using Sunshine.WorldServer.Game.Maps.Pathfinding;
 using Sunshine.Protocol.Messages;
 using Sunshine.WorldServer.Game.Actors.AI;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Triggers;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
 
@@ -925,6 +926,8 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (realLifeLost > 0)
                 Fight.OnLifePointsChanged(-realLifeLost, damage.Source, this);
 
+            FightCombatLogger.LogDamage(Fight, damage.Source, this, damage);
+
             // Si le coup met la cible à 0 PV, on traite la mort tout de suite.
             // Les buffs déclenchés "après avoir subi des dommages" ne doivent pas ajouter de vitalité/PV
             // sur une cible déjà morte, sinon le client affiche 0 PV puis un +PV fantôme.
@@ -1000,6 +1003,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             Stats.Health.Taken = Math.Max(Stats.Health.Taken, Stats.Health.TotalMax);
             NormalizeFightHealth(false);
+            FightCombatLogger.LogKill(Fight, killer, this);
             TryKillIfNoHealth(killer ?? this);
         }
 
@@ -1976,7 +1980,10 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         public void TriggerFightBuffs(BuffTriggerType trigger, object token = null)
         {
             foreach (var buff in GetBuffs(x => x is TriggerBuff).Cast<TriggerBuff>().ToArray())
+            {
+                FightCombatLogger.LogTrigger(Fight, this, trigger, buff);
                 buff.TryTrigger(trigger, token);
+            }
         }
 
         public void RemoveBuff(Buff buff, bool dispell = true)

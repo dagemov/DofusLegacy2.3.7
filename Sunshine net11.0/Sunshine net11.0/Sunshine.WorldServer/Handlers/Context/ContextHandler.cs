@@ -8,6 +8,7 @@ using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Actors.Monsters;
 using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Fights;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Buffs;
 using Sunshine.WorldServer.Game.Fights.Teams;
 using Sunshine.WorldServer.Game.Fights.Triggers;
@@ -359,6 +360,9 @@ namespace Sunshine.WorldServer.Handlers.Context
 
         public static void SendGameFightTurnStartMessage(List<WorldClient> clients, FightActor actor)
         {
+            if (clients != null && clients.Count > 0 && actor?.Fight != null)
+                FightCombatLogger.LogSocket(actor.Fight, nameof(GameFightTurnStartMessage), clients.Count);
+
             for (int i = 0; i < clients.Count; i++)
                 clients[i].Send(new GameFightTurnStartMessage(actor.Id, 35000));
         }
@@ -495,6 +499,9 @@ namespace Sunshine.WorldServer.Handlers.Context
         public static void SendGameActionFightSpellCastMessage(List<WorldClient> clients, ActionsEnum actionId, FightActor caster, Spell spell,
             short cellId, FightSpellCastCriticalEnum critical, bool silentCast)
         {
+            if (clients != null && clients.Count > 0 && caster?.Fight != null)
+                FightCombatLogger.LogSocket(caster.Fight, nameof(GameActionFightSpellCastMessage), clients.Count);
+
             clients.ForEach(x => x.Send(new GameActionFightSpellCastMessage((short)actionId, caster.Id, cellId, (sbyte)critical, silentCast, (short)spell.Id, spell.Level)));
         }
 
