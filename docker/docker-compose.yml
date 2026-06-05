@@ -46,7 +46,6 @@ services:
       WORLD_PORT: ${WORLD_PORT:-5557}
       PROTOCOL_VERSION: ${PROTOCOL_VERSION:-1375}
       WORLD_PUBLIC_HOST: ${WORLD_PUBLIC_HOST:-127.0.0.1}
-      FIGHT_COMBAT_LOG_ENABLED: ${FIGHT_COMBAT_LOG_ENABLED:-false}
     depends_on:
       db:
         condition: service_healthy
