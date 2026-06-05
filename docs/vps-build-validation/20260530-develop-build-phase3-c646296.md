@@ -4,7 +4,7 @@
 |-------|--------|
 | Fecha | 2026-05-30 |
 | Rama | `develop-build` |
-| Commit | `c646296` (Fase 3: commits #0–#6 + docs #7) |
+| Commit | `5a27f8f` (Fase 3 + fix csproj `a471096`) |
 | VPS | `174.138.35.107` |
 | Path test | `/opt/dofus-2.0.0-build` |
 | Path prod | `/opt/dofus-2.0.0` |
@@ -23,16 +23,17 @@
 6. Verificar logs: efectos cargados, puertos 2450/5557, pelea de prueba + `runtime/logs/fights/`
 7. Restaurar prod al cerrar sesión
 
-## Resultado
+## Resultado (2026-06-05 17:16 UTC)
 
 | Criterio | Estado |
 |----------|--------|
-| Build Docker | *(actualizar tras ejecución)* |
-| Runtime boot | *(actualizar tras ejecución)* |
-| EffectsLoader | *(actualizar tras ejecución)* |
-| FightCombatLogger | *(actualizar tras ejecución)* |
-| Cliente in-game | *(requiere test humano)* |
-| Restauración prod | *(al cerrar sesión)* |
+| Build Docker | **OK** (~50 s) |
+| Runtime boot | **OK** — READY en 38.75 s |
+| EffectsLoader | **162** efectos cargados |
+| Puertos 2450/5557 | **OK** |
+| FightCombatLogger | Código desplegado; activar `FIGHT_COMBAT_LOG_ENABLED=true` en compose/env para logs |
+| Cliente in-game | **Pendiente** — checklist humano en `validation-checklist.md` |
+| Restauración prod | **Pendiente** — develop-build activo para test |
 
 ## Commits incluidos
 
