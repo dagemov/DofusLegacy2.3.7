@@ -3,17 +3,14 @@ using Microsoft.Extensions.DependencyInjection;
 using RollblackLegacy.Admin.Application.Abstractions;
 using RollblackLegacy.Admin.Application.Abstractions.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Items;
-using RollblackLegacy.Admin.Application.Abstractions.Spells;
 using RollblackLegacy.Admin.Infrastructure.Configuration;
 using RollblackLegacy.Admin.Infrastructure.Data;
 using RollblackLegacy.Admin.Infrastructure.Items;
-using RollblackLegacy.Admin.Infrastructure.Spells;
 using RollblackLegacy.Admin.Infrastructure.Services;
 using RollblackLegacy.Admin.Infrastructure.Services.ClientIdentity;
 using RollblackLegacy.Admin.Application.Abstractions.Publication;
 using RollblackLegacy.Admin.Infrastructure.Services.Items;
 using RollblackLegacy.Admin.Infrastructure.Services.Publication;
-using RollblackLegacy.Admin.Infrastructure.Services.Spells;
 
 namespace RollblackLegacy.Admin.Infrastructure.DependencyInjection;
 
@@ -59,8 +56,6 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddScoped<IItemSetsAdminReadRepository, ItemSetsAdminReadRepository>();
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
         services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
-        services.AddSingleton<ReferenceSpellCatalogReader>();
-        services.AddScoped<ISpellsAdminReadRepository, SpellsAdminReadRepository>();
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();
         services.AddSingleton<IItemAppearancePreviewStateResolver, FileSystemItemAppearancePreviewStateResolver>();
 
