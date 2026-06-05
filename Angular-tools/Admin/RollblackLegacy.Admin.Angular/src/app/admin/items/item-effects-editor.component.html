@@ -40,13 +40,18 @@
             (click)="addFromQuickPick(pick)"
             [disabled]="isSaving">
             <img
-              *ngIf="pick.iconAsset"
+              *ngIf="showStatIcon(pick)"
               class="stat-quick-pick__icon"
-              [src]="pick.iconAsset"
+              [src]="statIconPath(pick)"
               [alt]="pick.title"
               width="28"
-              height="28" />
-            <span *ngIf="!pick.iconAsset" class="stat-quick-pick__emoji">{{ pick.emoji }}</span>
+              height="28"
+              (error)="brokenStatIconIds.add(pick.id)" />
+            <span
+              *ngIf="!showStatIcon(pick)"
+              class="stat-quick-pick__emoji">
+              {{ pick.emoji }}
+            </span>
             <span class="stat-quick-pick__title">{{ pick.title }}</span>
             <span class="stat-quick-pick__subtitle">{{ pick.subtitle }}</span>
           </button>

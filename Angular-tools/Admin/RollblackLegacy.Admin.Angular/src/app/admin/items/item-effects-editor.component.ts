@@ -27,6 +27,7 @@ import {
 import {
   STAT_QUICK_PICKS,
   StatQuickPickDefinition,
+  resolveStatIconAssetPath,
   optionMatchesHumanSearch,
   resolveQuickPickOption
 } from './item-effect-stat-quick-picks';
@@ -72,6 +73,16 @@ export class ItemEffectsEditorComponent implements OnChanges {
   protected readonly statQuickPicks = STAT_QUICK_PICKS;
   protected showTechnicalDetails = false;
   protected quickPickMessage: string | null = null;
+  protected readonly resolveStatIconAssetPath = resolveStatIconAssetPath;
+  protected readonly brokenStatIconIds = new Set<string>();
+
+  protected showStatIcon(pick: StatQuickPickDefinition): boolean {
+    return !!resolveStatIconAssetPath(pick.iconAsset) && !this.brokenStatIconIds.has(pick.id);
+  }
+
+  protected statIconPath(pick: StatQuickPickDefinition): string | null {
+    return resolveStatIconAssetPath(pick.iconAsset);
+  }
 
   protected get saveFeedback(): AdminFeedback | null {
     if (!this.saveMessage) {

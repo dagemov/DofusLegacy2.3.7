@@ -1,5 +1,14 @@
 import { AdminEffectOptionDto } from './data-access/items.models';
 
+export function resolveStatIconAssetPath(iconAsset?: string): string | null {
+  if (!iconAsset?.trim()) {
+    return null;
+  }
+
+  const normalized = iconAsset.trim().replace(/\\/g, '/');
+  return normalized.startsWith('/assets/') ? normalized : `/assets/${normalized}`;
+}
+
 export interface StatQuickPickDefinition {
   id: string;
   emoji: string;
