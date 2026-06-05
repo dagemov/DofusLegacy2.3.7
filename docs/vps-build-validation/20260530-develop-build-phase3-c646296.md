@@ -33,7 +33,7 @@
 | Puertos 2450/5557 | **OK** |
 | FightCombatLogger | **OK** — `FIGHT_COMBAT_LOG_ENABLED=true` en contenedor; ruta `docker/logs/fights/` escribible |
 | Logs combate previo | **No** — test anterior a fix (runtime `:ro` + env sobrescrito a `false`) |
-| Logs combate post-fix | **Pendiente** — 1 pelea corta tras fix para generar `{fightId}.log` |
+| Logs combate post-fix | **OK** — `docker/logs/fights/1.log` (fight=1): SOCKET, CAST, DISPATCH, DAMAGE |
 | Cliente in-game | **Pendiente** — checklist humano en `validation-checklist.md` |
 | Restauración prod | **Pendiente** — devp activo para test |
 
