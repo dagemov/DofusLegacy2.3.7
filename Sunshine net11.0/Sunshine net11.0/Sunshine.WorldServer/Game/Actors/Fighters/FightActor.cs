@@ -982,6 +982,16 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             ActionsHandler.SendGameActionFightExchangePositionsMessage(Fight.Clients, this, with);
         }
 
+        public void Kill(FightActor killer)
+        {
+            if (m_deathHandled || Fight == null || Stats == null || Stats.Health == null || !IsAlive)
+                return;
+
+            Stats.Health.Taken = Math.Max(Stats.Health.Taken, Stats.Health.TotalMax);
+            NormalizeFightHealth(false);
+            TryKillIfNoHealth(killer ?? this);
+        }
+
         public bool TryKillIfNoHealth(FightActor killer = null)
         {
             if (m_deathHandled || Fight == null || Stats == null || Stats.Health == null)
