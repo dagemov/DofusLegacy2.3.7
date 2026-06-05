@@ -58,6 +58,10 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
         public override bool IsAlive { get { return base.IsAlive; } }
 
+        public virtual bool CanPlayTurn => Monster?.Record?.CanPlay ?? true;
+
+        public bool DiesAtTurnEnd => Monster?.Record != null && !Monster.Record.UseSummonSlot;
+
         public override GameFightFighterInformations GetGameFightFighterInformations(WorldClient client = null)
         {
             return new GameFightMonsterInformations(

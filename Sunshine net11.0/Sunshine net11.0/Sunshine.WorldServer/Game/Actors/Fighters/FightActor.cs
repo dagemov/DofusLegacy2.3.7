@@ -369,6 +369,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     return;
                 }
 
+                if (!controlledSlaveTurn && this is SummonedMonster staticSummon && !staticSummon.CanPlayTurn)
+                {
+                    this.EndTurn();
+                    return;
+                }
+
                 if (!controlledSlaveTurn && this is AIFighter aiFighter)
                     aiFighter.PlayAI();
             }
@@ -437,9 +443,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
                     return;
             }
-            else if (this is SummonedMonster summonedMonster && summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId && summonedMonster.IsAlive)
+            else if (this is SummonedMonster summonedMonster && summonedMonster.IsAlive)
             {
-                summonedMonster.Die(this);
+                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
+                    summonedMonster.Die(this);
+                else if (summonedMonster.DiesAtTurnEnd)
+                    summonedMonster.Die(this);
 
                 if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
                     return;
