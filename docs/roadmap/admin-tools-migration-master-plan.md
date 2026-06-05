@@ -267,6 +267,8 @@ Macro 4 Phase 6D (`feature/item-preview-category-expansion-phase6d`): **`DONE`**
 
 Macro Items Final Plus (`feature/items-preview-sets-polish-final`): **`DONE`** (browser QA pending) — resolver preview `BY_CATEGORY`, UI `/admin/item-sets` + bonos por piezas, fix assets `src/assets/icons`, docs en [items-preview-reconciliation-report.md](../admin-tools/items-builder/items-preview-reconciliation-report.md), [items-stat-icons-fix-report.md](../admin-tools/items-builder/items-stat-icons-fix-report.md), [sets-builder-preview-and-bonuses.md](../admin-tools/sets-builder/sets-builder-preview-and-bonuses.md).
 
+Sets Builder CRUD (`feature/sets-builder-crud-and-pagination`): **`DONE`** (browser QA pending) — listado paginado, filtros, CRUD API, editor Angular new/edit, bonus editor por piezas — [sets-builder-crud-pagination.md](../admin-tools/sets-builder/sets-builder-crud-pagination.md), [sets-builder-bonus-editor.md](../admin-tools/sets-builder/sets-builder-bonus-editor.md).
+
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
 ## Mandatory handoff
