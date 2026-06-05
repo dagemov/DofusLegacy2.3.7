@@ -1,56 +1,50 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-04`
+Generated: `2026-06-05`
 
-## Macro 4 / Phase 6C — Item preview massive extraction
+## Macro 4 / Phase 6D — Item preview category expansion
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/item-preview-massive-extraction-phase6c` |
-| Base | `feature/item-skin-catalog-by-category-phase6b` |
+| Rama | `feature/item-preview-category-expansion-phase6d` |
+| Base | `feature/item-preview-massive-extraction-phase6c` |
 | Estado | **`DONE`** (browser QA pendiente operador) |
 
 ### Entregables
 
-- CLI: `item-preview-extract-by-category` → PNG reales desde D2P + `catalog.json` / `catalog.csv` / `gallery.html` (temporal)
-- CLI: `item-preview-copy-to-angular` (`--approve-curated-copy`) → **500 PNG** en `src/assets/item-previews/by-category/`
-- **Dofus completo:** 10/10 iconos en Angular
-- Manifest: `docs/admin-tools/sprite-preview/item-preview-curated-copy-manifest-phase6c.{json,md}`
-- API + selector: modo `by-category`, filtros categoría / ItemId / nombre ES-EN / IconId
-- Armas: **0** copiadas; 95 TypeIds excluidos en catálogo
-- Sin modificar `Client2.3.7`, DB, VPS; `temporal-artifacts` fuera de git
+- CLI `item-preview-expand-categories`: extracción incremental, skip `dofus/sombreros/capas`, copia automática
+- **+1416 PNG** nuevos → **1916 total** en `src/assets/item-previews/by-category/`
+- Manifest v2: `categoryStats` (count, lastExtractionUtc, previewSource)
+- API `GET item-icons/category-stats`
+- Selector: chips con contador, búsqueda AND (`ItemId`, `IconId`, `nameEs`, `nameEn`)
+- Categorías nuevas en mapa: `trofeos` (TypeId 151), `consumibles` (varios TypeIds)
+- Armas: **0** copiadas
 
 ### Validación
 
 | Check | Resultado |
 | --- | --- |
 | Pipeline build | OK |
-| Extract 500 PNG temporal | OK |
-| Copy 500 PNG Angular | OK |
+| Expand + copy | OK (1916 PNG) |
 | npm run build | OK |
+| Objetivo 1000+ | OK |
 | Browser QA | `PENDING_OPERATOR_BROWSER_QA` |
 
-### Commits en rama
+### Commits
 
 ```txt
-feat: extract item previews by category from d2p
-feat: integrate item preview category gallery
-docs: record item preview extraction phase6c
+feat: expand item preview categories
+feat: improve category gallery navigation
+docs: record item preview category expansion
 ```
 
-### Siguiente (operador / Phase 7+)
+## Macro 4 / Phase 6C
 
-- QA browser: `/admin/items/icon-selector`, `/admin/items/new`, `/admin/items/12616/edit`
-- Ampliar cupo o re-run por categoría (botas, mascotas, escudos, anillos, amuletos, cinturones, recursos)
-- Macro 4 Phase 6A publish real sigue `READY_FOR_OPERATOR`
-
-## Macro 4 / Phase 6B — Item skin catalog by category
-
-**`DONE`** — dry-run 1925 entradas, galería HTML, mapa de categorías.
+**`DONE`** — 500 PNG iniciales, dofus 10/10.
 
 ## Repo
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-preview-massive-extraction-phase6c
+feature/item-preview-category-expansion-phase6d
 ```

@@ -16,6 +16,13 @@ Pipeline offline y catálogo curado para previews de ítems en Angular Admin.
 
 **EntityLook renderer:** `DEFERRED` — no requerido para Items Builder MVP.
 
+## Macro 4 / Phase 6D — Category expansion (1000+ previews)
+
+- [Phase 6D report](./item-preview-category-expansion-phase6d-report.md)
+- CLI: `item-preview-expand-categories` (incremental, skip dofus/sombreros/capas)
+- Manifest v2: `categoryStats` + `catalog-manifest.json`
+- **1916** PNG en Angular (`by-category/`)
+
 ## Macro 4 / Phase 6C — Item preview massive extraction
 
 - [Phase 6C report](./item-preview-extraction-phase6c-report.md)
