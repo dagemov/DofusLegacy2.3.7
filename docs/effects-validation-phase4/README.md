@@ -1,6 +1,6 @@
 # Fase 4: Validación funcional
 
-Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback y plantilla de resultados. Los tests los ejecuta el equipo en `devp` (Docker VPS).
+Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback y plantilla de resultados. Los tests los ejecuta el equipo en VPS `/opt/dofus-2.0.0-build` con checkout de **`devp`**.
 
 ## Metadatos
 
@@ -9,7 +9,7 @@ Escenarios de prueba in-game mapeados a **capas del motor**, evidencia Rollback 
 | Duración estimada | ~4 h |
 | Rama feature | `feature/effects-validation-phase4` |
 | Rama compile local | `devp-compile` @ `f6c79fc` (build OK) |
-| Rama test runtime | `devp` (VPS) |
+| Rama test runtime | `devp` en VPS `/opt/dofus-2.0.0-build` |
 | Documentación | `docs/effects-validation-phase4/` |
 | Fases previas | [Fase 1](../effects-audit-phase1/) · [Fase 2](../effects-catalog-phase2/) · [Fase 3](../effects-engine-fix-phase3/) |
 | Integración Fase 3 | PR #28 → `devp` (Fase 3 engine-fix) |
@@ -41,7 +41,7 @@ En esta fase los escenarios usan nombres de jugador solo como **casos de prueba*
 flowchart LR
   devp[devp]
   compile[devp-compile_local]
-  build[devp_VPS]
+  build[VPS_checkout_devp]
   phase4[feature/effects-validation-phase4]
   devp --> compile
   devp --> phase4
@@ -73,7 +73,7 @@ Ver [BRANCHING.md](../BRANCHING.md).
 - [x] Escenarios documentados por capa (no por hechizo como fix)
 - [x] Hilos de código Sunshine + referencia Rollback
 - [x] Compilación verificada en `devp-compile`
-- [ ] Resultados in-game en `validation-results.md` (equipo / `devp` en VPS)
+- [ ] Resultados in-game en `validation-results.md` (equipo / VPS checkout `devp`)
 - [ ] Bosses / empujes: gaps Ola 2 documentados si FAIL
 
 ## Alcance

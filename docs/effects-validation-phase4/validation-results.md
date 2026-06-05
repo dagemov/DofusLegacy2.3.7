@@ -1,6 +1,6 @@
 # Fase 4 — Resultados de validación
 
-Completar tras pruebas en **`devp`** (VPS Docker). Estado inicial: **PENDING** en todos los escenarios.
+Completar tras pruebas en VPS **`/opt/dofus-2.0.0-build`** con checkout de **`devp`**. Estado inicial: **PENDING** en todos los escenarios.
 
 ## Entorno de ejecución
 
