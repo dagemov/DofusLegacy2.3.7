@@ -9,7 +9,7 @@ Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`
 | Duración estimada | ~2 h |
 | Rama feature | `feature/effects-integration-phase5` |
 | Rama integración | `develop` @ `1f998cd` (= `main`, post-reset 2026-06-05) |
-| PR Fase 5 | [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) — **abierta** |
+| PR Fase 5 | [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) — **abierta** |
 | Documentación | `docs/effects-integration-phase5/` |
 
 ## Política origin
@@ -18,7 +18,8 @@ Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`
 |-------|---------|
 | PRs | Solo hacia `develop`; **permanecen abiertas** hasta merge manual |
 | Merge | **Prohibido** por agente/script |
-| `develop` | Recreada desde `main`; pipeline en PRs #21–#25 |
+| Cerrar PRs | **Prohibido** — permanecen abiertas hasta merge manual |
+| `develop` | Recreada desde `main`; pipeline en PRs #19, #21–#24 |
 | `origin/develop-build` | Eliminada |
 
 ## PRs del pipeline (todas abiertas)
@@ -29,7 +30,7 @@ Cierre del pipeline de reparación del motor de efectos. Tras reset de `develop`
 | [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 Catálogo | `feature/effects-catalog-phase2` | abierta |
 | [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 Motor | `feature/effects-engine-fix-phase3` | abierta |
 | [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 Validación | `feature/effects-validation-phase4` | abierta |
-| [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | 5 Integración | `feature/effects-integration-phase5` | abierta |
+| [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | 5 Integración | `feature/effects-integration-phase5` | abierta |
 
 ## Índice
 
@@ -49,14 +50,14 @@ flowchart LR
   develop -->|PR22_abierta| f2[phase2]
   develop -->|PR23_abierta| f3[phase3]
   develop -->|PR24_abierta| f4[phase4]
-  develop -->|PR25_abierta| f5[phase5]
+  develop -->|PR19_abierta| f5[phase5]
 ```
 
 ## Criterios de aceptación
 
 - [x] `origin/develop` recreada desde `main`
-- [x] PRs #21–#25 abiertas (`base=develop`)
-- [x] PRs #19/#20 cerradas sin merge
+- [x] PRs #19, #21–#24 abiertas (`base=develop`)
+- [x] PR #19 reabierta (no cerrar PRs del pipeline)
 - [x] VPS/local sincronizados a `develop` @ `1f998cd`
 - [ ] Merge manual por el equipo (orden 1→5) cuando aprueben
 - [ ] Regression checklist tras merge PR #23+ en VPS

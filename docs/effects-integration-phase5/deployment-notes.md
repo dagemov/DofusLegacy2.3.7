@@ -8,6 +8,7 @@ Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No i
 |-------|---------|
 | Subir PRs | Sí — visibles en GitHub |
 | Merge automático | **No** — ni por agente ni por script |
+| Cerrar PRs | **No** — las PR del pipeline deben permanecer **abiertas** en `develop` |
 | Quién mergea | Solo el equipo, manualmente, tras revisión |
 
 Si `develop` quedó inconsistente, resetear desde `main` (ver sección 2) y reabrir PRs — **sin mergear** en la operación.
@@ -20,9 +21,9 @@ Si `develop` quedó inconsistente, resetear desde `main` (ver sección 2) y reab
 | 2 | [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | `feature/effects-catalog-phase2` | `develop` | **abierta** |
 | 3 | [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
 | 4 | [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | `feature/effects-validation-phase4` | `develop` | **abierta** |
-| 5 | [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | `feature/effects-integration-phase5` | `develop` | **abierta** |
+| 5 | [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | `feature/effects-integration-phase5` | `develop` | **abierta** |
 
-PRs #19/#20 cerradas sin merge. PRs #14–#18: historial del `develop` anterior.
+PR #19 reabierta tras cierre accidental. PR #25 (duplicado) cerrada. PRs #14–#18: historial del `develop` anterior.
 
 **Regla:** ningún PR del pipeline con `base=main` ni `base=develop-build`.
 
