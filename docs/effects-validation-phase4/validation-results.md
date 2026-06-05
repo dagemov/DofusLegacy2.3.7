@@ -6,11 +6,21 @@ Completar tras pruebas en VPS **`/opt/dofus-2.0.0-build`** con checkout de **`de
 
 | Campo | Valor |
 |-------|--------|
-| Fecha test | *(completar)* |
-| Rama / SHA | `develop` @ *(SHA)* |
-| Tester | *(nombre)* |
+| Fecha test | 2026-06-05 (smoke arranque Fase 5) |
+| Rama / SHA | `develop` @ `8750b57` |
+| Tester | agente (arranque) / *(equipo in-game)* |
 | Cliente | 2.3.7 → `174.138.35.107:2450` / `:5557` |
 | Logs | `/opt/dofus-2.0.0-build/docker/logs/fights/{fightId}.log` |
+| Registro VPS | [20260530-develop-integration-phase5-8750b57.md](../vps-build-validation/20260530-develop-integration-phase5-8750b57.md) |
+
+### Smoke arranque (Fase 5 — 2026-06-05)
+
+| Criterio | Resultado |
+|----------|-----------|
+| Build Docker VPS | **PASS** |
+| Contenedor Up | **PASS** |
+| EffectsLoader | **PASS** (162 efectos) |
+| Puertos 2450 / 5557 | **PASS** |
 
 ## Leyenda
 
