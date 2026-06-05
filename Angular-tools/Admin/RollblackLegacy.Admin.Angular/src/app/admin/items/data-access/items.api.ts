@@ -25,8 +25,12 @@ import {
   ItemEffectsUpdateRequest,
   ItemEffectsUpdateResultDto,
   ItemSetDetailDto,
-  ItemSetListItemDto
+  ItemSetListItemDto,
+  ItemSetSearchRequest,
+  ItemSetWriteRequest,
+  ItemSetWriteResultDto
 } from './items.models';
+import { toItemSetQueryParams } from '../../item-sets/data-access/item-sets.queries';
 import { toItemIconQueryParams, toItemQueryParams } from './items.queries';
 
 @Injectable({
@@ -92,12 +96,28 @@ export class ItemsApi {
     return this.httpClient.get<AdminOptionDto[]>(`${this.baseUrl}/item-sets/options`);
   }
 
-  getItemSets(): Observable<ItemSetListItemDto[]> {
-    return this.httpClient.get<ItemSetListItemDto[]>(`${this.baseUrl}/item-sets`);
+  searchItemSets(
+    request: ItemSetSearchRequest
+  ): Observable<ItemPagedResultDto<ItemSetListItemDto>> {
+    return this.httpClient.get<ItemPagedResultDto<ItemSetListItemDto>>(`${this.baseUrl}/item-sets`, {
+      params: toItemSetQueryParams(request)
+    });
   }
 
   getItemSet(setId: number): Observable<ItemSetDetailDto> {
     return this.httpClient.get<ItemSetDetailDto>(`${this.baseUrl}/item-sets/${setId}`);
+  }
+
+  createItemSet(request: ItemSetWriteRequest): Observable<ItemSetWriteResultDto> {
+    return this.httpClient.post<ItemSetWriteResultDto>(`${this.baseUrl}/item-sets`, request);
+  }
+
+  updateItemSet(setId: number, request: ItemSetWriteRequest): Observable<ItemSetWriteResultDto> {
+    return this.httpClient.put<ItemSetWriteResultDto>(`${this.baseUrl}/item-sets/${setId}`, request);
+  }
+
+  deleteItemSet(setId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}/item-sets/${setId}`);
   }
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
