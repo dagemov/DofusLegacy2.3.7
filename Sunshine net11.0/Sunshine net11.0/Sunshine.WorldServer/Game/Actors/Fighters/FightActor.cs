@@ -928,6 +928,8 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             foreach (var punishmentBuff in punishmentBuffs)
                 punishmentBuff.OnDamaged(damage.Source, damage.Amount);
+
+            TriggerFightBuffs(BuffTriggerType.AFTER_ATTACKED, damage);
         }
 
         public void Heal(int healPoints, FightActor source, bool withBoost = false)
