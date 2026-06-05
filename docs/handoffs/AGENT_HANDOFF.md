@@ -2,78 +2,73 @@
 
 Generated: `2026-06-05`
 
-## Macro 5 / Phase 2 - Spell Catalog API
+## Macro Items Final Plus - Preview + Sets + Stat icons
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/item-preview-category-expansion-phase6d` |
-| Base | `feature/item-preview-massive-extraction-phase6c` |
-| Estado | **`DONE`** |
-
-### Entregables
-
-- Endpoint `GET /api/admin/v1/spells`
-- Contratos `Contracts/Spells/*`
-- Servicio `SpellsAdminReadService`
-- Repositorio `SpellsAdminReadRepository`
-- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase2-catalog-api.md`
-
-### Validacion
-
-| Check | Resultado |
-| --- | --- |
-| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `FAILED_EXTERNAL_LOCK` |
-| Causa registrada | DLLs del Admin API bloqueadas por Visual Studio (`RollblackLegacy.Admin.Api`) |
-| Build suplementario con salida temporal | `NOT_CONCLUSIVE` |
-
-### Siguiente
-
-- Macro 5 / Phase 3: Spell Detail API
-- Alcance esperado: detalle read-only del spell, niveles y contexto runtime/referencia sin edicion
-
-## Macro 4 / Phase 6D - Item preview category expansion
-
-| Campo | Valor |
-| --- | --- |
-| Rama | `feature/item-preview-category-expansion-phase6d` |
-| Base | `feature/item-preview-massive-extraction-phase6c` |
+| Rama | `feature/items-preview-sets-polish-final` |
+| Base | `feature/item-preview-category-expansion-phase6d` |
 | Estado | **`DONE`** (browser QA pendiente operador) |
 
 ### Entregables
 
-- CLI `item-preview-expand-categories`: extraccion incremental, skip `dofus/sombreros/capas`, copia automatica
-- **+1416 PNG** nuevos -> **1916 total** en `src/assets/item-previews/by-category/`
-- Manifest v2: `categoryStats` (count, lastExtractionUtc, previewSource)
-- API `GET item-icons/category-stats`
-- Selector: chips con contador, busqueda AND (`ItemId`, `IconId`, `nameEs`, `nameEn`)
-- Categorias nuevas en mapa: `trofeos` (TypeId 151), `consumibles` (varios TypeIds)
-- Armas: **0** copiadas
+1. **Preview reconciliation** — `FileSystemItemPreviewStateResolver` + `ItemPreviewCategoryIndex` + fallback `BY_CATEGORY`; `typeId` en `Resolve()` para lista/detalle/sets.
+2. **Sets read UI** — `GET /api/admin/v1/item-sets`, `GET /api/admin/v1/item-sets/{setId}`; Angular `/admin/item-sets`, `/admin/item-sets/:setId`; bonos por piezas con labels de `item-effects/options`.
+3. **Stat icons** — `angular.json` publica `src/assets`; quick-picks con PNG reales y fallback emoji.
 
 ### Validacion
 
 | Check | Resultado |
 | --- | --- |
-| Pipeline build | OK |
-| Expand + copy | OK (1916 PNG) |
-| npm run build | OK |
-| Objetivo 1000+ | OK |
-| Browser QA | `PENDING_OPERATOR_BROWSER_QA` |
+| `dotnet build` Application | OK |
+| `dotnet build` Admin.Api | `FAILED_EXTERNAL_LOCK` si VS ejecuta `RollblackLegacy.Admin.Api` |
+| `npm run build` | OK (warning budget +1.13 kB) |
+| Browser QA | `PENDING_OPERATOR` — ver rutas abajo |
 
-### Commits
+### Browser QA (operador)
 
 ```txt
-feat: expand item preview categories
-feat: improve category gallery navigation
-docs: record item preview category expansion
+/admin/items/new
+/admin/items/12616/edit
+/admin/items/icon-selector
+/admin/item-sets
+/admin/item-sets/:setId
 ```
 
-## Macro 4 / Phase 6C
+Validar: iconos stats visibles, sin imagenes rotas, previews BY_CATEGORY en lista/detalle/sets, bonos legibles por piezas.
 
-**`DONE`** - 500 PNG iniciales, dofus 10/10.
+### Commits esperados (esta sesion)
+
+```txt
+fix: reconcile item previews from category catalog
+feat: add item set previews and bonuses
+fix: load item stat icons correctly
+docs: record items preview and sets polish
+```
+
+### Docs
+
+- [items-preview-reconciliation-report.md](../admin-tools/items-builder/items-preview-reconciliation-report.md)
+- [items-stat-icons-fix-report.md](../admin-tools/items-builder/items-stat-icons-fix-report.md)
+- [sets-builder-preview-and-bonuses.md](../admin-tools/sets-builder/sets-builder-preview-and-bonuses.md)
+
+### Siguiente
+
+- PR desde `feature/items-preview-sets-polish-final` hacia base de migracion acordada
+- Browser QA operador
+- **Spell Builder** solo tras merge + aprobacion explicita
+
+### Prohibiciones
+
+- No tocar cliente real, VPS, publicacion, armas, scan 44k, worktrees externos, temporal-artifacts en git
 
 ## Repo
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/item-preview-category-expansion-phase6d
+feature/items-preview-sets-polish-final
 ```
+
+## Macro 4 / Phase 6D (referencia)
+
+**`DONE`** — 1916 PNG `by-category/`, manifest `categoryStats`. Ver handoff previo en historial git de este archivo.

@@ -37,8 +37,9 @@ Phase 8 DONE
 Macro 2 - Client Identity Audit Tool: COMPLETE
 Macro 3 - Sprite Preview Pipeline: COMPLETE
 Macro Items Final - Effects catalog parity (7D.1-7D.5): DONE (browser QA partial)
+Macro Items Final Plus - Preview reconciliation + Sets + stat icons: DONE (browser QA pending) — [preview reconciliation](./items-preview-reconciliation-report.md), [stat icons](./items-stat-icons-fix-report.md), [sets builder](../sets-builder/sets-builder-preview-and-bonuses.md)
 Macro 4 - Client Item Publication Pipeline: Phase 5 DONE (sandbox + UX) — [client-publication](../client-publication/README.md), [UX polish Phase 5](./items-final/items-creation-ux-polish-phase5.md)
-Macro Spells Builder: DEFERRED (until Items Final PR merges)
+Macro Spells Builder: DEFERRED (until Items Final Plus merges)
 Macro 5 - Glyph Builder: DEFERRED
 Macro 6 - Maps Builder: DEFERRED
 ```
@@ -126,6 +127,8 @@ Document index:
 - `items-builder-blazor-parity-audit.md`
 - `items-builder-create-edit-gap-analysis.md`
 - `items-builder-icon-selector-plan.md`
+- `items-preview-reconciliation-report.md`
+- `items-stat-icons-fix-report.md`
 - `items-builder-effects-editor-plan.md`
 - `items-builder-effects-serialization-audit.md`
 - `items-builder-effects-editor-phase7b.md`
