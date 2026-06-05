@@ -1,0 +1,346 @@
+@page "/admin/spawns"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject MonsterAdminService MonsterAdminService
+@inject MapSpawnAdminService MapSpawnAdminService
+
+<PageTitle>Mapas y spawns</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Spawns</span>
+            <h1>Mapas y spawns</h1>
+            <p class="muted-copy">Detecta mapas vacios, revisa spawns heredados por subarea y crea spawns directos desde el panel.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar mapId, subarea o coordenadas (1,0)..." @bind="_query.Search" />
+                <label class="admin-checkbox">
+                    <input type="checkbox" @bind="_onlyEmptyMaps" />
+                    <span>Solo mapas vacios</span>
+                </label>
+                <button class="portal-button secondary" @onclick="ReloadMapsAsync">Buscar</button>
+            </div>
+
+            @if (_maps is null)
+            {
+                <div class="empty-state"><p>Cargando mapas...</p></div>
+            }
+            else if (_maps.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No hay mapas con ese filtro.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack">
+                    @foreach (var map in _maps.Items)
+                    {
+                        <button class="admin-list-card @(_selectedMapId == map.MapId ? "selected" : string.Empty)" @onclick="() => LoadMapAsync(map.MapId)">
+                            <strong>Mapa @map.MapId (@map.X,@map.Y)</strong>
+                            <span>Subarea @map.SubAreaId · directos @map.DirectSpawnCount · heredados @map.SubAreaSpawnCount</span>
+                            <small>@(map.SpawnDisabled ? "Spawn deshabilitado en mapa" : map.IsEmpty ? "Mapa habilitado sin cobertura" : "Mapa habilitado con cobertura")</small>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_maps.Page" TotalPages="@_maps.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedMapId.HasValue ? $"Spawns del mapa {_selectedMapId.Value}" : "Selecciona un mapa")</h2>
+                    <p class="muted-copy">Los registros `subarea` vienen heredados; los registros `mapa` son spawns directos editables desde aqui.</p>
+                </div>
+            </div>
+
+            @if (!_selectedMapId.HasValue)
+            {
+                <div class="empty-state"><p>Elige un mapa de la columna izquierda para revisar o poblar spawns.</p></div>
+            }
+            else
+            {
+                @if (_selectedMap is not null)
+                {
+                    <div class="admin-subcard">
+                        <div class="section-heading compact">
+                            <div>
+                                <strong>Mapa @_selectedMap.MapId (@_selectedMap.X,@_selectedMap.Y)</strong>
+                                <div class="muted-copy">Subarea @_selectedMap.SubAreaId - directos @_selectedMap.DirectSpawnCount - heredados @_selectedMap.SubAreaSpawnCount - efectivos @_selectedMap.EffectiveSpawnCount</div>
+                            </div>
+                            <span class="portal-chip subtle">@(_selectedMap.SpawnDisabled ? "SpawnDisabled" : "Activo")</span>
+                        </div>
+                        <div class="portal-actions">
+                            <button class="portal-button" @onclick="MaterializeInheritedAsync">Materializar heredados a mapa</button>
+                            <button class="portal-button secondary" @onclick="ToggleMapDisabledAsync">
+                                @(_selectedMap.SpawnDisabled ? "Activar spawns del mapa" : "Deshabilitar spawns del mapa")
+                            </button>
+                            @if (_selectedMap.DirectSpawnCount > 0)
+                            {
+                                <button class="portal-button danger" @onclick="DeleteDirectSpawnsAsync">Borrar spawns directos</button>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <div class="admin-inline-tools">
+                    <input class="field-input admin-search" placeholder="Buscar monstruo para spawn..." @bind="_monsterLookupSearch" />
+                    <button class="portal-button secondary" @onclick="SearchMonstersAsync">Buscar monstruo</button>
+                </div>
+
+                @if (_monsterLookupResults.Count > 0)
+                {
+                    <div class="admin-lookup-list">
+                        @foreach (var option in _monsterLookupResults)
+                        {
+                            <button class="admin-lookup-item" @onclick="() => SelectMonster(option)">
+                                @option.Label
+                            </button>
+                        }
+                    </div>
+                }
+
+                <div class="admin-subcard">
+                    <h3>Nuevo / editar spawn</h3>
+                    <div class="admin-form-grid four">
+                        <div class="field-group">
+                            <label class="field-label">MapId</label>
+                            <input class="field-input" type="number" min="1" @bind="_spawnForm.MapId" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">SubAreaId</label>
+                            <input class="field-input" type="number" min="1" @bind="_spawnForm.SubAreaId" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">MonsterId</label>
+                            <input class="field-input" type="number" min="1" @bind="_spawnForm.MonsterId" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Fuente</label>
+                            <input class="field-input" value="@_spawnForm.Source" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Grade min</label>
+                            <input class="field-input" type="number" min="1" max="5" @bind="_spawnForm.MinGrade" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Grade max</label>
+                            <input class="field-input" type="number" min="1" max="5" @bind="_spawnForm.MaxGrade" />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Probabilidad</label>
+                            <input class="field-input" type="number" min="1" max="100" @bind="_spawnForm.Probability" />
+                        </div>
+                        <div class="field-group inline-toggle">
+                            <label class="field-label">Deshabilitado</label>
+                            <input type="checkbox" @bind="_spawnForm.Disabled" />
+                        </div>
+                    </div>
+                    <div class="portal-actions">
+                        <button class="portal-button" @onclick="SaveSpawnAsync">Guardar spawn</button>
+                        <button class="portal-button secondary" @onclick="PrepareNewSpawn">Nuevo directo</button>
+                    </div>
+                </div>
+
+                <div class="admin-stack">
+                    @if (_currentSpawns.Count == 0)
+                    {
+                        <div class="empty-state"><p>Este mapa no tiene spawns directos ni heredados.</p></div>
+                    }
+                    else
+                    {
+                        @foreach (var spawn in _currentSpawns)
+                        {
+                            <article class="admin-subcard">
+                                <div class="section-heading compact">
+                                    <div>
+                                        <strong>@spawn.MonsterLabel</strong>
+                                        <div class="muted-copy">Fuente: @spawn.Source · prob. @spawn.Probability% · grades @spawn.MinGrade-@spawn.MaxGrade</div>
+                                    </div>
+                                    <div class="table-actions">
+                                        <button class="portal-button secondary" @onclick="() => EditSpawn(spawn)">Editar</button>
+                                        @if (spawn.Source == "mapa")
+                                        {
+                                            <button class="portal-button danger" @onclick="() => DeleteSpawnAsync(spawn.Id)">Eliminar</button>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    }
+                </div>
+            }
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<MapSpawnOverview>? _maps;
+    private bool _onlyEmptyMaps;
+    private int? _selectedMapId;
+    private MapSpawnOverview? _selectedMap;
+    private IReadOnlyList<MonsterSpawnAdminModel> _currentSpawns = Array.Empty<MonsterSpawnAdminModel>();
+    private MonsterSpawnAdminModel _spawnForm = new();
+    private string _monsterLookupSearch = string.Empty;
+    private IReadOnlyList<AdminLookupOption> _monsterLookupResults = Array.Empty<AdminLookupOption>();
+    private string? _status;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync() =>
+        await ReloadMapsAsync();
+
+    private async Task ReloadMapsAsync()
+    {
+        _maps = await MapSpawnAdminService.GetMapsAsync(_query, _onlyEmptyMaps);
+        if (_selectedMapId.HasValue)
+            _selectedMap = await MapSpawnAdminService.GetMapAsync(_selectedMapId.Value);
+    }
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadMapsAsync();
+    }
+
+    private async Task LoadMapAsync(int mapId)
+    {
+        _selectedMapId = mapId;
+        _selectedMap = await MapSpawnAdminService.GetMapAsync(mapId);
+        _currentSpawns = await MapSpawnAdminService.GetSpawnsForMapAsync(mapId);
+        PrepareNewSpawn();
+    }
+
+    private void PrepareNewSpawn()
+    {
+        _spawnForm = new MonsterSpawnAdminModel
+        {
+            MapId = _selectedMapId,
+            SubAreaId = _selectedMap?.SubAreaId,
+            Source = "mapa",
+            MinGrade = 1,
+            MaxGrade = 1,
+            Probability = 5,
+        };
+        _error = null;
+    }
+
+    private async Task SearchMonstersAsync() =>
+        _monsterLookupResults = await MonsterAdminService.GetLookupAsync(_monsterLookupSearch);
+
+    private void SelectMonster(AdminLookupOption option)
+    {
+        if (!short.TryParse(option.Value, out var monsterId))
+            return;
+
+        _spawnForm.MonsterId = monsterId;
+        _spawnForm.MonsterLabel = option.Label;
+        _error = null;
+    }
+
+    private void EditSpawn(MonsterSpawnAdminModel spawn)
+    {
+        _spawnForm = new MonsterSpawnAdminModel
+        {
+            Id = spawn.Id,
+            MapId = spawn.MapId,
+            SubAreaId = spawn.SubAreaId,
+            MonsterId = spawn.MonsterId,
+            MonsterLabel = spawn.MonsterLabel,
+            MinGrade = spawn.MinGrade,
+            MaxGrade = spawn.MaxGrade,
+            Probability = spawn.Probability,
+            Disabled = spawn.Disabled,
+            Source = spawn.Source,
+        };
+        _error = null;
+    }
+
+    private async Task SaveSpawnAsync()
+    {
+        if (!_selectedMapId.HasValue)
+        {
+            _error = "Selecciona un mapa antes de guardar un spawn.";
+            return;
+        }
+
+        if (_spawnForm.MonsterId <= 0)
+        {
+            _error = "El spawn necesita un MonsterId valido.";
+            return;
+        }
+
+        if (!_spawnForm.MapId.HasValue && !_spawnForm.SubAreaId.HasValue)
+        {
+            _error = "Debes indicar un MapId o SubAreaId.";
+            return;
+        }
+
+        await MapSpawnAdminService.SaveSpawnAsync(_spawnForm);
+        _status = $"Spawn del monstruo #{_spawnForm.MonsterId} guardado.";
+        await LoadMapAsync(_selectedMapId.Value);
+        await ReloadMapsAsync();
+    }
+
+    private async Task DeleteSpawnAsync(int spawnId)
+    {
+        await MapSpawnAdminService.DeleteSpawnAsync(spawnId);
+        _status = $"Spawn #{spawnId} eliminado.";
+        if (_selectedMapId.HasValue)
+            await LoadMapAsync(_selectedMapId.Value);
+        await ReloadMapsAsync();
+    }
+
+    private async Task MaterializeInheritedAsync()
+    {
+        if (!_selectedMapId.HasValue)
+            return;
+
+        var inserted = await MapSpawnAdminService.MaterializeInheritedSpawnsAsync(_selectedMapId.Value);
+        _status = inserted > 0
+            ? $"Se materializaron {inserted} spawns heredados como spawns directos del mapa."
+            : "No habia spawns heredados nuevos para materializar en este mapa.";
+        await LoadMapAsync(_selectedMapId.Value);
+        await ReloadMapsAsync();
+    }
+
+    private async Task ToggleMapDisabledAsync()
+    {
+        if (_selectedMap is null)
+            return;
+
+        await MapSpawnAdminService.SetMapSpawnDisabledAsync(_selectedMap.MapId, !_selectedMap.SpawnDisabled);
+        _status = _selectedMap.SpawnDisabled
+            ? $"Mapa {_selectedMap.MapId} reactivado para spawns."
+            : $"Mapa {_selectedMap.MapId} marcado con SpawnDisabled.";
+        await LoadMapAsync(_selectedMap.MapId);
+        await ReloadMapsAsync();
+    }
+
+    private async Task DeleteDirectSpawnsAsync()
+    {
+        if (!_selectedMapId.HasValue)
+            return;
+
+        var removed = await MapSpawnAdminService.DeleteDirectSpawnsAsync(_selectedMapId.Value);
+        _status = removed > 0
+            ? $"Se borraron {removed} spawns directos del mapa."
+            : "Este mapa no tenia spawns directos para borrar.";
+        await LoadMapAsync(_selectedMapId.Value);
+        await ReloadMapsAsync();
+    }
+}

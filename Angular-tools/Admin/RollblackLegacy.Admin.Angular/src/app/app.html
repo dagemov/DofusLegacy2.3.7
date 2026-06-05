@@ -1,0 +1,28 @@
+<div class="app-shell">
+  <header class="app-shell__header border-bottom border-light-subtle shadow-sm">
+    <div class="container py-3">
+      <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-lg-between">
+        <div>
+          <p class="app-shell__eyebrow mb-1">DofusLegacy 2.3.7</p>
+          <h1 class="h3 mb-1">RollblackLegacy Admin</h1>
+          <p class="text-secondary mb-0">
+            Items Builder: catalogo, detalle, escritura segura, QA y estabilizacion operativa.
+          </p>
+        </div>
+        <nav class="nav nav-pills">
+          <a
+            class="nav-link"
+            routerLink="/admin/items"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Items
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-4 py-lg-5">
+    <router-outlet />
+  </main>
+</div>

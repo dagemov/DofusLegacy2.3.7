@@ -1,0 +1,32 @@
+@inherits LayoutComponentBase
+
+<PageTitle>Rollback Portal</PageTitle>
+
+<div class="portal-shell realm-shell">
+    <div class="realm-shell__mist" aria-hidden="true"></div>
+    <div class="realm-shell__glow realm-shell__glow--left" aria-hidden="true"></div>
+    <div class="realm-shell__glow realm-shell__glow--right" aria-hidden="true"></div>
+
+    <header class="portal-header">
+        <div class="realm-header-frame">
+            <NavMenu />
+        </div>
+    </header>
+
+    <main class="portal-main">
+        <article class="portal-content realm-content">
+            @Body
+        </article>
+    </main>
+
+    <footer class="realm-footer">
+        <div class="realm-footer__copy">
+            <strong>Rollback Portal</strong>
+            <span>Acceso fantasy para cuentas, comunidad y herramientas del reino.</span>
+        </div>
+        <div class="realm-footer__meta">
+            <span class="realm-mini-badge">Portal fantasy</span>
+            <span class="realm-mini-badge">Blazor</span>
+        </div>
+    </footer>
+</div>

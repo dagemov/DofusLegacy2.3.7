@@ -1,0 +1,94 @@
+<div class="card admin-card border-0 h-100">
+  <div class="card-body d-grid gap-3">
+    <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Preview de apariencia equipada / Appearance Preview</p>
+        <h3 class="h5 mb-1">Look equipado (skin por AppearanceId)</h3>
+        <p class="text-secondary mb-0">{{ previewMessage }}</p>
+        <p class="small text-secondary mb-0 mt-2">
+          <strong>AppearanceId no es IconId.</strong> El inventario usa IconId; el look equipado usa AppearanceId como skin.
+        </p>
+      </div>
+      <div class="text-lg-end">
+        <span class="badge rounded-pill" [ngClass]="badgeClass">{{ resolvedState }}</span>
+      </div>
+    </div>
+
+    <div class="preview-frame rounded-4 p-3">
+      <img
+        *ngIf="canRenderImage"
+        class="preview-image img-fluid rounded-3"
+        [src]="previewImagePath!"
+        [alt]="'Appearance preview ' + (appearancePreviewState?.appearanceId ?? 'unknown')"
+        (error)="onImageError()" />
+
+      <div *ngIf="!canRenderImage" class="preview-placeholder text-center">
+        <div class="placeholder-title mb-2">{{ resolvedState }}</div>
+        <div class="small text-secondary">
+          <ng-container *ngIf="resolvedState === 'NOT_APPLICABLE'">
+            Sin AppearanceId: no se espera PNG en by-appearance.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'MISSING'">
+            Copia manualmente un PNG a
+            <span class="font-monospace-soft">{{ displayPath(appearancePreviewState?.byAppearancePath) }}</span>
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'UNKNOWN'">
+            Warning: appearance desconocido para el cliente o sin indice en Appearances.d2o.
+          </ng-container>
+          <ng-container *ngIf="resolvedState === 'CURATED_BY_APPEARANCE' && imageLoadFailed">
+            Ruta curada definida pero la imagen no carga en Angular.
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="small text-secondary">
+      ItemId <span class="font-monospace-soft">{{ routeItemId ?? 'desconocido' }}</span>
+      <span class="mx-2">|</span>
+      AppearanceId <span class="font-monospace-soft">{{ appearancePreviewState?.appearanceId ?? 0 }}</span>
+      <span class="mx-2">|</span>
+      AppearanceKnown <span class="font-monospace-soft">{{ appearanceKnownLabel }}</span>
+    </div>
+
+    <div class="row g-3 small">
+      <div class="col-md-4">
+        <div class="detail-label">Estado</div>
+        <div>{{ resolvedState }}</div>
+      </div>
+      <div class="col-md-4">
+        <div class="detail-label">Origen</div>
+        <div>{{ appearancePreviewState?.previewSource || 'PLACEHOLDER' }}</div>
+      </div>
+      <div class="col-md-4">
+        <div class="detail-label">Ruta resuelta</div>
+        <div class="font-monospace-soft text-break">{{ displayPath(appearancePreviewState?.resolvedPath) }}</div>
+      </div>
+    </div>
+
+    <div class="path-row rounded-3 p-3 small">
+      <div class="d-flex align-items-start justify-content-between gap-2">
+        <div>
+          <div class="detail-label">Ruta esperada (curado)</div>
+          <div class="font-monospace-soft text-break">{{ displayPath(appearancePreviewState?.byAppearancePath) }}</div>
+          <div class="text-secondary mt-1">
+            Workflow: captura manual del look equipado → copia a
+            <span class="font-monospace-soft">src/assets/item-previews/by-appearance/</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          [disabled]="isCopyDisabled(appearancePreviewState?.byAppearancePath)"
+          (click)="copyField('byAppearancePath', appearancePreviewState?.byAppearancePath)">
+          {{ copyLabel('byAppearancePath') }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="appearancePreviewState?.appearancesD2oPath" class="small text-secondary text-break">
+      Validacion cliente: <span class="font-monospace-soft">{{ appearancePreviewState?.appearancesD2oPath }}</span>
+    </div>
+
+    <div *ngIf="clipboardHint" class="small text-secondary">{{ clipboardHint }}</div>
+  </div>
+</div>

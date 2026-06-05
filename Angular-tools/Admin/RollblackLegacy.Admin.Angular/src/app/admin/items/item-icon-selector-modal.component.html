@@ -1,0 +1,35 @@
+<ng-container *ngIf="isOpen">
+  <div class="modal-backdrop fade show"></div>
+  <div
+    class="modal fade show d-block item-icon-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Selector visual de iconos"
+    (click)="onBackdropClick($event)">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title mb-1">Selector visual de iconos</h5>
+            <p class="text-secondary mb-0 small">
+              Elige un <span class="font-monospace-soft">IconId</span> visualmente. El formulario actualiza preview sin tocar
+              <span class="font-monospace-soft">AppearanceId</span>.
+            </p>
+          </div>
+          <button type="button" class="btn-close" aria-label="Cerrar" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <app-item-icon-selector
+            [embedded]="true"
+            [initialIconId]="initialIconId"
+            [showSelectionPayload]="false"
+            (iconSelected)="applySelection($event)"></app-item-icon-selector>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

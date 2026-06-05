@@ -1,0 +1,162 @@
+<section class="d-grid gap-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <a *ngIf="itemId" class="btn btn-link px-0 text-decoration-none" [routerLink]="['/admin/items', itemId]">
+        Volver al detalle
+      </a>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">Estado de publicación / Publication Status</p>
+      <h2 class="h4 mb-1">Visibilidad y publicación cliente</h2>
+      <p class="text-secondary mb-0">
+        ¿El cliente conoce el ItemId? ¿Hace falta patch o assets? Separado de preview de inventario (IconId) y de apariencia equipada (AppearanceId).
+      </p>
+    </div>
+
+    <div *ngIf="itemId" class="d-flex flex-wrap gap-2 justify-content-lg-end">
+      <a class="btn btn-outline-secondary" [routerLink]="['/admin/items', itemId]">Detalle runtime</a>
+      <a class="btn btn-primary" [routerLink]="['/admin/items', itemId, 'edit']">Editar item</a>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="clientIdentityProblem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="manifestProblem"></app-api-problem-panel>
+
+  <div *ngIf="isLoading" class="card admin-card border-0">
+    <div class="card-body text-secondary">Auditando publicación cliente...</div>
+  </div>
+
+  <div *ngIf="status" class="d-grid gap-4">
+    <div class="row g-4">
+      <div class="col-12 col-xl-7">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body d-grid gap-3">
+            <div class="d-flex flex-column flex-lg-row justify-content-between gap-3">
+              <div>
+                <p class="text-uppercase small fw-semibold text-secondary mb-1">Matriz actual</p>
+                <h3 class="h5 mb-1">{{ status.resolvedName || 'Item sin nombre resuelto' }}</h3>
+                <p class="text-secondary mb-0">
+                  ItemId {{ status.itemId }} · IconId {{ status.iconId }} · AppearanceId {{ status.appearanceId }}
+                </p>
+              </div>
+              <div class="d-flex flex-wrap gap-2 align-content-start">
+                <span class="badge" [class]="visibilityBadgeClass">{{ status.visibilityState }}</span>
+                <span class="badge" [class]="publicationBadgeClass">{{ status.publicationState }}</span>
+                <span class="badge" [class]="clientTemplateBadgeClass">{{ status.clientTemplateState }}</span>
+              </div>
+            </div>
+
+            <div class="chip-grid">
+              <div *ngFor="let chip of booleanChips" class="status-chip" [class.status-chip--on]="chip.value" [class.status-chip--off]="!chip.value">
+                <span class="status-chip__label">{{ chip.label }}</span>
+                <strong>{{ chip.value ? chip.positiveText : chip.negativeText }}</strong>
+              </div>
+            </div>
+
+            <div class="row g-3 small">
+              <div class="col-12 col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="text-uppercase fw-semibold text-secondary mb-1">Icon preview (IconId)</div>
+                  <div class="fw-semibold">{{ status.previewState.state }}</div>
+                  <div class="text-secondary text-break">{{ status.previewState.resolvedPath || status.previewState.byIconPath || 'Sin ruta resuelta' }}</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="text-uppercase fw-semibold text-secondary mb-1">Appearance preview</div>
+                  <div class="fw-semibold">{{ status.appearancePreviewState.state }}</div>
+                  <div class="text-secondary text-break">
+                    Known:
+                    {{
+                      status.appearancePreviewState.appearanceKnown === true
+                        ? 'si'
+                        : status.appearancePreviewState.appearanceKnown === false
+                          ? 'no'
+                          : 'n/a'
+                    }}
+                  </div>
+                  <div class="text-secondary text-break">
+                    {{ status.appearancePreviewState.resolvedPath || status.appearancePreviewState.byAppearancePath || 'Sin ruta curada' }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="text-uppercase fw-semibold text-secondary mb-1">Client metadata source</div>
+                  <div class="fw-semibold">{{ status.itemsD2oPath ? 'Items.d2o auditado' : 'Metadata no disponible' }}</div>
+                  <div class="text-secondary text-break">{{ status.itemsD2oPath || status.clientRootPath || 'Sin ruta resuelta' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-5 d-grid gap-4">
+        <app-client-identity-diagnostic-card
+          [routeItemId]="itemId"
+          [diagnostic]="clientIdentityDiagnostic"
+          [isLoading]="isLoadingClientIdentity"
+          [showPublicationLink]="false"></app-client-identity-diagnostic-card>
+
+        <app-item-appearance-preview-card
+          [routeItemId]="itemId"
+          [appearancePreviewState]="status.appearancePreviewState"></app-item-appearance-preview-card>
+
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body d-grid gap-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Interpretación operativa</p>
+              <h3 class="h5 mb-0">Qué significa este estado</h3>
+            </div>
+
+            <div class="small d-grid gap-2">
+              <div><strong>VISIBLE</strong>: el template existe en <span class="font-monospace-soft">Items.d2o</span>.</div>
+              <div><strong>VISIBLE_WITH_PATCH</strong>: el runtime está listo, pero el cliente aún no conoce el template actual.</div>
+              <div><strong>INVISIBLE</strong>: ni el template cliente ni la identidad mínima permiten asegurar render.</div>
+            </div>
+
+            <div class="small d-grid gap-2">
+              <div><strong>Client Known</strong> se deriva de la presencia del <span class="font-monospace-soft">ItemId</span> en <span class="font-monospace-soft">Client2.3.7/data/common/Items.d2o</span>.</div>
+              <div><strong>Needs Client Patch</strong> significa que el template runtime existe en DB, pero el cliente todavía no lo conoce.</div>
+              <div><strong>Needs Asset</strong> depende del preview operativo del Admin, no de un publish de cliente completo.</div>
+            </div>
+
+            <a *ngIf="itemId" class="btn btn-sm btn-outline-secondary align-self-start" [routerLink]="['/admin/items', itemId]">
+              Abrir detalle con diagnóstico completo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-publication-manifest-preview
+      *ngIf="manifest"
+      [manifest]="manifest"
+      [isLoading]="isLoadingManifest"
+      [problemTitle]="manifestProblem?.title ?? null"></app-publication-manifest-preview>
+
+    <div class="row g-4">
+      <div class="col-12 col-xl-6">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body">
+            <p class="text-uppercase small fw-semibold text-secondary mb-3">Razones</p>
+            <ul class="mb-0 ps-3 d-grid gap-2 small">
+              <li *ngFor="let reason of status.reasons">{{ reason }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body">
+            <p class="text-uppercase small fw-semibold text-secondary mb-3">Siguiente acción recomendada</p>
+            <ol class="mb-0 ps-3 d-grid gap-2 small">
+              <li *ngFor="let action of status.recommendedActions">{{ action }}</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

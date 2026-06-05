@@ -1,0 +1,986 @@
+@page "/admin/items"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@using Rollback.Admin.Models.Items
+@inject ItemAdminService ItemAdminService
+@inject ItemAppearanceCatalogService ItemAppearanceCatalogService
+@inject GameAssetPreviewService GameAssetPreviewService
+@inject Rollback.Web.Services.AdminAssetUploadService AdminAssetUploadService
+
+<PageTitle>Items</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Items</span>
+            <h1>Items</h1>
+            <p class="muted-copy">Editor administrativo real de templates, nombre visible, apariencia y effects del item. Guardar intenta publicar soporte cliente real cuando el item aun no es visible dentro del juego.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status) || !string.IsNullOrWhiteSpace(_warning) || !string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="admin-toast-stack" aria-live="polite" aria-atomic="true">
+            @if (!string.IsNullOrWhiteSpace(_status))
+            {
+                <div class="admin-toast success" role="status">@_status</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_warning))
+            {
+                <div class="admin-toast warning" role="status">@_warning</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_error))
+            {
+                <div class="admin-toast error" role="alert">@_error</div>
+            }
+        </div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar por itemId, iconId, png o nombre..." @bind="_query.Search" />
+                <select class="field-input compact-select" @bind="_typeFilterValue">
+                    <option value="">Todos los tipos</option>
+                    @foreach (var type in _typeOptions)
+                    {
+                        <option value="@((short)type)">@ItemTypeLabelService.GetDisplayName(type)</option>
+                    }
+                </select>
+                <input class="field-input compact-input" type="number" min="1" placeholder="Nivel min" @bind="_minLevelFilter" />
+                <input class="field-input compact-input" type="number" min="1" placeholder="Nivel max" @bind="_maxLevelFilter" />
+                <button class="portal-button secondary" type="button" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" type="button" @onclick="() => CreateNewAsync()">Nuevo item</button>
+            </div>
+
+            @if (_items is null)
+            {
+                <div class="empty-state"><p>Cargando items...</p></div>
+            }
+            else if (_items.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No se encontraron items.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack item-catalog-stack">
+                    @foreach (var item in _items.Items)
+                    {
+                        <button class="admin-list-card item-catalog-card @(_selectedItemId == item.Id ? "selected" : string.Empty)" type="button" @onclick="() => LoadItemAsync(item.Id)">
+                            <div class="item-catalog-preview">
+                                <GameAssetPreview EntityType="AdminEntityType.Item"
+                                                  EntityId="@item.Id"
+                                                  AppearanceId="@item.AppearanceId"
+                                                  ManualImageUrl="@item.ManualPreviewImageUrl"
+                                                  CategoryLabel="@item.TypeLabel"
+                                                  PlaceholderLabel="@item.PreviewFallbackLabel"
+                                                  AltText="@FormatItemNameWithId(item.Name, item.Id)"
+                                                  CssClass="compact"
+                                                  ShowMeta="false" />
+                            </div>
+                            <div class="item-catalog-copy">
+                                <strong>@FormatItemNameWithId(item.Name, item.Id)</strong>
+                                <span>@item.TypeLabel · lvl @item.Level · @item.Price.ToString("N0")k</span>
+                                <small>#@item.Id · @item.NameSourceLabel</small>
+                            </div>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_items.Page" TotalPages="@_items.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedItemId.HasValue ? $"Editar item #{_form.Id}" : "Nuevo item")</h2>
+                    <p class="muted-copy">El panel usa nombre manual si existe; si no, cae a cliente ES; y si tampoco existe, usa fallback.</p>
+                </div>
+            </div>
+
+            <div class="admin-grid item-editor-layout">
+                <section class="admin-subcard item-editor-main">
+                    <div class="admin-form-grid two">
+                        <div class="field-group">
+                            <label class="field-label">Id template SQL</label>
+                            <input class="field-input"
+                                   type="number"
+                                   min="1"
+                                   max="@short.MaxValue"
+                                   value="@_itemIdInput"
+                                   @oninput="UpdateItemIdInputAsync"
+                                   readonly="@_selectedItemId.HasValue" />
+                            <div class="field-note">Este es el `Id` del item en `items_templates`. No es `IconId`, no es `AppearanceId` y hoy el rango soportado es `1..@short.MaxValue`.</div>
+                            @if (!string.IsNullOrWhiteSpace(_itemIdStatus))
+                            {
+                                <div class="field-note @GetItemIdStatusCss()">@_itemIdStatus</div>
+                            }
+                            @if (_typedItemIdExists && !_selectedItemId.HasValue)
+                            {
+                                <button class="portal-button secondary compact" type="button" @onclick="LoadTypedExistingItemAsync">Cargar item existente</button>
+                            }
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Tipo</label>
+                            <select class="field-input" value="@((short)_form.TypeId)" @onchange="OnTypeChanged">
+                                @foreach (var type in _typeOptions)
+                                {
+                                    <option value="@((short)type)">@ItemTypeLabelService.GetDisplayName(type)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard item-name-panel">
+                        <div class="item-name-panel-head">
+                            <div>
+                                <strong>@GetVisibleDisplayNameWithId()</strong>
+                                <div class="muted-copy">Fuente actual: @GetVisibleNameSourceLabel()</div>
+                            </div>
+                            <span class="portal-chip subtle">@ItemTypeLabelService.GetDisplayName(_form.TypeId)</span>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Nombre visible en espanol</label>
+                                <input class="field-input" @bind="_form.OverrideName" placeholder="Si lo dejas vacio, usa Cliente ES o fallback." />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Nombre detectado del cliente</label>
+                                <input class="field-input" value="@_form.ClientName" readonly />
+                            </div>
+                            <div class="field-group full-span">
+                                <label class="field-label">Descripcion visible en el panel</label>
+                                <textarea class="field-input field-textarea" @bind="_form.OverrideDescription" placeholder="Override administrativo opcional."></textarea>
+                            </div>
+                            <div class="field-group full-span">
+                                <label class="field-label">Descripcion detectada del cliente</label>
+                                <textarea class="field-input field-textarea" readonly>@_form.ClientDescription</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard">
+                        <div class="item-name-panel-head">
+                            <div>
+                                <strong>Auditoria de identidad</strong>
+                                <div class="muted-copy">@_form.Audit.Summary</div>
+                            </div>
+                            <div class="chip-row">
+                                <span class="portal-chip subtle @GetAuditChipCss(_form.Audit.Status)">@_form.Audit.StatusLabel</span>
+                                <span class="portal-chip subtle">@_form.Audit.IdentitySourceLabel</span>
+                            </div>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Reference NameId</label>
+                                <input class="field-input" value="@(_form.ReferenceNameId?.ToString() ?? "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Reference DescriptionId</label>
+                                <input class="field-input" value="@(_form.ReferenceDescriptionId?.ToString() ?? "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Reference IconId</label>
+                                <input class="field-input" value="@(_form.ReferenceIconId?.ToString() ?? "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Reference Type</label>
+                                <input class="field-input" value="@(!string.IsNullOrWhiteSpace(_form.ReferenceTypeLabel) ? $"{_form.ReferenceTypeLabel} ({_form.ReferenceTypeId})" : "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Reference Set</label>
+                                <input class="field-input" value="@GetReferenceSetDisplay()" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Bitmap cliente</label>
+                                <input class="field-input" value="@(_form.ClientIconId is > 0 ? $"{_form.ClientIconId}.png" : "sin dato")" readonly />
+                            </div>
+                        </div>
+
+                        @if (_form.Audit.Differences.Count > 0)
+                        {
+                            <ul class="portal-list compact">
+                                @foreach (var difference in _form.Audit.Differences)
+                                {
+                                    <li>@difference</li>
+                                }
+                            </ul>
+                        }
+                    </div>
+
+                    <div class="admin-subcard">
+                        <div class="item-name-panel-head">
+                            <div>
+                                <strong>Visibilidad real en cliente</strong>
+                                <div class="muted-copy">@_form.ClientVisibility.Summary</div>
+                            </div>
+                            <span class="portal-chip subtle @(_form.ClientVisibility.IsClientVisibleEnough ? "audit-aligned" : "audit-missing-runtime")">@_form.ClientVisibility.StatusLabel</span>
+                        </div>
+
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">Definicion cliente (Items*.swf)</label>
+                                <input class="field-input" value="@(_form.ClientVisibility.HasClientDefinition ? "si" : "no")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Texto resoluble</label>
+                                <input class="field-input" value="@(_form.ClientVisibility.HasResolvedText ? "si" : "no")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">IconId cliente</label>
+                                <input class="field-input" value="@(_form.ClientVisibility.HasBitmapMapping ? "si" : "no")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Bitmap local</label>
+                                <input class="field-input" value="@(_form.ClientVisibility.HasBitmapAsset ? "si" : "no")" readonly />
+                            </div>
+                        </div>
+
+                        @if (_form.ClientVisibility.Details.Count > 0)
+                        {
+                            <ul class="portal-list compact">
+                                @foreach (var detail in _form.ClientVisibility.Details)
+                                {
+                                    <li>@detail</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (!_form.ClientVisibility.IsClientVisibleEnough)
+                        {
+                            <div class="field-note">
+                                Este item puede existir en SQL y verse bien en Blazor, pero no aparecera correctamente dentro del juego hasta que el cliente conozca su <code>ItemId</code> en <code>Items*.swf</code> y resuelva un <code>IconId</code> valido con bitmap local.
+                            </div>
+                        }
+
+                        <div class="portal-actions compact">
+                            <button class="portal-button secondary"
+                                    type="button"
+                                    @onclick="PublishClientSupportAsync"
+                                    disabled="@(_form.Id <= 0 || _isSaving)">
+                                Publicar definicion cliente real
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="admin-subcard">
+                        <div class="item-name-panel-head">
+                            <div>
+                                <strong>Correccion puntual de identidad</strong>
+                                <div class="muted-copy">@_form.IdentityCorrectionPlan.Summary</div>
+                            </div>
+                            <span class="portal-chip subtle">@(_form.IdentityCorrectionPlan.CanApply ? "Aplicable" : "Sin cambios")</span>
+                        </div>
+
+                        @if (_form.IdentityCorrectionPlan.Changes.Count == 0)
+                        {
+                            <div class="empty-state compact"><p>No hay ajustes seguros sugeridos para este item.</p></div>
+                        }
+                        else
+                        {
+                            <div class="admin-list-stack compact">
+                                @foreach (var change in _form.IdentityCorrectionPlan.Changes)
+                                {
+                                    <article class="admin-list-card compact">
+                                        <strong>@change.Field</strong>
+                                        <span>@change.CurrentValue -> @change.SuggestedValue</span>
+                                        <small>Fuente: @change.SourceLabel</small>
+                                    </article>
+                                }
+                            </div>
+                        }
+
+                        @if (_form.IdentityCorrectionPlan.Warnings.Count > 0)
+                        {
+                            <ul class="portal-list compact">
+                                @foreach (var warning in _form.IdentityCorrectionPlan.Warnings)
+                                {
+                                    <li>@warning</li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="portal-actions compact">
+                            <button class="portal-button secondary" type="button" @onclick="ApplyIdentityCorrectionAsync" disabled="@(!_selectedItemId.HasValue || !_form.IdentityCorrectionPlan.CanApply || _isSaving)">
+                                Aplicar correccion puntual
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-grid four">
+                        <div class="field-group"><label class="field-label">Nivel</label><input class="field-input" type="number" min="1" @bind="_form.Level" /></div>
+                        <div class="field-group"><label class="field-label">Precio</label><input class="field-input" type="number" min="0" @bind="_form.Price" /></div>
+                        <div class="field-group"><label class="field-label">Peso</label><input class="field-input" type="number" min="0" @bind="_form.Weight" /></div>
+                        <div class="field-group"><label class="field-label">SetId</label><input class="field-input" type="number" @bind="_form.ItemSetId" /></div>
+                        <div class="field-group"><label class="field-label">PA cost</label><input class="field-input" type="number" @bind="_form.APCost" /></div>
+                        <div class="field-group"><label class="field-label">Rango min</label><input class="field-input" type="number" @bind="_form.MinRange" /></div>
+                        <div class="field-group"><label class="field-label">Rango max</label><input class="field-input" type="number" @bind="_form.MaxRange" /></div>
+                        <div class="field-group"><label class="field-label">Critico %</label><input class="field-input" type="number" @bind="_form.CriticalHitProbability" /></div>
+                        <div class="field-group"><label class="field-label">Bonus critico</label><input class="field-input" type="number" @bind="_form.CriticalHitBonus" /></div>
+                        <div class="field-group"><label class="field-label">Fracaso critico</label><input class="field-input" type="number" @bind="_form.CriticalFailureProbability" /></div>
+                    </div>
+
+                    <div class="admin-form-grid two">
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.Usable" /><span>Usable</span></label>
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.Targetable" /><span>Targetable</span></label>
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.Etheral" /><span>Etereo</span></label>
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.TwoHanded" /><span>Dos manos</span></label>
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.CastInLine" /><span>En linea</span></label>
+                        <label class="admin-checkbox"><input type="checkbox" @bind="_form.CastTestLOS" /><span>Requiere linea de vision</span></label>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Criterio</label>
+                        <input class="field-input" @bind="_form.StringCriterion" />
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">RecipesCSV</label>
+                        <input class="field-input" @bind="_form.RecipesCsv" />
+                    </div>
+
+                    <EffectListEditor Rows="_form.Effects"
+                                      Title="Stats y efectos reales del item"
+                                      Description="Puedes agregar, editar o quitar efectos. Esto escribe BinaryEffects del item y la misma pieza se reutiliza ahora para sets y futuros spells."
+                                      EmptyMessage="Este item no tiene efectos cargados. Puedes agregar uno manualmente."
+                                      AddButtonLabel="Agregar stat" />
+
+                    <div class="portal-actions">
+                        <button class="portal-button @(_isSaving ? "is-busy" : string.Empty)" type="button" @onclick="SaveAsync" disabled="@_isSaving">
+                            @(_isSaving ? "Guardando item..." : "Guardar item")
+                        </button>
+                        @if (_selectedItemId.HasValue)
+                        {
+                            <button class="portal-button danger" type="button" @onclick="DeleteAsync" disabled="@_isSaving">Eliminar</button>
+                        }
+                    </div>
+                </section>
+
+                <aside class="admin-subcard item-editor-side">
+                    <h3>Preview y apariencia</h3>
+                    <GameAssetPreview EntityType="AdminEntityType.Item"
+                                      EntityId="@_form.Id"
+                                      AppearanceId="@_form.AppearanceId"
+                                      ManualImageUrl="@_form.ManualImageUrl"
+                                      CategoryLabel="@ItemTypeLabelService.GetDisplayName(_form.TypeId)"
+                                      PlaceholderLabel="@ItemTypeLabelService.GetShortCode(_form.TypeId)"
+                                      AltText="@GetVisibleDisplayNameWithId()"
+                                      CssClass="large" />
+
+                    <div class="admin-subcard">
+                        <strong>Resolucion cliente</strong>
+                        <p class="muted-copy">El bitmap del inventario se resuelve por IconId cliente. AppearanceId afecta el skin equipado del personaje.</p>
+                        <div class="admin-form-grid two">
+                            <div class="field-group">
+                                <label class="field-label">IconId cliente</label>
+                                <input class="field-input" value="@(_form.ClientIconId?.ToString() ?? "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Bitmap esperado</label>
+                                <input class="field-input" value="@GetClientBitmapFileName()" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Appearance cliente</label>
+                                <input class="field-input" value="@(_form.ClientAppearanceId?.ToString() ?? "sin dato")" readonly />
+                            </div>
+                            <div class="field-group">
+                                <label class="field-label">Appearance SQL actual</label>
+                                <input class="field-input" value="@_form.AppearanceId" readonly />
+                            </div>
+                        </div>
+                        @if (ShowAppearanceMismatch())
+                        {
+                            <div class="field-note">El cliente original usa AppearanceId @_form.ClientAppearanceId, pero tu template SQL actual guarda @_form.AppearanceId.</div>
+                        }
+                        @if (_form.ClientIconId is null or <= 0)
+                        {
+                            <div class="field-note">Este item no trae IconId desde el cliente. Si es un custom nuevo, el panel puede usar PNG manual, pero el inventario del cliente requiere datacenter/iconId real.</div>
+                        }
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Validador de bitmap / SWF exportado</strong>
+                        <p class="muted-copy">Sirve para confirmar ids visuales como 16134, 16134.png o 16134.swf sin asumir que itemId = bitmapId.</p>
+                        <div class="item-bitmap-validator">
+                            <input class="field-input" @bind="_bitmapLookupInput" placeholder="16134 o 16134.png" />
+                            <button class="portal-button secondary" type="button" @onclick="ResolveBitmapLookup">Validar asset</button>
+                        </div>
+                        <div class="bitmap-validator-preview">
+                            @if (_bitmapLookupPreview.HasPreview)
+                            {
+                                <img class="bitmap-validator-image" src="@_bitmapLookupPreview.ImageUrl" alt="Bitmap validado" />
+                            }
+                            else
+                            {
+                                <div class="bitmap-validator-placeholder">@(_bitmapLookupPreview.PlaceholderLabel is { Length: > 0 } ? _bitmapLookupPreview.PlaceholderLabel : "PNG")</div>
+                            }
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(_bitmapLookupPreview.Status))
+                        {
+                            <div class="field-note"><strong>@_bitmapLookupPreview.Status</strong> · @_bitmapLookupPreview.Hint</div>
+                        }
+                    </div>
+
+                    <div class="admin-subcard">
+                        <strong>Asset manual PNG</strong>
+                        <p class="muted-copy">Puedes asociar un screenshot o icono manual al item mientras cierras el pipeline definitivo del cliente o creas items custom.</p>
+                        <InputFile OnChange="UploadManualAssetAsync" accept=".png,.jpg,.jpeg,.webp" class="field-input file-input" />
+                        @if (!string.IsNullOrWhiteSpace(_form.ManualAssetRelativePath))
+                        {
+                            <div class="field-note">Asset actual: @_form.ManualAssetRelativePath</div>
+                            <button class="portal-button secondary" type="button" @onclick="ClearManualAssetAsync">Quitar PNG manual</button>
+                        }
+                        else
+                        {
+                            <div class="field-note">Todavia no hay asset manual asociado. Se usa cliente local o placeholder.</div>
+                        }
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">AppearanceId SQL</label>
+                        <select class="field-input" value="@_form.AppearanceId" @onchange="OnAppearanceChanged">
+                            <option value="-1">-1 · sin apariencia explicita</option>
+                            <option value="0">0 · default / sin apariencia explicita</option>
+                            @if (_showInvalidAppearanceOption)
+                            {
+                                <option value="@_form.AppearanceId">@_form.AppearanceId · actual no catalogado</option>
+                            }
+                            @foreach (var option in _appearanceOptions)
+                            {
+                                <option value="@option.AppearanceId">@option.Label</option>
+                            }
+                        </select>
+                    </div>
+
+                    @if (_appearanceOptions.Count == 0)
+                    {
+                        <div class="empty-state compact">
+                            <p>Este tipo no tiene catalogo local de apariencias conocidas. El panel ya no bloquea por eso, pero conviene validar el render equipado dentro del cliente.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="item-appearance-help muted-copy">
+                            Apariencias validas conocidas para @ItemTypeLabelService.GetDisplayName(_form.TypeId): @_appearanceOptions.Count
+                        </div>
+                    }
+                </aside>
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private readonly IReadOnlyList<ItemType> _typeOptions = Enum.GetValues<ItemType>().Cast<ItemType>().OrderBy(x => (short)x).ToArray();
+    private AdminPagedResult<ItemListItem>? _items;
+    private short? _selectedItemId;
+    private ItemEditModel _form = new();
+    private short? _typeFilterValue;
+    private short? _minLevelFilter;
+    private short? _maxLevelFilter;
+    private string? _status;
+    private string? _warning;
+    private string? _error;
+    private bool _isSaving;
+    private IReadOnlyList<AppearanceOption> _appearanceOptions = Array.Empty<AppearanceOption>();
+    private bool _showInvalidAppearanceOption;
+    private string _bitmapLookupInput = string.Empty;
+    private GameAssetPreviewModel _bitmapLookupPreview = new();
+    private string _itemIdInput = string.Empty;
+    private string? _itemIdStatus;
+    private bool _typedItemIdExists;
+    private bool _isCheckingTypedItemId;
+    private int _typedItemIdCheckVersion;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadAsync();
+        await CreateNewAsync();
+    }
+
+    private async Task ReloadAsync()
+    {
+        _items = await ItemAdminService.GetPagedAsync(
+            _query,
+            _typeFilterValue.HasValue ? (ItemType?)_typeFilterValue.Value : null,
+            _minLevelFilter,
+            _maxLevelFilter);
+    }
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task LoadItemAsync(short itemId, bool preserveFeedback = false)
+    {
+        var item = await ItemAdminService.GetByIdAsync(itemId);
+        if (item is null)
+        {
+            _error = $"No se encontro el item #{itemId}.";
+            return;
+        }
+
+        _selectedItemId = itemId;
+        _form = item;
+        _itemIdInput = item.Id.ToString();
+        _typedItemIdExists = true;
+        _itemIdStatus = $"Editando el item existente #{item.Id}.";
+        if (_form.Effects.Count == 0)
+            _form.Effects = new();
+
+        await LoadAppearanceOptionsAsync();
+        RefreshBitmapLookupFromItem();
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task CreateNewAsync(bool preserveFeedback = false)
+    {
+        _selectedItemId = null;
+        _form = new ItemEditModel
+        {
+            Id = await ItemAdminService.GetNextAvailableIdAsync(),
+            TypeId = ItemType.Amulette,
+            ItemSetId = -1,
+            AppearanceId = -1,
+            Name = "Item nuevo",
+            Description = string.Empty,
+            NameSourceLabel = "Manual",
+            Effects = new(),
+        };
+        _itemIdInput = _form.Id.ToString();
+        _typedItemIdExists = false;
+        await LoadAppearanceOptionsAsync();
+        RefreshBitmapLookupFromItem();
+        await RefreshTypedItemIdStateAsync();
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (!TryApplyItemIdInput(out var idError))
+        {
+            _error = idError;
+            return;
+        }
+
+        try
+        {
+            _isSaving = true;
+            _error = null;
+
+            var existedBeforeSave = await ItemAdminService.GetByIdAsync(_form.Id) is not null;
+            var saveResult = await ItemAdminService.SaveAsync(_form);
+
+            _selectedItemId = _form.Id;
+            var baseStatus = existedBeforeSave
+                ? $"Item #{_form.Id} actualizado."
+                : $"Item #{_form.Id} creado.";
+            _status = saveResult.HasInfos
+                ? $"{baseStatus} {string.Join(" ", saveResult.Infos)}"
+                : baseStatus;
+            _warning = saveResult.HasWarnings
+                ? string.Join(" ", saveResult.Warnings)
+                : null;
+            _error = saveResult.HasErrors
+                ? string.Join(" ", saveResult.Errors)
+                : null;
+            await ReloadAsync();
+            await LoadItemAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private async Task ApplyIdentityCorrectionAsync()
+    {
+        if (!_selectedItemId.HasValue || _form.Id <= 0)
+        {
+            _error = "Carga primero un item existente para aplicar correcciones puntuales.";
+            return;
+        }
+
+        try
+        {
+            _isSaving = true;
+            _error = null;
+            var saveResult = await ItemAdminService.ApplyIdentityCorrectionAsync(_form.Id);
+            _status = $"Correccion puntual aplicada al item #{_form.Id}.";
+            _warning = saveResult.HasWarnings
+                ? string.Join(" ", saveResult.Warnings)
+                : null;
+            await ReloadAsync();
+            await LoadItemAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private async Task PublishClientSupportAsync()
+    {
+        if (_form.Id <= 0)
+        {
+            _error = "El item necesita un Id valido antes de publicar soporte cliente.";
+            return;
+        }
+
+        try
+        {
+            _isSaving = true;
+            _error = null;
+            var result = await ItemAdminService.PublishClientSupportAsync(_form.Id);
+            _status = result.Summary;
+            _warning = result.HasWarnings
+                ? string.Join(" ", result.Warnings)
+                : null;
+            await ReloadAsync();
+            await LoadItemAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (!_selectedItemId.HasValue)
+            return;
+
+        await ItemAdminService.DeleteAsync(_selectedItemId.Value);
+        _status = $"Item #{_selectedItemId.Value} eliminado.";
+        _warning = null;
+        _error = null;
+        await CreateNewAsync(preserveFeedback: true);
+        await ReloadAsync();
+    }
+
+    private async Task OnTypeChanged(ChangeEventArgs args)
+    {
+        if (!short.TryParse(args.Value?.ToString(), out var rawType))
+            return;
+
+        _form.TypeId = (ItemType)rawType;
+        await LoadAppearanceOptionsAsync();
+    }
+
+    private async Task OnAppearanceChanged(ChangeEventArgs args)
+    {
+        if (!short.TryParse(args.Value?.ToString(), out var appearanceId))
+            return;
+
+        _form.AppearanceId = appearanceId;
+        await LoadAppearanceOptionsAsync();
+    }
+
+    private async Task LoadAppearanceOptionsAsync()
+    {
+        _appearanceOptions = await ItemAppearanceCatalogService.GetOptionsAsync(_form.TypeId);
+        _showInvalidAppearanceOption = _form.AppearanceId > 0 && !_appearanceOptions.Any(x => x.AppearanceId == _form.AppearanceId);
+
+        if (_form.AppearanceId < -1)
+            _form.AppearanceId = -1;
+
+        if (_appearanceOptions.Count == 0)
+            return;
+
+        if (_form.AppearanceId is > 0 && (_showInvalidAppearanceOption || _appearanceOptions.Any(x => x.AppearanceId == _form.AppearanceId)))
+            return;
+
+        if (_form.AppearanceId is 0 or -1)
+            return;
+
+        if (!_appearanceOptions.Any(x => x.AppearanceId == _form.AppearanceId))
+            _form.AppearanceId = -1;
+    }
+
+    private async Task UploadManualAssetAsync(InputFileChangeEventArgs args)
+    {
+        if (_form.Id <= 0)
+        {
+            _error = "Guarda primero un Id valido antes de asociar un PNG manual.";
+            return;
+        }
+
+        var file = args.File;
+        if (file is null)
+            return;
+
+        try
+        {
+            var previousPath = _form.ManualAssetRelativePath;
+            var relativePath = await AdminAssetUploadService.SaveEntityPreviewAsync(AdminEntityType.Item, _form.Id, file);
+            var saveResult = await ItemAdminService.SaveManualAssetAsync(_form.Id, relativePath);
+
+            if (!string.IsNullOrWhiteSpace(previousPath) && !string.Equals(previousPath, relativePath, StringComparison.OrdinalIgnoreCase))
+                await AdminAssetUploadService.DeleteIfExistsAsync(previousPath);
+
+            var baseStatus = $"PNG manual asociado al item #{_form.Id}.";
+            _status = saveResult.HasInfos
+                ? $"{baseStatus} {string.Join(" ", saveResult.Infos)}"
+                : baseStatus;
+            _warning = saveResult.HasWarnings
+                ? string.Join(" ", saveResult.Warnings)
+                : null;
+            _error = saveResult.HasErrors
+                ? string.Join(" ", saveResult.Errors)
+                : null;
+            await ReloadAsync();
+            await LoadItemAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task ClearManualAssetAsync()
+    {
+        if (_form.Id <= 0 || string.IsNullOrWhiteSpace(_form.ManualAssetRelativePath))
+            return;
+
+        try
+        {
+            var currentPath = _form.ManualAssetRelativePath;
+            await ItemAdminService.ClearManualAssetAsync(_form.Id);
+            await AdminAssetUploadService.DeleteIfExistsAsync(currentPath);
+            _status = $"PNG manual removido del item #{_form.Id}.";
+            _warning = null;
+            _error = null;
+            await ReloadAsync();
+            await LoadItemAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private void ResolveBitmapLookup()
+    {
+        var assetId = GameAssetPreviewService.ParseItemBitmapAssetId(_bitmapLookupInput);
+        _bitmapLookupPreview = GameAssetPreviewService.ResolveItemBitmapPreview(assetId ?? 0);
+    }
+
+    private async Task UpdateItemIdInputAsync(ChangeEventArgs args)
+    {
+        _itemIdInput = args.Value?.ToString() ?? string.Empty;
+        await RefreshTypedItemIdStateAsync();
+    }
+
+    private void RefreshBitmapLookupFromItem()
+    {
+        _bitmapLookupInput = _form.ClientIconId?.ToString() ?? string.Empty;
+        var assetId = GameAssetPreviewService.ParseItemBitmapAssetId(_bitmapLookupInput);
+        _bitmapLookupPreview = GameAssetPreviewService.ResolveItemBitmapPreview(assetId ?? 0);
+    }
+
+    private async Task RefreshTypedItemIdStateAsync()
+    {
+        if (_selectedItemId.HasValue)
+        {
+            _typedItemIdExists = true;
+            _itemIdStatus = $"Editando el item existente #{_form.Id}.";
+            _isCheckingTypedItemId = false;
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(_itemIdInput))
+        {
+            _typedItemIdExists = false;
+            _itemIdStatus = "Escribe un Id de template SQL para crear el item.";
+            _isCheckingTypedItemId = false;
+            return;
+        }
+
+        if (!int.TryParse(_itemIdInput.Trim(), out var parsedId))
+        {
+            _typedItemIdExists = false;
+            _itemIdStatus = "El Id del item debe ser numerico.";
+            _isCheckingTypedItemId = false;
+            return;
+        }
+
+        if (parsedId <= 0 || parsedId > short.MaxValue)
+        {
+            _typedItemIdExists = false;
+            _itemIdStatus = $"El Id debe estar entre 1 y {short.MaxValue}.";
+            _isCheckingTypedItemId = false;
+            return;
+        }
+
+        var currentCheck = ++_typedItemIdCheckVersion;
+        _isCheckingTypedItemId = true;
+        _itemIdStatus = "Validando si el Id ya existe...";
+        var exists = await ItemAdminService.ExistsAsync((short)parsedId);
+        if (currentCheck != _typedItemIdCheckVersion)
+            return;
+
+        _isCheckingTypedItemId = false;
+        _typedItemIdExists = exists;
+        _itemIdStatus = await ItemAdminService.DescribeTypedItemIdAsync((short)parsedId);
+    }
+
+    private async Task LoadTypedExistingItemAsync()
+    {
+        if (!TryApplyItemIdInput(out _))
+            return;
+
+        if (_form.Id <= 0 || !await ItemAdminService.ExistsAsync(_form.Id))
+            return;
+
+        await LoadItemAsync(_form.Id, preserveFeedback: true);
+    }
+
+    private bool TryApplyItemIdInput(out string? error)
+    {
+        error = null;
+
+        if (_selectedItemId.HasValue)
+        {
+            if (_form.Id <= 0)
+            {
+                error = "El item cargado no tiene un Id valido.";
+                return false;
+            }
+
+            _itemIdInput = _form.Id.ToString();
+            return true;
+        }
+
+        if (string.IsNullOrWhiteSpace(_itemIdInput))
+        {
+            error = "El item necesita un Id de template SQL. No puede ir vacio.";
+            return false;
+        }
+
+        if (!int.TryParse(_itemIdInput.Trim(), out var parsedId))
+        {
+            error = "El Id del item debe ser numerico.";
+            return false;
+        }
+
+        if (parsedId <= 0 || parsedId > short.MaxValue)
+        {
+            error = $"El Id del item debe estar entre 1 y {short.MaxValue}. Si pusiste un numero grande para probar, el sistema no lo soporta porque items_templates.Id sigue siendo SMALLINT.";
+            return false;
+        }
+
+        _form.Id = (short)parsedId;
+        _itemIdInput = _form.Id.ToString();
+        return true;
+    }
+
+    private string GetItemIdStatusCss()
+    {
+        if (_isCheckingTypedItemId)
+            return string.Empty;
+
+        return _typedItemIdExists
+            ? "warning"
+            : "success";
+    }
+
+    private string GetVisibleDisplayName()
+    {
+        if (!string.IsNullOrWhiteSpace(_form.OverrideName))
+            return _form.OverrideName.Trim();
+
+        if (!string.IsNullOrWhiteSpace(_form.ClientName))
+            return _form.ClientName.Trim();
+
+        if (!string.IsNullOrWhiteSpace(_form.Name))
+            return _form.Name.Trim();
+
+        return _form.Id > 0 ? $"Item #{_form.Id}" : "Item nuevo";
+    }
+
+    private string GetVisibleDisplayNameWithId() =>
+        _form.Id > 0
+            ? ItemAdminService.FormatDisplayNameWithId(GetVisibleDisplayName(), _form.Id)
+            : GetVisibleDisplayName();
+
+    private string GetVisibleNameSourceLabel()
+    {
+        if (!string.IsNullOrWhiteSpace(_form.OverrideName) || !string.IsNullOrWhiteSpace(_form.OverrideDescription))
+            return "Manual";
+
+        if (!string.IsNullOrWhiteSpace(_form.ClientName) || !string.IsNullOrWhiteSpace(_form.ClientDescription))
+            return "Cliente ES";
+
+        return string.IsNullOrWhiteSpace(_form.NameSourceLabel) ? "Fallback" : _form.NameSourceLabel;
+    }
+
+    private string GetClientBitmapFileName() =>
+        _form.ClientIconId is > 0
+            ? $"{_form.ClientIconId}.png"
+            : "sin dato";
+
+    private bool ShowAppearanceMismatch() =>
+        _form.ClientAppearanceId is > 0 &&
+        _form.AppearanceId > 0 &&
+        _form.ClientAppearanceId != _form.AppearanceId;
+
+    private static string FormatItemNameWithId(string? name, short itemId) =>
+        ItemAdminService.FormatDisplayNameWithId(name, itemId);
+
+    private string GetReferenceSetDisplay()
+    {
+        if (_form.ReferenceSetId is not > 0)
+            return "sin dato";
+
+        if (!string.IsNullOrWhiteSpace(_form.ReferenceSetName))
+            return $"{_form.ReferenceSetName} [#{_form.ReferenceSetId}]";
+
+        return $"Set #{_form.ReferenceSetId}";
+    }
+
+    private static string GetAuditChipCss(ItemAuditStatus status) =>
+        status switch
+        {
+            ItemAuditStatus.Aligned => "audit-aligned",
+            ItemAuditStatus.LegacyRuntimeItem => "audit-runtime-drift",
+            ItemAuditStatus.MissingClientMetadata => "audit-missing-runtime",
+            ItemAuditStatus.MissingReferenceMetadata => "audit-metadata-missing",
+            ItemAuditStatus.MissingName => "audit-metadata-missing",
+            ItemAuditStatus.MissingIcon => "audit-metadata-missing",
+            ItemAuditStatus.IncompleteTemplate => "audit-runtime-drift",
+            ItemAuditStatus.RuntimeOnly => "audit-ambiguous",
+            ItemAuditStatus.MissingRuntime => "audit-missing-runtime",
+            _ => "audit-ambiguous",
+        };
+}

@@ -1,0 +1,352 @@
+@page "/admin/sets"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject SetAdminService SetAdminService
+@inject GameEffectEditorService GameEffectEditorService
+
+<PageTitle>Sets</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Sets</span>
+            <h1>Sets</h1>
+            <p class="muted-copy">Editor administrable de sets: miembros reales, sync con ItemSetId y bonuses serializados sin tocar blobs a mano.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status) || !string.IsNullOrWhiteSpace(_warning) || !string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="admin-toast-stack" aria-live="polite" aria-atomic="true">
+            @if (!string.IsNullOrWhiteSpace(_status))
+            {
+                <div class="admin-toast success" role="status">@_status</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_warning))
+            {
+                <div class="admin-toast warning" role="status">@_warning</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_error))
+            {
+                <div class="admin-toast error" role="alert">@_error</div>
+            }
+        </div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar set por id, nombre o csv..." @bind="_query.Search" />
+                <input class="field-input compact-input" type="number" min="0" placeholder="Cantidad items" @bind="_itemCountFilter" />
+                <button class="portal-button secondary" type="button" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" type="button" @onclick="() => CreateNew()">Nuevo set</button>
+            </div>
+            <div class="field-note">Listado ordenado por `Id` ascendente: 1, 2, 3... El filtro de cantidad pide la cantidad exacta de items del set.</div>
+
+            @if (_sets is null)
+            {
+                <div class="empty-state"><p>Cargando sets...</p></div>
+            }
+            else if (_sets.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No hay sets.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack">
+                    @foreach (var setItem in _sets.Items)
+                    {
+                        <button class="admin-list-card @(setItem.Id == _selectedSetId ? "selected" : string.Empty)" type="button" @onclick="() => LoadSetAsync(setItem.Id)">
+                            <strong>@setItem.Name</strong>
+                            <small>Fuente: @setItem.NameSourceLabel</small>
+                            <span>@setItem.ItemCount items · @setItem.BonusTierCount bonus tier(s)</span>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_sets.Page" TotalPages="@_sets.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedSetId.HasValue ? $"Editar set #{_form.Id}" : "Nuevo set")</h2>
+                    <p class="muted-copy">Agregar o quitar items actualiza el set real y sincroniza ItemSetId en los templates.</p>
+                </div>
+                <div class="portal-chip subtle">@_form.Items.Count item(s)</div>
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Id</label>
+                <input class="field-input" type="number" min="1" @bind="_form.Id" readonly="@_selectedSetId.HasValue" />
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">Nombre visible del set</label>
+                <input class="field-input" @bind="_form.Name" placeholder="Panoplie / nombre administrativo del set" />
+                @if (!string.IsNullOrWhiteSpace(_form.ReferenceName) && !string.Equals(_form.ReferenceName, _form.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    <div class="field-note">Referencia detectada: @_form.ReferenceName</div>
+                }
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <h3>Items del set</h3>
+                        <p class="muted-copy">Busca por id, nombre, tipo o categoria y agregalos sin memorizar IDs manuales.</p>
+                    </div>
+                </div>
+
+                @if (_form.Items.Count == 0)
+                {
+                    <div class="empty-state compact"><p>Este set todavia no tiene items asociados.</p></div>
+                }
+                else
+                {
+                    <div class="set-items-grid">
+                        @foreach (var item in _form.Items)
+                        {
+                            <article class="set-item-card" @key="item.Id">
+                                <div class="set-item-preview">
+                                    <GameAssetPreview EntityType="AdminEntityType.Item"
+                                                      EntityId="@item.Id"
+                                                      AppearanceId="@item.AppearanceId"
+                                                      ManualImageUrl="@item.ManualPreviewImageUrl"
+                                                      CategoryLabel="@item.TypeLabel"
+                                                      PlaceholderLabel="@item.PreviewFallbackLabel"
+                                                      AltText="@ItemAdminService.FormatDisplayNameWithId(item.Name, item.Id)"
+                                                      CssClass="compact"
+                                                      ShowMeta="false" />
+                                </div>
+                                <div class="set-item-copy">
+                                    <strong>@ItemAdminService.FormatDisplayNameWithId(item.Name, item.Id)</strong>
+                                    <span>@item.TypeLabel · lvl @item.Level</span>
+                                    <small>IconId: @(item.ClientIconId?.ToString() ?? "sin dato")</small>
+                                </div>
+                                <button class="portal-button danger compact" type="button" @onclick="() => RemoveItem(item.Id)">Quitar</button>
+                            </article>
+                        }
+                    </div>
+                }
+
+                <ItemCatalogPicker ExcludedItemIds="@SelectedItemIds" OnItemSelected="AddItemAsync" />
+            </div>
+
+            <div class="admin-subcard">
+                <div class="section-heading compact">
+                    <div>
+                        <h3>Bonuses del set</h3>
+                        <p class="muted-copy">Cada tier conserva su RequiredPieces real. Puedes modelar bonus en 3 y 5 piezas sin que el editor los aplaste a 2, 3, 4...</p>
+                    </div>
+                    <button class="portal-button" type="button" @onclick="AddBonusTier">Agregar bonus</button>
+                </div>
+
+                @if (_form.BonusTiers.Count == 0)
+                {
+                    <div class="empty-state compact"><p>Todavia no hay bonus. Empieza agregando el bonus de 2 items.</p></div>
+                }
+                else
+                {
+                    <div class="set-bonus-stack">
+                        @foreach (var tier in _form.BonusTiers.OrderBy(x => x.RequiredItemCount))
+                        {
+                            <section class="admin-subcard set-bonus-tier" @key="tier.TierId">
+                                <div class="section-heading compact">
+                                    <div>
+                                        <h3>Bonus al equipar @tier.RequiredItemCount item(s)</h3>
+                                        <p class="muted-copy">Tier semantico persistido tal cual en runtime.</p>
+                                    </div>
+                                    <button class="portal-button danger compact" type="button" @onclick="() => RemoveBonusTier(tier.TierId)">Quitar tier</button>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="field-label">RequiredPieces</label>
+                                    <input class="field-input compact-input"
+                                           type="number"
+                                           min="2"
+                                           max="@Math.Max(2, _form.Items.Count)"
+                                           @bind="tier.RequiredItemCount" />
+                                    <div class="field-note">El bonus se activa cuando el jugador equipa al menos esta cantidad de piezas.</div>
+                                </div>
+
+                                <EffectListEditor Rows="tier.Effects"
+                                                  Title="Efectos del bonus"
+                                                  Description="Reutiliza el mismo editor compartido que items y la futura base de spells."
+                                                  EmptyMessage="Este tier todavia no tiene efectos."
+                                                  AddButtonLabel="Agregar efecto bonus" />
+                            </section>
+                        }
+                    </div>
+                }
+            </div>
+
+            <details class="admin-subcard set-debug-panel">
+                <summary>Debug persistido</summary>
+                <div class="field-group">
+                    <label class="field-label">ItemsCSV generado</label>
+                    <input class="field-input" value="@_form.ItemsCsv" readonly />
+                </div>
+                <div class="field-group">
+                    <label class="field-label">BinaryEffectsBase64 actual</label>
+                    <textarea class="field-input admin-textarea" readonly>@_form.RawBinaryEffectsBase64</textarea>
+                </div>
+            </details>
+
+            <div class="portal-actions">
+                <button class="portal-button @(_isSaving ? "is-busy" : string.Empty)" type="button" @onclick="SaveAsync" disabled="@_isSaving">@( _isSaving ? "Guardando set..." : "Guardar set")</button>
+                @if (_selectedSetId.HasValue)
+                {
+                    <button class="portal-button danger" type="button" @onclick="DeleteAsync" disabled="@_isSaving">Eliminar</button>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<ItemSetListItem>? _sets;
+    private short? _selectedSetId;
+    private ItemSetEditModel _form = new();
+    private string? _status;
+    private string? _warning;
+    private string? _error;
+    private bool _isSaving;
+    private int? _itemCountFilter;
+
+    private IReadOnlyCollection<short> SelectedItemIds =>
+        _form.Items.Select(x => x.Id).ToArray();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadAsync();
+        CreateNew();
+    }
+
+    private async Task ReloadAsync() =>
+        _sets = await SetAdminService.GetPagedAsync(_query, _itemCountFilter);
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private void CreateNew(bool preserveFeedback = false)
+    {
+        _selectedSetId = null;
+        _form = new ItemSetEditModel();
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task LoadSetAsync(short setId, bool preserveFeedback = false)
+    {
+        var setModel = await SetAdminService.GetByIdAsync(setId);
+        if (setModel is null)
+        {
+            _error = $"No se encontro el set #{setId}.";
+            return;
+        }
+
+        _selectedSetId = setId;
+        _form = setModel;
+        NormalizeBonusTierOrder();
+
+        if (!preserveFeedback)
+        {
+            _status = null;
+            _warning = null;
+            _error = null;
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (_form.Id <= 0)
+        {
+            _error = "El set necesita un id valido.";
+            return;
+        }
+
+        try
+        {
+            _isSaving = true;
+            _error = null;
+            NormalizeBonusTierOrder();
+
+            var existedBeforeSave = await SetAdminService.GetByIdAsync(_form.Id) is not null;
+            var saveResult = await SetAdminService.SaveAsync(_form);
+
+            _selectedSetId = _form.Id;
+            _status = existedBeforeSave
+                ? $"Set #{_form.Id} actualizado."
+                : $"Set #{_form.Id} creado.";
+            _warning = saveResult.HasWarnings
+                ? string.Join(" ", saveResult.Warnings)
+                : null;
+            await ReloadAsync();
+            await LoadSetAsync(_form.Id, preserveFeedback: true);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        if (!_selectedSetId.HasValue)
+            return;
+
+        await SetAdminService.DeleteAsync(_selectedSetId.Value);
+        _status = $"Set #{_selectedSetId.Value} eliminado.";
+        _warning = null;
+        _error = null;
+        CreateNew(preserveFeedback: true);
+        await ReloadAsync();
+    }
+
+    private Task AddItemAsync(ItemListItem item)
+    {
+        if (_form.Items.All(x => x.Id != item.Id))
+            _form.Items.Add(item);
+
+        return Task.CompletedTask;
+    }
+
+    private void RemoveItem(short itemId) =>
+        _form.Items.RemoveAll(x => x.Id == itemId);
+
+    private void AddBonusTier()
+    {
+        NormalizeBonusTierOrder();
+        var nextRequiredPieces = Math.Max(2, _form.BonusTiers.Count == 0 ? 2 : _form.BonusTiers.Max(x => x.RequiredItemCount) + 1);
+        _form.BonusTiers.Add(GameEffectEditorService.CreateDefaultTier(nextRequiredPieces));
+    }
+
+    private void RemoveBonusTier(Guid tierId)
+    {
+        _form.BonusTiers.RemoveAll(x => x.TierId == tierId);
+        NormalizeBonusTierOrder();
+    }
+
+    private void NormalizeBonusTierOrder()
+    {
+        _form.BonusTiers = _form.BonusTiers
+            .OrderBy(x => x.RequiredItemCount)
+            .ToList();
+    }
+}

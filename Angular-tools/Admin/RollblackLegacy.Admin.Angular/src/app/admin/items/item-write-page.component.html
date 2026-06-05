@@ -1,0 +1,486 @@
+<section class="d-grid gap-4">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+    <div>
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">{{ pageEyebrow }}</p>
+      <h2 class="h4 mb-1">{{ pageTitle }}</h2>
+      <p class="text-secondary mb-0">{{ pageDescription }}</p>
+    </div>
+
+    <div class="d-flex flex-column align-items-lg-end gap-2">
+      <div class="alert admin-rule-banner py-2 px-3 mb-0">
+        <strong>Regla de identidad:</strong>
+        <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+        <a
+          *ngIf="sourceItemId"
+          class="btn btn-sm btn-outline-secondary"
+          [routerLink]="['/admin/items', sourceItemId]">
+          Ver item origen
+        </a>
+        <a
+          *ngIf="saveResult"
+          class="btn btn-sm btn-outline-success"
+          [routerLink]="saveResult.detailPath">
+          Abrir detalle guardado
+        </a>
+        <a
+          *ngIf="saveResult"
+          class="btn btn-sm btn-success"
+          [routerLink]="['/admin/items', saveResult.itemId, 'edit']">
+          Seguir editando
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
+  <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
+  <app-item-save-error-modal
+    *ngIf="saveProblem"
+    [isOpen]="saveErrorModalOpen"
+    [problem]="saveProblem"
+    (closed)="closeSaveErrorModal()"></app-item-save-error-modal>
+
+  <div *ngIf="isLoading" class="card admin-card border-0">
+    <div class="card-body text-secondary">Cargando contexto de escritura...</div>
+  </div>
+
+  <div *ngIf="!isLoading" class="editor-layout">
+    <div class="editor-layout__main">
+      <div class="card admin-card border-0 h-100">
+        <div class="card-body">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-4">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Flujo de creación</p>
+              <h3 class="h5 mb-0">Builder profesional — sunshine.items</h3>
+            </div>
+            <span *ngIf="isSaving" class="text-secondary small">Guardando cambios...</span>
+          </div>
+
+          <form [formGroup]="form" class="d-grid gap-4" (ngSubmit)="submit()">
+            <section class="write-flow-section">
+              <p class="write-flow-section__eyebrow">1. Identidad</p>
+              <h4 class="h6 mb-3">Nombre, tipo y nivel</h4>
+              <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label" for="resolvedName">Nombre del item</label>
+              <input
+                id="resolvedName"
+                class="form-control"
+                [class.is-invalid]="hasFieldIssue('resolvedName')"
+                formControlName="resolvedName"
+                maxlength="250"
+                placeholder="Amuleto Pequeno del Buho" />
+              <div *ngFor="let message of getFieldErrors('resolvedName')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('resolvedName').length && getLocalError('resolvedName')" class="invalid-feedback d-block">
+                {{ getLocalError('resolvedName') }}
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="typeId">Tipo</label>
+              <select
+                id="typeId"
+                class="form-select"
+                [class.is-invalid]="hasFieldIssue('typeId')"
+                formControlName="typeId">
+                <option [ngValue]="null">Selecciona un tipo</option>
+                <option *ngFor="let option of typeOptions" [ngValue]="option.value">
+                  {{ option.label }} ({{ option.value }})
+                </option>
+              </select>
+              <div *ngFor="let message of getFieldErrors('typeId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('typeId').length && getLocalError('typeId')" class="invalid-feedback d-block">
+                {{ getLocalError('typeId') }}
+              </div>
+              <div class="form-text">
+                Los typeId de armas siguen bloqueados en esta fase porque Sunshine los guarda en <span class="font-monospace-soft">items_weapons</span>.
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="setId">Item set</label>
+              <select id="setId" class="form-select" formControlName="setId">
+                <option [ngValue]="null">Sin set</option>
+                <option *ngFor="let option of itemSetOptions" [ngValue]="option.value">
+                  {{ option.label }} ({{ option.value }})
+                </option>
+              </select>
+              <div *ngFor="let message of getFieldErrors('setId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="itemSetOptions.length === 0" class="form-text">
+                No hay sets disponibles en este entorno o la carga del catalogo devolvio vacio.
+              </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="level">Nivel</label>
+              <input
+                id="level"
+                class="form-control"
+                [class.is-invalid]="hasFieldIssue('level')"
+                formControlName="level"
+                type="number"
+                min="1" />
+              <div *ngFor="let message of getFieldErrors('level')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('level').length && getLocalError('level')" class="invalid-feedback d-block">
+                {{ getLocalError('level') }}
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4">
+              <label class="form-label" for="weight">Peso</label>
+              <input
+                id="weight"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('weight')"
+                formControlName="weight"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('weight')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('weight').length && getLocalError('weight')" class="invalid-feedback d-block">
+                {{ getLocalError('weight') }}
+              </div>
+            </div>
+
+            <div class="col-6 col-md-4">
+              <label class="form-label" for="price">Precio</label>
+              <input
+                id="price"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('price')"
+                formControlName="price"
+                type="number"
+                min="0"
+                step="0.01" />
+              <div *ngFor="let message of getFieldErrors('price')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('price').length && getLocalError('price')" class="invalid-feedback d-block">
+                {{ getLocalError('price') }}
+              </div>
+            </div>
+
+              </div>
+            </section>
+
+            <section class="write-flow-section">
+              <p class="write-flow-section__eyebrow">2. Visual</p>
+              <h4 class="h6 mb-3">Icono, apariencia y preview</h4>
+              <div class="row g-3">
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="iconId">Icono (IconId)</label>
+              <input
+                id="iconId"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('iconId')"
+                formControlName="iconId"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('iconId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('iconId').length && getLocalError('iconId')" class="invalid-feedback d-block">
+                {{ getLocalError('iconId') }}
+              </div>
+              <div class="d-flex flex-wrap gap-2 pt-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" (click)="toggleIconSelector()">
+                  {{ isIconSelectorOpen ? 'Cerrar modal de iconos' : 'Elegir icono (modal)' }}
+                </button>
+                <a
+                  class="btn btn-sm btn-outline-secondary"
+                  routerLink="/admin/items/icon-selector"
+                  [queryParams]="{ iconId: form.controls.iconId.value ?? null }">
+                  Abrir selector completo
+                </a>
+              </div>
+              <div class="form-text">
+                El preview se resuelve por IconId antes de guardar.
+                <span *ngIf="currentPreviewPath" class="d-block">
+                  Ruta actual del preview:
+                  <span class="font-monospace-soft">{{ currentPreviewPath }}</span>
+                </span>
+                <span class="d-block">IconId se actualiza por seleccion visual. AppearanceId no cambia automaticamente.</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="appearanceId">Apariencia (AppearanceId)</label>
+              <input
+                id="appearanceId"
+                class="form-control font-monospace-soft"
+                [class.is-invalid]="hasFieldIssue('appearanceId')"
+                formControlName="appearanceId"
+                type="number"
+                min="0" />
+              <div *ngFor="let message of getFieldErrors('appearanceId')" class="invalid-feedback d-block">
+                {{ message }}
+              </div>
+              <div *ngIf="!getFieldErrors('appearanceId').length && getLocalError('appearanceId')" class="invalid-feedback d-block">
+                {{ getLocalError('appearanceId') }}
+              </div>
+              <div class="form-text">La apariencia equipada sigue separada de la identidad del icono de inventario.</div>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="isVisible">Visibilidad (futuro)</label>
+              <select id="isVisible" class="form-select" formControlName="isVisible">
+                <option [ngValue]="true">Visible</option>
+                <option [ngValue]="false">Oculto</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label" for="description">Descripción (texto libre)</label>
+              <textarea
+                id="description"
+                class="form-control"
+                rows="2"
+                formControlName="description"
+                placeholder="Ej. Dofus de los Hielos — se publicará en fases posteriores"></textarea>
+            </div>
+
+              </div>
+            </section>
+
+            <section class="write-flow-section">
+              <p class="write-flow-section__eyebrow">3. Características</p>
+              <h4 class="h6 mb-3">Stats del item</h4>
+              <p class="small text-secondary mb-0">
+                Tras guardar el item, edita stats en la sección inferior con tarjetas rápidas (sin pelear con EffectId).
+                En creación, el editor se activa al abrir el item guardado.
+              </p>
+            </section>
+
+            <section class="write-flow-section">
+              <p class="write-flow-section__eyebrow">4. Reglas</p>
+              <h4 class="h6 mb-3">Condiciones y flags</h4>
+              <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label" for="conditions">Condiciones (criteria)</label>
+              <textarea
+                id="conditions"
+                class="form-control font-monospace-soft"
+                rows="5"
+                formControlName="conditions"
+                spellcheck="false"
+                placeholder="Si lo dejas vacio se normaliza al literal 'null' al guardar"></textarea>
+              <div class="form-text">{{ conditionsHelpText }}</div>
+              <div class="conditions-helper rounded-3 p-3 mt-2 small">
+                <div class="fw-semibold mb-2">Ayuda contextual</div>
+                <div>Criteria sigue siendo una cadena libre para mantener compatibilidad con el flujo legacy.</div>
+                <div>No hay presets ni parser Angular en Phase 7C.</div>
+                <div>Puedes pegar expresiones ya validadas por el equipo sin que el formulario las reescriba.</div>
+                <div>
+                  Payload normalizado actual:
+                  <span class="font-monospace-soft">{{ normalizedConditionsPreview }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card border-0 form-flags-card">
+                <div class="card-body">
+                  <p class="text-uppercase small fw-semibold text-secondary mb-3">Flags de comportamiento</p>
+                  <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="usable" class="form-check-input" formControlName="usable" type="checkbox" />
+                        <label class="form-check-label" for="usable">Usable</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="targetable" class="form-check-input" formControlName="targetable" type="checkbox" />
+                        <label class="form-check-label" for="targetable">Targetable</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="twoHanded" class="form-check-input" formControlName="twoHanded" type="checkbox" />
+                        <label class="form-check-label" for="twoHanded">Dos manos</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input id="etheral" class="form-check-input" formControlName="etheral" type="checkbox" />
+                        <label class="form-check-label" for="etheral">Etereo</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              </div>
+            </section>
+
+            <section class="write-flow-section">
+              <p class="write-flow-section__eyebrow">5. Publicación</p>
+              <h4 class="h6 mb-3">Cliente e identidad</h4>
+              <div class="d-flex flex-wrap gap-2">
+                <a
+                  *ngIf="sourceItemId"
+                  class="btn btn-sm btn-outline-primary"
+                  [routerLink]="['/admin/items', sourceItemId, 'publication-status']">
+                  Estado de publicación
+                </a>
+                <a class="btn btn-sm btn-outline-secondary" routerLink="/admin/publication">Dashboard backup/lane</a>
+              </div>
+              <p class="small text-secondary mb-0 mt-2">Sin publicación automática al cliente real en esta fase.</p>
+            </section>
+
+            <div *ngIf="previewWarnings.length > 0">
+              <div class="alert preview-warning-alert border-0 mb-0">
+                <div class="fw-semibold mb-2">Warnings de preview antes de guardar</div>
+                <div class="d-grid gap-2 small">
+                  <div *ngFor="let warning of previewWarnings" class="d-flex flex-column flex-lg-row gap-2 justify-content-between">
+                    <div>
+                      <span class="font-monospace-soft">{{ warning.code }}</span>
+                      <span class="mx-2">-</span>
+                      <span>{{ warning.message }}</span>
+                    </div>
+                    <span class="badge align-self-start" [class.text-bg-warning]="warning.severity === 'warning'" [class.text-bg-info]="warning.severity === 'info'">
+                      {{ warning.severity | uppercase }}
+                    </span>
+                  </div>
+                </div>
+                <div class="small text-secondary mt-2">
+                  Estas alertas no bloquean save. Solo hacen visible el riesgo antes de persistir.
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 pt-2">
+              <button class="btn btn-primary" type="submit" [disabled]="submitDisabled">
+                {{ submitLabel }}
+              </button>
+              <button class="btn btn-outline-secondary" type="button" (click)="resetForm()" [disabled]="isSaving">
+                {{ resetLabel }}
+              </button>
+              <button class="btn btn-outline-dark" type="button" (click)="cancel()" [disabled]="isSaving">
+                Cancelar
+              </button>
+              <a
+                *ngIf="sourceItemId"
+                class="btn btn-outline-primary"
+                [routerLink]="['/admin/items', sourceItemId]">
+                Ver detalle origen
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-layout__side d-grid gap-4">
+      <div *ngIf="sourceDetail" class="card admin-card border-0">
+        <div class="card-body d-grid gap-2">
+          <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Snapshot de origen</p>
+              <h3 class="h5 mb-0">
+                {{ mode === 'duplicate' ? 'Origen de duplicado' : 'Item persistido actual' }}
+              </h3>
+            </div>
+            <span class="badge text-bg-light border font-monospace-soft">ItemId {{ sourceDetail.itemId }}</span>
+          </div>
+
+          <dl class="row mb-0 small source-snapshot">
+            <dt class="col-4">ResolvedName</dt>
+            <dd class="col-8">{{ sourceDetail.resolvedName || 'Item sin nombre' }}</dd>
+
+            <dt class="col-4">Type</dt>
+            <dd class="col-8">{{ sourceDetail.typeName || ('TypeId ' + sourceDetail.typeId) }}</dd>
+
+            <dt class="col-4">Set</dt>
+            <dd class="col-8">{{ resolveSetName(sourceDetail.set?.setId ?? null) }}</dd>
+
+            <dt class="col-4">IconId</dt>
+            <dd class="col-8 font-monospace-soft">{{ sourceDetail.iconId }}</dd>
+
+            <dt class="col-4">AppearanceId</dt>
+            <dd class="col-8 font-monospace-soft">{{ sourceDetail.appearanceId }}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <app-item-client-identity-card
+        [routeItemId]="sourceItemId"
+        [identity]="sourceIdentity"></app-item-client-identity-card>
+
+      <div *ngIf="isLoadingPreview" class="small text-secondary px-2">Actualizando preview por IconId...</div>
+
+      <app-item-preview-card
+        [routeItemId]="previewContextItemId"
+        [iconId]="previewIconId"
+        [previewState]="previewState"></app-item-preview-card>
+
+      <div *ngIf="isLoadingAppearancePreview" class="small text-secondary px-2">
+        Actualizando Appearance Preview...
+      </div>
+
+      <app-item-appearance-preview-card
+        [routeItemId]="previewContextItemId"
+        [appearancePreviewState]="appearancePreviewState"></app-item-appearance-preview-card>
+
+      <app-item-diagnostic-panel [warnings]="displayWarnings"></app-item-diagnostic-panel>
+
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-2 small">
+          <p class="text-uppercase small fw-semibold text-secondary mb-1">Restricciones de esta fase</p>
+          <div>Crear, editar y duplicar apuntan solo a <span class="font-monospace-soft">sunshine.items</span>.</div>
+          <div>Icon preview desde <span class="font-monospace-soft">IconId</span>; Appearance preview desde <span class="font-monospace-soft">AppearanceId</span> (curado manual).</div>
+          <div *ngIf="mode === 'edit'">Editar conserva el mismo <span class="font-monospace-soft">ItemId</span>.</div>
+          <div *ngIf="mode === 'duplicate'">
+            Duplicar asigna un nuevo <span class="font-monospace-soft">ItemId</span> y un nuevo
+            <span class="font-monospace-soft">DescriptionId</span>.
+          </div>
+          <div>El publish de Description, la persistencia real de IsVisible, el upload de PNG y las armas siguen fuera de alcance.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-layout__effects">
+      <app-item-effects-editor
+        *ngIf="mode === 'edit' && sourceItemId; else effectsDeferred"
+        [itemId]="sourceItemId"></app-item-effects-editor>
+
+      <ng-template #effectsDeferred>
+        <div class="card admin-card border-0">
+          <div class="card-body d-grid gap-2">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
+              <h3 class="h5 mb-1">Stats del item</h3>
+              <p class="text-secondary mb-0">
+                El editor de efectos queda abajo, como en el flujo Blazor. Solo se activa cuando el item ya existe y puede cargarse por ItemId.
+              </p>
+            </div>
+            <div class="alert alert-light border mb-0">
+              Guarda primero el item o abre un item existente para editar efectos runtime.
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>
+
+<app-item-icon-selector-modal
+  [isOpen]="isIconSelectorOpen"
+  [initialIconId]="form.controls.iconId.value ?? null"
+  (cancelled)="toggleIconSelector()"
+  (selected)="applySelectedIcon($event)">
+</app-item-icon-selector-modal>

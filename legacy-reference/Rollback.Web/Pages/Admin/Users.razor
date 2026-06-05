@@ -1,0 +1,139 @@
+@page "/admin/users"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject IAccountPortalService AccountPortalService
+
+<PageTitle>Usuarios</PageTitle>
+
+<section class="portal-card">
+    <div class="section-heading">
+        <div>
+            <span class="portal-chip">Panel admin</span>
+            <h1>Usuarios y personajes</h1>
+            <p class="muted-copy">
+                Superficie inicial de staff del portal. Desde aqui puedes banear cuentas y ajustar kamas o nivel de personajes sin tocar el runtime del juego.
+            </p>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Status))
+    {
+        <div class="alert-panel success">@Status</div>
+    }
+
+    @if (_accounts is null)
+    {
+        <div class="alert-panel">Cargando usuarios...</div>
+    }
+    else if (_accounts.Count == 0)
+    {
+        <div class="empty-state">
+            <p>No hay cuentas cargadas.</p>
+        </div>
+    }
+    else
+    {
+        <table class="accounts-table">
+            <thead>
+                <tr>
+                    <th>Cuenta</th>
+                    <th>Estado</th>
+                    <th>Personajes</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var account in _accounts)
+                {
+                    <tr>
+                        <td>
+                            <strong>@account.Login</strong>
+                            <div class="muted-copy">#@account.Id · @account.Nickname</div>
+                            <div class="muted-copy">Rol: @account.RoleLabel</div>
+                            <div class="muted-copy">Última conexión: @(account.LastConnection?.ToString("yyyy-MM-dd HH:mm") ?? "Sin registro")</div>
+                        </td>
+                        <td>
+                            <span class="status-pill @(account.IsBanned ? "warn" : "ok")">
+                                @(account.IsBanned ? "Baneada" : "Activa")
+                            </span>
+                            <div class="muted-copy">Personajes: @account.CharacterCount</div>
+                        </td>
+                        <td>
+                            @if (account.Characters.Count == 0)
+                            {
+                                <div class="muted-copy">Sin personajes.</div>
+                            }
+                            else
+                            {
+                                <div class="character-admin-list">
+                                    @foreach (var character in account.Characters)
+                                    {
+                                        <article class="character-admin-card">
+                                            <div class="character-admin-head">
+                                                <div>
+                                                    <strong>@character.Name</strong>
+                                                    <div class="muted-copy">@character.BreedLabel · Nivel @character.Level · Mapa @character.MapId</div>
+                                                </div>
+                                                <span class="role-pill">#@character.Id</span>
+                                            </div>
+
+                                            <div class="character-admin-stats">
+                                                <span>Kamas: <strong>@character.Kamas</strong></span>
+                                                <span>XP: <strong>@character.Experience</strong></span>
+                                            </div>
+
+                                            <div class="character-admin-actions">
+                                                <form method="post" action="/admin/characters/@character.Id/kamas" class="character-inline-form">
+                                                    <input type="hidden" name="returnUrl" value="/admin/users" />
+                                                    <label class="field-label" for="kamas-@character.Id">Kamas</label>
+                                                    <input id="kamas-@character.Id" class="field-input compact" type="number" min="0" name="kamas" value="@character.Kamas" />
+                                                    <button type="submit" class="portal-button secondary">Guardar kamas</button>
+                                                </form>
+
+                                                <form method="post" action="/admin/characters/@character.Id/level" class="character-inline-form">
+                                                    <input type="hidden" name="returnUrl" value="/admin/users" />
+                                                    <label class="field-label" for="level-@character.Id">Nivel</label>
+                                                    <input id="level-@character.Id" class="field-input compact" type="number" min="1" max="200" name="level" value="@character.Level" />
+                                                    <button type="submit" class="portal-button secondary">Guardar nivel</button>
+                                                </form>
+                                            </div>
+                                        </article>
+                                    }
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                @if (account.IsBanned)
+                                {
+                                    <form method="post" action="/admin/users/@account.Id/unban" class="inline-form">
+                                        <input type="hidden" name="returnUrl" value="/admin/users" />
+                                        <button type="submit" class="portal-button secondary">Quitar ban</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" action="/admin/users/@account.Id/ban" class="inline-form">
+                                        <input type="hidden" name="returnUrl" value="/admin/users" />
+                                        <button type="submit" class="portal-button danger">Ban 7 días</button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "status")]
+    public string? Status { get; set; }
+
+    private IReadOnlyList<PortalAccountSummary>? _accounts;
+
+    protected override async Task OnInitializedAsync() =>
+        _accounts = await AccountPortalService.GetAccountsWithCharactersAsync();
+}

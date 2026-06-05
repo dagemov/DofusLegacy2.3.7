@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Tools Migration Master Plan</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 2rem auto; max-width: 900px; line-height: 1.5; color: #1f2933; }
+    h1, h2 { color: #102a43; }
+    code { background: #f0f4f8; padding: 0.1rem 0.3rem; border-radius: 4px; }
+    ul, ol { padding-left: 1.25rem; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #d9e2ec; padding: 0.6rem; text-align: left; vertical-align: top; }
+    th { background: #f0f4f8; }
+  </style>
+</head>
+<body>
+  <h1>Admin Tools Migration Master Plan</h1>
+
+  <h2>Snapshot</h2>
+  <ul>
+    <li>Date: <code>2026-06-03</code></li>
+    <li>Official repo: <code>C:\Users\Hombr\source\repos\DofusLegacy2.3.7</code></li>
+    <li>Official solution: <code>Sunshine.sln</code></li>
+    <li>Official documentation roots: <code>docs/admin-tools</code>, <code>docs/roadmap</code>, <code>docs/website</code>, <code>docs/infrastructure</code>, <code>docs/combat</code></li>
+  </ul>
+
+  <h2>Repository rules</h2>
+  <ol>
+    <li>Use the official repo as the single source of truth.</li>
+    <li>Do not start new phases in external worktrees or parallel repos unless explicitly approved.</li>
+    <li>Keep new Admin code inside <code>Angular-tools/Admin/</code>.</li>
+    <li>Keep Admin work inside the existing <code>Sunshine.sln</code>.</li>
+    <li>Treat imported exploratory docs as reference, not as accepted code baseline.</li>
+    <li>Do not create <code>RollblackLegacy.Admin.Angular</code> outside the official repo.</li>
+    <li>If a tool does not exist in the official repo, it cannot be marked as implemented.</li>
+    <li>No item can be called client-visible unless the template exists in client metadata and the launcher delivery lane is accounted for.</li>
+    <li>Never continue implementing if <code>docs/handoffs/AGENT_HANDOFF.md</code> was not produced or is clearly outdated.</li>
+    <li>The next agent must read the latest handoff before starting work.</li>
+    <li>If the remaining paid token budget is getting low, around the last <code>15%</code>, stop implementation and update the handoff first.</li>
+  </ol>
+
+  <h2>Admin Angular canonical location</h2>
+  <p>The Admin Angular workspace lives in <code>Angular-tools/Admin/RollblackLegacy.Admin.Angular</code>.</p>
+  <p>The Admin API, Application, Contracts, Domain, and Infrastructure projects also live under <code>Angular-tools/Admin/</code>.</p>
+
+  <h2>Current execution checkpoint</h2>
+  <pre><code>Macro 1 - Items Builder
+Phase 1 DONE
+Phase 1.5 DONE
+Phase 2 DONE
+Phase 3 DONE
+Phase 4 DONE
+Phase 5 DONE
+Phase 6 DONE
+Phase 6.5A DONE
+Phase 7A DONE
+Phase 7B DONE
+Phase 7C DONE
+Phase 7D DONE (documentary)
+Phase 8 DONE
+
+Macro 2 - Client Identity Audit Tool: COMPLETE (Phase 1–4 DONE)
+Macro 3 - Sprite Preview Pipeline: COMPLETE (Phases 1–7 DONE)
+Macro Items Final - Effects catalog parity: DONE (7D.1-7D.5)
+Macro 4 - Spells Builder: DEFERRED (until Items Final closes)
+Macro 5 - Glyph Builder: DEFERRED
+Macro 6 - Maps Builder: DEFERRED</code></pre>
+
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Phase 1 - Items Builder Audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 1.5 - Admin Clean Architecture Scaffold</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 2 - Items Builder Read-only API</td><td><code>DONE / PARTIAL VALIDATED</code></td></tr>
+      <tr><td>Phase 3 - Angular Items List/Detail</td><td><code>DONE / PARTIAL VALIDATED</code></td></tr>
+      <tr><td>Phase 4 - Diagnostics + Preview UI</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 5 - Live Data Workflow</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 6 - Asset Pipeline + PNG Preview</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 6.5A - Client Asset Intelligence Audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7 - Item Create/Edit</td><td><code>PAUSED / PARTIAL</code></td></tr>
+      <tr><td>Phase 7A - Item Icon Selector Modal</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7B - Item Effects/Characteristics Editor</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7C - Item Form UX Polish</td><td><code>DONE</code></td></tr>
+      <tr><td>Phase 7D - Client Sprite Preview Extraction</td><td><code>DONE (DOCUMENTARY)</code></td></tr>
+      <tr><td>Phase 8 - Publish / QA Workflow</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 2 - Client Identity Audit Tool / Phase 1</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 2 - Client Identity Audit Tool / Phase 2</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 2 - Stabilization gate before Phase 3</td><td><code>PASSED</code></td></tr>
+      <tr><td>Macro 2 - Client Identity / Phase 3 Angular diagnostics</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 2 - Client Identity / Phase 4 batch report</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 1 audit scaffold</td><td><code>DONE / PARTIAL</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 2 D2P extractor</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 3 curated import</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 4 workflow</td><td><code>DONE / PARTIAL</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 5 appearance audit</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 6 by-appearance curated</td><td><code>DONE / PARTIAL</code></td></tr>
+      <tr><td>Macro 3 - Sprite Preview / Phase 7 final QA</td><td><code>DONE</code></td></tr>
+      <tr><td>Macro 3 - EntityLook renderer</td><td><code>DEFERRED / NOT REQUIRED FOR MVP</code></td></tr>
+      <tr><td>Future lane - Client Publication Pipeline for custom items</td><td><code>ANALYSIS COMPLETE</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Client Identity doc set</h2>
+  <ul>
+    <li><code>docs/admin-tools/client-identity/README.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-audit-tool-phase1.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-admin-layer-phase2.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-api-contracts.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-stabilization-gate-before-phase3.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-source-map.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-item-check-report.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-angular-diagnostics-phase3.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-batch-report-phase4.md</code></li>
+    <li><code>docs/admin-tools/client-identity/client-identity-batch-report-sample.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/README.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-pipeline-phase1.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-source-map.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/item-sprite-preview-phase1-report.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-d2p-extractor-phase2.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-d2p-format-notes.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-curated-import-phase3.md</code></li>
+    <li><code>docs/admin-tools/sprite-preview/sprite-preview-curated-workflow-phase4.md</code></li>
+  </ul>
+
+  <h2>Key references</h2>
+  <ul>
+    <li><code>docs/admin-tools/items-builder/README.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-publish-qa-phase8.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-client-visibility-matrix.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-publish-decision-workflow.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-admin-command-catalog.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-vendor-publication-workflow.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-production-qa-checklist.md</code></li>
+    <li><code>docs/admin-tools/items-builder/items-builder-client-publication-analysis.md</code></li>
+    <li><code>docs/admin-tools/items-builder/item-publication-pipeline.md</code></li>
+    <li><code>docs/admin-tools/client-publication/README.md</code></li>
+    <li><code>docs/admin-tools/client-publication/client-item-publication-pipeline-phase1.md</code></li>
+    <li><code>docs/infrastructure/vps-restart-safety-checklist.md</code></li>
+  </ul>
+
+  <h2>Macro Items Final</h2>
+  <p>Macro Items Final <code>DONE</code> (7D.1–7D.5). Open single PR. Spells blocked until PR merge + approval.</p>
+
+  <h2>Macro 4 — Client Item Publication</h2>
+  <p>Phase 3C <code>DONE</code> — staging package + validator. Phase 4 <code>DONE</code> — backup/recovery + publish lane (<code>feature/client-publication-controlled-patch-phase4</code>). Phase 5 controlled patch (backup copy): <code>NEXT</code>.</p>
+
+  <h2>Immediate next branch</h2>
+  <ol>
+    <li>PR Macro Items Final — <code>feature/items-final-effects-catalog-audit-7d1</code></li>
+    <li>Macro 4 Phase 6 — controlled publish + skin catalog dry-run (READY_FOR_OPERATOR)</li>
+    <li>Macro 4 Phase 5 — sandbox + UX (DONE)</li>
+    <li>Macro 4 Spells — tras merge PR + aprobación explícita</li>
+  </ol>
+
+  <h2>Mandatory handoff</h2>
+  <p>Canonical handoff path: <code>docs/handoffs/AGENT_HANDOFF.md</code></p>
+</body>
+</html>

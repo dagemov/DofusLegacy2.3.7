@@ -1,0 +1,331 @@
+@page "/admin/vendors"
+@using Rollback.World.CustomEnums
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject NpcVendorAdminService NpcVendorAdminService
+@inject ItemAdminService ItemAdminService
+
+<PageTitle>NPC Vendors</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">NPC Vendors</span>
+            <h1>NPC Vendors</h1>
+            <p class="muted-copy">Gestiona tiendas reales del juego, corrige stock por categoria, evita duplicados y muestra cada vendor con nombre humano + id.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar por nombre, NPC, mapa o shopAction..." @bind="_query.Search" />
+                <button class="portal-button secondary" @onclick="ReloadAsync">Buscar</button>
+            </div>
+
+            @if (_vendors is null)
+            {
+                <div class="empty-state"><p>Cargando vendors...</p></div>
+            }
+            else if (_vendors.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No hay vendors con ese filtro.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack">
+                    @foreach (var vendor in _vendors.Items)
+                    {
+                        <button class="admin-list-card @(vendor.ShopActionId == _selectedShopActionId ? "selected" : string.Empty)" @onclick="() => LoadVendorAsync(vendor.ShopActionId)">
+                            <strong>@vendor.DisplayName</strong>
+                            <span>ShopAction @vendor.ShopActionId · mapa @vendor.MapId · celda @vendor.CellId</span>
+                            <small>@vendor.ItemCount items únicos · @vendor.CategoryLabel</small>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_vendors.Page" TotalPages="@_vendors.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            @if (_vendor is null)
+            {
+                <div class="empty-state"><p>Selecciona un vendor para administrar su inventario.</p></div>
+            }
+            else
+            {
+                <div class="section-heading">
+                    <div>
+                        <h2>@_vendor.DisplayName</h2>
+                        <p class="muted-copy">ShopAction @_vendor.ShopActionId · mapa @_vendor.MapId · celda @_vendor.CellId</p>
+                        <p class="muted-copy">Categoria actual: @_vendor.CategoryLabel</p>
+                    </div>
+                </div>
+
+                @if (_suggestedLabels.TryGetValue(_vendor.ShopActionId, out var suggestedLabel))
+                {
+                    <div class="admin-subcard">
+                        <strong>Sync sugerido</strong>
+                        <p class="muted-copy">Este vendor puede sincronizar automaticamente: @suggestedLabel.</p>
+                        <button class="portal-button" @onclick="SyncSuggestedAsync">Sincronizar categoria sugerida</button>
+                    </div>
+                }
+
+                <div class="admin-inline-tools">
+                    <input class="field-input admin-search" placeholder="Buscar item para agregar..." @bind="_itemLookupSearch" />
+                    <button class="portal-button secondary" @onclick="SearchItemsAsync">Buscar item</button>
+                </div>
+
+                @if (_itemLookupResults.Count > 0)
+                {
+                    <div class="admin-lookup-list">
+                        @foreach (var option in _itemLookupResults)
+                        {
+                            <button class="admin-lookup-item" @onclick="() => SelectItemAsync(option)">
+                                @option.Label
+                            </button>
+                        }
+                    </div>
+                }
+
+                @if (_selectedItemId.HasValue)
+                {
+                    <div class="admin-subcard">
+                        <strong>@_selectedItemLabel</strong>
+                        <div class="admin-inline-tools">
+                            <input class="field-input compact-input" type="number" min="0" @bind="_selectedItemPrice" />
+                            <button class="portal-button" @onclick="AddSelectedItemAsync">Agregar / actualizar item</button>
+                        </div>
+                    </div>
+                }
+
+                <div class="admin-subcard">
+                    <strong>Filtros del inventario</strong>
+                    <div class="admin-inline-tools">
+                        <input class="field-input admin-search" placeholder="Nombre o id..." @bind="_vendorItemsSearch" />
+                        <input class="field-input compact-input" type="number" min="1" placeholder="ItemId" @bind="_vendorItemIdFilter" />
+                        <input class="field-input compact-input" type="number" min="1" placeholder="Nivel min" @bind="_vendorMinLevelFilter" />
+                        <input class="field-input compact-input" type="number" min="1" placeholder="Nivel max" @bind="_vendorMaxLevelFilter" />
+                        <select class="field-input compact-input" @bind="_vendorTypeFilter">
+                            <option value="">Todas las categorias</option>
+                            @foreach (var type in _vendorFilterTypes)
+                            {
+                                <option value="@((short)type)">@ItemTypeLabelService.GetDisplayName(type)</option>
+                            }
+                        </select>
+                        <button class="portal-button secondary" @onclick="ApplyVendorFiltersAsync">Filtrar</button>
+                        <button class="portal-button tertiary" @onclick="ClearVendorFiltersAsync">Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="section-heading compact">
+                    <div>
+                        <strong>Inventario paginado</strong>
+                        <div class="muted-copy">@_vendor.ItemPage.TotalCount items · página @_vendor.ItemPage.Page / @_vendor.ItemPage.TotalPages</div>
+                    </div>
+                </div>
+
+                @if (_vendor.Items.Count == 0)
+                {
+                    <div class="empty-state"><p>No hay items para ese filtro en este vendor.</p></div>
+                }
+                else
+                {
+                    <div class="admin-stack">
+                        @foreach (var item in _vendor.Items)
+                        {
+                            <article class="admin-subcard">
+                                <div class="section-heading compact">
+                                    <div>
+                                        <strong>@item.Name</strong>
+                                        <div class="muted-copy">#@item.ItemId · @item.TypeLabel · nivel @item.Level · precio @item.Price</div>
+                                    </div>
+                                    <button class="portal-button danger" @onclick="() => RemoveVendorItemAsync(item.Id)">Quitar</button>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                    <AdminPager Page="@_vendor.ItemPage.Page" TotalPages="@_vendor.ItemPage.TotalPages" OnPageChanged="ChangeVendorItemsPageAsync" />
+                }
+            }
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<NpcVendorListItem>? _vendors;
+    private NpcVendorEditModel? _vendor;
+    private int? _selectedShopActionId;
+    private string _itemLookupSearch = string.Empty;
+    private IReadOnlyList<AdminLookupOption> _itemLookupResults = Array.Empty<AdminLookupOption>();
+    private IReadOnlyDictionary<int, string> _suggestedLabels = new Dictionary<int, string>();
+    private IReadOnlyList<ItemType> _vendorFilterTypes = Array.Empty<ItemType>();
+    private short? _selectedItemId;
+    private string _selectedItemLabel = string.Empty;
+    private int _selectedItemPrice;
+    private string _vendorItemsSearch = string.Empty;
+    private string _vendorItemIdFilter = string.Empty;
+    private string _vendorMinLevelFilter = string.Empty;
+    private string _vendorMaxLevelFilter = string.Empty;
+    private string _vendorTypeFilter = string.Empty;
+    private int _vendorItemsPage = 1;
+    private string? _status;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _suggestedLabels = NpcVendorAdminService.GetSuggestedCatalogLabels();
+        await ReloadAsync();
+    }
+
+    private async Task ReloadAsync() =>
+        _vendors = await NpcVendorAdminService.GetPagedAsync(_query);
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private async Task LoadVendorAsync(int shopActionId)
+    {
+        _selectedShopActionId = shopActionId;
+        _vendorItemsPage = 1;
+        _vendorItemsSearch = string.Empty;
+        _vendorItemIdFilter = string.Empty;
+        _vendorMinLevelFilter = string.Empty;
+        _vendorMaxLevelFilter = string.Empty;
+        _vendorTypeFilter = string.Empty;
+        _selectedItemId = null;
+        _status = null;
+        _error = null;
+        _vendorFilterTypes = NpcVendorAdminService.GetSupportedFilterTypes(shopActionId);
+        await LoadSelectedVendorAsync();
+    }
+
+    private async Task LoadSelectedVendorAsync()
+    {
+        if (!_selectedShopActionId.HasValue)
+            return;
+
+        _vendor = await NpcVendorAdminService.GetByShopActionIdAsync(_selectedShopActionId.Value, BuildVendorItemsQuery());
+    }
+
+    private async Task SearchItemsAsync()
+    {
+        if (_vendor is null)
+            return;
+
+        var types = NpcVendorAdminService.GetSuggestedTypes(_vendor.ShopActionId);
+        _itemLookupResults = await ItemAdminService.GetLookupAsync(_itemLookupSearch, types);
+    }
+
+    private async Task SelectItemAsync(AdminLookupOption option)
+    {
+        if (!short.TryParse(option.Value, out var itemId))
+            return;
+
+        _selectedItemId = itemId;
+        _selectedItemLabel = option.Label;
+        _selectedItemPrice = (await ItemAdminService.GetByIdAsync(itemId))?.Price ?? 0;
+    }
+
+    private async Task AddSelectedItemAsync()
+    {
+        if (_vendor is null || !_selectedItemId.HasValue)
+            return;
+
+        try
+        {
+            var result = await NpcVendorAdminService.AddOrUpdateItemAsync(_vendor.ShopActionId, _selectedItemId.Value, _selectedItemPrice);
+            _status = result.Message;
+            _error = null;
+            await LoadVendorAsync(result.EffectiveShopActionId);
+            await ReloadAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task RemoveVendorItemAsync(int vendorItemId)
+    {
+        if (_vendor is null)
+            return;
+
+        await NpcVendorAdminService.RemoveItemAsync(vendorItemId);
+        _status = "Item removido del vendor.";
+        await LoadSelectedVendorAsync();
+        await ReloadAsync();
+    }
+
+    private async Task SyncSuggestedAsync()
+    {
+        if (_vendor is null)
+            return;
+
+        var processed = await NpcVendorAdminService.SyncSuggestedCategoryAsync(_vendor.ShopActionId);
+        _status = processed > 0
+            ? $"Vendor sincronizado. Items procesados: {processed}."
+            : "Este vendor no tiene una categoria sugerida registrada.";
+        await LoadSelectedVendorAsync();
+        await ReloadAsync();
+    }
+
+    private async Task ApplyVendorFiltersAsync()
+    {
+        _vendorItemsPage = 1;
+        await LoadSelectedVendorAsync();
+    }
+
+    private async Task ClearVendorFiltersAsync()
+    {
+        _vendorItemsPage = 1;
+        _vendorItemsSearch = string.Empty;
+        _vendorItemIdFilter = string.Empty;
+        _vendorMinLevelFilter = string.Empty;
+        _vendorMaxLevelFilter = string.Empty;
+        _vendorTypeFilter = string.Empty;
+        await LoadSelectedVendorAsync();
+    }
+
+    private async Task ChangeVendorItemsPageAsync(int page)
+    {
+        _vendorItemsPage = page;
+        await LoadSelectedVendorAsync();
+    }
+
+    private NpcVendorItemsQuery BuildVendorItemsQuery() =>
+        new()
+        {
+            Search = _vendorItemsSearch,
+            ItemId = ParseShort(_vendorItemIdFilter),
+            MinLevel = ParseShort(_vendorMinLevelFilter),
+            MaxLevel = ParseShort(_vendorMaxLevelFilter),
+            TypeId = ParseType(_vendorTypeFilter),
+            Page = _vendorItemsPage,
+            PageSize = 10,
+        };
+
+    private static short? ParseShort(string value) =>
+        short.TryParse(value, out var parsed) && parsed > 0
+            ? parsed
+            : null;
+
+    private static ItemType? ParseType(string value) =>
+        short.TryParse(value, out var parsed)
+            ? (ItemType)parsed
+            : null;
+}

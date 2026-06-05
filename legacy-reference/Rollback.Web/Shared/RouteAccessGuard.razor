@@ -1,0 +1,46 @@
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.Authorization
+
+@if (_forbidden)
+{
+    <section class="portal-card empty-state">
+        <h1>Acceso restringido</h1>
+        <p>Tu sesion es valida, pero no tienes permisos para abrir esta zona del portal.</p>
+        <a class="portal-button" href="/account">Volver a mi cuenta</a>
+    </section>
+}
+else
+{
+    <section class="portal-card empty-state">
+        <h1>Redirigiendo al login</h1>
+        <p>Necesitas iniciar sesion para acceder a esta pagina.</p>
+    </section>
+}
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
+
+    private bool _forbidden;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || AuthenticationStateTask is null)
+            return;
+
+        var authenticationState = await AuthenticationStateTask;
+        _forbidden = authenticationState.User.Identity?.IsAuthenticated ?? false;
+
+        if (!_forbidden)
+        {
+            var relativePath = "/" + Navigation.ToBaseRelativePath(Navigation.Uri).TrimStart('/');
+            if (relativePath == "/")
+                relativePath = "/account";
+
+            Navigation.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(relativePath)}", forceLoad: true);
+            return;
+        }
+
+        StateHasChanged();
+    }
+}

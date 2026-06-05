@@ -95,14 +95,14 @@ namespace Sunshine.Protocol.Tools.D2o
 
         private void OpenWrite()
         {
+            var bytes = File.ReadAllBytes(Filename);
             m_writer = new BigEndianWriter(File.OpenWrite(Filename));
-
-            ResetMembersByReading();
+            ResetMembersByReading(bytes);
         }
 
-        private void ResetMembersByReading()
+        private void ResetMembersByReading(byte[] fileBytes = null)
         {
-            var reader = new D2OReader(File.OpenRead(Filename));
+            var reader = new D2OReader(new FastBigEndianReader(fileBytes ?? File.ReadAllBytes(Filename)));
 
             m_indexTable = reader.Indexes;
             m_classes = reader.Classes;
@@ -124,8 +124,15 @@ namespace Sunshine.Protocol.Tools.D2o
                 File.Copy(Filename, BakFilename, true);
             }
 
+            if (m_writer is not null)
+            {
+                m_writer.Dispose();
+                m_writer = null;
+            }
+
             // overwrite existing file
-            File.WriteAllBytes(Filename, new byte[0]);
+            File.WriteAllBytes(Filename, Array.Empty<byte>());
+            m_writer = new BigEndianWriter(File.OpenWrite(Filename));
 
             m_writing = true;
             lock (m_writingSync)
@@ -398,30 +405,35 @@ namespace Sunshine.Protocol.Tools.D2o
             }
         }
 
-        private void WriteField(BigEndianWriter writer, D2OFieldDefinition field, dynamic obj, int vectorDimension = 0)
+        private void WriteField(BigEndianWriter writer, D2OFieldDefinition field, object obj, int vectorDimension = 0)
         {
-            switch (field.TypeId)
+            WriteField(writer, field, obj, field.TypeId, vectorDimension);
+        }
+
+        private void WriteField(BigEndianWriter writer, D2OFieldDefinition field, object obj, D2OFieldType typeId, int vectorDimension = 0)
+        {
+            switch (typeId)
             {
                 case D2OFieldType.Int:
                     WriteFieldInt(writer, (int)obj);
                     break;
                 case D2OFieldType.Bool:
-                    WriteFieldBool(writer, obj);
+                    WriteFieldBool(writer, (bool)obj);
                     break;
                 case D2OFieldType.String:
-                    WriteFieldUTF(writer, obj);
+                    WriteFieldUTF(writer, (string)obj);
                     break;
                 case D2OFieldType.Double:
-                    WriteFieldDouble(writer, obj);
+                    WriteFieldDouble(writer, (double)obj);
                     break;
                 case D2OFieldType.I18N:
-                    WriteFieldI18n(writer, obj);
+                    WriteFieldI18n(writer, (int)obj);
                     break;
                 case D2OFieldType.UInt:
                     WriteFieldUInt(writer, (uint)obj);
                     break;
                 case D2OFieldType.List:
-                    WriteFieldVector(writer, field, obj, vectorDimension);
+                    WriteFieldVector(writer, field, (IList)obj, vectorDimension);
                     break;
                 default:
                     WriteFieldObject(writer, obj);
@@ -436,7 +448,8 @@ namespace Sunshine.Protocol.Tools.D2o
 
             for (int i = 0; i < list.Count; i++)
             {
-                WriteField(writer, field, field.VectorTypes[vectorDimension], ++vectorDimension);
+                var elementType = field.VectorTypes[vectorDimension].Item1;
+                WriteField(writer, field, list[i], elementType, vectorDimension + 1);
             }
         }
 

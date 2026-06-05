@@ -1,0 +1,49 @@
+@page "/admin"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+
+<PageTitle>Backoffice</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Backoffice</span>
+            <h1>Centro de administracion</h1>
+            <p class="muted-copy">
+                Base nueva del panel admin web. Desde aqui ya queda encaminada la operacion de monstruos, grupos y spawns sin depender del editor WPF.
+            </p>
+        </div>
+    </header>
+
+    <div class="admin-summary-grid">
+        <article class="portal-card admin-summary-card">
+            <h2>Monstruos</h2>
+            <p class="muted-copy">CRUD de templates y grades para corregir bestiario, stats base y preparacion de spawns.</p>
+            <a class="portal-button" href="/admin/monsters">Abrir modulo</a>
+        </article>
+
+        <article class="portal-card admin-summary-card">
+            <h2>Grupos de monstruos</h2>
+            <p class="muted-copy">Grupos admin reutilizables para componer packs y sincronizarlos luego a `monsters_spawns`.</p>
+            <a class="portal-button" href="/admin/monster-groups">Abrir modulo</a>
+        </article>
+
+        <article class="portal-card admin-summary-card">
+            <h2>Familias de monstruos</h2>
+            <p class="muted-copy">Catalogo por familia/race para elegir mobs coherentes antes de poblar dungeons o mapas abiertos.</p>
+            <a class="portal-button" href="/admin/monster-families">Abrir modulo</a>
+        </article>
+
+        <article class="portal-card admin-summary-card">
+            <h2>Mapas y spawns</h2>
+            <p class="muted-copy">Mapa vacio, spawns directos y spawns heredados por subarea en una sola vista operativa.</p>
+            <a class="portal-button" href="/admin/spawns">Abrir modulo</a>
+        </article>
+
+        <article class="portal-card admin-summary-card">
+            <h2>Usuarios</h2>
+            <p class="muted-copy">Staff actual para cuentas, bans y cambios basicos de personaje.</p>
+            <a class="portal-button secondary" href="/admin/users">Abrir modulo</a>
+        </article>
+    </div>
+</section>

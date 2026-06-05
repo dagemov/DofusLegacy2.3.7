@@ -1,0 +1,374 @@
+@page "/admin/monster-groups"
+@attribute [Authorize(Roles = "ADMIN")]
+@layout AdminLayout
+@inject MonsterAdminService MonsterAdminService
+@inject MonsterGroupAdminService MonsterGroupAdminService
+
+<PageTitle>Grupos de monstruos</PageTitle>
+
+<section class="admin-page">
+    <header class="admin-page-header">
+        <div>
+            <span class="portal-chip">Monster Groups</span>
+            <h1>Grupos de monstruos</h1>
+            <p class="muted-copy">Grupos admin reutilizables para poblar mapas o subareas y luego sincronizarlos al runtime.</p>
+        </div>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(_status))
+    {
+        <div class="alert-panel success">@_status</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert-panel error">@_error</div>
+    }
+
+    <div class="admin-grid admin-grid-two">
+        <article class="portal-card">
+            <div class="admin-toolbar">
+                <input class="field-input admin-search" placeholder="Buscar grupos..." @bind="_query.Search" />
+                <button class="portal-button secondary" @onclick="ReloadAsync">Buscar</button>
+                <button class="portal-button" @onclick="CreateNew">Nuevo grupo</button>
+            </div>
+
+            @if (_groups is null)
+            {
+                <div class="empty-state"><p>Cargando grupos...</p></div>
+            }
+            else if (_groups.Items.Count == 0)
+            {
+                <div class="empty-state"><p>No hay grupos creados.</p></div>
+            }
+            else
+            {
+                <div class="admin-list-stack">
+                    @foreach (var group in _groups.Items)
+                    {
+                        <button class="admin-list-card @(group.Id == _selectedGroupId ? "selected" : string.Empty)" @onclick="() => LoadGroupAsync(group.Id)">
+                            <strong>@group.Name</strong>
+                            <span>@group.EntryCount monstruos · @group.AssignmentCount destinos</span>
+                            <small>@(group.LastSyncedAt?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "Aun sin sync")</small>
+                        </button>
+                    }
+                </div>
+                <AdminPager Page="@_groups.Page" TotalPages="@_groups.TotalPages" OnPageChanged="ChangePageAsync" />
+            }
+        </article>
+
+        <article class="portal-card">
+            <div class="section-heading">
+                <div>
+                    <h2>@(_selectedGroupId.HasValue ? $"Editar grupo #{_form.Id}" : "Nuevo grupo")</h2>
+                    <p class="muted-copy">Compon el grupo y define a que mapas o subareas se sincroniza.</p>
+                </div>
+            </div>
+
+            <div class="admin-form-grid two">
+                <div class="field-group">
+                    <label class="field-label">Nombre</label>
+                    <input class="field-input" @bind="_form.Name" />
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Notas</label>
+                    <input class="field-input" @bind="_form.Notes" />
+                </div>
+            </div>
+
+            <div class="portal-divider"></div>
+
+            <div class="section-heading compact">
+                <h3>Monstruos del grupo</h3>
+            </div>
+
+            <div class="admin-inline-tools">
+                <input class="field-input admin-search" placeholder="Buscar monstruo para agregar..." @bind="_monsterLookupSearch" />
+                <button class="portal-button secondary" @onclick="SearchMonstersAsync">Buscar monstruos</button>
+            </div>
+
+            @if (_monsterLookupResults.Count > 0)
+            {
+                <div class="admin-lookup-list">
+                    @foreach (var option in _monsterLookupResults)
+                    {
+                        <button class="admin-lookup-item" @onclick="() => AddMonsterEntry(option)">
+                            @option.Label
+                        </button>
+                    }
+                </div>
+            }
+
+            <div class="admin-stack">
+                @if (_form.Entries.Count == 0)
+                {
+                    <div class="empty-state"><p>Este grupo aun no tiene monstruos.</p></div>
+                }
+                else
+                {
+                    @for (var index = 0; index < _form.Entries.Count; index++)
+                    {
+                        var entry = _form.Entries[index];
+                        <article class="admin-subcard">
+                            <div class="section-heading compact">
+                                <div>
+                                    <strong>@entry.MonsterLabel</strong>
+                                    <div class="muted-copy">Id @entry.MonsterId</div>
+                                </div>
+                                <button class="portal-button danger" @onclick="() => RemoveEntry(index)">Quitar</button>
+                            </div>
+                            <div class="admin-form-grid four">
+                                <div class="field-group">
+                                    <label class="field-label">Grade min</label>
+                                    <input class="field-input" type="number" min="1" max="5" @bind="entry.MinGrade" />
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">Grade max</label>
+                                    <input class="field-input" type="number" min="1" max="5" @bind="entry.MaxGrade" />
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">Probabilidad</label>
+                                    <input class="field-input" type="number" min="1" max="100" @bind="entry.Probability" />
+                                </div>
+                                <div class="field-group inline-toggle">
+                                    <label class="field-label">Deshabilitado</label>
+                                    <input type="checkbox" @bind="entry.Disabled" />
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
+            </div>
+
+            <div class="portal-divider"></div>
+
+            <div class="section-heading compact">
+                <h3>Destinos del grupo</h3>
+                <button class="portal-button secondary" @onclick="AddAssignment">Agregar destino</button>
+            </div>
+
+            <div class="admin-stack">
+                @if (_form.Assignments.Count == 0)
+                {
+                    <div class="empty-state"><p>Este grupo aun no tiene mapas o subareas asignadas.</p></div>
+                }
+                else
+                {
+                    @foreach (var assignment in _form.Assignments)
+                    {
+                        <article class="admin-subcard">
+                            <div class="section-heading compact">
+                                <div>
+                                    <strong>@assignment.TargetLabel</strong>
+                                    <div class="muted-copy">Ultimo sync: @(assignment.LastSyncedAt?.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "Sin sync")</div>
+                                </div>
+                                @if (assignment.Id > 0)
+                                {
+                                    <button class="portal-button danger" @onclick="() => DeleteAssignmentAsync(assignment.Id)">Quitar</button>
+                                }
+                            </div>
+                            <div class="admin-form-grid four">
+                                <div class="field-group">
+                                    <label class="field-label">MapId</label>
+                                    <input class="field-input" type="number" min="1" @bind="assignment.MapId" />
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">SubAreaId</label>
+                                    <input class="field-input" type="number" min="1" @bind="assignment.SubAreaId" />
+                                </div>
+                                <div class="field-group">
+                                    <label class="field-label">Probabilidad override</label>
+                                    <input class="field-input" type="number" min="1" max="100" @bind="assignment.ProbabilityOverride" />
+                                </div>
+                                <div class="field-group inline-toggle">
+                                    <label class="field-label">Deshabilitado</label>
+                                    <input type="checkbox" @bind="assignment.Disabled" />
+                                </div>
+                            </div>
+                            <div class="portal-actions">
+                                <button class="portal-button secondary" @onclick="() => SaveAssignmentAsync(assignment)">Guardar destino</button>
+                                @if (assignment.Id > 0)
+                                {
+                                    <button class="portal-button" @onclick="() => SyncAssignmentAsync(assignment.Id)">Sincronizar a monsters_spawns</button>
+                                }
+                            </div>
+                        </article>
+                    }
+                }
+            </div>
+
+            <div class="portal-actions">
+                <button class="portal-button" @onclick="SaveGroupAsync">Guardar grupo</button>
+                @if (_selectedGroupId.HasValue)
+                {
+                    <button class="portal-button danger" @onclick="DeleteGroupAsync">Eliminar grupo</button>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private readonly AdminPagedQuery _query = new();
+    private AdminPagedResult<MonsterGroupListItem>? _groups;
+    private MonsterGroupEditModel _form = new();
+    private int? _selectedGroupId;
+    private string _monsterLookupSearch = string.Empty;
+    private IReadOnlyList<AdminLookupOption> _monsterLookupResults = Array.Empty<AdminLookupOption>();
+    private string? _status;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync() =>
+        await ReloadAsync();
+
+    private async Task ReloadAsync()
+    {
+        _groups = await MonsterGroupAdminService.GetPagedAsync(_query);
+    }
+
+    private async Task ChangePageAsync(int page)
+    {
+        _query.Page = page;
+        await ReloadAsync();
+    }
+
+    private void CreateNew()
+    {
+        _selectedGroupId = null;
+        _form = new MonsterGroupEditModel();
+        _status = null;
+        _error = null;
+        _monsterLookupResults = Array.Empty<AdminLookupOption>();
+    }
+
+    private async Task LoadGroupAsync(int groupId)
+    {
+        var group = await MonsterGroupAdminService.GetByIdAsync(groupId);
+        if (group is null)
+        {
+            _error = $"No se encontro el grupo #{groupId}.";
+            return;
+        }
+
+        _selectedGroupId = groupId;
+        _form = group;
+        _status = null;
+        _error = null;
+    }
+
+    private async Task SearchMonstersAsync() =>
+        _monsterLookupResults = await MonsterAdminService.GetLookupAsync(_monsterLookupSearch);
+
+    private void AddMonsterEntry(AdminLookupOption option)
+    {
+        if (!short.TryParse(option.Value, out var monsterId))
+            return;
+
+        if (_form.Entries.Any(x => x.MonsterId == monsterId))
+        {
+            _error = $"El monstruo #{monsterId} ya esta en el grupo.";
+            return;
+        }
+
+        _form.Entries.Add(new MonsterGroupEntryAdminModel
+        {
+            MonsterId = monsterId,
+            MonsterLabel = option.Label,
+            MinGrade = 1,
+            MaxGrade = 1,
+            Probability = 5,
+        });
+
+        _error = null;
+    }
+
+    private void RemoveEntry(int index)
+    {
+        if (index >= 0 && index < _form.Entries.Count)
+            _form.Entries.RemoveAt(index);
+    }
+
+    private void AddAssignment() =>
+        _form.Assignments.Add(new MonsterGroupAssignmentAdminModel
+        {
+            MonsterGroupId = _form.Id,
+            TargetLabel = "Nuevo destino",
+        });
+
+    private async Task SaveGroupAsync()
+    {
+        _error = ValidateGroup(_form);
+        if (!string.IsNullOrWhiteSpace(_error))
+            return;
+
+        var id = await MonsterGroupAdminService.SaveAsync(_form);
+        _selectedGroupId = id;
+        _status = $"Grupo #{id} guardado.";
+        await ReloadAsync();
+        await LoadGroupAsync(id);
+    }
+
+    private async Task DeleteGroupAsync()
+    {
+        if (!_selectedGroupId.HasValue)
+            return;
+
+        await MonsterGroupAdminService.DeleteAsync(_selectedGroupId.Value);
+        _status = $"Grupo #{_selectedGroupId.Value} eliminado.";
+        CreateNew();
+        await ReloadAsync();
+    }
+
+    private async Task SaveAssignmentAsync(MonsterGroupAssignmentAdminModel assignment)
+    {
+        if (_form.Id <= 0)
+        {
+            _error = "Guarda primero el grupo antes de agregar destinos.";
+            return;
+        }
+
+        assignment.MonsterGroupId = _form.Id;
+        if (!assignment.MapId.HasValue && !assignment.SubAreaId.HasValue)
+        {
+            _error = "Cada destino necesita MapId o SubAreaId.";
+            return;
+        }
+
+        await MonsterGroupAdminService.SaveAssignmentAsync(assignment);
+        _status = "Destino guardado.";
+        await LoadGroupAsync(_form.Id);
+        await ReloadAsync();
+    }
+
+    private async Task DeleteAssignmentAsync(int assignmentId)
+    {
+        await MonsterGroupAdminService.DeleteAssignmentAsync(assignmentId);
+        _status = "Destino eliminado.";
+        if (_form.Id > 0)
+            await LoadGroupAsync(_form.Id);
+        await ReloadAsync();
+    }
+
+    private async Task SyncAssignmentAsync(int assignmentId)
+    {
+        var result = await MonsterGroupAdminService.SyncAssignmentAsync(assignmentId);
+        _status = $"Sync listo. Upserts: {result.UpsertedCount}, inserts: {result.InsertedCount}, updates: {result.UpdatedCount}.";
+        if (_form.Id > 0)
+            await LoadGroupAsync(_form.Id);
+        await ReloadAsync();
+    }
+
+    private static string? ValidateGroup(MonsterGroupEditModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Name))
+            return "El grupo necesita nombre.";
+
+        if (model.Entries.Count == 0)
+            return "Agrega al menos un monstruo al grupo.";
+
+        if (model.Entries.GroupBy(x => x.MonsterId).Any(x => x.Count() > 1))
+            return "No repitas el mismo monstruo dentro del grupo.";
+
+        return null;
+    }
+}

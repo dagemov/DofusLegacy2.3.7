@@ -1,0 +1,310 @@
+<div class="card admin-card border-0">
+  <div class="card-body d-grid gap-3">
+    <div>
+      <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
+      <h3 class="h5 mb-1">Stats y efectos</h3>
+      <p class="text-secondary small mb-0">
+        Plantilla en blanco por defecto. Añade stats con tarjetas rápidas o búsqueda humana; el catálogo completo sigue disponible abajo.
+      </p>
+    </div>
+
+    <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
+    <app-api-problem-panel [problem]="saveProblem"></app-api-problem-panel>
+    <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
+
+    <div *ngIf="isLoading" class="small text-secondary">Cargando efectos editables...</div>
+
+    <div *ngIf="!isLoading && editState" class="d-grid gap-3">
+      <div *ngIf="warnings.length > 0" class="alert alert-warning border-0 py-2 mb-0">
+        <div class="fw-semibold mb-1">Advertencias del parser</div>
+        <ul class="mb-0 ps-3 small">
+          <li *ngFor="let warning of warnings">{{ warning }}</li>
+        </ul>
+      </div>
+
+      <div *ngIf="preservedSuffixHex" class="alert alert-info border-0 py-2 mb-0 small">
+        Se conservan bytes no editables al final del payload (<code>preservedSuffixHex</code>). No se eliminan al guardar filas
+        soportadas.
+      </div>
+
+      <section class="effects-quick-picks border rounded p-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+          <h4 class="h6 mb-0">Stats frecuentes</h4>
+          <span class="badge text-bg-light border">Sin plantilla aplicada</span>
+        </div>
+        <div class="stat-quick-pick-grid">
+          <button
+            *ngFor="let pick of statQuickPicks"
+            type="button"
+            class="stat-quick-pick btn btn-light border text-start"
+            (click)="addFromQuickPick(pick)"
+            [disabled]="isSaving">
+            <img
+              *ngIf="showStatIcon(pick)"
+              class="stat-quick-pick__icon"
+              [src]="statIconPath(pick)"
+              [alt]="pick.title"
+              width="28"
+              height="28"
+              (error)="brokenStatIconIds.add(pick.id)" />
+            <span
+              *ngIf="!showStatIcon(pick)"
+              class="stat-quick-pick__emoji">
+              {{ pick.emoji }}
+            </span>
+            <span class="stat-quick-pick__title">{{ pick.title }}</span>
+            <span class="stat-quick-pick__subtitle">{{ pick.subtitle }}</span>
+          </button>
+        </div>
+        <div *ngIf="quickPickMessage" class="alert alert-light border mt-2 mb-0 py-2 small">{{ quickPickMessage }}</div>
+      </section>
+
+      <section class="effects-presets-panel border rounded p-3">
+        <h4 class="h6 mb-2">Plantillas opcionales (presets)</h4>
+        <p class="small text-secondary mb-2">
+          Ayudas de operador; no son reglas de gameplay. Revisa el preview antes de aplicar.
+        </p>
+        <div class="row g-2 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label" for="presetSelect">Plantilla</label>
+            <select id="presetSelect" class="form-select form-select-sm" [(ngModel)]="selectedPresetId">
+              <option [ngValue]="null">Elegir preset...</option>
+              <option *ngFor="let preset of presets" [ngValue]="preset.id">{{ preset.name }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Modo</label>
+            <div class="d-flex gap-3 small">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="presetMode" value="append" [(ngModel)]="presetApplyMode" />
+                Añadir / fusionar
+              </label>
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="presetMode" value="replace" [(ngModel)]="presetApplyMode" />
+                Reemplazar editables
+              </label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <button
+              class="btn btn-outline-success w-100 btn-sm"
+              type="button"
+              (click)="applySelectedPreset()"
+              [disabled]="!selectedPresetId || isSaving || presetPreviewLines.length === 0">
+              Aplicar preset
+            </button>
+          </div>
+        </div>
+        <div *ngIf="selectedPreset" class="mt-2">
+          <div class="small text-secondary mb-1">{{ selectedPreset.description }}</div>
+          <ul class="small mb-0 ps-3 preset-preview-list">
+            <li *ngFor="let line of presetPreviewLines" [class.text-danger]="line.status === 'missing'">
+              {{ formatPresetPreviewLine(line) }}
+            </li>
+          </ul>
+          <div *ngIf="presetHasMissingLines" class="alert alert-warning border-0 py-2 mt-2 mb-0 small">
+            Algunas líneas no están en el catálogo API. No se inventan EffectIds.
+          </div>
+        </div>
+        <div *ngIf="presetApplyMessage" class="alert alert-light border mt-2 mb-0 py-2 small">{{ presetApplyMessage }}</div>
+      </section>
+
+      <section class="effects-add-panel border rounded p-3">
+        <h4 class="h6 mb-2">Búsqueda en catálogo</h4>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <label class="form-label" for="addGroupFilter">Grupo</label>
+            <select id="addGroupFilter" class="form-select form-select-sm" [(ngModel)]="addGroupFilter">
+              <option value="">Todos los grupos</option>
+              <option *ngFor="let group of addGroupChoices" [value]="group">{{ group }}</option>
+            </select>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label" for="addSearchTerm">Buscar</label>
+            <input
+              id="addSearchTerm"
+              class="form-control form-control-sm"
+              type="search"
+              placeholder="daño aire, sabiduría, golpes críticos, pa..."
+              [(ngModel)]="addSearchTerm" />
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <div class="small text-secondary pb-2">{{ filteredAddOptions.length }} coincidencias</div>
+          </div>
+        </div>
+        <div class="row g-2 align-items-end mt-1">
+          <div class="col-md-9">
+            <label class="form-label" for="addEffectSelect">Efecto</label>
+            <select id="addEffectSelect" class="form-select" [(ngModel)]="selectedEffectId">
+              <option [ngValue]="null">Elegir del catálogo...</option>
+              <optgroup *ngFor="let group of filteredAddOptionGroups" [label]="group.group">
+                <option *ngFor="let option of group.options" [ngValue]="option.effectId">
+                  {{ option.label }} ({{ option.effectId }}) · {{ option.format || option.operatorMode }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-outline-primary w-100" type="button" (click)="addEffect()" [disabled]="!selectedEffectId || isSaving">
+              Agregar
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <div *ngIf="rows.length === 0" class="alert alert-light border mb-0">
+        Este item no tiene efectos cargados. Agrega filas desde el catálogo completo ({{ effectOptions.length }} opciones).
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center" *ngIf="rows.length > 0">
+        <h4 class="h6 mb-0">Filas actuales ({{ rows.length }})</h4>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="showTechnicalDetails = !showTechnicalDetails">
+          {{ showTechnicalDetails ? 'Ocultar detalles técnicos' : 'Ver detalles técnicos' }}
+        </button>
+      </div>
+
+      <div *ngIf="rows.length > 0" class="effects-row-stack d-grid gap-2">
+        <article class="effects-row card border" *ngFor="let row of rows; trackBy: trackRow">
+          <div class="card-body d-grid gap-2">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+              <div class="flex-grow-1">
+                <div class="fw-semibold">{{ row.label }}</div>
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-1">
+                  <span class="badge text-bg-light border">{{ row.group }}</span>
+                  <span class="badge text-bg-secondary">{{ row.operatorMode }}</span>
+                  <span *ngIf="row.isCharacteristic" class="badge text-bg-primary">característica</span>
+                  <span *ngIf="!row.isSupported" class="badge text-bg-warning">no editable</span>
+                </div>
+                <div *ngIf="showTechnicalDetails" class="small text-secondary font-monospace-soft">
+                  EffectId {{ row.effectId }} · tipo {{ row.serializationTypeId }} · fila {{ row.rowId }}
+                  <span *ngIf="row.preservedEffectHex"> · hex preservado</span>
+                </div>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  title="Subir"
+                  (click)="moveRow(row, -1)"
+                  [disabled]="isSaving || rows[0] === row">
+                  ↑
+                </button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  title="Bajar"
+                  (click)="moveRow(row, 1)"
+                  [disabled]="isSaving || rows[rows.length - 1] === row">
+                  ↓
+                </button>
+                <button class="btn btn-outline-danger" type="button" (click)="removeRow(row)" [disabled]="isSaving">
+                  Quitar
+                </button>
+              </div>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-lg-6">
+                <label class="form-label">Efecto</label>
+                <select
+                  class="form-select form-select-sm"
+                  [ngModel]="row.effectId"
+                  (ngModelChange)="onRowEffectChange(row, $event)"
+                  [disabled]="!row.isSupported || !!row.preservedEffectHex || isSaving">
+                  <optgroup *ngFor="let group of effectOptionGroups" [label]="group.group">
+                    <option *ngFor="let option of group.options" [ngValue]="option.effectId">
+                      {{ option.label }} ({{ option.effectId }})
+                    </option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-lg-3">
+                <label class="form-label">Formato</label>
+                <select
+                  *ngIf="canChangeFormat(row); else readonlyFormat"
+                  class="form-select form-select-sm"
+                  [ngModel]="row.operatorMode"
+                  (ngModelChange)="onRowFormatChange(row, $event)"
+                  [disabled]="isSaving">
+                  <option *ngFor="let format of editableFormats" [ngValue]="format">{{ format }}</option>
+                </select>
+                <ng-template #readonlyFormat>
+                  <input class="form-control form-control-sm" [value]="row.operatorMode" readonly />
+                </ng-template>
+              </div>
+              <div class="col-lg-3">
+                <label class="form-label">Preview</label>
+                <div class="form-control form-control-sm bg-light">{{ row.previewText }}</div>
+              </div>
+            </div>
+
+            <div *ngIf="row.warning" class="alert alert-warning border-0 py-2 mb-0 small">{{ row.warning }}</div>
+
+            <ng-container *ngIf="row.isSupported && isFormatEditable(row); else readonlyValuesBlock">
+              <div class="row g-2" *ngIf="row.operatorMode === 'Integer'">
+                <div class="col-md-4">
+                  <label class="form-label">Valor</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.value"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+              </div>
+              <div class="row g-2" *ngIf="row.operatorMode === 'Dice'">
+                <div class="col-md-3">
+                  <label class="form-label">DiceNum</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.diceNum"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">DiceSide</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.diceSide"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Const / Value</label>
+                  <input
+                    class="form-control form-control-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="row.value"
+                    (ngModelChange)="onRowValueChange(row)"
+                    [disabled]="isSaving" />
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #readonlyValuesBlock>
+              <div class="small text-secondary">
+                {{ row.previewText }}
+                <span *ngIf="!row.isSupported"> — conservado tal cual al guardar (hex preservado).</span>
+              </div>
+            </ng-template>
+          </div>
+        </article>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="button" (click)="saveEffects()" [disabled]="isSaving || isLoading">
+          Guardar efectos
+        </button>
+        <span class="small text-secondary align-self-center font-monospace-soft" *ngIf="editState.effectsHex">
+          hex: {{ editState.effectsHex | slice: 0 : 24 }}<span *ngIf="editState.effectsHex.length > 24">...</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

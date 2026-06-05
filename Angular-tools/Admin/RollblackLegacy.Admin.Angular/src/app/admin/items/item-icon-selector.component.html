@@ -1,0 +1,254 @@
+<section class="d-grid gap-4">
+  <div *ngIf="!embedded" class="card admin-card border-0">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-start">
+        <div>
+          <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Phase 6D</p>
+          <h2 class="h4 mb-2">Selector visual de iconos (Icon Preview)</h2>
+          <p class="text-secondary mb-0">
+            Catálogo por categoría desde D2P (sin armas) o inventario curado por
+            <span class="font-monospace-soft">IconId</span>. No cambia
+            <span class="font-monospace-soft">AppearanceId</span>.
+          </p>
+        </div>
+        <div class="alert admin-rule-banner py-2 px-3 mb-0">
+          <strong>Regla de identidad:</strong>
+          <span class="font-monospace-soft">ItemId != IconId != AppearanceId</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body d-grid gap-3">
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="text-secondary small text-uppercase fw-semibold">Fuente</span>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="query.catalogMode !== 'by-icon'"
+          [class.btn-outline-secondary]="query.catalogMode === 'by-icon'"
+          type="button"
+          (click)="setCatalogMode('by-category')">
+          Catálogo por categoría
+        </button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="query.catalogMode === 'by-icon'"
+          [class.btn-outline-secondary]="query.catalogMode !== 'by-icon'"
+          type="button"
+          (click)="setCatalogMode('by-icon')">
+          Curado by-icon
+        </button>
+      </div>
+
+      <div *ngIf="query.catalogMode !== 'by-icon' && categoryStats.length > 0" class="d-flex flex-wrap gap-2">
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="!query.category"
+          [class.btn-outline-secondary]="!!query.category"
+          type="button"
+          (click)="selectCategory(undefined)">
+          Todas ({{ totalPngInAngular }})
+        </button>
+        <button
+          *ngFor="let stat of categoryStats"
+          class="btn btn-sm"
+          [class.btn-primary]="query.category === stat.category"
+          [class.btn-outline-secondary]="query.category !== stat.category"
+          type="button"
+          (click)="selectCategory(stat.category)">
+          {{ stat.label }} ({{ stat.count }})
+        </button>
+      </div>
+
+      <form class="row g-3" (ngSubmit)="applyFilters()">
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="category">Categoría</label>
+          <select id="category" name="category" class="form-select" [(ngModel)]="filters.category">
+            <option [ngValue]="undefined">Todas las categorías ({{ totalPngInAngular }})</option>
+            <option *ngFor="let option of categoryOptions" [ngValue]="option.id">
+              {{ categoryOptionLabel(option.id, option.label) }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="nameEs">Nombre ES</label>
+          <input id="nameEs" name="nameEs" [(ngModel)]="filters.nameEs" class="form-control" placeholder="Dofus de los Hielos" />
+        </div>
+
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="nameEn">Nombre EN</label>
+          <input id="nameEn" name="nameEn" [(ngModel)]="filters.nameEn" class="form-control" placeholder="Ice Dofus" />
+        </div>
+
+        <div class="col-12 col-lg-4" *ngIf="query.catalogMode === 'by-icon'">
+          <label class="form-label" for="search">Buscar</label>
+          <input
+            id="search"
+            name="search"
+            [(ngModel)]="filters.search"
+            class="form-control"
+            placeholder="IconId o nombre de item vinculado" />
+        </div>
+
+        <div class="col-6 col-lg-3" *ngIf="query.catalogMode !== 'by-icon'">
+          <label class="form-label" for="itemId">ItemId</label>
+          <input
+            id="itemId"
+            name="itemId"
+            [(ngModel)]="filters.itemId"
+            class="form-control font-monospace-soft"
+            type="number"
+            min="1"
+            placeholder="12616" />
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <label class="form-label" for="iconId">IconId</label>
+          <input
+            id="iconId"
+            name="iconId"
+            [(ngModel)]="filters.iconId"
+            class="form-control font-monospace-soft"
+            type="number"
+            min="1"
+            placeholder="1001" />
+        </div>
+
+        <div class="col-6 col-lg-3">
+          <label class="form-label" for="pageSize">Tamaño de página</label>
+          <select
+            id="pageSize"
+            name="pageSize"
+            class="form-select"
+            [ngModel]="query.pageSize"
+            (ngModelChange)="changePageSize($event)">
+            <option [ngValue]="12">12</option>
+            <option [ngValue]="24">24</option>
+            <option [ngValue]="48">48</option>
+          </select>
+        </div>
+
+        <div class="col-12 d-flex flex-wrap gap-2">
+          <button class="btn btn-primary" type="submit" [disabled]="isLoading">Aplicar filtros</button>
+          <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+  <div *ngIf="showSelectionPayload && selectedIcon" class="card admin-card border-0">
+    <div class="card-body">
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Payload de selección</p>
+      <div class="selection-payload">
+        <div><strong>iconId:</strong> <span class="font-monospace-soft">{{ selectedIcon.iconId }}</span></div>
+        <div>
+          <strong>previewPath:</strong>
+          <span class="font-monospace-soft">{{ selectedIcon.previewPath || 'null' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center mb-3">
+        <div>
+          <h3 class="h5 mb-1">
+            {{ query.catalogMode === 'by-icon' ? 'Catálogo curado de iconos' : 'Catálogo por categoría' }}
+          </h3>
+          <p class="text-secondary mb-0">
+            {{ result.totalCount }} icono(s), página {{ result.page }} de {{ totalPages }}.
+          </p>
+        </div>
+        <div *ngIf="isLoading" class="text-secondary small">Cargando catálogo de iconos...</div>
+      </div>
+
+      <div *ngIf="!isLoading && result.items.length === 0" class="alert alert-light border mb-0">
+        No hay iconos para los filtros actuales.
+      </div>
+
+      <div *ngIf="result.items.length > 0" class="row g-3">
+        <div class="col-12 col-sm-6 col-xl-4" *ngFor="let option of result.items; trackBy: trackByIconId">
+          <div class="card icon-card h-100 border-0" [class.icon-card--selected]="selectedIcon?.iconId === option.iconId">
+            <div class="card-body d-grid gap-3">
+              <div class="icon-preview-frame">
+                <img
+                  *ngIf="resolvePreviewPath(option) as previewPath; else missingPreview"
+                  class="icon-preview-image"
+                  [src]="previewPath"
+                  [alt]="'Icon ' + option.iconId"
+                  (error)="markPreviewAsMissing(option.iconId)" />
+
+                <ng-template #missingPreview>
+                  <div class="icon-preview-placeholder">
+                    <span class="font-monospace-soft">PREVIEW FALTANTE</span>
+                  </div>
+                </ng-template>
+              </div>
+
+              <div class="d-grid gap-1">
+                <div class="d-flex justify-content-between gap-2" *ngIf="option.category">
+                  <span class="text-secondary">Categoría</span>
+                  <span class="font-monospace-soft small">{{ option.category }}</span>
+                </div>
+                <div class="d-flex justify-content-between gap-2" *ngIf="option.sampleItemId">
+                  <span class="text-secondary">ItemId</span>
+                  <strong class="font-monospace-soft">{{ option.sampleItemId }}</strong>
+                </div>
+                <div class="d-flex justify-content-between gap-2">
+                  <span class="text-secondary">IconId</span>
+                  <strong class="font-monospace-soft">{{ option.iconId }}</strong>
+                </div>
+                <div class="d-flex justify-content-between gap-2" *ngIf="option.nameEs">
+                  <span class="text-secondary">Nombre ES</span>
+                  <span class="small text-end">{{ option.nameEs }}</span>
+                </div>
+                <div class="d-flex justify-content-between gap-2">
+                  <span class="text-secondary">Preview</span>
+                  <span class="fw-semibold small" [ngClass]="previewAvailabilityClass(option)">
+                    {{ previewAvailabilityLabel(option) }}
+                  </span>
+                </div>
+                <div class="d-flex justify-content-between gap-2">
+                  <span class="text-secondary">Fuente</span>
+                  <span class="font-monospace-soft small">{{ previewSourceLabel(option) }}</span>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" type="button" (click)="selectIcon(option)">
+                Seleccionar IconId
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center pt-4">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="goToPage(result.page - 1)"
+          [disabled]="!hasPreviousPage || isLoading">
+          Anterior
+        </button>
+
+        <p class="mb-0 text-secondary small">
+          Fuente actual: <span class="font-monospace-soft">{{ catalogSourceLabel() }}</span>
+        </p>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="goToPage(result.page + 1)"
+          [disabled]="!hasNextPage || isLoading">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

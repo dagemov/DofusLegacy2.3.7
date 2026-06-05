@@ -1,0 +1,108 @@
+<section class="d-grid gap-4">
+  <div class="card admin-card border-0">
+    <div class="card-body d-flex flex-column flex-lg-row justify-content-between gap-3">
+      <div>
+        <p class="text-uppercase small fw-semibold text-secondary mb-1">Client publication / Phase 4</p>
+        <h2 class="h4 mb-2">Backup, recovery y publish lane</h2>
+        <p class="text-secondary mb-0 small">
+          Dashboard read-only. No hay publicación ni restore automático desde el Admin.
+        </p>
+      </div>
+      <div class="d-flex flex-wrap gap-2 align-content-start">
+        <a class="btn btn-outline-secondary btn-sm" routerLink="/admin/items">Items</a>
+        <a
+          class="btn btn-outline-primary btn-sm"
+          [routerLink]="['/admin/items', status?.targetItemId ?? 12617, 'publication-status']">
+          Item {{ status?.targetItemId ?? 12617 }} status
+        </a>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="loadStatus()" [disabled]="isLoading">
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+  <div *ngIf="isLoading" class="card admin-card border-0">
+    <div class="card-body text-secondary">Cargando backup-status...</div>
+  </div>
+
+  <ng-container *ngIf="status && !isLoading">
+    <div class="row g-4">
+      <div class="col-12 col-xl-4">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body d-grid gap-2">
+            <p class="text-uppercase small fw-semibold text-secondary mb-0">Publish lane</p>
+            <span class="badge align-self-start" [class]="laneBadgeClass">{{ status.publishLaneStatus }}</span>
+            <div class="small text-secondary">Target ItemId {{ status.targetItemId }}</div>
+            <div class="small text-break" *ngIf="status.stagingPackagePath">{{ status.stagingPackagePath }}</div>
+            <div class="small">
+              Validación: <strong>{{ status.lastValidationStatus || '—' }}</strong>
+            </div>
+            <div class="alert alert-warning py-2 px-3 mb-0 small" *ngIf="status.productionPublishBlocked">
+              Publicación a producción / cliente real: <strong>bloqueada</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-8">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body d-grid gap-3">
+            <p class="text-uppercase small fw-semibold text-secondary mb-0">Backup status</p>
+            <div class="row g-3 small">
+              <div class="col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="fw-semibold">Client</div>
+                  <div>{{ status.lastClientBackupUtc || 'Sin backup' }}</div>
+                  <div class="text-break text-secondary">{{ status.lastClientBackupPath || '—' }}</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="fw-semibold">Database</div>
+                  <div>{{ status.lastDbBackupUtc || 'Sin backup' }}</div>
+                  <div class="text-break text-secondary">{{ status.lastDbBackupPath || '—' }}</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="rounded-3 status-box">
+                  <div class="fw-semibold">VPS inventory</div>
+                  <div>{{ status.lastVpsInventoryUtc || 'Sin inventario' }}</div>
+                  <div class="text-break text-secondary">{{ status.lastVpsInventoryPath || '—' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 col-xl-6">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body">
+            <p class="text-uppercase small fw-semibold text-secondary mb-2">Recovery readiness</p>
+            <ul class="mb-0 ps-3 d-grid gap-2 small">
+              <li *ngFor="let note of status.recoveryReadinessNotes">{{ note }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-6">
+        <div class="card admin-card border-0 h-100">
+          <div class="card-body">
+            <p class="text-uppercase small fw-semibold text-secondary mb-2">Lane blocking / next steps</p>
+            <ul class="mb-2 ps-3 d-grid gap-1 small" *ngIf="status.publishLaneBlockingReasons.length">
+              <li *ngFor="let reason of status.publishLaneBlockingReasons">{{ reason }}</li>
+            </ul>
+            <ol class="mb-0 ps-3 d-grid gap-1 small">
+              <li *ngFor="let step of status.nextManualSteps">{{ step }}</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>
