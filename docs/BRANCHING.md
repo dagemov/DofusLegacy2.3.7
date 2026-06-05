@@ -18,6 +18,7 @@ Convención acordada para desarrollo en este repositorio.
 |-------|---------|
 | PRs en GitHub | Solo hacia **`develop`** |
 | Merge | **Solo manual** por el equipo — nunca por agente/script |
+| Cerrar PRs | **No** cerrar PRs del pipeline — deben permanecer **abiertas** en `develop` |
 | `develop` | Recreada desde `main` @ `1f998cd` (reset pipeline efectos) |
 | `origin/develop-build` | Eliminada — no pushear |
 | `develop` → `main` | Fuera de alcance hasta acuerdo del equipo |
@@ -30,11 +31,11 @@ Convención acordada para desarrollo en este repositorio.
 | [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 | `feature/effects-catalog-phase2` | `develop` | **abierta** |
 | [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
 | [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 | `feature/effects-validation-phase4` | `develop` | **abierta** |
-| [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | 5 | `feature/effects-integration-phase5` | `develop` | **abierta** |
+| [#19](https://github.com/dagemov/DofusLegacy2.3.7/pull/19) | 5 | `feature/effects-integration-phase5` | `develop` | **abierta** |
 
-PRs históricas #14–#18 y #19–#20: cerradas (algunas mergeadas en el `develop` anterior). El trabajo vive en las PRs #21–#25.
+PRs históricas #14–#18: cerradas/mergeadas en el `develop` anterior. Tras reset, el trabajo vive en **#19, #21–#24** (todas abiertas). PR #25 fue duplicado de #19 y quedó cerrada.
 
-**Orden de merge recomendado (manual):** #21 → #22 → #23 → #24 → #25.
+**Orden de merge recomendado (manual):** #21 → #22 → #23 → #24 → #19.
 
 ## Flujo habitual
 
