@@ -1,13 +1,13 @@
 # Fase 4 — Resultados de validación
 
-Completar tras pruebas en **`develop-build`** (VPS Docker). Estado inicial: **PENDING** en todos los escenarios.
+Completar tras pruebas en VPS **`/opt/dofus-2.0.0-build`** con checkout de **`develop`** (sandbox local: rama `develop-build`). Estado inicial: **PENDING** en todos los escenarios.
 
 ## Entorno de ejecución
 
 | Campo | Valor |
 |-------|--------|
 | Fecha test | *(completar)* |
-| Rama / SHA | `develop-build` @ *(SHA)* |
+| Rama / SHA | `develop` @ *(SHA)* |
 | Tester | *(nombre)* |
 | Cliente | 2.3.7 → `174.138.35.107:2450` / `:5557` |
 | Logs | `/opt/dofus-2.0.0-build/docker/logs/fights/{fightId}.log` |
