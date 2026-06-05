@@ -2,6 +2,16 @@
 
 Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No incluye release a `main` ni deploy prod VPS.
 
+## Política de merge (obligatoria)
+
+| Regla | Detalle |
+|-------|---------|
+| Subir PRs | Sí — visibles en GitHub |
+| Merge automático | **No** — ni por agente ni por script |
+| Quién mergea | Solo el equipo, manualmente, tras revisión |
+
+Si un PR se mergeó por error, abrir un **revert PR** (PR #20) y **no mergear** hasta decisión explícita.
+
 ## 1. Cadena de PRs (solo `develop` en origin)
 
 | Orden | PR | Head | Base | Estado |
@@ -9,8 +19,9 @@ Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No i
 | 1 | #14 | `feature/effects-audit-phase1` | `develop` | mergeado |
 | 2 | #16 | `feature/effects-catalog-phase2` | `develop` | mergeado |
 | 3 | #17 | `feature/effects-engine-fix-phase3` | `develop` | mergeado |
-| 4 | #18 | `feature/effects-validation-phase4` | `develop` | mergeado @ `8750b57` |
-| 5 | #19 | `feature/effects-integration-phase5` | `develop` | pendiente |
+| 4 | #18 | `feature/effects-validation-phase4` | `develop` | mergeado por error @ `8750b57` |
+| 5 | #19 | `feature/effects-integration-phase5` | `develop` | **abierta — no mergear** |
+| 6 | #20 | `revert/pr18-keep-open-only` | `develop` | **abierta — no mergear** (revert opcional) |
 
 **Regla:** ningún PR del pipeline con `base=main` ni `base=develop-build`.
 
