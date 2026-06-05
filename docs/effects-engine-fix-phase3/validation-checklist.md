@@ -7,7 +7,8 @@
 | Rama | `develop-build` |
 | Path VPS | `/opt/dofus-2.0.0-build` |
 | Puertos | 2450 / 5557 |
-| Logger | `FIGHT_COMBAT_LOG_ENABLED=true` |
+| Logger | `FIGHT_COMBAT_LOG_ENABLED=true` en `.env` |
+| Ruta logs VPS | `docker/logs/fights/{fightId}.log` (host) = `/app/logs/fights/` (contenedor) |
 
 ## Por categoría
 

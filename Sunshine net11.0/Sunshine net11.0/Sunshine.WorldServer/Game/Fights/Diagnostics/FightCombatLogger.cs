@@ -107,9 +107,12 @@ namespace Sunshine.WorldServer.Game.Fights.Diagnostics
 
                 var path = FightLogPaths.GetOrAdd(fightId, id =>
                 {
-                    var dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "runtime", "logs", "fights");
-                    Directory.CreateDirectory(dir);
-                    return Path.Combine(dir, id + ".log");
+                    // /app/runtime is read-only in Docker; use /app/logs/fights (writable).
+                    var baseDir = Environment.GetEnvironmentVariable("FIGHT_COMBAT_LOG_DIR");
+                    if (string.IsNullOrWhiteSpace(baseDir))
+                        baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "fights");
+                    Directory.CreateDirectory(baseDir);
+                    return Path.Combine(baseDir, id + ".log");
                 });
 
                 lock (FileLock)
