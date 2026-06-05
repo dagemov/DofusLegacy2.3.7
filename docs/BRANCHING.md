@@ -6,85 +6,79 @@ Convención acordada para desarrollo en este repositorio.
 
 | Rama | Uso |
 |------|-----|
-| `main` | Producción / releases estables (sin PR en pipeline efectos Fase 5) |
-| `develop` | **Integración y desarrollo** — **único destino de PRs** en origin |
-| `feature/*` | Entregable por fase (docs y/o código) → PR a `develop` |
-| **`develop-compile`** | **Solo local** — acumula merges de cada fase; compile gate Docker |
+| `main` | Producción / releases estables |
+| `develop` | **Integración** — destino de PRs `feature/*` (recreada desde `main`) |
+| `feature/*` | Entregable por fase → PR a `develop` |
+| **`develop-compile`** | **Solo local** — compile gate Docker |
 | **`develop-build`** | **Solo local / VPS** — sandbox runtime; **no existe en origin** |
 
-## Política origin (Fase 5)
+## Política origin (2026-06-05)
 
-- En GitHub **solo se envían PRs hacia `develop`**.
-- **`origin/develop-build` eliminada** (2026-05-30). VPS test (`/opt/dofus-2.0.0-build`) hace checkout de **`develop`**.
-- Release `develop` → `main`: acuerdo futuro del equipo, fuera del pipeline efectos Fase 5.
+| Regla | Detalle |
+|-------|---------|
+| PRs en GitHub | Solo hacia **`develop`** |
+| Merge | **Solo manual** por el equipo — nunca por agente/script |
+| `develop` | Recreada desde `main` @ `1f998cd` (reset pipeline efectos) |
+| `origin/develop-build` | Eliminada — no pushear |
+| `develop` → `main` | Fuera de alcance hasta acuerdo del equipo |
+
+## PRs abiertas — pipeline efectos
+
+| PR | Fase | Head | Base | Estado |
+|----|------|------|------|--------|
+| [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | 1 | `feature/effects-audit-phase1` | `develop` | **abierta** |
+| [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | 2 | `feature/effects-catalog-phase2` | `develop` | **abierta** |
+| [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | 3 | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
+| [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | 4 | `feature/effects-validation-phase4` | `develop` | **abierta** |
+| [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | 5 | `feature/effects-integration-phase5` | `develop` | **abierta** |
+
+PRs históricas #14–#18 y #19–#20: cerradas (algunas mergeadas en el `develop` anterior). El trabajo vive en las PRs #21–#25.
+
+**Orden de merge recomendado (manual):** #21 → #22 → #23 → #24 → #25.
 
 ## Flujo habitual
 
-1. Crear o usar `feature/nombre` desde `develop`.
-2. Abrir **PR → `develop`** (no directo a `main`).
-3. Tras revisión, merge en `develop`.
-4. Tests runtime en sandbox local `develop-build` o VPS con código de `develop`.
-5. Cuando el equipo acuerde release: **PR `develop` → `main`** (fuera de alcance Fase 5).
+1. `develop` = línea de integración (hoy igual a `main` hasta merges manuales).
+2. Crear `feature/*` desde `develop`.
+3. Abrir **PR → `develop`** — dejar **abierta** hasta revisión.
+4. Merge **solo** cuando el equipo apruebe (en orden 1→5 para el pipeline efectos).
+5. Tests runtime en sandbox `develop-build` o VPS `/opt/dofus-2.0.0-build`.
 
-## Ramas de referencia
+## Reset de `develop` (ejecutado 2026-06-05)
 
-| Rama | Estado |
-|------|--------|
-| `develop` | Integración (Fases 1–4 mergeadas; PR #14–#18) |
-| `develop-compile` | **Local** — compile gate |
-| `develop-build` | **Local/VPS** — sin rama remota |
-| `feature/effects-audit-phase1` | Fase 1 docs (cerrada, PR #14) |
-| `feature/effects-catalog-phase2` | Fase 2 catálogo (PR #16) |
-| `feature/effects-engine-fix-phase3` | Fase 3 fixes motor (PR #17) |
-| `feature/effects-validation-phase4` | Fase 4 validación (PR #18 mergeado) |
-| `feature/effects-integration-phase5` | Fase 5 integración (PR #19) |
+```powershell
+git push origin --delete develop
+git push origin 1f998cd:refs/heads/develop
+```
 
-## Fase 5 — Integración
+VPS sync:
 
-1. Auditar PRs pipeline: `base=develop`.
-2. Eliminar `origin/develop-build` si existía.
-3. Merge PR #18 (Fase 4) en `develop`.
-4. `feature/effects-integration-phase5` → docs en `docs/effects-integration-phase5/`.
-5. Compile gate en `develop-compile`.
-6. PR → `develop` (fin del flujo en origin).
-7. Regression checklist en VPS test (checkout `develop`).
-
-Ver [effects-integration-phase5/README.md](./effects-integration-phase5/README.md).
-
-## Fase 4 — Validación funcional
-
-1. Merge Fase 3 en `develop` (PR #17).
-2. `develop-compile`: `git merge develop` + `docker compose build sunshine` → compile OK.
-3. `feature/effects-validation-phase4` → docs en `docs/effects-validation-phase4/`.
-4. Tests in-game en VPS `/opt/dofus-2.0.0-build` (checkout **`develop`**); completar `validation-results.md`.
-5. PR → `develop` (PR #18 mergeado).
-
-Ver [effects-validation-phase4/README.md](./effects-validation-phase4/README.md).
+```bash
+cd /opt/dofus-2.0.0-build
+git fetch origin +refs/heads/develop:refs/remotes/origin/develop
+git reset --hard origin/develop
+```
 
 ## Test VPS (sandbox)
 
-1. Backup `sunshine-server` en VPS
-2. `docker stop sunshine-server` (si libera puertos)
-3. En `/opt/dofus-2.0.0-build`: `git checkout develop && git pull origin develop`
-4. `docker compose build sunshine && up -d sunshine`
-5. Validar puertos **2450** / **5557**
-6. Restaurar prod desde `/opt/dofus-2.0.0` si aplica
+1. Backup `sunshine-server` si aplica
+2. Checkout `develop` en `/opt/dofus-2.0.0-build`
+3. `docker compose build sunshine && up -d sunshine`
+4. Puertos **2450** / **5557**
 
-Ver [combat-fix-philosophy.md](./combat-fix-philosophy.md) y [PHASE-DELIVERY-TEMPLATE.md](./PHASE-DELIVERY-TEMPLATE.md).
+**Nota:** Tras el reset, `develop` no incluye fixes Fase 3 hasta merge manual de PR #23.
+
+Ver [effects-integration-phase5/README.md](./effects-integration-phase5/README.md).
 
 ## Comandos rápidos
 
 ```powershell
+git fetch origin
 git checkout develop
-git pull origin develop
+git reset --hard origin/develop
 
 git checkout develop-compile
 git merge develop
 cd docker
 docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine
 ```
-
-## Registros compile / VPS
-
-- [20260605-develop-compile-phase4-dad4332.md](./vps-build-validation/20260605-develop-compile-phase4-dad4332.md)
-- Fase 5: ver `docs/vps-build-validation/` tras compile gate

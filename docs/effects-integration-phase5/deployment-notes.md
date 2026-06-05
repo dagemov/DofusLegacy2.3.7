@@ -10,18 +10,19 @@ Procedimiento para cerrar el pipeline de efectos en **`develop`** (origin). No i
 | Merge automático | **No** — ni por agente ni por script |
 | Quién mergea | Solo el equipo, manualmente, tras revisión |
 
-Si un PR se mergeó por error, abrir un **revert PR** (PR #20) y **no mergear** hasta decisión explícita.
+Si `develop` quedó inconsistente, resetear desde `main` (ver sección 2) y reabrir PRs — **sin mergear** en la operación.
 
-## 1. Cadena de PRs (solo `develop` en origin)
+## 1. PRs abiertas — pipeline efectos (post-reset 2026-06-05)
 
 | Orden | PR | Head | Base | Estado |
 |-------|-----|------|------|--------|
-| 1 | #14 | `feature/effects-audit-phase1` | `develop` | mergeado |
-| 2 | #16 | `feature/effects-catalog-phase2` | `develop` | mergeado |
-| 3 | #17 | `feature/effects-engine-fix-phase3` | `develop` | mergeado |
-| 4 | #18 | `feature/effects-validation-phase4` | `develop` | mergeado por error @ `8750b57` |
-| 5 | #19 | `feature/effects-integration-phase5` | `develop` | **abierta — no mergear** |
-| 6 | #20 | `revert/pr18-keep-open-only` | `develop` | **abierta — no mergear** (revert opcional) |
+| 1 | [#21](https://github.com/dagemov/DofusLegacy2.3.7/pull/21) | `feature/effects-audit-phase1` | `develop` | **abierta** |
+| 2 | [#22](https://github.com/dagemov/DofusLegacy2.3.7/pull/22) | `feature/effects-catalog-phase2` | `develop` | **abierta** |
+| 3 | [#23](https://github.com/dagemov/DofusLegacy2.3.7/pull/23) | `feature/effects-engine-fix-phase3` | `develop` | **abierta** |
+| 4 | [#24](https://github.com/dagemov/DofusLegacy2.3.7/pull/24) | `feature/effects-validation-phase4` | `develop` | **abierta** |
+| 5 | [#25](https://github.com/dagemov/DofusLegacy2.3.7/pull/25) | `feature/effects-integration-phase5` | `develop` | **abierta** |
+
+PRs #19/#20 cerradas sin merge. PRs #14–#18: historial del `develop` anterior.
 
 **Regla:** ningún PR del pipeline con `base=main` ni `base=develop-build`.
 
@@ -35,7 +36,25 @@ Invoke-RestMethod -Uri "https://api.github.com/repos/dagemov/DofusLegacy2.3.7/pu
   ForEach-Object { "$($_.number) base=$($_.base.ref) head=$($_.head.ref)" }
 ```
 
-## 2. Higiene origin — eliminar `develop-build`
+## 2. Reset de `develop` desde `main` (ejecutado)
+
+```powershell
+git push origin --delete develop
+git push origin 1f998cd:refs/heads/develop
+git ls-remote --heads origin develop main   # mismo SHA
+```
+
+VPS:
+
+```bash
+cd /opt/dofus-2.0.0-build
+git fetch origin +refs/heads/develop:refs/remotes/origin/develop
+git reset --hard origin/develop
+```
+
+**Efecto:** `develop` === `main`. Fixes Fase 3 no están en `develop` hasta merge manual PR #23.
+
+## 3. Higiene origin — `develop-build` eliminada
 
 La rama remota `develop-build` no forma parte del flujo. Procedimiento ejecutado:
 
@@ -58,7 +77,7 @@ git checkout develop
 git pull origin develop
 ```
 
-## 3. Compile gate (obligatorio antes de merge PR #19)
+## 4. Compile gate (tras merge manual PR #23)
 
 ```powershell
 git checkout develop-compile
@@ -75,7 +94,7 @@ docker compose -f docker-compose.yml -f docker-compose.vps.yml build sunshine
 
 Registrar en `docs/vps-build-validation/YYYYMMDD-develop-compile-phase5-{sha}.md`.
 
-## 4. Runtime gate (VPS test — no prod)
+## 5. Runtime gate (VPS test — no prod)
 
 Path: `/opt/dofus-2.0.0-build`  
 Rama: **`develop`** (no `develop-build` en origin)
@@ -102,14 +121,14 @@ Rama: **`develop`** (no `develop-build` en origin)
 
 Ver [regression-checklist.md](./regression-checklist.md).
 
-## 5. Variables de entorno
+## 6. Variables de entorno
 
 | Entorno | `FIGHT_COMBAT_LOG_ENABLED` | Logs combate |
 |---------|---------------------------|--------------|
 | VPS test (`develop`) | `true` | `docker/logs/fights/{fightId}.log` |
 | Prod futuro (`/opt/dofus-2.0.0`) | `false` (recomendado) | deshabilitado |
 
-## 6. Contenido integrado en `develop`
+## 7. Contenido pendiente de integrar (vía PRs #21–#25)
 
 ### Código (Fase 3)
 
@@ -126,7 +145,7 @@ Ver [regression-checklist.md](./regression-checklist.md).
 - `docs/effects-audit-phase1/` … `docs/effects-integration-phase5/`
 - `docs/vps-build-validation/`
 
-## 7. Rollback (referencia — prod futuro)
+## 8. Rollback (referencia — prod futuro)
 
 No ejecutar en Fase 5. Para deploy futuro en `/opt/dofus-2.0.0`:
 
@@ -137,7 +156,7 @@ No ejecutar en Fase 5. Para deploy futuro en `/opt/dofus-2.0.0`:
 
 Patrón: [20260605-develop-build-4d12fde.md](../vps-build-validation/20260605-develop-build-4d12fde.md).
 
-## 8. Fuera de alcance Fase 5
+## 9. Fuera de alcance
 
 - PR `develop` → `main`
 - `docker compose up` en `/opt/dofus-2.0.0` (prod)
