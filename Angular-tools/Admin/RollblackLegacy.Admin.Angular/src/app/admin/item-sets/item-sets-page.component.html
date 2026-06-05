@@ -1,0 +1,45 @@
+<section class="d-grid gap-4">
+  <div class="card admin-card border-0">
+    <div class="card-body d-flex flex-column flex-lg-row gap-3 justify-content-between">
+      <div>
+        <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
+        <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Sets</p>
+        <h2 class="h4 mb-2">Sets de equipo</h2>
+        <p class="text-secondary mb-0">Lista de sets con items vinculados y bonos por piezas equipadas.</p>
+      </div>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <div *ngIf="isLoading" class="text-secondary small">Cargando sets...</div>
+      <div *ngIf="!isLoading && sets.length === 0" class="alert alert-light border mb-0">No hay sets en la base de datos.</div>
+      <div class="table-responsive" *ngIf="sets.length > 0">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr>
+              <th>SetId</th>
+              <th>Nombre</th>
+              <th>Items</th>
+              <th>Bonos</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let set of sets">
+              <td class="font-monospace-soft">{{ set.setId }}</td>
+              <td>{{ set.name }}</td>
+              <td>{{ set.itemCount }}</td>
+              <td>{{ set.bonusTierCount }}</td>
+              <td>
+                <a class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/item-sets', set.setId]">Ver detalle</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

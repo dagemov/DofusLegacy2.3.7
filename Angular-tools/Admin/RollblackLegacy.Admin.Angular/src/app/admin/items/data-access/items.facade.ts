@@ -22,7 +22,9 @@ import {
   AdminEffectOptionDto,
   ItemEffectsEditDto,
   ItemEffectsUpdateRequest,
-  ItemEffectsUpdateResultDto
+  ItemEffectsUpdateResultDto,
+  ItemSetDetailDto,
+  ItemSetListItemDto
 } from './items.models';
 import { ClientIdentityApi } from './client-identity.api';
 import { ClientItemIdentityCheckResultDto } from './client-identity.models';
@@ -59,6 +61,14 @@ export class ItemsFacade {
 
   getItemIconCategoryStats(): Observable<ItemIconCategoryStatsDto> {
     return this.itemsApi.getItemIconCategoryStats();
+  }
+
+  getItemSets(): Observable<ItemSetListItemDto[]> {
+    return this.itemsApi.getItemSets();
+  }
+
+  getItemSet(setId: number): Observable<ItemSetDetailDto> {
+    return this.itemsApi.getItemSet(setId);
   }
 
   getItem(itemId: number): Observable<ItemDetailDto> {

@@ -23,7 +23,9 @@ import {
   AdminEffectOptionDto,
   ItemEffectsEditDto,
   ItemEffectsUpdateRequest,
-  ItemEffectsUpdateResultDto
+  ItemEffectsUpdateResultDto,
+  ItemSetDetailDto,
+  ItemSetListItemDto
 } from './items.models';
 import { toItemIconQueryParams, toItemQueryParams } from './items.queries';
 
@@ -88,6 +90,14 @@ export class ItemsApi {
 
   getItemSetOptions(): Observable<AdminOptionDto[]> {
     return this.httpClient.get<AdminOptionDto[]>(`${this.baseUrl}/item-sets/options`);
+  }
+
+  getItemSets(): Observable<ItemSetListItemDto[]> {
+    return this.httpClient.get<ItemSetListItemDto[]>(`${this.baseUrl}/item-sets`);
+  }
+
+  getItemSet(setId: number): Observable<ItemSetDetailDto> {
+    return this.httpClient.get<ItemSetDetailDto>(`${this.baseUrl}/item-sets/${setId}`);
   }
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {

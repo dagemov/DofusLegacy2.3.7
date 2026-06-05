@@ -18,6 +18,7 @@ public static class AdminApplicationServiceCollectionExtensions
         services.AddScoped<IItemEffectsAdminService, ItemEffectsAdminService>();
         services.AddScoped<IItemPublicationManifestService, ItemPublicationManifestService>();
         services.AddScoped<ISpellsAdminReadService, SpellsAdminReadService>();
+        services.AddScoped<IItemSetsAdminReadService, ItemSetsAdminReadService>();
 
         return services;
     }

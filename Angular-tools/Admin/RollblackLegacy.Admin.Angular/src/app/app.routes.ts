@@ -19,6 +19,16 @@ export const routes: Routes = [
       import('./admin/items/items-page.component').then((m) => m.ItemsPageComponent)
   },
   {
+    path: 'admin/item-sets',
+    loadComponent: () =>
+      import('./admin/item-sets/item-sets-page.component').then((m) => m.ItemSetsPageComponent)
+  },
+  {
+    path: 'admin/item-sets/:setId',
+    loadComponent: () =>
+      import('./admin/item-sets/item-set-detail-page.component').then((m) => m.ItemSetDetailPageComponent)
+  },
+  {
     path: 'admin/items/icon-selector',
     loadComponent: () =>
       import('./admin/items/item-icon-selector.component').then(
