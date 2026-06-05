@@ -40,7 +40,7 @@ flowchart LR
 |----------|--------|
 | Env | `FIGHT_COMBAT_LOG_ENABLED=true` |
 | Config | `FightCombatLogEnabled=true` en `Config.xml` |
-| Salida | `{BaseDirectory}/runtime/logs/fights/{fightId}.log` |
+| Salida | `/app/logs/fights/{fightId}.log` (host: `docker/logs/fights/`) |
 
 Eventos: `CAST`, `DISPATCH`, `TRIGGER`, `DAMAGE`, `KILL`, `SUMMON_DIE`, `SOCKET`.
 
