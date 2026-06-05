@@ -31,7 +31,9 @@
 | Runtime boot | **OK** — READY en 38.75 s |
 | EffectsLoader | **162** efectos cargados |
 | Puertos 2450/5557 | **OK** |
-| FightCombatLogger | Código desplegado; activar `FIGHT_COMBAT_LOG_ENABLED=true` en compose/env para logs |
+| FightCombatLogger | **OK** — `FIGHT_COMBAT_LOG_ENABLED=true` en contenedor; ruta `docker/logs/fights/` escribible |
+| Logs combate previo | **No** — test anterior a fix (runtime `:ro` + env sobrescrito a `false`) |
+| Logs combate post-fix | **Pendiente** — 1 pelea corta tras `50e3093` para generar `{fightId}.log` |
 | Cliente in-game | **Pendiente** — checklist humano en `validation-checklist.md` |
 | Restauración prod | **Pendiente** — develop-build activo para test |
 
