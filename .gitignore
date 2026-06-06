@@ -110,6 +110,13 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 .artifacts/
+# Combat Health Lab — scripts committed; runtime data gitignored
+!infrastructure/artifacts/
+!infrastructure/artifacts/combat-health/
+!infrastructure/artifacts/combat-health/**
+infrastructure/artifacts/combat-health/db-snapshots/
+infrastructure/artifacts/combat-health/logs/
+infrastructure/artifacts/combat-health/local-client/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt

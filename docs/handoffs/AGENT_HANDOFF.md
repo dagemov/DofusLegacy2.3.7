@@ -1,71 +1,65 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-05`
+Generated: `2026-06-02`
 
-## Gate final — Items Builder
+## Sprint puente — Items/Sets visibility + VPS Combat Telemetry
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/items-preview-sets-polish-final` |
-| PR target | `devp` |
-| **Items Builder** | **`COMPLETE`** |
-| **Spell Builder** | **`NEXT, not started`** |
+| Rama | **`feature/items-sets-visibility-and-vps-combat-telemetry`** (base: `devp`) |
+| Bloque A — Items/Sets | Sets CRUD cherry-picked; Jalato diagnóstico **OPERATOR_QUERY** |
+| Bloque B — VPS telemetry | Scripts enable/disable/collect + `CombatTelemetry` cherry-picked |
+| Publish real Jalato | **`READY_FOR_OPERATOR_PUBLISH`** |
+| Combat Phase 3 | **BLOQUEADA** — gate logs reales abierto |
 
-### Validación gate (2026-06-05)
+### Commits cherry-picked (sets)
 
-| Check | Resultado |
-| --- | --- |
-| Lock API limpiado | OK (`Stop-Process RollblackLegacy.Admin.Api`, `dotnet build-server shutdown`) |
-| `dotnet build` Admin.Api | OK |
-| `npm run build` | OK (warning budget +1.13 kB) |
-| `dotnet build` Sunshine.sln | OK (5 warnings, 0 errors) |
-| Git hygiene | OK — sin commit de `Client2.3.7/`, `OneLauncher/`, `config/`, `temporal-artifacts/` |
-| Spell Builder en rama PR | **Revertido** — commits `e5f0964` y `9031339` excluidos del scope Items |
+- `dd21dff` — paginación sets
+- `b9c1cce` — CRUD API sets
+- `da758a3` — editor UI sets
+- `89a7a76` — create item con effects
+- `ce71d56` — validación ItemSets.d2o en package
 
-### Browser QA
+### Siguiente acción operador
 
-| Estado | Notas |
-| --- | --- |
-| `PENDING_OPERATOR` | Rutas mínimas documentadas; builds OK como precondición |
+**Items Jalato:**
 
-Rutas:
+1. Completar [jalato-infernal-visibility-diagnostic.md](../admin-tools/items-builder/items-final/jalato-infernal-visibility-diagnostic.md) con ItemIds reales (Admin search o SQL).
+2. `stage-item-publication` + `validate-publication-package` por item.
+3. `CONFIRM_BACKUP=1` + `CONFIRM_PUBLISH=1` + `validate-real-client` si aprueba publish.
 
-```txt
-/admin/items/new
-/admin/items/12616/edit
-/admin/items/icon-selector
-/admin/item-sets
-/admin/item-sets/:setId
-/admin/publication
+**VPS telemetry:**
+
+```powershell
+.\infrastructure\artifacts\combat-health\enable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem" -DryRun
+$env:CONFIRM_RESTART='1'
+.\infrastructure\artifacts\combat-health\enable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
+# 30-50 combates
+.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem"
+.\infrastructure\artifacts\combat-health\analyze-combat-telemetry.ps1
 ```
 
-Confirmar: stats icons, preview BY_CATEGORY, sets con preview, bonos por piezas, sin errores consola críticos.
+### Prohibiciones activas
 
-### Entregables Items (rama)
+```txt
+no ReadyChecker / fixes combate
+no publish/restart VPS sin CONFIRM_*
+no commitear logs/backups/secrets
+```
 
-- Preview reconciliation (`BY_CATEGORY`)
-- Sets read UI + bonos por piezas
-- Stat icons fix (`src/assets` en `angular.json`)
-- Docs: preview reconciliation, stat icons, sets builder
+---
 
-### Merge flow
+## Gate Items Builder (histórico)
 
-1. PR `feature/items-preview-sets-polish-final` → `devp` (creado en gate)
-2. Tras aprobación: merge a `devp`
-3. Luego `devp` → `main` (no borrar ramas hasta main estable)
-
-### Siguiente
-
-- Abrir **Spell Builder** en rama dedicada **después** de merge Items a `devp`/`main`
-- Cherry-pick o re-aplicar trabajo Spell (`e5f0964`, `9031339`) en rama `feature/spell-builder-*` separada
-
-### Prohibiciones
-
-- No publicar cliente real, no VPS, no temporal-artifacts en git
+| Campo | Valor |
+| --- | --- |
+| Items Builder | **COMPLETE** (browser QA parcial) |
+| Spell Builder | **NEXT** — rama separada |
 
 ## Repo
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/items-preview-sets-polish-final
+feature/items-sets-visibility-and-vps-combat-telemetry
 ```
