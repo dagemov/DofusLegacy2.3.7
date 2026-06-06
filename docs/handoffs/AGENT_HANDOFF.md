@@ -1,13 +1,13 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-04`
+Generated: `2026-06-06`
 
 ## Macro 5 / Phase 3 - Spell Detail API
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/item-preview-category-expansion-phase6d` |
-| Base | `feature/item-preview-massive-extraction-phase6c` |
+| Rama | `feature/spell-builder-api-migration` |
+| Base | puntero preservado en `9031339` |
 | Estado | **`DONE`** |
 
 ### Entregables
@@ -30,6 +30,22 @@ Generated: `2026-06-04`
 
 - Macro 5 / Phase 4: Spell Levels API
 - Alcance esperado: contratos de nivel mas ricos, orden/consistencia de niveles y lectura dedicada sin write API
+
+## Macro 5 / Preparacion segura antes de Phase 4
+
+| Campo | Valor |
+| --- | --- |
+| Rama activa | `feature/spell-builder-api-migration` |
+| HEAD | `9031339 feat: add spell detail api` |
+| Worktree | `CLEAN` |
+| Stash de resguardo | `stash@{Sat Jun 6 08:54:24 2026}: On feature/items-sets-production-acceptance-test: wip: preserve items sets work before spell builder phase4` |
+| Estado | **`READY_TO_START`** |
+
+### Notas
+
+- Los cambios locales de Items/Sets y auxiliares quedaron preservados en stash antes del cambio de rama.
+- No se toco codigo funcional de API, Angular, base de datos, cliente ni Items/Sets durante esta preparacion.
+- Macro 5 / Phase 4 queda lista para iniciar, pero todavia no fue iniciada en esta sesion.
 
 ## Macro Items Final Plus - Preview + Sets + Stat icons
 
@@ -85,7 +101,7 @@ docs: record items preview and sets polish
 
 - PR desde `feature/items-preview-sets-polish-final` hacia base de migracion acordada
 - Browser QA operador
-- **Spell Builder** solo tras merge + aprobacion explicita
+- Spell Builder ya fue aislado en `feature/spell-builder-api-migration`; Phase 4 puede iniciarse desde esa rama cuando corresponda.
 
 ### Prohibiciones
 
@@ -95,7 +111,7 @@ docs: record items preview and sets polish
 
 ```txt
 C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/items-preview-sets-polish-final
+feature/spell-builder-api-migration
 ```
 
 ## Macro 4 / Phase 6D (referencia)
