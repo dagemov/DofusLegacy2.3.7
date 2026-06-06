@@ -1,7 +1,7 @@
 # Gate — telemetría real antes de Phase 3
 
-**Actualizado:** 2026-06-06 (post-deploy VPS)  
-**Estado:** **ABIERTO** — infra lista; falta combate in-game
+**Actualizado:** 2026-06-06 (combates en curso)  
+**Estado:** **ABIERTO** — infra OK, login OK, **captura en progreso**
 
 ## Deploy VPS (2026-06-06)
 
@@ -9,44 +9,59 @@
 | --- | --- |
 | Deploy sunshine con telemetría | **SÍ** |
 | `sunshine-server` running | **SÍ** |
+| Cliente conecta | **SÍ** (confirmado operador) |
 | Telemetría enabled en `.env` + Config.xml | **SÍ** |
-| JSONL generados | **NO** (sin combates aún) |
+| Combates reales en curso | **SÍ** (operador) |
+| JSONL recolectados localmente | **NO** — pendiente `collect` post-sesión |
 
-Ver detalle: [combat-vps-telemetry-deploy-gate.md](./combat-vps-telemetry-deploy-gate.md)
+Ver: [combat-vps-telemetry-deploy-gate.md](./combat-vps-telemetry-deploy-gate.md)
 
-## Combates probados
+## Combates
 
-| Escenario | Cantidad | JSONL |
-| --- | ---: | --- |
-| Smoke 1 PvM | 0 | — |
-| Sesión 30–50 | 0 | — |
+| Escenario | Estado |
+| --- | --- |
+| Smoke / sesión operador | **EN CURSO** — no interrumpir |
+| JSONL en VPS `/app/logs/combat/` | Esperado durante combates |
+| Análisis local | **PENDIENTE** tras `collect-vps-combat-logs.ps1 -RunAnalyzer` |
 
 ## Preguntas del gate
 
 | # | Pregunta | Estado |
 | --- | --- | --- |
-| 1 | Fin IA | Sin datos |
-| 2 | EndTurn | Sin datos |
-| 3 | NextTurn | Sin datos |
-| 4 | Hand-off vs animaciones | Hipótesis sin confirmar |
-| 5 | TimerElapsed ~35s | Sin datos |
-| 6 | GameFightTurnReadyMessage | Sin datos |
+| 1 | Fin IA (`AiFinished`) | Pendiente análisis |
+| 2 | EndTurn | Pendiente análisis |
+| 3 | NextTurn | Pendiente análisis |
+| 4 | Hand-off vs animaciones | Pendiente análisis |
+| 5 | TimerElapsed ~35s | Pendiente análisis |
+| 6 | GameFightTurnReadyMessage | Pendiente análisis |
+| 7 | Spells / effects fallidos | Pendiente análisis |
 
 ## Hipótesis Phase 1
 
-**Ni confirmada ni descartada** — auditoría código vigente; VPS ahora puede emitir logs.
+**Ni confirmada ni descartada** — requiere JSONL reales de la sesión actual.
 
 ## Decisión
 
 ```txt
 Phase 3 (ReadyChecker): BLOQUEADA
-Próximo paso: operador — smoke + 30–50 combates en VPS beta
+Próximo paso: collect + analyzer cuando operador termine combates
 ```
 
-## Cierre gate (checklist operador)
+### Ramas según evidencia (post-análisis)
 
-- [ ] Smoke genera `combat-turn-flow-*.jsonl`
+| Resultado | Acción |
+| --- | --- |
+| Hand-off roto | `feature/combat-readychecker-phase3` |
+| Logs ambiguos | `feature/combat-telemetry-phase2b` |
+| Sin reproducción | Phase 3 bloqueada — documentar |
+
+## Cierre gate (checklist)
+
+- [x] VPS funcional + telemetría ON
+- [x] Cliente conecta
+- [ ] Operador termina combates
 - [ ] `collect-vps-combat-logs.ps1 -RunAnalyzer` → `report.html`
-- [ ] `disable-vps-combat-telemetry.ps1` ejecutado
+- [ ] `combat-vps-telemetry-analysis-YYYYMMDD.md` creado
+- [ ] `disable-vps-combat-telemetry.ps1` tras collect
+- [ ] Decisión Phase 3 / 2B con evidencia
 - [ ] Hallazgos documentados aquí
-- [ ] Decisión Phase 3 con evidencia

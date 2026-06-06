@@ -1,50 +1,120 @@
-# Agent Handoff
+# Agent Handoff — Combat Sanitization / VPS Telemetry Active
 
-Generated: `2026-06-06`
+Generated: `2026-06-06`  
+Rama: **`feature/items-sets-visibility-and-vps-combat-telemetry`**
 
-## Estado VPS — login desbloqueado (pendiente confirmación operador)
+## Estado VPS (actual)
+
+```txt
+sunshine-server UP
+servidor funcional
+cliente conecta — CONFIRMADO por operador
+telemetría ON
+operador realizando combates reales AHORA
+```
 
 | Campo | Valor |
 | --- | --- |
-| Rama | **`feature/items-sets-visibility-and-vps-combat-telemetry`** |
-| Incidente 1 | Crash Items ObjectEffect → `Effects='0000'` items 12618–12622 |
-| Incidente 2 | Cliente `2450` vs VPS `446/3467` + `WORLD_PUBLIC_HOST=127.0.0.1` |
-| Fix puertos | `.env`: `2450`/`5557`/`174.138.35.107` + `compose up -d sunshine` |
-| Telemetría | **ON** |
-| DB | Intacta (`worlds.Id=18` = `174.138.35.107:5557`) |
+| VPS | `174.138.35.107` |
+| Auth / World | `2450` / `5557` |
+| `WORLD_PUBLIC_HOST` | `174.138.35.107` |
+| `worlds.Id=18` | `174.138.35.107:5557` |
+| Telemetría path | `/app/logs/combat/` |
+| SSH key | `SSH/private_key_sebas.pem` (no `.ppk`) |
+| Phase 3 ReadyChecker | **BLOQUEADA** — esperar análisis de logs |
 
-### Validación automática (2026-06-06, post-fix puertos)
+## Incidentes cerrados (2026-06-06)
 
-```txt
-sunshine-server Up — READY 100%
-Puertos: 0.0.0.0:2450, 0.0.0.0:5557
-Config.xml: AuthIp/WorldIp=174.138.35.107
-Logs: announced as 174.138.35.107:2450 / :5557
-Test-NetConnection 2450, 5557 → True (Windows)
-FIGHT_TELEMETRY_ENABLED=true
-```
+### 1 — Items ObjectEffect → crash boot
 
-### Operador — siguiente (orden estricto)
+Items `12618–12622`: `UPDATE items SET Effects=0x30303030`.  
+Doc: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
 
-1. **Login cliente** con `config.xml` existente (`174.138.35.107:2450`) — no cambiar puerto.
-2. Si OK → 1 combate smoke → `collect-vps-combat-logs.ps1 -RunAnalyzer`.
-3. Re-aplicar effects Jalato cuando exista fix codec Admin↔runtime.
-4. Phase 3 ReadyChecker **BLOQUEADA** hasta JSONL real.
+### 2 — Puertos/hosts legacy
 
-### Scripts
+`.env` corregido a `2450`/`5557`/`174.138.35.107`. Commit `a1b6c3e`.  
+Doc: [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
+
+## Acción inmediata — cuando terminen los combates
+
+**NO apagar telemetría antes de recolectar.**
+
+### Paso 1 — Recolectar y analizar
 
 ```powershell
-# Re-aplicar fix puertos si .env se corrompe de nuevo:
-.\infrastructure\artifacts\combat-health\fix-vps-client-ports.ps1 -SshKey "SSH\private_key_sebas.pem"
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
+start Infrastructure\temporal-artifacts\combat-telemetry\report.html
 ```
 
-### Docs
+Revisar:
 
-- [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
-- [vps-client-connection-after-ready-incident.md](../combat-sanitization/vps-client-connection-after-ready-incident.md)
-- [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
+```txt
+Infrastructure/temporal-artifacts/combat-telemetry/report.md
+Infrastructure/temporal-artifacts/combat-telemetry/report.json
+```
 
-### Deuda técnica
+Crear tras análisis: `docs/combat-sanitization/combat-vps-telemetry-analysis-YYYYMMDD.md`
 
-- Codec `items.Effects` Admin vs `ItemsLoader` legacy.
-- Evitar puertos legacy `446`/`3467` en `.env` VPS tras deploys parciales.
+### Paso 2 — Apagar telemetría (después de collect)
+
+```powershell
+$env:CONFIRM_RESTART="1"
+.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
+```
+
+### Preguntas que el análisis debe responder
+
+```txt
+1. ¿Hay combat-turn-flow-*.jsonl reales?
+2. ¿Hay spell-casts-*.jsonl reales?
+3. ¿Cuántos combates capturados?
+4. ¿Hay TimerElapsed ~35000ms?
+5. ¿Llega GameFightTurnReadyMessage?
+6. ¿Cuánto tarda AiStarted -> AiFinished?
+7. ¿Cuánto tarda AiFinished -> NextTurnStarted?
+8. ¿Turno humano antes de fin animación enemiga?
+9. ¿Spells fallidos?
+10. ¿Effects fallidos?
+```
+
+## Decisión Phase 3 (tras logs)
+
+| Evidencia | Rama / acción |
+| --- | --- |
+| Hand-off roto confirmado | `feature/combat-readychecker-phase3` — portar ReadyChecker / TryAdvanceTurn desde `RollBlackServer\2.0.0\Rollback` |
+| Logs ambiguos | `feature/combat-telemetry-phase2b` — más telemetría spell/AI/timers |
+| Sin reproducción | Documentar *Phase 3 bloqueada por falta de reproducción* |
+
+## Prohibido ahora
+
+```txt
+no tocar lógica de turnos sin analizar logs
+no ReadyChecker / IA / spells / summons fixes
+no items/admin changes
+no reiniciar VPS en bucle
+no docker compose down -v
+no commitear logs pesados
+```
+
+## Scripts
+
+```txt
+infrastructure/artifacts/combat-health/enable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/disable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/collect-vps-combat-logs.ps1
+infrastructure/artifacts/combat-health/analyze-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/fix-vps-client-ports.ps1
+```
+
+## Cierre del gate (pendiente)
+
+- [ ] Logs reales descargados del VPS
+- [ ] Analyzer → `report.md` / `report.html`
+- [ ] Decisión Phase 3 vs 2B con evidencia
+- [ ] Telemetría apagada al final (o documentar si sigue ON)
+- [ ] Handoff actualizado
+
+## Docs gate
+
+- [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md)
+- [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)

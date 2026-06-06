@@ -104,7 +104,8 @@ Script repo:
 | `Test-NetConnection` 5557 | **True** |
 | `worlds.Id=18` | `174.138.35.107:5557` |
 | Telemetría | **ON** (`FIGHT_TELEMETRY_ENABLED=true`) |
-| Login cliente | **PENDING_OPERATOR** |
+| Login cliente | **OK** (confirmado operador 2026-06-06) |
+| Combates + telemetría | **EN CURSO** — collect pendiente post-sesión |
 
 ## Prevención
 

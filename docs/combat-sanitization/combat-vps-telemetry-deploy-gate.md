@@ -2,7 +2,7 @@
 
 **Rama:** `feature/items-sets-visibility-and-vps-combat-telemetry`  
 **Fecha:** 2026-06-06  
-**Estado gate:** **PARCIAL** — deploy + telemetría OK; incidente conexión **RESUELTO** (2026-06-06); smoke JSONL **PENDING_OPERATOR**
+**Estado gate:** **PARCIAL** — deploy + telemetría OK; login OK; **combates reales en curso**; collect/análisis **PENDING_POST_COMBAT**
 
 ## Resumen ejecutivo
 
@@ -12,8 +12,9 @@
 | `sunshine-server` con `CombatTelemetry` | **OK** (rebuild 2026-06-06) |
 | enable/disable scripts | **OK** |
 | Variables telemetría activas | **OK** |
-| Smoke combate → JSONL | **PENDING_OPERATOR** |
-| 30–50 combates | **NO INICIADO** |
+| Cliente conecta | **OK** (confirmado operador 2026-06-06) |
+| Combates reales → JSONL | **EN CURSO** (operador) |
+| Collect + analyzer local | **PENDING_POST_COMBAT** |
 | Phase 3 ReadyChecker | **BLOQUEADA** |
 
 ## Paso 1 — Preflight local
@@ -64,15 +65,15 @@ CombatTelemetryWriteTurnFlow=true
 CombatTelemetryWriteSpellCasts=true
 ```
 
-Directorio en contenedor: `/app/logs/combat/` (creado; vacío hasta combates).
+Directorio en contenedor: `/app/logs/combat/` — **telemetría activa durante combates del operador**.
 
 > Nota: la guía menciona `/var/log/sunshine/combat`; en Docker el path efectivo es **`/app/logs/combat`**.
 
-## Paso 5 — Smoke combate
+## Paso 5 — Captura combate (en curso)
 
-**No ejecutado por agente** (requiere cliente + operador).
+**Operador conectado y realizando combates** (2026-06-06). No apagar telemetría hasta recolectar.
 
-Tras 1 combate PvM, validar:
+Tras terminar sesión, validar en VPS o tras collect:
 
 ```txt
 /app/logs/combat/combat-turn-flow-*.jsonl
@@ -86,9 +87,12 @@ Recolectar:
 start Infrastructure\temporal-artifacts\combat-telemetry\report.html
 ```
 
-## Paso 6–7 — Sesión 30–50 combates
+## Paso 6–7 — Post-sesión
 
-**Bloqueado** hasta smoke OK.
+1. `collect-vps-combat-logs.ps1 -RunAnalyzer`
+2. `combat-vps-telemetry-analysis-YYYYMMDD.md`
+3. `disable-vps-combat-telemetry.ps1` con `CONFIRM_RESTART=1`
+4. Decisión Phase 3 vs 2B en [combat-real-telemetry-gate.md](./combat-real-telemetry-gate.md)
 
 ## Correcciones de scripts (sesión)
 
@@ -115,10 +119,12 @@ Tras rebuild, `sunshine-server` entró en crash loop (**exit 139**) al cargar It
 
 Detalle: [vps-telemetry-deploy-connection-incident.md](./vps-telemetry-deploy-connection-incident.md).
 
-## Post-sesión operador
+## Post-sesión operador (orden estricto)
 
-1. Confirmar login cliente (`174.138.35.107:2450` / world `5557`) — ver [vps-client-port-host-diagnostic.md](./vps-client-port-host-diagnostic.md).
-2. 1 combate smoke → verificar `.jsonl`.
-3. Si OK → matriz [combat-vps-test-matrix.md](./combat-vps-test-matrix.md).
-4. `disable-vps-combat-telemetry.ps1` al terminar.
-5. Collect + analyzer + cerrar gate.
+1. ~~Login cliente~~ **OK** — `174.138.35.107:2450` / world `5557`.
+2. Terminar combates (en curso).
+3. **Collect primero** — `collect-vps-combat-logs.ps1 -RunAnalyzer` → `report.html`.
+4. **Luego** `disable-vps-combat-telemetry.ps1` (`CONFIRM_RESTART=1`).
+5. Documentar análisis + cerrar gate.
+
+Incidentes resueltos: [vps-telemetry-deploy-connection-incident.md](./vps-telemetry-deploy-connection-incident.md), [vps-client-port-host-diagnostic.md](./vps-client-port-host-diagnostic.md).
