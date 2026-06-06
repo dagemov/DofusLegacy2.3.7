@@ -12,6 +12,7 @@ Documentación de combate del emulador Sunshine.
 | [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md) | **Phase 2 — telemetría JSONL implementada** |
 | [combat-log-schema.md](../combat-sanitization/combat-log-schema.md) | Esquema JSONL turn flow + spell casts |
 | [combat-phase2-test-plan.md](../combat-sanitization/combat-phase2-test-plan.md) | Plan de prueba Phase 2 |
+| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | **Gate Phase 3** — captura real obligatoria |
 | [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md) | Lab local temporal |
 
 ## Lab operativo
@@ -29,7 +30,8 @@ Analizador: `Infrastructure/scripts/CombatTelemetryAnalyzer/`
 | Fase | Estado |
 | --- | --- |
 | 1 — Auditoría | **DONE** |
-| 2 — Fight Telemetry baseline | **DONE** (código + analyzer; QA in-game pendiente) |
-| 3 — Turn Transition Fix | Pendiente evidencia + logs reales |
+| 2 — Fight Telemetry baseline | **DONE** (código + analyzer) |
+| 2.5 — Gate telemetría real | **ABIERTO** — sin combates PvM capturados |
+| 3 — Turn Transition Fix | **BLOQUEADA** hasta cerrar gate con logs reales |
 | 4 — Spell cast deep dive | Parcial (telemetría spell en Phase 2) |
 | 5 — Summons / Boss | Pendiente |

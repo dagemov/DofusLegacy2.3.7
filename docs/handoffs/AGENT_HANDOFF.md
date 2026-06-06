@@ -2,14 +2,14 @@
 
 Generated: `2026-06-02`
 
-## Macro Combat Sanitization — Phase 2 Telemetry
+## Macro Combat Sanitization — Gate Phase 3
 
 | Campo | Valor |
 | --- | --- |
-| Rama | **`feature/combat-telemetry-phase2`** (base: `feature/combat-sanitization-phase1-audit`) |
-| Estado | **Phase 2 DONE** — telemetría JSONL + analyzer migrado |
-| Fixes código | **NINGUNO** en turnos/IA/spells — solo observación |
-| QA in-game | **`PENDING_OPERATOR`** |
+| Rama | **`feature/combat-telemetry-phase2`** |
+| Phase 2 | **DONE** (`b59a97c`, `232447b`, `09196c3`) |
+| Gate telemetría real | **ABIERTO** — sin logs PvM en `Infrastructure/logs/combat/` |
+| Phase 3 ReadyChecker | **BLOQUEADA** — hipótesis sin confirmar en combate real |
 | Referencia | `C:\Users\Hombr\source\repos\RollBlackServer\2.0.0\Rollback` |
 
 ### Entregables Phase 2
@@ -20,26 +20,28 @@ Generated: `2026-06-02`
 - Analyzer: `Infrastructure/scripts/CombatTelemetryAnalyzer/` (JSONL + legacy `.log`)
 - Lab scripts actualizados → salida `Infrastructure/temporal-artifacts/combat-telemetry/report.md`
 
-### Validación automática
+### Validación gate (esta sesión)
 
 | Check | Resultado |
 | --- | --- |
-| `dotnet build Sunshine.sln` | OK |
-| Analyzer + JSONL sintético | OK |
+| `dotnet build Sunshine.csproj` | OK |
+| `dotnet build Sunshine.sln` | Bloqueado por lock Admin.Api (VS) — no bloquea lab combate |
+| Logs reales `Infrastructure/logs/combat/` | **Vacío** |
+| Analyzer | OK solo sobre sample sintético |
 
-### Documentación
+### Documentación gate
 
+- [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) ← **estado y decisión**
 - [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md)
 - [combat-log-schema.md](../combat-sanitization/combat-log-schema.md)
-- [combat-phase2-test-plan.md](../combat-sanitization/combat-phase2-test-plan.md)
-- Phase 1: [combat-system-audit.md](../combat-sanitization/combat-system-audit.md), [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md)
 
-### Siguiente acción exacta (Phase 3 — no iniciar sin operador)
+### Siguiente acción exacta (operador)
 
-1. Operador: lab + combate PvM con `COMBAT_HEALTH_LAB=1` / `CombatTelemetryEnabled=true`
-2. `collect-combat-logs.ps1` → `analyze-combat-telemetry.ps1`
-3. Revisar `report.md` y `combat-turn-transition-phase2-report.md` para confirmar hipótesis ReadyChecker
-4. **Solo con evidencia:** port `ReadyChecker` / `TryAdvanceTurn` desde Rollback
+1. `sync-vps-db-snapshot.ps1` + `appsettings.Development.local.json` → `sunshine_lab`
+2. `run-local-combat-lab.ps1` con vars del gate doc → **3 escenarios PvM**
+3. `collect-combat-logs.ps1` → `analyze-combat-telemetry.ps1`
+4. Actualizar `combat-real-telemetry-gate.md` con latencias reales
+5. **Solo si report confirma hand-off roto:** abrir Phase 3 ReadyChecker
 
 ### Prohibiciones activas
 
