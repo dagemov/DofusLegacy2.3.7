@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Linq;
 using System.Threading;
 using Sunshine.BaseServer.Configuration;
 using Sunshine.WorldServer.Game.Actors.Fighters;
@@ -45,6 +46,39 @@ namespace Sunshine.WorldServer.Game.Fights.Telemetry
 
             var payload = BuildBasePayload(eventName, fight, actor, durationMs, detail, extra);
             WriteJsonLine(_turnFlowWriter, payload);
+        }
+
+        public static void LogReadyCheckerEvent(
+            string eventName,
+            Fight fight,
+            FightActor turnOwner,
+            FightActor actorOverride = null,
+            FightActor nextActor = null,
+            long? elapsedMs = null,
+            string reason = null,
+            IEnumerable<CharacterFighter> waiters = null)
+        {
+            if (!WriteTurnFlow || fight == null)
+                return;
+
+            var extra = new Dictionary<string, object>(StringComparer.Ordinal);
+            if (nextActor != null)
+            {
+                extra["nextActorId"] = nextActor.Id;
+                extra["nextActorName"] = ResolveActorName(nextActor);
+            }
+
+            if (!string.IsNullOrWhiteSpace(reason))
+                extra["reason"] = reason;
+
+            if (waiters != null)
+            {
+                var waiterIds = waiters.Where(x => x != null).Select(x => x.Id).ToArray();
+                if (waiterIds.Length > 0)
+                    extra["waiterIds"] = string.Join(",", waiterIds);
+            }
+
+            LogTurnEvent(eventName, fight, actorOverride ?? turnOwner, elapsedMs, reason, extra);
         }
 
         public static void LogSpellEvent(

@@ -1545,6 +1545,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Social\SocialRelationManager.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Spells\Effect.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Fight.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\ReadyChecker.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\CombatReadyCheckerSettings.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\CombatTelemetry.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Mechanics\FrigostBossMechanics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Types\FightPvM.cs" />
