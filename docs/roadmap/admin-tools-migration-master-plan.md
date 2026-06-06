@@ -274,7 +274,7 @@ Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and
 | Fase | Estado | Entregable |
 | --- | --- | --- |
 | Phase 1 — Auditoría comparativa | **`DONE`** | `docs/combat-sanitization/*.md` |
-| Phase 2 — Combat Health Lab | **`SCAFFOLDING`** | `Infrastructure/artifacts/combat-health/` scripts |
+| Phase 2 — Combat Health Lab | **`SCAFFOLDING`** | `infrastructure/artifacts/combat-health/` scripts |
 | Phase 3 — Turn Transition Fix | **PENDING** | Requiere logs + evidencia |
 | Phase 4 — Spell Cast Telemetry | **PENDING** | `spell-casts-*.log` |
 | Phase 5 — Summons / Boss | **PENDING** | Tras Phase 4 |

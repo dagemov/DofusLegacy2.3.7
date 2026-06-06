@@ -20,9 +20,9 @@ Los cambios definitivos van al repo oficial vía PR. El lab no es fuente de verd
 ## Ubicación
 
 ```txt
-Infrastructure/artifacts/combat-health/     # scripts + README (commiteados)
-Infrastructure/artifacts/combat-health/db-snapshots/   # gitignored
-Infrastructure/artifacts/combat-health/logs/             # gitignored
+infrastructure/artifacts/combat-health/     # scripts + README (commiteados)
+infrastructure/artifacts/combat-health/db-snapshots/   # gitignored
+infrastructure/artifacts/combat-health/logs/             # gitignored
 Infrastructure/temporal-artifacts/combat-logs/           # exports (gitignored)
 Infrastructure/logs/combat/                              # telemetría servidor (gitignored)
 ```

@@ -14,7 +14,7 @@ Documentación de combate del emulador Sunshine.
 ## Lab operativo
 
 ```txt
-Infrastructure/artifacts/combat-health/
+infrastructure/artifacts/combat-health/
 ```
 
 Ver README del lab para scripts PowerShell.

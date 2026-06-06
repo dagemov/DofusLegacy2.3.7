@@ -25,7 +25,7 @@ Sunshine **no tiene `ReadyChecker`**. `HandleGameFightTurnReadyMessage` está va
 ### Lab
 
 ```txt
-Infrastructure/artifacts/combat-health/
+infrastructure/artifacts/combat-health/
 ```
 
 Scripts: `run-local-combat-lab.ps1`, `sync-vps-db-snapshot.ps1`, `collect-combat-logs.ps1`, `collect-vps-combat-logs.ps1`, `analyze-combat-telemetry.ps1`
