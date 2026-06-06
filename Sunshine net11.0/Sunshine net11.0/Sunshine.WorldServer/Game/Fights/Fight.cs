@@ -22,6 +22,7 @@ using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Fights.Types;
 using Sunshine.WorldServer.Game.Fights.Triggers;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
 using Sunshine.Protocol.Utils;
 using Sunshine.MySql.Database.Managers;
 using Sunshine.Logs;
@@ -247,6 +248,7 @@ namespace Sunshine.WorldServer.Game.Fights
         public void StartFight()
         {
             FightStartedAtUtc = DateTime.UtcNow;
+            CombatTelemetry.LogTurnEvent("FightStarted", this);
             State = FightStateEnum.Fighting;
             HideBlades();
             SortFighters();
@@ -260,7 +262,10 @@ namespace Sunshine.WorldServer.Game.Fights
             ContextHandler.SendGameFightSynchronizeMessage(Clients, GetAllFighters());
             FighterPlaying = GetFighterPlaying();
             if (FighterPlaying != null)
+            {
+                CombatTelemetry.LogTurnEvent("TurnOwner", this, FighterPlaying, detail: "source=StartFight");
                 FighterPlaying.StartTurn();
+            }
             else
                 EndFight();
         }
@@ -555,6 +560,8 @@ namespace Sunshine.WorldServer.Game.Fights
                 _isEndingFight = true;
                 State = FightStateEnum.Ended;
             }
+
+            CombatTelemetry.LogTurnEvent("FightEnded", this, FighterPlaying);
 
             try
             {
@@ -1005,6 +1012,9 @@ namespace Sunshine.WorldServer.Game.Fights
 
         public void StartAction(double interval, object parameter)
         {
+            if (parameter is string timerName && timerName == "EndTurn")
+                CombatTelemetry.LogTurnEvent("TurnTimerStarted", this, FighterPlaying, detail: $"intervalMs={interval}");
+
             if (Timer != null)
             {
                 Timer.Stop();
@@ -1027,7 +1037,10 @@ namespace Sunshine.WorldServer.Game.Fights
             {
                 case "EndTurn":
                     if (State == FightStateEnum.Fighting && FighterPlaying != null)
+                    {
+                        CombatTelemetry.LogTurnEvent("TimerElapsed", this, FighterPlaying, detail: "timer=EndTurn");
                         FighterPlaying.EndTurn();
+                    }
                     break;
 
                 case "StartFight":
