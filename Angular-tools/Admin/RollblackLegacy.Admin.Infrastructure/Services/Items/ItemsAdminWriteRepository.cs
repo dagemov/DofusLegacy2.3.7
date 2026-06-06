@@ -182,7 +182,7 @@ public sealed class ItemsAdminWriteRepository : IItemsAdminWriteRepository
                     FavoriteSubAreasCSV = string.Empty,
                     BonusIsSecret = false,
                     FavoriteSubAreasBonus = 0,
-                    Effects = EmptyEffectsHex
+                    Effects = string.IsNullOrWhiteSpace(draft.EffectsHex) ? EmptyEffectsHex : draft.EffectsHex
                 },
                 cancellationToken: cancellationToken));
 

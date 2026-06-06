@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  NgZone,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -81,6 +89,9 @@ type PreviewWarningViewModel = {
   styleUrl: './item-write-page.component.scss'
 })
 export class ItemWritePageComponent implements OnInit {
+  @ViewChild('createEffectsEditor')
+  protected createEffectsEditor?: ItemEffectsEditorComponent;
+
   private readonly destroyRef = inject(DestroyRef);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -570,7 +581,7 @@ export class ItemWritePageComponent implements OnInit {
   }
 
   private toWriteRequest(): ItemWriteRequest {
-    return normalizeItemWriteRequest({
+    const request = normalizeItemWriteRequest({
       resolvedName: this.form.controls.resolvedName.value,
       description: this.form.controls.description.value,
       typeId: this.form.controls.typeId.value ?? 0,
@@ -587,6 +598,13 @@ export class ItemWritePageComponent implements OnInit {
       twoHanded: this.form.controls.twoHanded.value,
       etheral: this.form.controls.etheral.value
     });
+
+    if (this.mode === 'create' && this.createEffectsEditor) {
+      const effects = this.createEffectsEditor.buildCreateEffectsPayload();
+      return effects.length > 0 ? { ...request, effects } : request;
+    }
+
+    return request;
   }
 
   private createWriteOperation(request: ItemWriteRequest) {
@@ -628,7 +646,7 @@ export class ItemWritePageComponent implements OnInit {
     this.refreshView();
 
     this.itemsFacade
-      .getPreviewState(null, iconId)
+      .getPreviewState(null, iconId, this.form.controls.typeId.value)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {

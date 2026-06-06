@@ -120,7 +120,11 @@ export class ItemsApi {
     return this.httpClient.delete<void>(`${this.baseUrl}/item-sets/${setId}`);
   }
 
-  getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
+  getPreviewState(
+    itemId?: number | null,
+    iconId?: number | null,
+    typeId?: number | null
+  ): Observable<ItemPreviewStateDto> {
     const params: Record<string, number> = {};
 
     if (itemId && itemId > 0) {
@@ -129,6 +133,10 @@ export class ItemsApi {
 
     if (iconId !== null && iconId !== undefined && iconId >= 0) {
       params['iconId'] = iconId;
+    }
+
+    if (typeId !== null && typeId !== undefined && typeId > 0) {
+      params['typeId'] = typeId;
     }
 
     return this.httpClient.get<ItemPreviewStateDto>(`${this.baseUrl}/items/preview-state`, {

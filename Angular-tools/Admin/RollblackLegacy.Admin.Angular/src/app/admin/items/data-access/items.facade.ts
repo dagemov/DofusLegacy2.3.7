@@ -116,8 +116,12 @@ export class ItemsFacade {
     return this.itemsApi.getItemPublicationManifest(itemId);
   }
 
-  getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
-    return this.itemsApi.getPreviewState(itemId, iconId);
+  getPreviewState(
+    itemId?: number | null,
+    iconId?: number | null,
+    typeId?: number | null
+  ): Observable<ItemPreviewStateDto> {
+    return this.itemsApi.getPreviewState(itemId, iconId, typeId);
   }
 
   getAppearancePreviewState(

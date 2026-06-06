@@ -355,6 +355,7 @@ export interface ItemWriteRequest {
   targetable: boolean;
   twoHanded: boolean;
   etheral: boolean;
+  effects?: ItemEffectEditRowRequest[] | null;
 }
 
 export interface ItemWriteValidationProblem extends AdminWarningLike {}

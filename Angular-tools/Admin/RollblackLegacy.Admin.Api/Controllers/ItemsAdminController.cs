@@ -92,9 +92,10 @@ public sealed class ItemsAdminController : ControllerBase
     public async Task<ActionResult<ItemPreviewStateDto>> ResolvePreviewState(
         [FromQuery] int? itemId,
         [FromQuery] int? iconId,
+        [FromQuery] int? typeId,
         CancellationToken cancellationToken)
     {
-        var result = await _itemsAdminWriteService.ResolvePreviewStateAsync(itemId, iconId, cancellationToken);
+        var result = await _itemsAdminWriteService.ResolvePreviewStateAsync(itemId, iconId, typeId, cancellationToken);
         return Ok(result);
     }
 
