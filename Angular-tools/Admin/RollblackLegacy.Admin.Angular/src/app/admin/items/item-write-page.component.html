@@ -36,6 +36,15 @@
     </div>
   </div>
 
+  <div *ngIf="saveResult" class="alert alert-warning border-0 mb-0">
+    <strong>Item guardado en base de datos.</strong>
+    Pendiente de publicar al cliente real.
+    <a class="alert-link" [routerLink]="['/admin/items', saveResult.itemId, 'publication-status']">
+      Ver estado de publicación
+    </a>
+    — no implica visibilidad in-game hasta validar <span class="font-monospace-soft">Items.d2o</span> + i18n.
+  </div>
+
   <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
   <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
   <app-item-save-error-modal
@@ -339,7 +348,11 @@
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" routerLink="/admin/publication">Dashboard backup/lane</a>
               </div>
-              <p class="small text-secondary mb-0 mt-2">Sin publicación automática al cliente real en esta fase.</p>
+              <p class="small text-secondary mb-0 mt-2">
+                Tras guardar, el item queda en DB. La visibilidad en cliente requiere package staging validado y publish controlado
+                (<span class="font-monospace-soft">CONFIRM_PUBLISH=1</span>). La UI no marca el item como visible hasta
+                <span class="font-monospace-soft">publication-status</span> lo confirme.
+              </p>
             </section>
 
             <div *ngIf="previewWarnings.length > 0">
