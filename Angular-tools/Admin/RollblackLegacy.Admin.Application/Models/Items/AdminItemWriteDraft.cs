@@ -15,4 +15,5 @@ public sealed record AdminItemWriteDraft(
     bool Usable,
     bool Targetable,
     bool TwoHanded,
-    bool Etheral);
+    bool Etheral,
+    string? EffectsHex = null);

@@ -16,17 +16,20 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
 
     private readonly IItemsAdminWriteRepository _writeRepository;
     private readonly IItemsAdminReadRepository _readRepository;
+    private readonly IItemEffectsCodec _effectsCodec;
     private readonly IItemPreviewStateResolver _previewStateResolver;
     private readonly IItemAppearancePreviewStateResolver _appearancePreviewStateResolver;
 
     public ItemsAdminWriteService(
         IItemsAdminWriteRepository writeRepository,
         IItemsAdminReadRepository readRepository,
+        IItemEffectsCodec effectsCodec,
         IItemPreviewStateResolver previewStateResolver,
         IItemAppearancePreviewStateResolver appearancePreviewStateResolver)
     {
         _writeRepository = writeRepository;
         _readRepository = readRepository;
+        _effectsCodec = effectsCodec;
         _previewStateResolver = previewStateResolver;
         _appearancePreviewStateResolver = appearancePreviewStateResolver;
     }
@@ -34,6 +37,8 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
     public async Task<ItemWriteResultDto> CreateAsync(ItemCreateRequest request, CancellationToken cancellationToken = default)
     {
         var draft = await ValidateAndBuildDraftAsync(request, cancellationToken);
+        var effectsHex = EncodeCreateEffects(request.Effects);
+        draft = draft with { EffectsHex = effectsHex };
         var row = await _writeRepository.CreateAsync(draft, cancellationToken);
         return MapResult(row, "create", draft);
     }
@@ -81,6 +86,7 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
     public Task<ItemPreviewStateDto> ResolvePreviewStateAsync(
         int? itemId,
         int? iconId,
+        int? typeId = null,
         CancellationToken cancellationToken = default)
     {
         if ((!itemId.HasValue || itemId.Value <= 0) && (!iconId.HasValue || iconId.Value <= 0))
@@ -93,7 +99,7 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
                 });
         }
 
-        return Task.FromResult(_previewStateResolver.Resolve(itemId, iconId, typeId: null));
+        return Task.FromResult(_previewStateResolver.Resolve(itemId, iconId, typeId));
     }
 
     public Task<ItemAppearancePreviewStateDto> ResolveAppearancePreviewStateAsync(
@@ -375,6 +381,79 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
     private static string NormalizeConditions(string? conditions)
     {
         return string.IsNullOrWhiteSpace(conditions) ? "null" : conditions.Trim();
+    }
+
+    private string EncodeCreateEffects(IReadOnlyList<ItemEffectEditRowRequest>? effects)
+    {
+        if (effects is null || effects.Count == 0)
+        {
+            return _effectsCodec.EmptyEffectsHex;
+        }
+
+        var validationErrors = ValidateCreateEffects(effects);
+        if (validationErrors.Count > 0)
+        {
+            throw new AdminValidationException(
+                "Los efectos enviados no son válidos.",
+                validationErrors,
+                UnprocessableEntityStatusCode);
+        }
+
+        var entries = effects
+            .Select(MapCreateEffectToEntry)
+            .ToList();
+
+        return _effectsCodec.Encode(entries, preservedSuffixHex: null);
+    }
+
+    private static Dictionary<string, string[]> ValidateCreateEffects(IReadOnlyList<ItemEffectEditRowRequest> effects)
+    {
+        var errors = new Dictionary<string, string[]>();
+
+        for (var index = 0; index < effects.Count; index++)
+        {
+            var row = effects[index];
+            var prefix = $"effects[{index}]";
+
+            if (!string.IsNullOrWhiteSpace(row.PreservedEffectHex))
+            {
+                errors[$"{prefix}.preservedEffectHex"] =
+                [
+                    "Las filas preservadas no están soportadas al crear un item."
+                ];
+            }
+
+            if (row.EffectId <= 0)
+            {
+                errors[$"{prefix}.effectId"] = ["EffectId debe ser mayor que cero."];
+            }
+
+            if (row.SerializationTypeId <= 0)
+            {
+                errors[$"{prefix}.serializationTypeId"] = ["SerializationTypeId es obligatorio en filas editables."];
+            }
+
+            if (row.DiceNum < 0 || row.DiceSide < 0 || row.Value < 0 || row.MinValue < 0 || row.MaxValue < 0)
+            {
+                errors[$"{prefix}.value"] = ["Los valores no pueden ser negativos."];
+            }
+        }
+
+        return errors;
+    }
+
+    private static ItemEffectEntryModel MapCreateEffectToEntry(ItemEffectEditRowRequest row)
+    {
+        return new ItemEffectEntryModel(
+            row.SerializationTypeId,
+            row.EffectId,
+            row.DiceNum,
+            row.DiceSide,
+            row.Value,
+            row.MinValue,
+            row.MaxValue,
+            IsSupported: true,
+            null);
     }
 
     private static void EnsurePositiveItemId(int itemId)

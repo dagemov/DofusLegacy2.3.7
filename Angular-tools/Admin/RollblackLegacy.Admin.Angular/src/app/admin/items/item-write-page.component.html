@@ -455,25 +455,25 @@
 
     <div class="editor-layout__effects">
       <app-item-effects-editor
-        *ngIf="mode === 'edit' && sourceItemId; else effectsDeferred"
+        *ngIf="mode === 'create'"
+        #createEffectsEditor
+        [draftMode]="true"></app-item-effects-editor>
+
+      <app-item-effects-editor
+        *ngIf="mode === 'edit' && sourceItemId"
         [itemId]="sourceItemId"></app-item-effects-editor>
 
-      <ng-template #effectsDeferred>
-        <div class="card admin-card border-0">
-          <div class="card-body d-grid gap-2">
-            <div>
-              <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
-              <h3 class="h5 mb-1">Stats del item</h3>
-              <p class="text-secondary mb-0">
-                El editor de efectos queda abajo, como en el flujo Blazor. Solo se activa cuando el item ya existe y puede cargarse por ItemId.
-              </p>
-            </div>
-            <div class="alert alert-light border mb-0">
-              Guarda primero el item o abre un item existente para editar efectos runtime.
-            </div>
+      <div *ngIf="mode === 'duplicate'" class="card admin-card border-0">
+        <div class="card-body d-grid gap-2">
+          <div>
+            <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
+            <h3 class="h5 mb-1">Stats del item</h3>
+            <p class="text-secondary mb-0">
+              Al duplicar, los efectos del item origen se copian automáticamente. Edítalos después de guardar el duplicado.
+            </p>
           </div>
         </div>
-      </ng-template>
+      </div>
     </div>
   </div>
 </section>

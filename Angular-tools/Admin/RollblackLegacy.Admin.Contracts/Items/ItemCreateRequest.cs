@@ -15,4 +15,5 @@ public sealed record ItemCreateRequest(
     bool Usable,
     bool Targetable,
     bool TwoHanded,
-    bool Etheral);
+    bool Etheral,
+    IReadOnlyList<ItemEffectEditRowRequest>? Effects = null);
