@@ -2,43 +2,49 @@
 
 Generated: `2026-06-06`
 
-## Estado VPS — conexión restaurada
+## Estado VPS — login desbloqueado (pendiente confirmación operador)
 
 | Campo | Valor |
 | --- | --- |
 | Rama | **`feature/items-sets-visibility-and-vps-combat-telemetry`** |
-| Incidente | Cliente *"Conexión al servidor fracasó"* tras rebuild telemetría |
-| Clasificación | **`RESTORED_WITH_TELEMETRY_ON`** |
-| Causa | Items Admin (`12618–12622`) con `Effects` ObjectEffect → crash `ItemsLoader` |
-| Fix | `Effects='0000'` en 5 filas + `docker restart sunshine-server` |
-| Backup hex roto | `Infrastructure/temporal-artifacts/combat-telemetry/broken-items-effects-backup.txt` |
-| DB backup VPS | `/root/backups/sunshine/sunshine-pre-restart-20260606T153909Z.sql` (intacto, no usado) |
+| Incidente 1 | Crash Items ObjectEffect → `Effects='0000'` items 12618–12622 |
+| Incidente 2 | Cliente `2450` vs VPS `446/3467` + `WORLD_PUBLIC_HOST=127.0.0.1` |
+| Fix puertos | `.env`: `2450`/`5557`/`174.138.35.107` + `compose up -d sunshine` |
+| Telemetría | **ON** |
+| DB | Intacta (`worlds.Id=18` = `174.138.35.107:5557`) |
 
-### Validación automática (2026-06-06)
+### Validación automática (2026-06-06, post-fix puertos)
 
 ```txt
 sunshine-server Up — READY 100%
-Auth 0.0.0.0:446 / World 0.0.0.0:3467
+Puertos: 0.0.0.0:2450, 0.0.0.0:5557
+Config.xml: AuthIp/WorldIp=174.138.35.107
+Logs: announced as 174.138.35.107:2450 / :5557
+Test-NetConnection 2450, 5557 → True (Windows)
 FIGHT_TELEMETRY_ENABLED=true
-TcpTestSucceeded 446, 3467 desde Windows
 ```
 
-### Operador — siguiente
+### Operador — siguiente (orden estricto)
 
-1. **Confirmar login cliente** (servidor READY; si falla, revisar IP cliente vs `WORLD_PUBLIC_HOST=127.0.0.1` en `.env`).
-2. Re-aplicar effects Jalato/Gay cuando exista fix codec Admin↔runtime.
-3. 1 combate smoke → `collect-vps-combat-logs.ps1 -RunAnalyzer`.
-4. Phase 3 ReadyChecker sigue **BLOQUEADA** hasta JSONL real.
+1. **Login cliente** con `config.xml` existente (`174.138.35.107:2450`) — no cambiar puerto.
+2. Si OK → 1 combate smoke → `collect-vps-combat-logs.ps1 -RunAnalyzer`.
+3. Re-aplicar effects Jalato cuando exista fix codec Admin↔runtime.
+4. Phase 3 ReadyChecker **BLOQUEADA** hasta JSONL real.
 
-Docs incidente: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)  
-Deploy gate: [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)
+### Scripts
 
-### Deuda técnica abierta
+```powershell
+# Re-aplicar fix puertos si .env se corrompe de nuevo:
+.\infrastructure\artifacts\combat-health\fix-vps-client-ports.ps1 -SshKey "SSH\private_key_sebas.pem"
+```
 
-- `ItemsLoader` usa `EffectManager.GetEffects(string)` (legacy); Admin escribe `ObjectEffectSerializer` — ver [items-builder-effects-serialization-audit.md](../admin-tools/items-builder/items-builder-effects-serialization-audit.md).
-- `WORLD_PUBLIC_HOST=127.0.0.1` en VPS `.env` — valorar `174.138.35.107` si el cliente depende de anuncio auth.
+### Docs
 
-### Histórico sprint (rama)
+- [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
+- [vps-client-connection-after-ready-incident.md](../combat-sanitization/vps-client-connection-after-ready-incident.md)
+- [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
 
-- Sets CRUD, telemetría scripts, deploy `-SunshineOnly`: OK
-- Jalato publish: **READY_FOR_OPERATOR_PUBLISH** (effects vaciados temporalmente en VPS)
+### Deuda técnica
+
+- Codec `items.Effects` Admin vs `ItemsLoader` legacy.
+- Evitar puertos legacy `446`/`3467` en `.env` VPS tras deploys parciales.

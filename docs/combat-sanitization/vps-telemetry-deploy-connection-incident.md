@@ -91,6 +91,12 @@ image id before: sunshine-emu-sunshine (actual en contenedor df813e715ead)
 image id after:  (sin cambio)
 ```
 
+## Seguimiento — puertos cliente (mismo día)
+
+Con servidor READY, el cliente seguía fallando: `connection.port=2450` pero VPS publicaba `446`/`3467` y `WORLD_PUBLIC_HOST=127.0.0.1`.
+
+**Fix:** `.env` → `2450`/`5557`/`174.138.35.107`. Detalle: [vps-client-port-host-diagnostic.md](./vps-client-port-host-diagnostic.md).
+
 ## Seguimiento técnico (no bloqueante para conexión)
 
 1. **Codec Admin → runtime:** alinear escritura de `items.Effects` con el parser que usa `ItemsLoader` o migrar loader a `ObjectEffectSerializer.Deserialize` — ver [items-builder-effects-serialization-audit.md](../admin-tools/items-builder/items-builder-effects-serialization-audit.md).

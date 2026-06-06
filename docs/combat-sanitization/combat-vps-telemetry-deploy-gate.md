@@ -117,7 +117,7 @@ Detalle: [vps-telemetry-deploy-connection-incident.md](./vps-telemetry-deploy-co
 
 ## Post-sesión operador
 
-1. Confirmar mundo online en cliente (servidor READY; puertos 446/3467 OK).
+1. Confirmar login cliente (`174.138.35.107:2450` / world `5557`) — ver [vps-client-port-host-diagnostic.md](./vps-client-port-host-diagnostic.md).
 2. 1 combate smoke → verificar `.jsonl`.
 3. Si OK → matriz [combat-vps-test-matrix.md](./combat-vps-test-matrix.md).
 4. `disable-vps-combat-telemetry.ps1` al terminar.
