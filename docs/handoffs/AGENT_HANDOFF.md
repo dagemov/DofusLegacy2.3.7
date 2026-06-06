@@ -1,120 +1,80 @@
-# Agent Handoff — Combat Sanitization / VPS Telemetry Active
+# Agent Handoff — Phase 3 ReadyChecker Implemented
 
 Generated: `2026-06-06`  
-Rama: **`feature/items-sets-visibility-and-vps-combat-telemetry`**
+Rama: **`feature/combat-readychecker-phase3`**  
+Base: `feature/items-sets-visibility-and-vps-combat-telemetry`
 
-## Estado VPS (actual)
+## Estado
 
 ```txt
-sunshine-server UP
-servidor funcional
-cliente conecta — CONFIRMADO por operador
-telemetría ON
-operador realizando combates reales AHORA
+ReadyChecker + TryAdvanceTurn: IMPLEMENTADO
+Build Sunshine.csproj: OK
+Deploy VPS: NO (pendiente operador)
+Telemetría VPS: OFF
 ```
 
-| Campo | Valor |
+## Cambios Phase 3
+
+| Pieza | Archivo |
 | --- | --- |
-| VPS | `174.138.35.107` |
-| Auth / World | `2450` / `5557` |
-| `WORLD_PUBLIC_HOST` | `174.138.35.107` |
-| `worlds.Id=18` | `174.138.35.107:5557` |
-| Telemetría path | `/app/logs/combat/` |
-| SSH key | `SSH/private_key_sebas.pem` (no `.ppk`) |
-| Phase 3 ReadyChecker | **BLOQUEADA** — esperar análisis de logs |
+| ReadyChecker | `Sunshine.WorldServer/Game/Fights/ReadyChecker.cs` |
+| Config | `CombatReadyCheckerSettings.cs` |
+| Turn hand-off | `Fight.cs` (`TryBeginTurnEnd`, `TryAdvanceTurn`) |
+| EndTurn | `FightActor.cs` |
+| Handler ready | `ContextHandler.cs` |
+| Telemetría | `CombatTelemetry.LogReadyCheckerEvent` |
 
-## Incidentes cerrados (2026-06-06)
-
-### 1 — Items ObjectEffect → crash boot
-
-Items `12618–12622`: `UPDATE items SET Effects=0x30303030`.  
-Doc: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
-
-### 2 — Puertos/hosts legacy
-
-`.env` corregido a `2450`/`5557`/`174.138.35.107`. Commit `a1b6c3e`.  
-Doc: [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
-
-## Acción inmediata — cuando terminen los combates
-
-**NO apagar telemetría antes de recolectar.**
-
-### Paso 1 — Recolectar y analizar
-
-```powershell
-.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
-start Infrastructure\temporal-artifacts\combat-telemetry\report.html
-```
-
-Revisar:
+## Config recomendada VPS (post-deploy)
 
 ```txt
-Infrastructure/temporal-artifacts/combat-telemetry/report.md
+CombatReadyCheckerEnabled=true
+CombatReadyCheckerTimeoutMs=5000
+FIGHT_TELEMETRY_ENABLED=true   # solo durante QA
+```
+
+## Baseline pre-fix (referencia)
+
+```txt
+Infrastructure/temporal-artifacts/combat-logs/vps/20260606-144931/
 Infrastructure/temporal-artifacts/combat-telemetry/report.json
+docs/combat-sanitization/combat-vps-telemetry-analysis-20260606.md
 ```
 
-Crear tras análisis: `docs/combat-sanitization/combat-vps-telemetry-analysis-YYYYMMDD.md`
+Métricas clave: 6× TimerElapsed 35s jugador; 0 ReadyChecker*; 109 GameFightTurnReadyMessageReceived.
 
-### Paso 2 — Apagar telemetría (después de collect)
+## Acción operador — QA VPS
 
-```powershell
-$env:CONFIRM_RESTART="1"
-.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
-```
+Seguir [combat-readychecker-phase3-qa-plan.md](../combat-sanitization/combat-readychecker-phase3-qa-plan.md):
 
-### Preguntas que el análisis debe responder
+1. Backup
+2. Deploy `-SunshineOnly`
+3. Enable telemetría
+4. 5 combates smoke (incl. invocación)
+5. Collect + analyzer
+6. Comparar vs baseline
+7. Disable telemetría
+
+**Rollback rápido:** `CombatReadyCheckerEnabled=false` + restart sunshine.
+
+## Prohibido sin nueva evidencia
 
 ```txt
-1. ¿Hay combat-turn-flow-*.jsonl reales?
-2. ¿Hay spell-casts-*.jsonl reales?
-3. ¿Cuántos combates capturados?
-4. ¿Hay TimerElapsed ~35000ms?
-5. ¿Llega GameFightTurnReadyMessage?
-6. ¿Cuánto tarda AiStarted -> AiFinished?
-7. ¿Cuánto tarda AiFinished -> NextTurnStarted?
-8. ¿Turno humano antes de fin animación enemiga?
-9. ¿Spells fallidos?
-10. ¿Effects fallidos?
-```
-
-## Decisión Phase 3 (tras logs)
-
-| Evidencia | Rama / acción |
-| --- | --- |
-| Hand-off roto confirmado | `feature/combat-readychecker-phase3` — portar ReadyChecker / TryAdvanceTurn desde `RollBlackServer\2.0.0\Rollback` |
-| Logs ambiguos | `feature/combat-telemetry-phase2b` — más telemetría spell/AI/timers |
-| Sin reproducción | Documentar *Phase 3 bloqueada por falta de reproducción* |
-
-## Prohibido ahora
-
-```txt
-no tocar lógica de turnos sin analizar logs
-no ReadyChecker / IA / spells / summons fixes
-no items/admin changes
-no reiniciar VPS en bucle
+no tocar IA / summons / spell handlers
 no docker compose down -v
-no commitear logs pesados
 ```
 
-## Scripts
+## Docs
 
-```txt
-infrastructure/artifacts/combat-health/enable-vps-combat-telemetry.ps1
-infrastructure/artifacts/combat-health/disable-vps-combat-telemetry.ps1
-infrastructure/artifacts/combat-health/collect-vps-combat-logs.ps1
-infrastructure/artifacts/combat-health/analyze-combat-telemetry.ps1
-infrastructure/artifacts/combat-health/fix-vps-client-ports.ps1
-```
-
-## Cierre del gate (pendiente)
-
-- [ ] Logs reales descargados del VPS
-- [ ] Analyzer → `report.md` / `report.html`
-- [ ] Decisión Phase 3 vs 2B con evidencia
-- [ ] Telemetría apagada al final (o documentar si sigue ON)
-- [ ] Handoff actualizado
-
-## Docs gate
-
+- [combat-readychecker-phase3.md](../combat-sanitization/combat-readychecker-phase3.md)
+- [combat-readychecker-phase3-diff.md](../combat-sanitization/combat-readychecker-phase3-diff.md)
+- [combat-readychecker-phase3-qa-plan.md](../combat-sanitization/combat-readychecker-phase3-qa-plan.md)
 - [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md)
-- [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)
+
+## Cierre Phase 3
+
+| Criterio | Estado |
+| --- | --- |
+| Código + build | **OK** |
+| Docs | **OK** |
+| QA VPS + logs post-fix | **PENDIENTE** |
+| Confirmación operador | **PENDIENTE** |
