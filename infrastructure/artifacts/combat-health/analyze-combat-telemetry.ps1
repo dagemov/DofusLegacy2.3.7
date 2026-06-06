@@ -13,7 +13,7 @@ if ([string]::IsNullOrWhiteSpace($InputDirectory)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
-    $OutputDirectory = Join-Path $RepoRoot "docs\combat-sanitization\reports"
+    $OutputDirectory = Join-Path $RepoRoot "Infrastructure\temporal-artifacts\combat-telemetry"
 }
 
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
@@ -38,14 +38,15 @@ if (-not (Test-Path $InputDirectory)) {
     throw "InputDirectory no existe: $InputDirectory"
 }
 
-$primaryReport = Join-Path $OutputDirectory "combat-telemetry-analysis-report.md"
+$primaryReport = Join-Path $OutputDirectory "report.md"
+$jsonReport = Join-Path $OutputDirectory "report.json"
 
 Write-Host "Analizando: $InputDirectory"
 Write-Host "Reporte principal: $primaryReport"
 
 Push-Location $RepoRoot
 try {
-    dotnet run --project $analyzerProject -- --input $InputDirectory --output $primaryReport
+    dotnet run --project $analyzerProject -- --input $InputDirectory --output $primaryReport --json-output $jsonReport
     if ($LASTEXITCODE -ne 0) { throw "CombatTelemetryAnalyzer falló con código $LASTEXITCODE." }
 }
 finally {
@@ -53,6 +54,7 @@ finally {
 }
 
 Write-Host "Informes generados en: $OutputDirectory"
-Write-Host "  - combat-telemetry-analysis-report.md"
-Write-Host "  - combat-turn-latency-analysis-report.md (si el analizador los crea)"
-Write-Host "  - combat-turn-transition-phase2-report.md (si el analizador los crea)"
+Write-Host "  - report.md"
+Write-Host "  - report.json"
+Write-Host "  - combat-turn-latency-analysis-report.md"
+Write-Host "  - combat-turn-transition-phase2-report.md"
