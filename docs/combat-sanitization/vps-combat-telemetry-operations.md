@@ -3,7 +3,7 @@
 **Host:** `174.138.35.107`  
 **Clave SSH:** `SSH/private_key_sebas.pem` (gitignored)  
 **Contenedor world:** `sunshine-server`  
-**Logs JSONL:** `/app/logs/combat/` (dentro del contenedor)
+**Logs JSONL:** `/app/logs/combat/` dentro del contenedor `sunshine-server` (no `/var/log/sunshine` salvo mount explícito)
 
 ## Prerrequisitos
 

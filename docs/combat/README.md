@@ -6,8 +6,9 @@ Documentación de combate del emulador Sunshine.
 
 | Documento | Contenido |
 | --- | --- |
-| [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md) | Lab local temporal |
-| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | **Operaciones telemetría VPS** |
+| [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md) | **Deploy gate VPS (2026-06-06)** |
+| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | Gate Phase 3 — logs reales |
+| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
 | [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz 30–50 combates |
 
 Docs Phase 1/2/gate viven en `feature/combat-telemetry-phase2` (merge pendiente a `devp`).
