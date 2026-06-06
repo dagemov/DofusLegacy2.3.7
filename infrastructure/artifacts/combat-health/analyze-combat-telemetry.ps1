@@ -35,7 +35,20 @@ else {
 }
 
 if (-not (Test-Path $InputDirectory)) {
-    throw "InputDirectory no existe: $InputDirectory"
+    throw "InputDirectory no existe: $InputDirectory. Ejecuta run-local-combat-lab.ps1 y al menos un combate PvM antes de analizar."
+}
+
+$logFiles = @(Get-ChildItem -Path $InputDirectory -Recurse -Include *.jsonl, *.log -File -ErrorAction SilentlyContinue)
+if ($logFiles.Count -eq 0) {
+    throw "No hay archivos .jsonl/.log en $InputDirectory. Captura combates reales antes del gate Phase 3."
+}
+
+$nonSampleFiles = @($logFiles | Where-Object { $_.Name -notmatch 'sample' })
+if ($nonSampleFiles.Count -eq 0) {
+    Write-Warning "Solo archivos *sample* detectados. Esto NO cierra el gate de telemetría real."
+}
+else {
+    Write-Host "Archivos reales detectados: $($nonSampleFiles.Count) de $($logFiles.Count)"
 }
 
 $primaryReport = Join-Path $OutputDirectory "report.md"
