@@ -94,9 +94,18 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                     || monster?.Record?.Id == SlaveFighter.RoublabotMonsterId
                     || (Spell != null && Spell.Id == SlaveFighter.RoublabotSpellId);
 
-                summonedActor = summonAsSlave
-                    ? new SlaveFighter(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction))
-                    : new SummonedMonster(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction));
+                if (summonAsSlave)
+                {
+                    summonedActor = new SlaveFighter(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction));
+                }
+                else if (!monster.CanPlay())
+                {
+                    summonedActor = new SummonedStaticMonster(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction));
+                }
+                else
+                {
+                    summonedActor = new SummonedMonster(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction));
+                }
 
                 applySlaveStates = summonedActor is SlaveFighter && (Effect.Id == EffectsEnum.Effect_SummonSlave || monster?.Record?.Id == SlaveFighter.RoublabotMonsterId || (Spell != null && Spell.Id == SlaveFighter.RoublabotSpellId));
             }

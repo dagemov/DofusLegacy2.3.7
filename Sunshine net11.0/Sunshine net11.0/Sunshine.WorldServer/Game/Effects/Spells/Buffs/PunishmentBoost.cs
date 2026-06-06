@@ -12,11 +12,20 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Buffs
         {
             foreach (FightActor current in GetAffectedActors())
             {
-                current.AddBuff(new PunishmentBuff(current.PopNextBuffId(), current, Caster, Effect, Spell, (short)Effect.Duration, ResolveBoostedStat((ushort)Spell.Id, Effect), ResolveMaxBoost(Effect)));
+                current.AddBuff(new PunishmentBuff(
+                    current.PopNextBuffId(),
+                    current,
+                    Caster,
+                    Effect,
+                    Spell,
+                    (short)Effect.Duration,
+                    ResolveBoostedStatFromEffect(Effect),
+                    ResolvePerRoundCap(Effect),
+                    ResolveMaxBoost(Effect)));
             }
         }
 
-        private static int ResolveMaxBoost(Game.Spells.Effect effect)
+        private static int ResolvePerRoundCap(Game.Spells.Effect effect)
         {
             if (effect == null)
                 return 0;
@@ -24,29 +33,21 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Buffs
             if (effect.DiceFace > 0)
                 return (int)effect.DiceFace;
 
-            if (effect.DiceNum > 0)
-                return (int)effect.DiceNum;
-
             return Math.Max(0, effect.Value);
         }
 
-        private static StatsEnum ResolveBoostedStat(ushort spellId, Game.Spells.Effect effect)
+        private static int ResolveMaxBoost(Game.Spells.Effect effect)
         {
-            switch ((SpellIdEnum)spellId)
-            {
-                case SpellIdEnum.ForcedPunishment:
-                    return StatsEnum.Strength;
-                case SpellIdEnum.BoldPunishment:
-                    return StatsEnum.Chance;
-                case SpellIdEnum.NimblePunishment:
-                    return StatsEnum.Agility;
-                case SpellIdEnum.SpiritualPunishment:
-                    return StatsEnum.Intelligence;
-                case SpellIdEnum.VitalPunishment:
-                    return StatsEnum.Vitality;
-                default:
-                    return ResolveBoostedStatFromEffect(effect);
-            }
+            if (effect == null)
+                return 0;
+
+            if (effect.Value > 0 && effect.DiceFace > 0 && effect.Value != effect.DiceFace)
+                return effect.Value;
+
+            if (effect.DiceNum > 0 && effect.DiceFace == 0)
+                return (int)effect.DiceNum;
+
+            return int.MaxValue / 2;
         }
 
         private static StatsEnum ResolveBoostedStatFromEffect(Game.Spells.Effect effect)
@@ -67,6 +68,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Buffs
                 case ActionsEnum.ACTION_CHARACTER_BOOST_WISDOM:
                     return StatsEnum.Wisdom;
                 case ActionsEnum.ACTION_CHARACTER_BOOST_VITALITY:
+                case (ActionsEnum)407:
                     return StatsEnum.Vitality;
                 case ActionsEnum.ACTION_CHARACTER_BOOST_DAMAGES_PERCENT:
                     return StatsEnum.DamageBonusPercent;
