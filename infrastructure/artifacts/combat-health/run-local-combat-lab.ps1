@@ -27,6 +27,20 @@ New-Item -ItemType Directory -Force -Path $combatLogRoot | Out-Null
 New-Item -ItemType Directory -Force -Path $spellCastLogRoot | Out-Null
 
 $env:COMBAT_HEALTH_LAB = "1"
+
+# Aliases documentados en combat-real-telemetry-gate.md → variables leídas por CombatTelemetry.cs
+if ($env:CombatTelemetryLogDirectory -and -not $env:FIGHT_TELEMETRY_LOG_DIRECTORY) {
+    $telemetryDir = $env:CombatTelemetryLogDirectory
+    if (-not [System.IO.Path]::IsPathRooted($telemetryDir)) {
+        $telemetryDir = Join-Path $RepoRoot $telemetryDir
+    }
+    $env:FIGHT_TELEMETRY_LOG_DIRECTORY = $telemetryDir
+}
+
+if ($env:CombatTelemetryEnabled -and -not $env:FIGHT_TELEMETRY_ENABLED) {
+    $env:FIGHT_TELEMETRY_ENABLED = $env:CombatTelemetryEnabled
+}
+
 $env:FIGHT_TELEMETRY_ENABLED = if ($env:FIGHT_TELEMETRY_ENABLED) { $env:FIGHT_TELEMETRY_ENABLED } else { "true" }
 $env:FIGHT_TELEMETRY_FILE_ENABLED = if ($env:FIGHT_TELEMETRY_FILE_ENABLED) { $env:FIGHT_TELEMETRY_FILE_ENABLED } else { "true" }
 $env:FIGHT_TELEMETRY_LOG_DIRECTORY = if ($env:FIGHT_TELEMETRY_LOG_DIRECTORY) { $env:FIGHT_TELEMETRY_LOG_DIRECTORY } else { $combatLogRoot }
@@ -53,6 +67,8 @@ if ($BuildOnly) {
 
 Write-Host "Iniciando Sunshine (Ctrl+C para detener)..."
 Write-Host "Verifica que la connection string apunta a sunshine_lab, NO al VPS."
+Write-Host "Tras combates PvM: collect-combat-logs.ps1 → analyze-combat-telemetry.ps1"
+Write-Host "Logs esperados: $env:FIGHT_TELEMETRY_LOG_DIRECTORY\combat-turn-flow-*.jsonl"
 Push-Location (Split-Path $sunshineProject -Parent)
 try {
     dotnet run --project $sunshineProject -c $Configuration --no-build
