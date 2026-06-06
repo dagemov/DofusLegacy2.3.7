@@ -2,46 +2,43 @@
 
 Generated: `2026-06-06`
 
-## Deploy Gate — VPS Combat Telemetry
+## Estado VPS — conexión restaurada
 
 | Campo | Valor |
 | --- | --- |
 | Rama | **`feature/items-sets-visibility-and-vps-combat-telemetry`** |
-| Deploy `sunshine-server` + telemetría | **OK** (2026-06-06) |
-| Backup DB VPS | `/root/backups/sunshine/sunshine-pre-restart-20260606T153909Z.sql` (2.6 MB) |
-| Smoke JSONL | **PENDING_OPERATOR** |
-| Phase 3 ReadyChecker | **BLOQUEADA** |
+| Incidente | Cliente *"Conexión al servidor fracasó"* tras rebuild telemetría |
+| Clasificación | **`RESTORED_WITH_TELEMETRY_ON`** |
+| Causa | Items Admin (`12618–12622`) con `Effects` ObjectEffect → crash `ItemsLoader` |
+| Fix | `Effects='0000'` en 5 filas + `docker restart sunshine-server` |
+| Backup hex roto | `Infrastructure/temporal-artifacts/combat-telemetry/broken-items-effects-backup.txt` |
+| DB backup VPS | `/root/backups/sunshine/sunshine-pre-restart-20260606T153909Z.sql` (intacto, no usado) |
 
-### Validación VPS (automática)
+### Validación automática (2026-06-06)
 
 ```txt
+sunshine-server Up — READY 100%
+Auth 0.0.0.0:446 / World 0.0.0.0:3467
 FIGHT_TELEMETRY_ENABLED=true
-CombatTelemetryEnabled=true
-/app/logs/combat/ — directorio creado, vacío hasta combates
-sunshine-server Up
+TcpTestSucceeded 446, 3467 desde Windows
 ```
 
 ### Operador — siguiente
 
-```powershell
-# 1 combate smoke en cliente → luego:
-.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
-start Infrastructure\temporal-artifacts\combat-telemetry\report.html
+1. **Confirmar login cliente** (servidor READY; si falla, revisar IP cliente vs `WORLD_PUBLIC_HOST=127.0.0.1` en `.env`).
+2. Re-aplicar effects Jalato/Gay cuando exista fix codec Admin↔runtime.
+3. 1 combate smoke → `collect-vps-combat-logs.ps1 -RunAnalyzer`.
+4. Phase 3 ReadyChecker sigue **BLOQUEADA** hasta JSONL real.
 
-# Sesión 30–50 combates → disable:
-$env:CONFIRM_RESTART="1"
-.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
-```
+Docs incidente: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)  
+Deploy gate: [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)
 
-Docs: [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md), [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md)
+### Deuda técnica abierta
 
-### Fixes deploy (rama)
+- `ItemsLoader` usa `EffectManager.GetEffects(string)` (legacy); Admin escribe `ObjectEffectSerializer` — ver [items-builder-effects-serialization-audit.md](../admin-tools/items-builder/items-builder-effects-serialization-audit.md).
+- `WORLD_PUBLIC_HOST=127.0.0.1` en VPS `.env` — valorar `174.138.35.107` si el cliente depende de anuncio auth.
 
-- `deploy-vps.ps1` — `Invoke-SshBash`, `-SunshineOnly`
-- `docker/Dockerfile` — CRLF entrypoint
-- `backup-before-restart.ps1`, `backup-vps-state.ps1` — bash pipe
+### Histórico sprint (rama)
 
-### Items/sets sprint (histórico)
-
-- Sets CRUD: OK (cherry-pick)
-- Jalato publish: **READY_FOR_OPERATOR_PUBLISH**
+- Sets CRUD, telemetría scripts, deploy `-SunshineOnly`: OK
+- Jalato publish: **READY_FOR_OPERATOR_PUBLISH** (effects vaciados temporalmente en VPS)

@@ -2,7 +2,7 @@
 
 **Rama:** `feature/items-sets-visibility-and-vps-combat-telemetry`  
 **Fecha:** 2026-06-06  
-**Estado gate:** **PARCIAL** — deploy + telemetría OK; smoke JSONL **PENDING_OPERATOR**
+**Estado gate:** **PARCIAL** — deploy + telemetría OK; incidente conexión **RESUELTO** (2026-06-06); smoke JSONL **PENDING_OPERATOR**
 
 ## Resumen ejecutivo
 
@@ -42,6 +42,7 @@
 | Rebuild **solo** `sunshine` | **OK** |
 | Incidente `entrypoint.sh` CRLF | **Corregido** — `sed` en Dockerfile + remoto |
 | Contenedor final | `sunshine-server Up` — carga mundo OK |
+| Incidente post-deploy | **RESUELTO** — crash Items/ObjectEffect; ver [vps-telemetry-deploy-connection-incident.md](./vps-telemetry-deploy-connection-incident.md) |
 
 Comando usado (sunshine-only):
 
@@ -106,9 +107,17 @@ BLOQUEADA — sin JSONL de combate real aún.
 
 Tras smoke + 30–50 combates: actualizar [combat-real-telemetry-gate.md](./combat-real-telemetry-gate.md).
 
+## Incidente conexión (2026-06-06)
+
+Tras rebuild, `sunshine-server` entró en crash loop (**exit 139**) al cargar Items — hex `Effects` en formato ObjectEffect (Admin) incompatible con `EffectManager.GetEffects(string)`.
+
+**Fix aplicado:** `Effects='0000'` en items `12618–12622` + `docker restart sunshine-server`. Telemetría permanece **ON**. Clasificación: `RESTORED_WITH_TELEMETRY_ON`.
+
+Detalle: [vps-telemetry-deploy-connection-incident.md](./vps-telemetry-deploy-connection-incident.md).
+
 ## Post-sesión operador
 
-1. Confirmar mundo online en cliente.
+1. Confirmar mundo online en cliente (servidor READY; puertos 446/3467 OK).
 2. 1 combate smoke → verificar `.jsonl`.
 3. Si OK → matriz [combat-vps-test-matrix.md](./combat-vps-test-matrix.md).
 4. `disable-vps-combat-telemetry.ps1` al terminar.
