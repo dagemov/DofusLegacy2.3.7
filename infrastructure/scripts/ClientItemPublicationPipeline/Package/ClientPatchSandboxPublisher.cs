@@ -8,13 +8,6 @@ namespace ClientItemPublicationPipeline.Package;
 
 internal sealed class ClientPatchSandboxPublisher
 {
-    private static readonly string[] SandboxRelativeFiles =
-    [
-        PublicationPackagePaths.ItemsRelative,
-        PublicationPackagePaths.I18nEsRelative,
-        PublicationPackagePaths.I18nEnRelative
-    ];
-
     public SandboxApplyResult ApplyPackageToSandbox(
         string repoRoot,
         string packageDirectory,
@@ -24,20 +17,11 @@ internal sealed class ClientPatchSandboxPublisher
         Directory.CreateDirectory(sandboxDirectory);
         SeedSandboxFromClient(repoRoot, sandboxDirectory);
 
-        var packageItems = PublicationPackagePaths.ResolveItemsPath(packageDirectory);
-        var packageEs = PublicationPackagePaths.ResolveI18nEsPath(packageDirectory);
-        var packageEn = PublicationPackagePaths.ResolveI18nEnPath(packageDirectory);
+        var patchRelativeFiles = PublicationPackagePatchFiles.ResolveRelativeFiles(packageDirectory);
 
-        foreach (var relative in SandboxRelativeFiles)
+        foreach (var relative in patchRelativeFiles)
         {
-            var source = relative switch
-            {
-                _ when relative == PublicationPackagePaths.ItemsRelative => packageItems,
-                _ when relative == PublicationPackagePaths.I18nEsRelative => packageEs,
-                _ when relative == PublicationPackagePaths.I18nEnRelative => packageEn,
-                _ => throw new InvalidOperationException($"Archivo no mapeado: {relative}")
-            };
-
+            var source = PublicationPackagePatchFiles.ResolvePackageSourcePath(packageDirectory, relative);
             var destination = Path.Combine(sandboxDirectory, relative.Replace('/', Path.DirectorySeparatorChar));
             var parent = Path.GetDirectoryName(destination)!;
             Directory.CreateDirectory(parent);
@@ -51,7 +35,7 @@ internal sealed class ClientPatchSandboxPublisher
             PackageDirectory = ToRepoRelative(repoRoot, packageDirectory),
             SandboxDirectory = ToRepoRelative(repoRoot, sandboxDirectory),
             ExpectedItemId = expectedItemId,
-            AppliedFiles = SandboxRelativeFiles,
+            AppliedFiles = patchRelativeFiles,
             ClientRealUntouched = true,
             RealClientRoot = Path.Combine(repoRoot, "Client2.3.7")
         };
@@ -128,8 +112,9 @@ internal sealed class ClientPatchSandboxPublisher
             }
         }
 
-        var checksums = PublicationPackageChecksumWriter.ComputeChecksums(sandboxDirectory, SandboxRelativeFiles);
-        foreach (var relative in SandboxRelativeFiles)
+        var patchedFiles = PublicationPackagePatchFiles.ResolveClientRelativeFiles(sandboxDirectory);
+        var checksums = PublicationPackageChecksumWriter.ComputeChecksums(sandboxDirectory, patchedFiles);
+        foreach (var relative in patchedFiles)
         {
             if (checksums.ContainsKey(relative))
             {
@@ -159,7 +144,7 @@ internal sealed class ClientPatchSandboxPublisher
         var clientRoot = Path.Combine(repoRoot, "Client2.3.7");
         var baseline = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var relative in SandboxRelativeFiles)
+        foreach (var relative in PublicationPackagePatchFiles.CoreRelativeFiles)
         {
             var source = Path.Combine(clientRoot, relative.Replace('/', Path.DirectorySeparatorChar));
             if (!File.Exists(source))
@@ -176,6 +161,23 @@ internal sealed class ClientPatchSandboxPublisher
             if (!File.Exists(destination))
             {
                 File.WriteAllBytes(destination, File.ReadAllBytes(source));
+            }
+        }
+
+        var itemSetsSource = Path.Combine(
+            clientRoot,
+            PublicationPackagePaths.ItemSetsRelative.Replace('/', Path.DirectorySeparatorChar));
+        if (File.Exists(itemSetsSource))
+        {
+            baseline[PublicationPackagePaths.ItemSetsRelative] = HashFile(itemSetsSource);
+            var itemSetsDestination = Path.Combine(
+                sandboxDirectory,
+                PublicationPackagePaths.ItemSetsRelative.Replace('/', Path.DirectorySeparatorChar));
+            var parent = Path.GetDirectoryName(itemSetsDestination)!;
+            Directory.CreateDirectory(parent);
+            if (!File.Exists(itemSetsDestination))
+            {
+                File.WriteAllBytes(itemSetsDestination, File.ReadAllBytes(itemSetsSource));
             }
         }
 
