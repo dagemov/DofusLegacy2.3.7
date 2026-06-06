@@ -1,49 +1,52 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-06`
+Generated: `2026-06-02`
 
-## Macro Combat Sanitization — Phase 1 + Lab
+## Macro Combat Sanitization — Phase 2 Telemetry
 
 | Campo | Valor |
 | --- | --- |
-| Rama | **`feature/combat-sanitization-phase1-audit`** (base: `devp`) |
-| Estado | **Phase 1 DONE** — auditoría docs; Phase 2 scaffolding scripts |
-| Fixes código | **NINGUNO** — sin evidencia de logs aún |
+| Rama | **`feature/combat-telemetry-phase2`** (base: `feature/combat-sanitization-phase1-audit`) |
+| Estado | **Phase 2 DONE** — telemetría JSONL + analyzer migrado |
+| Fixes código | **NINGUNO** en turnos/IA/spells — solo observación |
+| QA in-game | **`PENDING_OPERATOR`** |
 | Referencia | `C:\Users\Hombr\source\repos\RollBlackServer\2.0.0\Rollback` |
 
-### Hallazgo principal (auditoría)
+### Entregables Phase 2
 
-Sunshine **no tiene `ReadyChecker`**. `HandleGameFightTurnReadyMessage` está vacío y `EndTurn` avanza turno **inmediatamente**. Rollback ya corrigió el bug ~35s (hand-off, no IA) en `feature/combat-readychecker-turn-advance-fix`.
+- `CombatTelemetry` — `Sunshine.WorldServer/Game/Fights/Telemetry/CombatTelemetry.cs`
+- Logs JSONL: `combat-turn-flow-*.jsonl`, `spell-casts/*.jsonl`
+- `GameFightTurnReadyMessageReceived` registrado; handler **sin lógica funcional**
+- Analyzer: `Infrastructure/scripts/CombatTelemetryAnalyzer/` (JSONL + legacy `.log`)
+- Lab scripts actualizados → salida `Infrastructure/temporal-artifacts/combat-telemetry/report.md`
+
+### Validación automática
+
+| Check | Resultado |
+| --- | --- |
+| `dotnet build Sunshine.sln` | OK |
+| Analyzer + JSONL sintético | OK |
 
 ### Documentación
 
-- [combat-system-audit.md](../combat-sanitization/combat-system-audit.md)
-- [combat-turn-flow-comparison.md](../combat-sanitization/combat-turn-flow-comparison.md)
-- [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md)
-- [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md)
+- [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md)
+- [combat-log-schema.md](../combat-sanitization/combat-log-schema.md)
+- [combat-phase2-test-plan.md](../combat-sanitization/combat-phase2-test-plan.md)
+- Phase 1: [combat-system-audit.md](../combat-sanitization/combat-system-audit.md), [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md)
 
-### Lab
+### Siguiente acción exacta (Phase 3 — no iniciar sin operador)
 
-```txt
-infrastructure/artifacts/combat-health/
-```
-
-Scripts: `run-local-combat-lab.ps1`, `sync-vps-db-snapshot.ps1`, `collect-combat-logs.ps1`, `collect-vps-combat-logs.ps1`, `analyze-combat-telemetry.ps1`
-
-### Siguiente acción exacta
-
-1. Implementar `FightTelemetry` en Sunshine (Phase 2 código)
-2. Migrar `CombatTelemetryAnalyzer` a `infrastructure/scripts/`
-3. Reproducir síntoma en lab con DB snapshot + generar logs
-4. **Solo entonces** Phase 3 port de `ReadyChecker`/`TryAdvanceTurn`
+1. Operador: lab + combate PvM con `COMBAT_HEALTH_LAB=1` / `CombatTelemetryEnabled=true`
+2. `collect-combat-logs.ps1` → `analyze-combat-telemetry.ps1`
+3. Revisar `report.md` y `combat-turn-transition-phase2-report.md` para confirmar hipótesis ReadyChecker
+4. **Solo con evidencia:** port `ReadyChecker` / `TryAdvanceTurn` desde Rollback
 
 ### Prohibiciones activas
 
 ```txt
-no VPS primero
-no fixes sin logs
+no fix ReadyChecker sin logs reales
+no VPS/deploy en esta fase
 no mezclar Admin items/spells
-no dejar artifact como fuente final
 ```
 
 ---
