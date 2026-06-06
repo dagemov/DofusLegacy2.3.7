@@ -1,6 +1,46 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-05`
+Generated: `2026-06-06`
+
+## Items + Sets — Production acceptance test
+
+| Campo | Valor |
+| --- | --- |
+| Rama | **`feature/items-sets-production-acceptance-test`** |
+| Estado | **`PARTIAL / OPERATOR_REQUIRED`** |
+| Resultado QA in-game | **`NOT_RUN`** |
+| Create item + effects (un solo flujo) | **`PASS`** (código) |
+| Backup cliente local | **`OK`** — `pre_creation_new_items_20260605_0732` |
+| Backup DB VPS | **`OK`** — `/root/backups/sunshine-focused-20260606-004715.sql` |
+| Backup VPS inventario | **`OK`** — `backups/vps/20260606-004658/` |
+| SSH | **`OK`** — `SSH/private_key_sebas.pem` (gitignored) |
+
+### Documentación
+
+- [items-sets-production-acceptance-test.md](../admin-tools/items-builder/items-final/items-sets-production-acceptance-test.md)
+- [sets-production-acceptance-test.md](../admin-tools/sets-builder/sets-production-acceptance-test.md)
+- [itemsets-client-publication-plan.md](../admin-tools/client-publication/itemsets-client-publication-plan.md)
+- [items-final-production-backup.md](../admin-tools/items-builder/items-final-production-backup.md)
+
+### Bloqueadores
+
+| Bloqueo | Estado |
+| --- | --- |
+| `ItemSets.d2o` staging automático | **PARTIAL** — apply/validate opcional si archivo en paquete |
+| Varita de la Flor | **`BLOCKED_WEAPON_PUBLICATION`** |
+| `Items.d2o` local en repo | ausente — publish requiere cliente operador |
+| QA in-game | **`OPERATOR_REQUIRED`** |
+
+### Si PASS (operador)
+
+```txt
+Items Builder = COMPLETE
+Sets Builder = COMPLETE
+Publication Pipeline = COMPLETE (con nota ItemSets)
+Siguiente = Combat Sanitization
+```
+
+**No** abrir Spell Builder hasta PASS documentado.
 
 ## Macro 5 / Git Sanity Before Phase 4
 
