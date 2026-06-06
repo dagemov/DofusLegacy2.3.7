@@ -1,6 +1,52 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-05`
+Generated: `2026-06-06`
+
+## Macro Combat Sanitization — Phase 1 + Lab
+
+| Campo | Valor |
+| --- | --- |
+| Rama | **`feature/combat-sanitization-phase1-audit`** (base: `devp`) |
+| Estado | **Phase 1 DONE** — auditoría docs; Phase 2 scaffolding scripts |
+| Fixes código | **NINGUNO** — sin evidencia de logs aún |
+| Referencia | `C:\Users\Hombr\source\repos\RollBlackServer\2.0.0\Rollback` |
+
+### Hallazgo principal (auditoría)
+
+Sunshine **no tiene `ReadyChecker`**. `HandleGameFightTurnReadyMessage` está vacío y `EndTurn` avanza turno **inmediatamente**. Rollback ya corrigió el bug ~35s (hand-off, no IA) en `feature/combat-readychecker-turn-advance-fix`.
+
+### Documentación
+
+- [combat-system-audit.md](../combat-sanitization/combat-system-audit.md)
+- [combat-turn-flow-comparison.md](../combat-sanitization/combat-turn-flow-comparison.md)
+- [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md)
+- [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md)
+
+### Lab
+
+```txt
+Infrastructure/artifacts/combat-health/
+```
+
+Scripts: `run-local-combat-lab.ps1`, `sync-vps-db-snapshot.ps1`, `collect-combat-logs.ps1`, `collect-vps-combat-logs.ps1`, `analyze-combat-telemetry.ps1`
+
+### Siguiente acción exacta
+
+1. Implementar `FightTelemetry` en Sunshine (Phase 2 código)
+2. Migrar `CombatTelemetryAnalyzer` a `infrastructure/scripts/`
+3. Reproducir síntoma en lab con DB snapshot + generar logs
+4. **Solo entonces** Phase 3 port de `ReadyChecker`/`TryAdvanceTurn`
+
+### Prohibiciones activas
+
+```txt
+no VPS primero
+no fixes sin logs
+no mezclar Admin items/spells
+no dejar artifact como fuente final
+```
+
+---
 
 ## Gate final — Items Builder
 

@@ -269,6 +269,20 @@ Macro Items Final Plus (`feature/items-preview-sets-polish-final`): **`DONE`** (
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
+## Macro Combat Sanitization (`feature/combat-sanitization-phase1-audit`)
+
+| Fase | Estado | Entregable |
+| --- | --- | --- |
+| Phase 1 — Auditoría comparativa | **`DONE`** | `docs/combat-sanitization/*.md` |
+| Phase 2 — Combat Health Lab | **`SCAFFOLDING`** | `Infrastructure/artifacts/combat-health/` scripts |
+| Phase 3 — Turn Transition Fix | **PENDING** | Requiere logs + evidencia |
+| Phase 4 — Spell Cast Telemetry | **PENDING** | `spell-casts-*.log` |
+| Phase 5 — Summons / Boss | **PENDING** | Tras Phase 4 |
+
+Referencia corregida: `RollBlackServer/2.0.0/Rollback` (`ReadyChecker`, `FightTelemetry`, `CombatTelemetryAnalyzer`).
+
+**No mezclar** con Admin items/spells. Flujo: lab local → PR → VPS beta → logs → analizador.
+
 ## Mandatory handoff
 
 Canonical handoff path:
