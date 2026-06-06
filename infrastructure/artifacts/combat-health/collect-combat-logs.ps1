@@ -13,7 +13,7 @@ if ([string]::IsNullOrWhiteSpace($SourceDirectory)) {
 
 if (-not (Test-Path $SourceDirectory)) {
     Write-Warning "Directorio de logs no existe: $SourceDirectory"
-    Write-Warning "FightTelemetry aún no implementado en Sunshine o no hubo sesiones."
+    Write-Warning "CombatTelemetry deshabilitado o sin sesiones de combate."
     exit 0
 }
 
