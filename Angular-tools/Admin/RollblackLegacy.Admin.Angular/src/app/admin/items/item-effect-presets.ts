@@ -29,6 +29,18 @@ export interface ResolvedPresetLine {
  */
 export const ITEM_EFFECT_PRESETS: ItemEffectPresetDefinition[] = [
   {
+    id: 'dofus-hielos-ux',
+    name: 'Dofus de los Hielos (UX ejemplo)',
+    description:
+      'Solo referencia UX Phase 5 — +40 daños, +80 prospección, +50 sabiduría, +10 críticos. No publica automáticamente.',
+    entries: [
+      { effectId: 112, value: 40, note: '+ Daños' },
+      { effectId: 176, value: 80, note: '+ Prospección' },
+      { effectId: 124, value: 50, note: '+ Sabiduría' },
+      { effectId: 115, value: 10, note: '+ Golpes críticos' }
+    ]
+  },
+  {
     id: 'dofus-tester-qa',
     name: 'Dofus Tester QA',
     description:

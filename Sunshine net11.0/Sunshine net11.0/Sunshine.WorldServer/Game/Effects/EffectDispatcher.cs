@@ -10,6 +10,7 @@ using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Effects.Items;
 using Sunshine.WorldServer.Game.Maps;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 
 namespace Sunshine.WorldServer.Game.Effects
 {
@@ -27,6 +28,7 @@ namespace Sunshine.WorldServer.Game.Effects
                 {
                     SpellEffectHandler spellEffect = EffectManager.Instance.SpellEffects[effect.Id]();
                     var affectedActors = EffectManager.Instance.GetAffectedActors(caster, effect, cell);
+                    FightCombatLogger.LogEffectDispatch(caster.Fight, caster, spell, effect);
                     spellEffect.Initialize(new List<object> { effect.Id, effect.DiceNum, effect.DiceFace, effect.Value,
                                                               effect.Delay, effect.Duration, effect.Target, cell,
                                                               affectedActors, caster, spell, effect, trapCell, firstPosition, countPushed});

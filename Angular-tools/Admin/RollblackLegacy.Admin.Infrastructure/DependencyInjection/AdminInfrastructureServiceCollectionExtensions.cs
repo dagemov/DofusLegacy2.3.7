@@ -8,7 +8,9 @@ using RollblackLegacy.Admin.Infrastructure.Data;
 using RollblackLegacy.Admin.Infrastructure.Items;
 using RollblackLegacy.Admin.Infrastructure.Services;
 using RollblackLegacy.Admin.Infrastructure.Services.ClientIdentity;
+using RollblackLegacy.Admin.Application.Abstractions.Publication;
 using RollblackLegacy.Admin.Infrastructure.Services.Items;
+using RollblackLegacy.Admin.Infrastructure.Services.Publication;
 
 namespace RollblackLegacy.Admin.Infrastructure.DependencyInjection;
 
@@ -47,8 +49,11 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddSingleton<IItemEffectsCharacteristicCatalog, ItemEffectsCharacteristicCatalog>();
         services.AddSingleton<IItemEffectsCatalog, ItemEffectsCatalog>();
         services.AddSingleton<IItemClientPublicationInspector, FileSystemItemClientPublicationInspector>();
+        services.AddSingleton<IStagingPublicationPackageProbe, StagingPublicationPackageProbe>();
+        services.AddSingleton<IPublicationBackupStatusService, FileSystemPublicationBackupStatusService>();
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();
+        services.AddScoped<IItemSetsAdminReadRepository, ItemSetsAdminReadRepository>();
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
         services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();

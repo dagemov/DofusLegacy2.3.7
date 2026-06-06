@@ -6,12 +6,14 @@ import {
   ItemClientIdentityDto,
   ItemDetailBundle,
   ItemDetailDto,
+  ItemIconCategoryStatsDto,
   ItemIconOptionDto,
   ItemIconSearchRequest,
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
   ItemAppearancePreviewStateDto,
+  ItemPublicationManifestDto,
   ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
@@ -20,7 +22,9 @@ import {
   AdminEffectOptionDto,
   ItemEffectsEditDto,
   ItemEffectsUpdateRequest,
-  ItemEffectsUpdateResultDto
+  ItemEffectsUpdateResultDto,
+  ItemSetDetailDto,
+  ItemSetListItemDto
 } from './items.models';
 import { ClientIdentityApi } from './client-identity.api';
 import { ClientItemIdentityCheckResultDto } from './client-identity.models';
@@ -55,6 +59,18 @@ export class ItemsFacade {
     return this.itemsApi.getItemIcons(request);
   }
 
+  getItemIconCategoryStats(): Observable<ItemIconCategoryStatsDto> {
+    return this.itemsApi.getItemIconCategoryStats();
+  }
+
+  getItemSets(): Observable<ItemSetListItemDto[]> {
+    return this.itemsApi.getItemSets();
+  }
+
+  getItemSet(setId: number): Observable<ItemSetDetailDto> {
+    return this.itemsApi.getItemSet(setId);
+  }
+
   getItem(itemId: number): Observable<ItemDetailDto> {
     return this.itemsApi.getItem(itemId);
   }
@@ -77,6 +93,10 @@ export class ItemsFacade {
 
   getItemPublicationStatus(itemId: number): Observable<ItemPublicationStatusDto> {
     return this.itemsApi.getItemPublicationStatus(itemId);
+  }
+
+  getItemPublicationManifest(itemId: number): Observable<ItemPublicationManifestDto> {
+    return this.itemsApi.getItemPublicationManifest(itemId);
   }
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {

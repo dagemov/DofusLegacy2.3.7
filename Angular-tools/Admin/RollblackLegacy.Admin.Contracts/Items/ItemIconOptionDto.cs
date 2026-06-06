@@ -7,4 +7,8 @@ public sealed record ItemIconOptionDto(
     string Source,
     bool HasPreview,
     int? LinkedItemCount,
-    IReadOnlyList<string> SampleItemNames);
+    IReadOnlyList<string> SampleItemNames,
+    string? Category = null,
+    string? NameEs = null,
+    string? NameEn = null,
+    int? SampleItemId = null);

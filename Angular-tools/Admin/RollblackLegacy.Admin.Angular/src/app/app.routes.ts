@@ -7,9 +7,26 @@ export const routes: Routes = [
     redirectTo: 'admin/items'
   },
   {
+    path: 'admin/publication',
+    loadComponent: () =>
+      import('./admin/publication/publication-dashboard-page.component').then(
+        (m) => m.PublicationDashboardPageComponent
+      )
+  },
+  {
     path: 'admin/items',
     loadComponent: () =>
       import('./admin/items/items-page.component').then((m) => m.ItemsPageComponent)
+  },
+  {
+    path: 'admin/item-sets',
+    loadComponent: () =>
+      import('./admin/item-sets/item-sets-page.component').then((m) => m.ItemSetsPageComponent)
+  },
+  {
+    path: 'admin/item-sets/:setId',
+    loadComponent: () =>
+      import('./admin/item-sets/item-set-detail-page.component').then((m) => m.ItemSetDetailPageComponent)
   },
   {
     path: 'admin/items/icon-selector',

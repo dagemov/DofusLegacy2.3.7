@@ -49,6 +49,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/manual-assets",
+                "output": "/manual-assets"
               }
             ],
             "styles": [

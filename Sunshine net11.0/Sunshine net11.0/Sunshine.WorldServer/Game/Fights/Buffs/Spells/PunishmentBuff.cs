@@ -11,10 +11,14 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
     public class PunishmentBuff : Buff
     {
         public StatsEnum BoostedStat { get; private set; }
+        public int PerRoundCap { get; private set; }
         public int MaxBoost { get; private set; }
         public int CurrentBoost { get; private set; }
 
-        public PunishmentBuff(int id, FightActor target, FightActor caster, Effect effect, Spell spell, short duration, StatsEnum boostedStat, int maxBoost)
+        private int _trackedRound;
+        private int _boostThisRound;
+
+        public PunishmentBuff(int id, FightActor target, FightActor caster, Effect effect, Spell spell, short duration, StatsEnum boostedStat, int perRoundCap, int maxBoost)
         {
             Id = id;
             Target = target;
@@ -22,10 +26,8 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             Effect = effect;
             Spell = spell;
             Duration = duration;
-            // Keep the authoritative stat resolved from the spell metadata, but
-            // still honor historical client-side action ids stored in Effect.Value
-            // when they match a real punishment boost action.
             BoostedStat = ResolveBoostedStat(effect, boostedStat);
+            PerRoundCap = Math.Max(0, perRoundCap);
             MaxBoost = maxBoost;
             CurrentBoost = 0;
             Type = BuffTypeEnum.AFTER_ATTACKED;
@@ -93,11 +95,28 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             if (damage <= 0 || CurrentBoost >= MaxBoost)
                 return;
 
-            int bonus = damage;
-            int remaining = MaxBoost - CurrentBoost;
+            int round = Target.Fight?.GetCompletedRounds() ?? 1;
+            if (_trackedRound != round)
+            {
+                _trackedRound = round;
+                _boostThisRound = 0;
+            }
 
-            if (bonus > remaining)
-                bonus = remaining;
+            if (PerRoundCap > 0 && _boostThisRound >= PerRoundCap)
+                return;
+
+            int bonus = damage;
+            int totalRemaining = MaxBoost - CurrentBoost;
+
+            if (bonus > totalRemaining)
+                bonus = totalRemaining;
+
+            if (PerRoundCap > 0)
+            {
+                int roundRemaining = PerRoundCap - _boostThisRound;
+                if (bonus > roundRemaining)
+                    bonus = roundRemaining;
+            }
 
             if (bonus <= 0)
                 return;
@@ -106,6 +125,7 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             int lifeBefore = lifeMaximumChanged ? Target.GetCurrentLife() : 0;
 
             CurrentBoost += bonus;
+            _boostThisRound += bonus;
             Target.Stats[BoostedStat].Context += (short)bonus;
 
             if (lifeMaximumChanged)

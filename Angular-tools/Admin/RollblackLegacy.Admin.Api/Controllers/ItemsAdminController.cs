@@ -74,6 +74,18 @@ public sealed class ItemsAdminController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{itemId:int}/publication-manifest")]
+    [ProducesResponseType(typeof(ItemPublicationManifestDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ItemPublicationManifestDto>> GetPublicationManifest(
+        [FromRoute] int itemId,
+        [FromServices] IItemPublicationManifestService publicationManifestService,
+        CancellationToken cancellationToken)
+    {
+        var result = await publicationManifestService.GetManifestAsync(itemId, cancellationToken);
+        return Ok(result);
+    }
+
     [HttpGet("preview-state")]
     [ProducesResponseType(typeof(ItemPreviewStateDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

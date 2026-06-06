@@ -103,9 +103,27 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         return new AdminPagedItemsReadModel(totalCount, items);
     }
 
+    public Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default)
+    {
+        var manifestPath = AdminRepositoryPathResolver.ResolveAdminAngularCategoryManifestPath(_hostEnvironment.ContentRootPath);
+        var categoryRoot = AdminRepositoryPathResolver.ResolveAdminAngularByCategoryRoot(_hostEnvironment.ContentRootPath);
+        var reader = new ItemPreviewCatalogManifestReader();
+        return Task.FromResult(reader.LoadCategoryStats(manifestPath, categoryRoot));
+    }
+
     public async Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(
         ItemIconSearchRequest request,
         CancellationToken cancellationToken = default)
+    {
+        var useCategoryCatalog = UsesCategoryCatalog(request);
+        return useCategoryCatalog
+            ? await SearchIconsByCategoryAsync(request, cancellationToken)
+            : await SearchIconsByIconAsync(request, cancellationToken);
+    }
+
+    private async Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsByIconAsync(
+        ItemIconSearchRequest request,
+        CancellationToken cancellationToken)
     {
         var normalizedSearch = NormalizeSearch(request.Search);
         var iconRoot = AdminRepositoryPathResolver.ResolveAdminAngularByIconRoot(_hostEnvironment.ContentRootPath);
@@ -129,6 +147,47 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
             .OrderBy(x => x.IconId)
             .ToList();
 
+        return await PageAndHydrateIconsAsync(request, options, cancellationToken);
+    }
+
+    private async Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsByCategoryAsync(
+        ItemIconSearchRequest request,
+        CancellationToken cancellationToken)
+    {
+        var normalizedSearch = NormalizeSearch(request.Search);
+        var categoryRoot = AdminRepositoryPathResolver.ResolveAdminAngularByCategoryRoot(_hostEnvironment.ContentRootPath);
+        var manifestPath = AdminRepositoryPathResolver.ResolveAdminAngularCategoryManifestPath(_hostEnvironment.ContentRootPath);
+        var reader = new ItemPreviewCatalogManifestReader();
+        var manifestEntries = reader.LoadEntries(manifestPath);
+
+        IReadOnlyList<ItemIconOptionDto> options;
+        if (manifestEntries.Count > 0)
+        {
+            options = manifestEntries
+                .Select(MapCategoryManifestEntry)
+                .Where(x => x is not null)
+                .Select(x => x!)
+                .ToList();
+        }
+        else
+        {
+            options = ScanCategoryPngFiles(categoryRoot);
+        }
+
+        var filtered = options
+            .Where(x => MatchesCategoryFilters(x, request))
+            .OrderBy(x => x.Category, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(x => x.IconId)
+            .ToList();
+
+        return await PageAndHydrateIconsAsync(request, filtered, cancellationToken);
+    }
+
+    private async Task<ItemPagedResultDto<ItemIconOptionDto>> PageAndHydrateIconsAsync(
+        ItemIconSearchRequest request,
+        IReadOnlyList<ItemIconOptionDto> options,
+        CancellationToken cancellationToken)
+    {
         var totalCount = options.Count;
         var offset = Math.Max(0, (request.Page - 1) * request.PageSize);
         var paged = options
@@ -151,7 +210,9 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
                 return option with
                 {
                     LinkedItemCount = metadata.LinkedItemCount,
-                    SampleItemNames = metadata.SampleItemNames
+                    SampleItemNames = metadata.SampleItemNames.Count > 0
+                        ? metadata.SampleItemNames
+                        : option.SampleItemNames
                 };
             })
             .ToList();
@@ -161,6 +222,70 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
             request.PageSize,
             totalCount,
             hydrated);
+    }
+
+    private static bool UsesCategoryCatalog(ItemIconSearchRequest request) =>
+        string.Equals(request.CatalogMode, "by-category", StringComparison.OrdinalIgnoreCase) ||
+        !string.IsNullOrWhiteSpace(request.Category) ||
+        request.ItemId.HasValue;
+
+    private static ItemIconOptionDto? MapCategoryManifestEntry(ItemPreviewManifestEntry entry)
+    {
+        var categoryRoot = entry.PreviewPath?.Contains("/by-category/", StringComparison.OrdinalIgnoreCase) == true
+            ? entry.PreviewPath
+            : $"/assets/item-previews/by-category/{entry.Category}/{entry.IconId}.png";
+
+        return new ItemIconOptionDto(
+            entry.IconId,
+            categoryRoot,
+            "FOUND",
+            "CURATED_BY_CATEGORY",
+            HasPreview: true,
+            LinkedItemCount: 1,
+            SampleItemNames: string.IsNullOrWhiteSpace(entry.NameEs) ? [] : [entry.NameEs],
+            Category: entry.Category,
+            NameEs: entry.NameEs,
+            NameEn: entry.NameEn,
+            SampleItemId: entry.ItemId);
+    }
+
+    private static IReadOnlyList<ItemIconOptionDto> ScanCategoryPngFiles(string categoryRoot)
+    {
+        if (!Directory.Exists(categoryRoot))
+        {
+            return [];
+        }
+
+        var options = new List<ItemIconOptionDto>();
+        foreach (var categoryDir in Directory.EnumerateDirectories(categoryRoot))
+        {
+            var category = Path.GetFileName(categoryDir);
+            if (string.IsNullOrWhiteSpace(category) || category.StartsWith(".", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            foreach (var png in Directory.EnumerateFiles(categoryDir, "*.png", SearchOption.TopDirectoryOnly))
+            {
+                var fileName = Path.GetFileNameWithoutExtension(png);
+                if (!int.TryParse(fileName, out var iconId) || iconId <= 0)
+                {
+                    continue;
+                }
+
+                options.Add(new ItemIconOptionDto(
+                    iconId,
+                    $"/assets/item-previews/by-category/{category}/{iconId}.png",
+                    "FOUND",
+                    "CURATED_BY_CATEGORY",
+                    HasPreview: true,
+                    LinkedItemCount: 0,
+                    SampleItemNames: [],
+                    Category: category));
+            }
+        }
+
+        return options;
     }
 
     public async Task<AdminItemDetailReadModel?> GetByIdAsync(int itemId, CancellationToken cancellationToken = default)
@@ -284,6 +409,76 @@ public sealed class ItemsAdminReadRepository : IItemsAdminReadRepository
         }
 
         return option.SampleItemNames.Any(name => name.Contains(search, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool MatchesCategoryFilters(ItemIconOptionDto option, ItemIconSearchRequest request)
+    {
+        if (!string.IsNullOrWhiteSpace(request.Category) &&
+            !string.Equals(option.Category, request.Category, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (request.ItemId.HasValue && option.SampleItemId != request.ItemId.Value)
+        {
+            return false;
+        }
+
+        if (request.IconId.HasValue && option.IconId != request.IconId.Value)
+        {
+            return false;
+        }
+
+        var nameEs = NormalizeSearch(request.NameEs);
+        if (nameEs is not null &&
+            !(option.NameEs?.Contains(nameEs, StringComparison.OrdinalIgnoreCase) == true ||
+              option.SampleItemNames.Any(n => n.Contains(nameEs, StringComparison.OrdinalIgnoreCase))))
+        {
+            return false;
+        }
+
+        var nameEn = NormalizeSearch(request.NameEn);
+        if (nameEn is not null &&
+            !(option.NameEn?.Contains(nameEn, StringComparison.OrdinalIgnoreCase) == true ||
+              option.SampleItemNames.Any(n => n.Contains(nameEn, StringComparison.OrdinalIgnoreCase))))
+        {
+            return false;
+        }
+
+        var search = NormalizeSearch(request.Search);
+        if (search is not null && !MatchesCategorySearch(option, search))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool MatchesCategorySearch(ItemIconOptionDto option, string search)
+    {
+        if (MatchesSearch(option, search))
+        {
+            return true;
+        }
+
+        if (option.SampleItemId?.ToString().Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(option.NameEs) &&
+            option.NameEs.Contains(search, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(option.NameEn) &&
+            option.NameEn.Contains(search, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private async Task<Dictionary<int, ItemIconMetadata>> TryLoadIconMetadataAsync(

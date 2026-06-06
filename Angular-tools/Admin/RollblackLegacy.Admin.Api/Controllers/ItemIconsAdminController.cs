@@ -24,4 +24,12 @@ public sealed class ItemIconsAdminController : ControllerBase
         var result = await _itemsAdminReadService.SearchIconsAsync(request, cancellationToken);
         return Ok(result);
     }
+
+    [HttpGet("category-stats")]
+    [ProducesResponseType(typeof(ItemIconCategoryStatsDto), StatusCodes.Status200OK)]
+    public async Task<ActionResult<ItemIconCategoryStatsDto>> GetCategoryStats(CancellationToken cancellationToken)
+    {
+        var result = await _itemsAdminReadService.GetIconCategoryStatsAsync(cancellationToken);
+        return Ok(result);
+    }
 }

@@ -23,9 +23,47 @@ export interface ItemSearchRequest {
   pageSize: number;
 }
 
+export type ItemIconCatalogMode = 'by-icon' | 'by-category';
+
+export const ITEM_ICON_CATEGORY_OPTIONS = [
+  { id: 'dofus', label: 'Dofus' },
+  { id: 'sombreros', label: 'Sombreros' },
+  { id: 'capas', label: 'Capas' },
+  { id: 'botas', label: 'Botas' },
+  { id: 'mascotas', label: 'Mascotas' },
+  { id: 'escudos', label: 'Escudos' },
+  { id: 'anillos', label: 'Anillos' },
+  { id: 'amuletos', label: 'Amuletos' },
+  { id: 'cinturones', label: 'Cinturones' },
+  { id: 'recursos', label: 'Recursos' },
+  { id: 'trofeos', label: 'Trofeos' },
+  { id: 'consumibles', label: 'Consumibles' }
+] as const;
+
+export interface ItemIconCategoryStatDto {
+  category: string;
+  label: string;
+  count: number;
+  lastExtractionUtc?: string | null;
+  previewSource: string;
+}
+
+export interface ItemIconCategoryStatsDto {
+  totalPngInAngular: number;
+  totalCataloged: number;
+  weaponsExcluded: number;
+  previewSource: string;
+  categories: ItemIconCategoryStatDto[];
+}
+
 export interface ItemIconSearchRequest {
   search?: string;
+  nameEs?: string;
+  nameEn?: string;
+  itemId?: number;
   iconId?: number;
+  catalogMode?: ItemIconCatalogMode;
+  category?: string;
   page: number;
   pageSize: number;
 }
@@ -45,6 +83,10 @@ export interface ItemIconOptionDto {
   hasPreview: boolean;
   linkedItemCount?: number | null;
   sampleItemNames: string[];
+  category?: string | null;
+  nameEs?: string | null;
+  nameEn?: string | null;
+  sampleItemId?: number | null;
 }
 
 export interface ItemIconSelection {
@@ -57,9 +99,49 @@ export interface ItemPreviewStateDto {
   byItemPath: string;
   byIconPath: string;
   manualPath: string;
+  byCategoryPath?: string;
   previewSource: string;
   resolvedPath?: string | null;
   fallbackUsed: string;
+}
+
+export interface ItemSetListItemDto {
+  setId: number;
+  name: string;
+  itemCount: number;
+  bonusTierCount: number;
+}
+
+export interface ItemSetBonusEffectDto {
+  effectId: number;
+  label: string;
+  protocolName: string;
+  value: number;
+  format: string;
+}
+
+export interface ItemSetBonusTierDto {
+  pieceCount: number;
+  tierLabel: string;
+  effects: ItemSetBonusEffectDto[];
+}
+
+export interface ItemSetMemberDto {
+  itemId: number;
+  name: string;
+  typeId: number;
+  typeName: string;
+  iconId: number;
+  previewState: ItemPreviewStateDto;
+  publicationSummary?: string | null;
+}
+
+export interface ItemSetDetailDto {
+  setId: number;
+  name: string;
+  bonusIsSecret: boolean;
+  items: ItemSetMemberDto[];
+  bonusTiers: ItemSetBonusTierDto[];
 }
 
 export interface ItemAppearancePreviewStateDto {
@@ -152,6 +234,38 @@ export interface ItemQaSummaryDto {
   canPublish: boolean;
   blockingReasons: string[];
   recommendedChecks: string[];
+}
+
+export interface ItemPublicationManifestDto {
+  dbItemId: number;
+  targetClientItemId: number;
+  nameEs?: string | null;
+  nameEn?: string | null;
+  descriptionId: number;
+  typeId: number;
+  typeName?: string | null;
+  iconId: number;
+  appearanceId: number;
+  effectsSummary: string;
+  criteria?: string | null;
+  sourceTemplateItemId?: number | null;
+  clientKnown: boolean;
+  primaryState: string;
+  states: string[];
+  requiredClientActions: string[];
+  filesToPatch: string[];
+  risks: string[];
+  canPublishAutomatically: boolean;
+  blockingReasons: string[];
+  clientRootPath?: string | null;
+  stagingOutputPath?: string | null;
+  stagingPackageStatus: string;
+  stagingPackagePath?: string | null;
+  stagingPackageId?: string | null;
+  stagingValidationStatus?: string | null;
+  stagingWarnings: string[];
+  nextManualSteps: string[];
+  generatedAtUtc: string;
 }
 
 export interface ItemPublicationStatusDto {
@@ -316,6 +430,7 @@ export function createEmptyItemSearchRequest(): ItemSearchRequest {
 
 export function createEmptyItemIconSearchRequest(): ItemIconSearchRequest {
   return {
+    catalogMode: 'by-category',
     page: 1,
     pageSize: 24
   };
@@ -339,6 +454,7 @@ export function createUnknownPreviewState(): ItemPreviewStateDto {
     byItemPath: '',
     byIconPath: '',
     manualPath: '',
+    byCategoryPath: '',
     previewSource: 'PLACEHOLDER',
     resolvedPath: null,
     fallbackUsed: 'PLACEHOLDER'

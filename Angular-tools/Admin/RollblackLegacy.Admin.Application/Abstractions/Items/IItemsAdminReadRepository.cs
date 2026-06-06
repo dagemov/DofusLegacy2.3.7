@@ -10,6 +10,8 @@ public interface IItemsAdminReadRepository
 
     Task<ItemPagedResultDto<ItemIconOptionDto>> SearchIconsAsync(ItemIconSearchRequest request, CancellationToken cancellationToken = default);
 
+    Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default);
+
     Task<AdminItemDetailReadModel?> GetByIdAsync(int itemId, CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<AdminOptionDto>> GetTypeOptionsAsync(CancellationToken cancellationToken = default);

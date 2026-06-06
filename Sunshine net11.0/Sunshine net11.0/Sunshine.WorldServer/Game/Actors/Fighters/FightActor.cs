@@ -21,6 +21,7 @@ using Sunshine.WorldServer.Game.Fights.Teams;
 using Sunshine.WorldServer.Game.Effects.Spells.Damages;
 using Sunshine.WorldServer.Game.Actors.Look;
 using Sunshine.WorldServer.Game.Fights.Buffs;
+using Sunshine.WorldServer.Game.Fights.Buffs.Customs;
 using Sunshine.WorldServer.Game.Actors.Characters.Spells;
 using Sunshine.WorldServer.Game.Fights.Buffs.Spells;
 using Sunshine.WorldServer.Game.Fights.History;
@@ -33,6 +34,7 @@ using Sunshine.WorldServer.Game.Effects.Spells;
 using Sunshine.WorldServer.Game.Maps.Pathfinding;
 using Sunshine.Protocol.Messages;
 using Sunshine.WorldServer.Game.Actors.AI;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Triggers;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
 
@@ -357,11 +359,18 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Fight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
                 Fight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_BEGIN);
                 Fight.EndSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP, ActionsEnum.ACTION_FIGHT_TRIGGER_GLYPH);
+                TriggerFightBuffs(BuffTriggerType.TURN_BEGIN);
                 ContextHandler.SendGameFightSynchronizeMessage(Fight.Clients, Fight.GetAllFighters());
                 foreach (CharacterFighter fighter in Fight.GetAllFighters(x => x is CharacterFighter))
                     fighter.Character.RefreshStats();
 
                 if (this is PrismFighter || this is BombFighter)
+                {
+                    this.EndTurn();
+                    return;
+                }
+
+                if (!controlledSlaveTurn && this is SummonedMonster staticSummon && !staticSummon.CanPlayTurn)
                 {
                     this.EndTurn();
                     return;
@@ -435,9 +444,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
                     return;
             }
-            else if (this is SummonedMonster summonedMonster && summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId && summonedMonster.IsAlive)
+            else if (this is SummonedMonster summonedMonster && summonedMonster.IsAlive)
             {
-                summonedMonster.Die(this);
+                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
+                    summonedMonster.Die(this);
+                else if (summonedMonster.DiesAtTurnEnd)
+                    summonedMonster.Die(this);
 
                 if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
                     return;
@@ -914,6 +926,8 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (realLifeLost > 0)
                 Fight.OnLifePointsChanged(-realLifeLost, damage.Source, this);
 
+            FightCombatLogger.LogDamage(Fight, damage.Source, this, damage);
+
             // Si le coup met la cible à 0 PV, on traite la mort tout de suite.
             // Les buffs déclenchés "après avoir subi des dommages" ne doivent pas ajouter de vitalité/PV
             // sur une cible déjà morte, sinon le client affiche 0 PV puis un +PV fantôme.
@@ -926,6 +940,8 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             foreach (var punishmentBuff in punishmentBuffs)
                 punishmentBuff.OnDamaged(damage.Source, damage.Amount);
+
+            TriggerFightBuffs(BuffTriggerType.AFTER_ATTACKED, damage);
         }
 
         public void Heal(int healPoints, FightActor source, bool withBoost = false)
@@ -978,6 +994,17 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 BombManager.Instance.CheckWalls(Fight, otherBomb.Summoner);
 
             ActionsHandler.SendGameActionFightExchangePositionsMessage(Fight.Clients, this, with);
+        }
+
+        public void Kill(FightActor killer)
+        {
+            if (m_deathHandled || Fight == null || Stats == null || Stats.Health == null || !IsAlive)
+                return;
+
+            Stats.Health.Taken = Math.Max(Stats.Health.Taken, Stats.Health.TotalMax);
+            NormalizeFightHealth(false);
+            FightCombatLogger.LogKill(Fight, killer, this);
+            TryKillIfNoHealth(killer ?? this);
         }
 
         public bool TryKillIfNoHealth(FightActor killer = null)
@@ -1950,8 +1977,20 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 characterFighter.Character?.RefreshStats();
         }
 
+        public void TriggerFightBuffs(BuffTriggerType trigger, object token = null)
+        {
+            foreach (var buff in GetBuffs(x => x is TriggerBuff).Cast<TriggerBuff>().ToArray())
+            {
+                FightCombatLogger.LogTrigger(Fight, this, trigger, buff);
+                buff.TryTrigger(trigger, token);
+            }
+        }
+
         public void RemoveBuff(Buff buff, bool dispell = true)
         {
+            if (buff is TriggerBuff triggerBuff)
+                triggerBuff.TryTrigger(BuffTriggerType.BUFF_ENDED);
+
             this.FreeBuffId(buff.Id);
             this.m_buffList.Remove(buff);
             ActionsHandler.SendGameActionFightDispellEffectMessage(Fight.Clients, buff.Caster, buff.Target, buff);

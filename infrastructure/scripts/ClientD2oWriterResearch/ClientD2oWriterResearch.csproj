@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ClientD2oWriterResearch</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SunshineProtocolRoot>..\..\..\Sunshine net11.0\Sunshine net11.0\Sunshine.Protocol</SunshineProtocolRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(SunshineProtocolRoot)\Tools\D2o\*.cs" Link="Sunshine\D2o\%(Filename)%(Extension)" />
+    <Compile Include="$(SunshineProtocolRoot)\Tools\D2o\Classes\*.cs" Link="Sunshine\D2o\Classes\%(Filename)%(Extension)" />
+    <Compile Include="$(SunshineProtocolRoot)\Tools\IDataObject.cs" Link="Sunshine\IDataObject.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\Tools\IIndexedData.cs" Link="Sunshine\IIndexedData.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\IDataReader.cs" Link="Sunshine\IO\IDataReader.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\IDataWriter.cs" Link="Sunshine\IO\IDataWriter.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\FastBigEndianReader.cs" Link="Sunshine\IO\FastBigEndianReader.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\BigEndianReader.cs" Link="Sunshine\IO\BigEndianReader.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\BigEndianWriter.cs" Link="Sunshine\IO\BigEndianWriter.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\Pool\*.cs" Link="Sunshine\IO\Pool\%(Filename)%(Extension)" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\Collections\*.cs" Link="Sunshine\IO\Collections\%(Filename)%(Extension)" />
+    <Compile Include="$(SunshineProtocolRoot)\IO\Tools\*.cs" Link="Sunshine\IO\Tools\%(Filename)%(Extension)" />
+    <Compile Include="$(SunshineProtocolRoot)\Utils\Extensions\TypeExtensions.cs" Link="Sunshine\Utils\TypeExtensions.cs" />
+    <Compile Include="$(SunshineProtocolRoot)\Utils\Extensions\DynamicExtensions.cs" Link="Sunshine\Utils\DynamicExtensions.cs" />
+  </ItemGroup>
+
+</Project>

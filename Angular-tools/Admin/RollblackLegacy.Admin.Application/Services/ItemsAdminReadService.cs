@@ -52,6 +52,9 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         return _repository.SearchIconsAsync(request, cancellationToken);
     }
 
+    public Task<ItemIconCategoryStatsDto> GetIconCategoryStatsAsync(CancellationToken cancellationToken = default) =>
+        _repository.GetIconCategoryStatsAsync(cancellationToken);
+
     public async Task<ItemDetailDto> GetItemAsync(int itemId, CancellationToken cancellationToken = default)
     {
         EnsurePositiveItemId(itemId);
@@ -164,7 +167,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
 
     private ItemListItemDto MapListItem(AdminItemListReadModel item)
     {
-        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId);
+        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId, item.TypeId);
         var warnings = BuildWarnings(
             item.ResolvedName,
             item.TypeName,
@@ -193,7 +196,7 @@ public sealed class ItemsAdminReadService : IItemsAdminReadService
         AdminItemDetailReadModel item,
         CancellationToken cancellationToken)
     {
-        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId);
+        var previewState = _previewStateResolver.Resolve(item.ItemId, item.IconId, item.TypeId);
         ClientItemIdentityCheckResultDto? identityCheck = null;
         try
         {

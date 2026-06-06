@@ -21,6 +21,9 @@ import { ApiProblemPanelComponent } from '../../shared/components/api-problem-pa
 import { ItemsFacade } from './data-access/items.facade';
 import {
   AdminApiProblem,
+  ITEM_ICON_CATEGORY_OPTIONS,
+  ItemIconCategoryStatDto,
+  ItemIconCatalogMode,
   ItemIconOptionDto,
   ItemIconSearchRequest,
   ItemIconSelection,
@@ -29,6 +32,7 @@ import {
   createEmptyPagedResult,
   toAdminApiProblem
 } from './data-access/items.models';
+import { normalizeItemIconSearchRequest } from './data-access/items.queries';
 
 const DEFAULT_ICON_PAGE_SIZE = 24;
 
@@ -59,8 +63,13 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
   protected selectedIcon: ItemIconSelection | null = null;
   protected problem: AdminApiProblem | null = null;
   protected isLoading = false;
+  protected readonly categoryOptions = ITEM_ICON_CATEGORY_OPTIONS;
+  protected categoryStats: ItemIconCategoryStatDto[] = [];
+  protected totalPngInAngular = 0;
 
   ngOnInit(): void {
+    this.loadCategoryStats();
+
     if (this.embedded) {
       const initialRequest = normalizeItemIconSearchRequest({
         ...createEmptyItemIconSearchRequest(),
@@ -78,7 +87,12 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
         switchMap((paramMap) => {
           const request = normalizeItemIconSearchRequest({
             search: normalizeOptionalText(paramMap.get('search') ?? undefined),
+            nameEs: normalizeOptionalText(paramMap.get('nameEs') ?? undefined),
+            nameEn: normalizeOptionalText(paramMap.get('nameEn') ?? undefined),
+            itemId: normalizePositiveInt(paramMap.get('itemId') ?? undefined),
             iconId: normalizePositiveInt(paramMap.get('iconId') ?? undefined),
+            catalogMode: readCatalogMode(paramMap.get('catalogMode')),
+            category: normalizeOptionalText(paramMap.get('category') ?? undefined),
             page: normalizePositiveInt(paramMap.get('page') ?? undefined) ?? 1,
             pageSize: normalizePageSize(paramMap.get('pageSize') ?? undefined) ?? DEFAULT_ICON_PAGE_SIZE
           });
@@ -201,6 +215,8 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
     switch (option.source) {
       case 'CURATED_BY_ICON':
         return 'CURATED_BY_ICON';
+      case 'CURATED_BY_CATEGORY':
+        return 'CURATED_BY_CATEGORY';
       case 'BY_ICON_PREVIEW':
         return 'CURATED_BY_ICON';
       case 'MISSING':
@@ -208,6 +224,39 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
       default:
         return option.source || 'MISSING';
     }
+  }
+
+  protected catalogSourceLabel(): string {
+    return this.query.catalogMode === 'by-icon'
+      ? '/assets/item-previews/by-icon'
+      : '/assets/item-previews/by-category';
+  }
+
+  protected categoryOptionLabel(categoryId: string, fallbackLabel: string): string {
+    const stat = this.categoryStats.find((entry) => entry.category === categoryId);
+    if (!stat || stat.count <= 0) {
+      return fallbackLabel;
+    }
+
+    return `${fallbackLabel} (${stat.count})`;
+  }
+
+  protected selectCategory(categoryId: string | undefined): void {
+    this.navigateWithQuery({
+      ...this.query,
+      catalogMode: 'by-category',
+      category: categoryId,
+      page: 1
+    });
+  }
+
+  protected setCatalogMode(mode: ItemIconCatalogMode): void {
+    this.navigateWithQuery({
+      ...this.query,
+      catalogMode: mode,
+      category: mode === 'by-icon' ? undefined : this.query.category,
+      page: 1
+    });
   }
 
   protected previewStateLabel(option: ItemIconOptionDto): string {
@@ -261,8 +310,28 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
       queryParams['search'] = normalized.search;
     }
 
+    if (normalized.nameEs) {
+      queryParams['nameEs'] = normalized.nameEs;
+    }
+
+    if (normalized.nameEn) {
+      queryParams['nameEn'] = normalized.nameEn;
+    }
+
+    if (normalized.itemId) {
+      queryParams['itemId'] = normalized.itemId;
+    }
+
     if (normalized.iconId) {
       queryParams['iconId'] = normalized.iconId;
+    }
+
+    if (normalized.catalogMode) {
+      queryParams['catalogMode'] = normalized.catalogMode;
+    }
+
+    if (normalized.category) {
+      queryParams['category'] = normalized.category;
     }
 
     void this.router.navigate([], {
@@ -305,18 +374,37 @@ export class ItemIconSelectorComponent implements OnInit, OnChanges {
     );
   }
 
+  private loadCategoryStats(): void {
+    this.itemsFacade
+      .getItemIconCategoryStats()
+      .pipe(
+        catchError(() => of(null)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((stats) => {
+        if (!stats) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.categoryStats = stats.categories;
+          this.totalPngInAngular = stats.totalPngInAngular;
+          this.refreshView();
+        });
+      });
+  }
+
   private refreshView(): void {
     this.changeDetectorRef.detectChanges();
   }
 }
 
-function normalizeItemIconSearchRequest(request: ItemIconSearchRequest): ItemIconSearchRequest {
-  return {
-    search: normalizeOptionalText(request.search),
-    iconId: normalizePositiveInt(request.iconId),
-    page: normalizePositiveInt(request.page) ?? 1,
-    pageSize: normalizePageSize(request.pageSize) ?? DEFAULT_ICON_PAGE_SIZE
-  };
+function readCatalogMode(value: string | null): ItemIconCatalogMode | undefined {
+  if (value === 'by-icon' || value === 'by-category') {
+    return value;
+  }
+
+  return undefined;
 }
 
 function normalizeOptionalText(value: string | null | undefined): string | undefined {

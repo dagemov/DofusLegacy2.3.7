@@ -175,6 +175,13 @@ Key references:
 - [Future client publish workflow](../admin-tools/items-builder/items-builder-future-client-publish.md)
 - [Client publication analysis](../admin-tools/items-builder/items-builder-client-publication-analysis.md)
 - [Item publication pipeline](../admin-tools/items-builder/item-publication-pipeline.md)
+- [Macro 4 Client publication README](../admin-tools/client-publication/README.md)
+- [Macro 4 Phase 1 dry-run manifest](../admin-tools/client-publication/client-item-publication-pipeline-phase1.md)
+- [Macro 4 Phase 3A D2O Item class staging](../admin-tools/client-publication/client-publication-phase3a-d2o-item-class.md)
+- [Macro 4 D2O schema report](../admin-tools/client-publication/client-d2o-item-schema-report.md)
+- [Macro 4 D2O round-trip staging](../admin-tools/client-publication/client-d2o-roundtrip-report.md)
+- [Macro 4 Phase 3B D2I writer](../admin-tools/client-publication/client-publication-phase3b-d2i-writer.md)
+- [Macro 4 D2I format notes](../admin-tools/client-publication/client-d2i-format-notes.md)
 - [Visible item checklist](../admin-tools/items-builder/visible-item-checklist.md)
 - [QA vendor test checklist](../admin-tools/items-builder/qa-vendor-test-checklist.md)
 - [VPS restart safety checklist](../infrastructure/vps-restart-safety-checklist.md)
@@ -238,7 +245,27 @@ The next intended branch order is:
 
 1. Abrir **PR único** Macro Items Final desde `feature/items-final-effects-catalog-audit-7d1`
 2. Browser QA pendiente: ver [items-builder-final-e2e-qa-phase7d5.md](../admin-tools/items-builder/items-final/items-builder-final-e2e-qa-phase7d5.md)
-3. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
+3. **Macro 4 Phase 6B** — item skin catalog by category + stat icons (`DONE`)
+4. **Macro 4 Phase 6C** — item preview extract by category + Angular gallery (`DONE` — 500 PNG, dofus 10/10)
+5. **Macro 4 Phase 6D** — category expansion 1916 PNG (`DONE`)
+5b. **Macro Items Final Plus** — preview BY_CATEGORY + sets read UI + stat icons (`DONE`, browser QA pending)
+6. **Macro 4 Phase 6A** — controlled publish to real client (`READY_FOR_OPERATOR`)
+7. **Macro 4 Phase 5** — sandbox + UX (`DONE`)
+8. **Macro 4 Spells** — solo tras merge PR + aprobación explícita
+
+Macro 4 Phase 3A: **`DONE`** — D2O Item classes + clone staging.  
+Macro 4 Phase 3B (`feature/client-item-publication-d2i-writer-phase3b`): **`DONE`** — `D2iFile` writer, append textos ES/EN.  
+Macro 4 Phase 3C (`feature/client-item-publication-staging-package-phase3c`): **`DONE`** — paquete `publication-package-phase3c/12617/`, validador CLI, API/Angular staging status.  
+Macro 4 Phase 4 (`feature/client-publication-controlled-patch-phase4`): **`DONE`** — backup/recovery scripts, publish lane, `GET publication/backup-status`, `/admin/publication`.  
+Macro 4 Phase 5 (`feature/client-publication-controlled-patch-phase5`): **`DONE`** — sandbox patch, UX stats, VPS bash guide.  
+Macro 4 Phase 6 (`feature/client-publication-controlled-publish-phase6`): **`READY_FOR_OPERATOR`** — `apply-package-to-real-client`, `validate-real-client`.  
+Macro 4 Phase 6B (`feature/item-skin-catalog-by-category-phase6b`): **`DONE`** — catálogo por categoría, export curado dofus dry-run, galería HTML, PyDofus audit, iconos stats.
+
+Macro 4 Phase 6C (`feature/item-preview-massive-extraction-phase6c`): **`DONE`** — extracción D2P masiva (500 PNG), copia Angular `by-category/`, selector con catálogo por categoría, manifest Phase 6C. Browser QA pendiente operador.
+
+Macro 4 Phase 6D (`feature/item-preview-category-expansion-phase6d`): **`DONE`** — expansión incremental (+1416 PNG), **1916** total en Angular, manifest `categoryStats`, selector con contadores y búsqueda AND.
+
+Macro Items Final Plus (`feature/items-preview-sets-polish-final`): **`DONE`** (browser QA pending) — resolver preview `BY_CATEGORY`, UI `/admin/item-sets` + bonos por piezas, fix assets `src/assets/icons`, docs en [items-preview-reconciliation-report.md](../admin-tools/items-builder/items-preview-reconciliation-report.md), [items-stat-icons-fix-report.md](../admin-tools/items-builder/items-stat-icons-fix-report.md), [sets-builder-preview-and-bonuses.md](../admin-tools/sets-builder/sets-builder-preview-and-bonuses.md).
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 

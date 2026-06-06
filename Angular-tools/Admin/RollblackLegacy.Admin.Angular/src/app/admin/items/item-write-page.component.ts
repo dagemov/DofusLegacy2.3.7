@@ -11,6 +11,7 @@ import { ItemDiagnosticPanelComponent } from './components/item-diagnostic-panel
 import { ItemAppearancePreviewCardComponent } from './components/item-appearance-preview-card.component';
 import { ItemPreviewCardComponent } from './components/item-preview-card.component';
 import { ItemEffectsEditorComponent } from './item-effects-editor.component';
+import { ItemSaveErrorModalComponent } from './components/item-save-error-modal.component';
 import { ItemIconSelectorModalComponent } from './item-icon-selector-modal.component';
 import { ItemsFacade } from './data-access/items.facade';
 import {
@@ -73,7 +74,8 @@ type PreviewWarningViewModel = {
     ItemAppearancePreviewCardComponent,
     ItemDiagnosticPanelComponent,
     ItemIconSelectorModalComponent,
-    ItemEffectsEditorComponent
+    ItemEffectsEditorComponent,
+    ItemSaveErrorModalComponent
   ],
   templateUrl: './item-write-page.component.html',
   styleUrl: './item-write-page.component.scss'
@@ -127,6 +129,7 @@ export class ItemWritePageComponent implements OnInit {
   private appearancePreviewRequestVersion = 0;
   protected isIconSelectorOpen = false;
   protected selectedIconPreviewPath: string | null = null;
+  protected saveErrorModalOpen = false;
 
   ngOnInit(): void {
     this.form.controls.iconId.valueChanges
@@ -386,6 +389,7 @@ export class ItemWritePageComponent implements OnInit {
         catchError((error: unknown) => {
           this.ngZone.run(() => {
             this.saveProblem = toAdminApiProblem(error);
+            this.saveErrorModalOpen = true;
             this.refreshView();
           });
           return of(null);
@@ -831,6 +835,11 @@ export class ItemWritePageComponent implements OnInit {
     return warnings;
   }
 
+  protected closeSaveErrorModal(): void {
+    this.saveErrorModalOpen = false;
+    this.refreshView();
+  }
+
   private clearWriteFeedback(): void {
     if (!this.saveProblem && !this.saveResult) {
       return;
@@ -838,6 +847,7 @@ export class ItemWritePageComponent implements OnInit {
 
     this.saveProblem = null;
     this.saveResult = null;
+    this.saveErrorModalOpen = false;
   }
 
   private shouldShowLocalError(control: AbstractControl): boolean {

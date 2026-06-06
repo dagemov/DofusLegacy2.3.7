@@ -13,6 +13,7 @@
 | 7D.3 | [items-effects-editor-ui-phase7d3.md](./items-effects-editor-ui-phase7d3.md) | Angular editor parity (`EffectListEditor` MVP) | `DONE` |
 | 7D.4 | [items-stat-templates-phase7d4.md](./items-stat-templates-phase7d4.md) | Stat templates / presets | `DONE` |
 | 7D.5 | [items-builder-final-e2e-qa-phase7d5.md](./items-builder-final-e2e-qa-phase7d5.md) | Final E2E QA + PR gate | `DONE` / browser `PARTIAL` |
+| QA prod | [dofus-hielos-production-qa.md](./dofus-hielos-production-qa.md) | Dofus de los Hielos VPS | `BLOCKED_CLIENT_TEMPLATE_MISSING` |
 
 ## Master plan
 

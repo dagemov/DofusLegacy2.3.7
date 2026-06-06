@@ -2,6 +2,22 @@
   font-weight: 600;
 }
 
+.write-flow-section {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0.75rem;
+  padding: 1rem 1.1rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.write-flow-section__eyebrow {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.25rem;
+}
+
 .editor-layout {
   display: grid;
   gap: 1.5rem;

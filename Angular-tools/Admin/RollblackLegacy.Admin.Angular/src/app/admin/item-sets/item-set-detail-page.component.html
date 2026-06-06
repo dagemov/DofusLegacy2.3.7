@@ -1,0 +1,79 @@
+<section class="d-grid gap-4" *ngIf="detail as set">
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/item-sets">Volver a sets</a>
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Set {{ set.setId }}</p>
+      <h2 class="h4 mb-1">{{ set.name }}</h2>
+      <p class="text-secondary mb-0">
+        {{ set.items.length }} item(s) · {{ set.bonusTiers.length }} nivel(es) de bono
+        <span *ngIf="set.bonusIsSecret"> · bonus secreto</span>
+      </p>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <h3 class="h5 mb-3">Items del set</h3>
+      <div class="row g-3">
+        <div class="col-12 col-lg-6" *ngFor="let member of set.items">
+          <div class="card border h-100">
+            <div class="card-body d-grid gap-2">
+              <div class="d-flex justify-content-between gap-2">
+                <div>
+                  <div class="fw-semibold">{{ member.name }}</div>
+                  <div class="small text-secondary">
+                    ItemId {{ member.itemId }} · {{ member.typeName }} · IconId {{ member.iconId }}
+                  </div>
+                  <div class="small text-secondary">{{ member.publicationSummary }}</div>
+                </div>
+                <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/items', member.itemId]">Item</a>
+              </div>
+              <app-item-preview-card
+                [previewState]="member.previewState"
+                [routeItemId]="member.itemId"
+                [iconId]="member.iconId"></app-item-preview-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body d-grid gap-3">
+      <h3 class="h5 mb-0">Bonos por piezas equipadas</h3>
+      <div *ngIf="set.bonusTiers.length === 0" class="alert alert-light border mb-0">Sin bonos decodificables en Effects.</div>
+      <div class="bonus-tier border rounded p-3" *ngFor="let tier of set.bonusTiers">
+        <h4 class="h6 mb-2">{{ tier.tierLabel }} ({{ tier.pieceCount }} piezas)</h4>
+        <div class="table-responsive" *ngIf="tier.effects.length > 0">
+          <table class="table table-sm mb-0">
+            <thead>
+              <tr>
+                <th>EffectId</th>
+                <th>Label</th>
+                <th>Valor</th>
+                <th>Formato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let effect of tier.effects">
+                <td class="font-monospace-soft">{{ effect.effectId }}</td>
+                <td>{{ effect.label }}</td>
+                <td>{{ effect.value }}</td>
+                <td>{{ effect.format }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="!detail && !isLoading" class="alert alert-warning border">
+  No se pudo cargar el set.
+</div>
+
+<div *ngIf="isLoading" class="text-secondary small">Cargando detalle del set...</div>

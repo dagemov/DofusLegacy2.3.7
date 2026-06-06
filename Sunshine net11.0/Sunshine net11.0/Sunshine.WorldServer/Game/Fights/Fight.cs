@@ -753,6 +753,8 @@ namespace Sunshine.WorldServer.Game.Fights
 
         public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast)
         {
+            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell);
+
             foreach (CharacterFighter entry in GetAllFighters(x => x is CharacterFighter))
             {
                 if (spell != null && spell.Id == 0)

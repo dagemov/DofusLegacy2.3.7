@@ -1,6 +1,42 @@
 .effects-add-panel,
-.effects-presets-panel {
+.effects-presets-panel,
+.effects-quick-picks {
   background: rgba(0, 0, 0, 0.02);
+}
+
+.stat-quick-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.stat-quick-pick {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.5rem 0.65rem;
+  min-height: 4.25rem;
+}
+
+.stat-quick-pick__emoji {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.stat-quick-pick__icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.stat-quick-pick__title {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.stat-quick-pick__subtitle {
+  font-size: 0.72rem;
+  color: var(--bs-secondary-color);
 }
 
 .preset-preview-list {

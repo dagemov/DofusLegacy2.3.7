@@ -93,7 +93,7 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
                 });
         }
 
-        return Task.FromResult(_previewStateResolver.Resolve(itemId, iconId));
+        return Task.FromResult(_previewStateResolver.Resolve(itemId, iconId, typeId: null));
     }
 
     public Task<ItemAppearancePreviewStateDto> ResolveAppearancePreviewStateAsync(
@@ -294,7 +294,7 @@ public sealed class ItemsAdminWriteService : IItemsAdminWriteService
 
     private ItemWriteResultDto MapResult(AdminItemWriteRow row, string operation, AdminItemWriteDraft draft)
     {
-        var previewState = _previewStateResolver.Resolve(row.ItemId, row.IconId);
+        var previewState = _previewStateResolver.Resolve(row.ItemId, row.IconId, row.TypeId);
         var warnings = BuildWarnings(row, draft, previewState);
 
         return new ItemWriteResultDto(

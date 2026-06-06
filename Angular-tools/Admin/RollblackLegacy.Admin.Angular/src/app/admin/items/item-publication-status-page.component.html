@@ -19,6 +19,7 @@
 
   <app-api-problem-panel [problem]="problem"></app-api-problem-panel>
   <app-api-problem-panel [problem]="clientIdentityProblem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="manifestProblem"></app-api-problem-panel>
 
   <div *ngIf="isLoading" class="card admin-card border-0">
     <div class="card-body text-secondary">Auditando publicación cliente...</div>
@@ -127,6 +128,12 @@
         </div>
       </div>
     </div>
+
+    <app-publication-manifest-preview
+      *ngIf="manifest"
+      [manifest]="manifest"
+      [isLoading]="isLoadingManifest"
+      [problemTitle]="manifestProblem?.title ?? null"></app-publication-manifest-preview>
 
     <div class="row g-4">
       <div class="col-12 col-xl-6">

@@ -7,12 +7,14 @@ import {
   AdminOptionDto,
   ItemClientIdentityDto,
   ItemDetailDto,
+  ItemIconCategoryStatsDto,
   ItemIconOptionDto,
   ItemIconSearchRequest,
   ItemListItemDto,
   ItemPagedResultDto,
   ItemPreviewStateDto,
   ItemAppearancePreviewStateDto,
+  ItemPublicationManifestDto,
   ItemPublicationStatusDto,
   ItemQaSummaryDto,
   ItemSearchRequest,
@@ -21,9 +23,11 @@ import {
   AdminEffectOptionDto,
   ItemEffectsEditDto,
   ItemEffectsUpdateRequest,
-  ItemEffectsUpdateResultDto
+  ItemEffectsUpdateResultDto,
+  ItemSetDetailDto,
+  ItemSetListItemDto
 } from './items.models';
-import { toItemQueryParams } from './items.queries';
+import { toItemIconQueryParams, toItemQueryParams } from './items.queries';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +53,13 @@ export class ItemsApi {
     return this.httpClient.get<ItemPagedResultDto<ItemIconOptionDto>>(
       `${this.baseUrl}/item-icons`,
       {
-        params: toItemQueryParams(request)
+        params: toItemIconQueryParams(request)
       }
     );
+  }
+
+  getItemIconCategoryStats(): Observable<ItemIconCategoryStatsDto> {
+    return this.httpClient.get<ItemIconCategoryStatsDto>(`${this.baseUrl}/item-icons/category-stats`);
   }
 
   getItem(itemId: number): Observable<ItemDetailDto> {
@@ -72,12 +80,24 @@ export class ItemsApi {
     return this.httpClient.get<ItemPublicationStatusDto>(`${this.baseUrl}/items/${itemId}/publication-status`);
   }
 
+  getItemPublicationManifest(itemId: number): Observable<ItemPublicationManifestDto> {
+    return this.httpClient.get<ItemPublicationManifestDto>(`${this.baseUrl}/items/${itemId}/publication-manifest`);
+  }
+
   getTypeOptions(): Observable<AdminOptionDto[]> {
     return this.httpClient.get<AdminOptionDto[]>(`${this.baseUrl}/items/types/options`);
   }
 
   getItemSetOptions(): Observable<AdminOptionDto[]> {
     return this.httpClient.get<AdminOptionDto[]>(`${this.baseUrl}/item-sets/options`);
+  }
+
+  getItemSets(): Observable<ItemSetListItemDto[]> {
+    return this.httpClient.get<ItemSetListItemDto[]>(`${this.baseUrl}/item-sets`);
+  }
+
+  getItemSet(setId: number): Observable<ItemSetDetailDto> {
+    return this.httpClient.get<ItemSetDetailDto>(`${this.baseUrl}/item-sets/${setId}`);
   }
 
   getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
