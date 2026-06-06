@@ -2,32 +2,34 @@
 
 Documentación de combate del emulador Sunshine.
 
-## Macro Combat Sanitization
+## Disponible en esta rama
 
 | Documento | Contenido |
 | --- | --- |
-| [combat-system-audit.md](../combat-sanitization/combat-system-audit.md) | Auditoría comparativa Sunshine vs Rollback |
-| [combat-turn-flow-comparison.md](../combat-sanitization/combat-turn-flow-comparison.md) | Flujo de turnos y diferencias ReadyChecker |
-| [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md) | Plan de instrumentación |
-| [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md) | Telemetría JSONL Phase 2 |
-| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | Gate antes de Phase 3 |
-| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
-| [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz de pruebas VPS |
+| [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md) | Lab local temporal |
+| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | **Operaciones telemetría VPS** |
+| [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz 30–50 combates |
 
-## Lab y scripts
+Docs Phase 1/2/gate viven en `feature/combat-telemetry-phase2` (merge pendiente a `devp`).
+
+## Scripts
 
 ```txt
 infrastructure/artifacts/combat-health/
 ```
 
-Scripts: `run-local-combat-lab.ps1`, `enable-vps-combat-telemetry.ps1`, `disable-vps-combat-telemetry.ps1`, `collect-vps-combat-logs.ps1`, `analyze-combat-telemetry.ps1`
+| Script | Uso |
+| --- | --- |
+| `enable-vps-combat-telemetry.ps1` | Activar telemetría VPS (`-DryRun`) |
+| `disable-vps-combat-telemetry.ps1` | Desactivar |
+| `collect-vps-combat-logs.ps1` | Descargar JSONL + `-RunAnalyzer` |
+| `analyze-combat-telemetry.ps1` | `report.md` / `report.json` / `report.html` |
+| `run-local-combat-lab.ps1` | Lab local |
 
 ## Fases
 
 | Fase | Estado |
 | --- | --- |
-| 1 — Auditoría | **DONE** |
-| 2 — Telemetría baseline | **DONE** (código + analyzer) |
-| 2.5 — Gate logs reales | **ABIERTO** |
-| 2.6 — VPS telemetry ops | **EN CURSO** (scripts on/off) |
-| 3 — Turn Transition Fix | **BLOQUEADA** hasta evidencia |
+| Telemetría código + analyzer | **En rama sprint** (cherry-pick) |
+| VPS on/off scripts | **DONE** |
+| Gate logs reales / Phase 3 ReadyChecker | **BLOQUEADA** |
