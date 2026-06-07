@@ -414,19 +414,21 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             ContextHandler.SendGameFightTurnListMessage(Fight.Clients, Fight);
         }
 
-        public void EndTurn()
+        public void EndTurn(string source = "Unknown")
         {
             var currentFight = Fight;
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting || currentFight.FighterPlaying != this)
                 return;
 
+            if (!currentFight.TryBeginTurnEnd(this, source, out _))
+                return;
             CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this);
 
             FrigostBossMechanics.OnTurnEnded(this);
 
-            currentFight.Timer?.Stop();
-            currentFight.Timer?.Dispose();
-            currentFight.Timer = null;
+            CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this, detail: $"source={source}");
+
+            FrigostBossMechanics.OnTurnEnded(this);
 
             currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
             currentFight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_END);
@@ -447,36 +449,22 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight.CheckFightEnd())
                 return;
 
+            CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this, detail: $"source={source}");
             CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this);
             CombatTelemetry.LogTurnEvent("NextTurnRequested", currentFight, this);
             currentFight.FighterPlaying = currentFight.GetFighterPlaying();
             if (currentFight.FighterPlaying != null)
                 CombatTelemetry.LogTurnEvent("TurnOwner", currentFight, currentFight.FighterPlaying, detail: "source=EndTurn");
 
-            if (this is SlaveFighter controlledSlave && controlledSlave.IsControlledBySummoner() && !controlledSlave.MustAutoUnspawnAfterTurn)
-                controlledSlave.RestoreSummonerContext();
-
-            if (this is SlaveFighter autoUnspawnSlave && autoUnspawnSlave.MustAutoUnspawnAfterTurn && autoUnspawnSlave.IsAlive)
+            if (CombatReadyCheckerSettings.Enabled)
             {
-                autoUnspawnSlave.IsAutoUnspawning = true;
-                autoUnspawnSlave.Die(this);
-
-                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
-                    return;
+                var waiters = currentFight.GetAllFighters(x => x is CharacterFighter)
+                    .Cast<CharacterFighter>()
+                    .ToArray();
+                currentFight.Checker.Start(this, waiters);
             }
-            else if (this is SummonedMonster summonedMonster && summonedMonster.IsAlive)
-            {
-                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
-                    summonedMonster.Die(this);
-                else if (summonedMonster.DiesAtTurnEnd)
-                    summonedMonster.Die(this);
-
-                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
-                    return;
-            }
-
-            if (currentFight.FighterPlaying != null)
-                currentFight.FighterPlaying.StartTurn();
+            else
+                currentFight.TryAdvanceTurn("ReadyCheckerDisabled");
         }
 
         public void ShowCell(short cellId, bool team = true)

@@ -1,5 +1,8 @@
 # Deploy Gate — VPS Combat Telemetry
 
+**Rama:** `feature/combat-readychecker-phase3`  
+**Fecha deploy QA:** 2026-06-07  
+**Estado gate:** **PARTIAL** — ReadyChecker desplegado; puertos OK; telemetría ON; **smoke 5 combates pendiente** ([combat-readychecker-phase3-vps-qa.md](./combat-readychecker-phase3-vps-qa.md))
 **Rama:** `feature/items-sets-visibility-and-vps-combat-telemetry`  
 **Fecha:** 2026-06-06  
 **Estado gate:** **PARCIAL** — deploy + telemetría OK; login OK; **combates reales en curso**; collect/análisis **PENDING_POST_COMBAT**
@@ -15,6 +18,8 @@
 | Cliente conecta | **OK** (confirmado operador 2026-06-06) |
 | Combates reales → JSONL | **EN CURSO** (operador) |
 | Collect + analyzer local | **PENDING_POST_COMBAT** |
+| Phase 3 ReadyChecker deploy | **OK** (2026-06-07) |
+| Phase 3 QA smoke + métricas | **PENDIENTE** |
 | Phase 3 ReadyChecker | **BLOQUEADA** |
 
 ## Paso 1 — Preflight local
