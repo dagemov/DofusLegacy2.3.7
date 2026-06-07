@@ -2,6 +2,50 @@
 
 Generated: `2026-06-07`
 
+## Spell Builder Production Parity / Fase 2 - Effects Write Closure Spec
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base documental | `f729e8f docs: audit spell builder production parity risks` |
+| Estado | **`DONE`** |
+| Tipo de cambio | `solo documentacion` |
+
+### Entregables
+
+- Especificacion principal `docs/admin-tools/spell-builder/spell-builder-effects-write-closure-spec.md`
+- Plan de pruebas `docs/admin-tools/spell-builder/spell-builder-effects-roundtrip-test-plan.md`
+- Safety gates de editor `docs/admin-tools/spell-builder/spell-builder-effects-editor-safety-gates.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `LOCKED_BY_VS` |
+
+### Notas
+
+- La fase define la primera cobertura segura como `Dice-only`.
+- `effects` y `criticalEffects` deben seguir separados en toda futura API de write.
+- Glifos, trampas e invocaciones quedan bloqueados para la primera implementacion real.
+- La fase propone `preview/validate` antes de cualquier `PATCH` real.
+- No se aprobo migracion automatica entre `current-serialized-hex` y `legacy-binary`.
+- `StatesRequired` y `StatesForbidden` quedan fuera del write de effects.
+- Todo texto visible final de Angular Spell Builder debe quedar 100% en espanol.
+- `npm run build` paso con el warning conocido de budget inicial excedido por `1.51 kB`.
+- `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` no expone un error funcional de esta fase porque solo hubo documentacion; el fallo fue de copiado final por lock externo de Visual Studio.
+- DLLs bloqueadas durante `dotnet build`:
+  - `RollblackLegacy.Admin.Contracts.dll`
+  - `RollblackLegacy.Admin.Infrastructure.dll`
+  - `RollblackLegacy.Admin.Application.dll`
+- Proceso reportado por MSBuild: `Microsoft Visual Studio (14588), RollblackLegacy.Admin.Api (62476)`.
+- Durante el cierre reaparecieron cambios ajenos del pipeline de items; deben quedar fuera del commit de esta fase.
+
+### Siguiente
+
+- `Fase 3 - Backend Preview Contract for Dice-Only Spell Effects`
+
 ## Spell Builder Production Parity / Fase 1 - Risk Closure Audit
 
 | Campo | Valor |
@@ -32,7 +76,7 @@ Generated: `2026-06-07`
 - El stack actual mantiene catalogo, detalle, edicion parcial de levels y auditoria read-only de `effects`.
 - No existe write seguro de `effects` ni `criticalEffects` en API actual.
 - No existe pipeline actual de publicacion cliente de spells equivalente al pipeline moderno de items.
-- Se detectaron multiples textos visibles en ingles o spanglish en Angular Spell Builder; la UI final debe quedar 100% en español.
+- Se detectaron multiples textos visibles en ingles o spanglish en Angular Spell Builder; la UI final debe quedar 100% en espanol.
 - `dotnet build` compilo los proyectos relevantes pero fallo al copiar DLLs del Admin API porque Visual Studio mantiene lock sobre:
   - `RollblackLegacy.Admin.Contracts.dll`
   - `RollblackLegacy.Admin.Application.dll`
@@ -205,13 +249,13 @@ Generated: `2026-06-07`
 ### Entregables
 
 - Ruta Angular `admin/spells`
-- Página `spells-page.component` con catálogo read-only
+- Pagina `spells-page.component` con catalogo read-only
 - `SpellsApi`, `SpellsFacade`, `spells.models.ts`, `spells.queries.ts`
-- Integración del link `Spells` en el shell principal
+- Integracion del link `Spells` en el shell principal
 - Ruta placeholder `admin/spells/:spellId` para preparar Phase 7 sin abrir detalle real
-- Documentación `docs/admin-tools/spell-builder/spell-builder-phase6-angular-catalog.md`
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase6-angular-catalog.md`
 
-### Validación
+### Validacion
 
 | Check | Resultado |
 | --- | --- |
@@ -220,11 +264,11 @@ Generated: `2026-06-07`
 
 ### Notas
 
-- El Angular Admin usa standalone components y `loadComponent`, sin módulos por feature.
-- La configuración API sigue en `environment.adminApiBaseUrl = /api/admin/v1`.
-- Phase 6 no tocó backend, base de datos, cliente ni publicación.
-- La navegación a detalle quedó habilitada solo como placeholder; el detalle real sigue fuera de esta fase.
-- Los filtros implementados son `search`, `spellId`, `breedId`, `typeId`, paginación y `pageSize`.
+- El Angular Admin usa standalone components y `loadComponent`, sin modulos por feature.
+- La configuracion API sigue en `environment.adminApiBaseUrl = /api/admin/v1`.
+- Phase 6 no toco backend, base de datos, cliente ni publicacion.
+- La navegacion a detalle quedo habilitada solo como placeholder; el detalle real sigue fuera de esta fase.
+- Los filtros implementados son `search`, `spellId`, `breedId`, `typeId`, paginacion y `pageSize`.
 
 ### Siguiente
 
@@ -362,9 +406,9 @@ Generated: `2026-06-07`
 
 ### Entregables
 
-1. **Preview reconciliation** — `FileSystemItemPreviewStateResolver` + `ItemPreviewCategoryIndex` + fallback `BY_CATEGORY`; `typeId` en `Resolve()` para lista/detalle/sets.
-2. **Sets read UI** — `GET /api/admin/v1/item-sets`, `GET /api/admin/v1/item-sets/{setId}`; Angular `/admin/item-sets`, `/admin/item-sets/:setId`; bonos por piezas con labels de `item-effects/options`.
-3. **Stat icons** — `angular.json` publica `src/assets`; quick-picks con PNG reales y fallback emoji.
+1. **Preview reconciliation** - `FileSystemItemPreviewStateResolver` + `ItemPreviewCategoryIndex` + fallback `BY_CATEGORY`; `typeId` en `Resolve()` para lista/detalle/sets.
+2. **Sets read UI** - `GET /api/admin/v1/item-sets`, `GET /api/admin/v1/item-sets/{setId}`; Angular `/admin/item-sets`, `/admin/item-sets/:setId`; bonos por piezas con labels de `item-effects/options`.
+3. **Stat icons** - `angular.json` publica `src/assets`; quick-picks con PNG reales y fallback emoji.
 
 ### Validacion
 
@@ -373,7 +417,7 @@ Generated: `2026-06-07`
 | `dotnet build` Application | OK |
 | `dotnet build` Admin.Api | `FAILED_EXTERNAL_LOCK` si VS ejecuta `RollblackLegacy.Admin.Api` |
 | `npm run build` | OK (warning budget +1.13 kB) |
-| Browser QA | `PENDING_OPERATOR` — ver rutas abajo |
+| Browser QA | `PENDING_OPERATOR` - ver rutas abajo |
 
 ### Browser QA (operador)
 
@@ -421,4 +465,4 @@ feature/spell-builder-api-migration
 
 ## Macro 4 / Phase 6D (referencia)
 
-**`DONE`** — 1916 PNG `by-category/`, manifest `categoryStats`. Ver handoff previo en historial git de este archivo.
+**`DONE`** - 1916 PNG `by-category/`, manifest `categoryStats`. Ver handoff previo en historial git de este archivo.
