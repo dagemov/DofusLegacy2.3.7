@@ -36,7 +36,8 @@ try {
         foreach ($f in $Files) {
             $remote = "$RemotePath/$f"
             # -O forces the legacy SCP protocol; the SFTP protocol intermittently stalls on large files.
-            & scp -O @sshBase $f "${sshTarget}:$remote"
+            # Legacy protocol passes the remote path through a shell, so quote it (paths contain spaces).
+            & scp -O @sshBase $f "${sshTarget}:'$remote'"
             if ($LASTEXITCODE -ne 0) { throw "scp failed for $f" }
         }
         Write-Output "SYNC_OK"
