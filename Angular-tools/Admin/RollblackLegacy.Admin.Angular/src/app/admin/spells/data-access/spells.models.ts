@@ -44,6 +44,127 @@ export interface SpellCatalogItemDto {
   referenceAvailable: boolean;
 }
 
+export interface SpellReferenceMetadataDto {
+  sourceDescription: string;
+  name?: string | null;
+  description?: string | null;
+  nameId?: number | null;
+  descriptionId?: number | null;
+  typeId: number;
+  typeLabel?: string | null;
+  iconId?: number | null;
+  breedIds: number[];
+  levelCount: number;
+}
+
+export interface SpellLevelSummaryDto {
+  levelNumber: number;
+  runtimeLevelId?: number | null;
+  referenceLevelId?: number | null;
+  minPlayerLevel: number;
+  apCost: number;
+  minRange: number;
+  maxRange: number;
+  castInLine: boolean;
+  castTestLos: boolean;
+  needFreeCell: boolean;
+  rangeCanBeBoosted: boolean;
+  criticalFailureEndsTurn: boolean;
+  criticalHitProbability: number;
+  criticalFailureProbability: number;
+  maxCastPerTurn: number;
+  maxCastPerTarget: number;
+  minCastInterval: number;
+  statesRequired: number[];
+  statesForbidden: number[];
+  hasEffects: boolean;
+  hasCriticalEffects: boolean;
+  runtimeAvailable: boolean;
+  referenceAvailable: boolean;
+}
+
+export interface SpellLevelDetailDto {
+  levelNumber: number;
+  runtimeLevelId?: number | null;
+  referenceLevelId?: number | null;
+  minPlayerLevel: number;
+  apCost: number;
+  minRange: number;
+  maxRange: number;
+  castInLine: boolean;
+  castInDiagonal: boolean;
+  castTestLos: boolean;
+  needFreeCell: boolean;
+  needTakenCell: boolean;
+  rangeCanBeBoosted: boolean;
+  criticalFailureEndsTurn: boolean;
+  criticalHitProbability: number;
+  criticalFailureProbability: number;
+  maxCastPerTurn: number;
+  maxCastPerTarget: number;
+  minCastInterval: number;
+  initialCooldown: number;
+  statesRequired: number[];
+  statesForbidden: number[];
+  hasEffects: boolean;
+  hasCriticalEffects: boolean;
+  runtimeAvailable: boolean;
+  referenceAvailable: boolean;
+}
+
+export interface SpellDetailDto {
+  spellId: number;
+  name?: string | null;
+  description?: string | null;
+  typeId?: number | null;
+  typeLabel?: string | null;
+  iconId?: number | null;
+  breeds: SpellBreedSummaryDto[];
+  levelCount: number;
+  runtimeAvailable: boolean;
+  referenceAvailable: boolean;
+  reference?: SpellReferenceMetadataDto | null;
+  levels: SpellLevelSummaryDto[];
+}
+
+export interface SpellEffectRowDto {
+  rowIndex: number;
+  effectId: number;
+  label: string;
+  protocolName: string;
+  group: string;
+  operatorMode: string;
+  value: number;
+  minValue: number;
+  maxValue: number;
+  delay?: number | null;
+  random?: number | null;
+  duration: number;
+  targetType: number;
+  zoneShape: number;
+  zoneMinSize: number;
+  zoneSize: number;
+  previewText: string;
+}
+
+export interface SpellEffectCollectionDto {
+  runtimeAvailable: boolean;
+  referenceAvailable: boolean;
+  runtimeSource?: string | null;
+  referenceSource?: string | null;
+  runtimeRows: SpellEffectRowDto[];
+  referenceRows: SpellEffectRowDto[];
+  runtimeWarnings: string[];
+  referenceWarnings: string[];
+}
+
+export interface SpellLevelEffectsDto {
+  spellId: number;
+  levelNumber: number;
+  effects: SpellEffectCollectionDto;
+  criticalEffects: SpellEffectCollectionDto;
+}
+
 export function createEmptySpellSearchRequest(): SpellSearchRequest {
   return {
     page: 1,

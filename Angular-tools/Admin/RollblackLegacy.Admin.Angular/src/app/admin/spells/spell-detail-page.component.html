@@ -1,26 +1,600 @@
-<section class="d-grid gap-4" *ngIf="spellId as currentSpellId">
+<section class="d-grid gap-4">
   <div class="card admin-card border-0">
     <div class="card-body">
-      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/spells">Volver a spells</a>
-      <p class="text-uppercase small fw-semibold text-secondary mb-2">Spell {{ currentSpellId }}</p>
-      <h2 class="h4 mb-2">Detalle pendiente de Phase 7</h2>
-      <p class="text-secondary mb-0">
-        La navegacion desde el catalogo ya esta habilitada, pero el detalle completo del Spell Builder
-        se implementa en la siguiente fase para no mezclar niveles, efectos ni edicion en este commit.
-      </p>
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+        <div>
+          <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/spells">Volver a spells</a>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">
+            Spell Builder / Detail
+          </p>
+          <h2 class="h4 mb-1">{{ formatSpellName(detail) }}</h2>
+          <p class="text-secondary mb-0">
+            Port read-only del detalle legacy: identidad principal, referencia opcional, selector de
+            niveles y lectura diferida de effects por nivel.
+          </p>
+        </div>
+
+        <div *ngIf="detail as currentDetail" class="d-flex flex-wrap gap-2 justify-content-lg-end">
+          <span
+            class="badge"
+            [class.text-bg-success]="currentDetail.runtimeAvailable"
+            [class.text-bg-secondary]="!currentDetail.runtimeAvailable">
+            Runtime {{ currentDetail.runtimeAvailable ? 'OK' : 'No' }}
+          </span>
+          <span
+            class="badge"
+            [class.text-bg-info]="currentDetail.referenceAvailable"
+            [class.text-bg-secondary]="!currentDetail.referenceAvailable">
+            Referencia {{ currentDetail.referenceAvailable ? 'OK' : 'No' }}
+          </span>
+          <span class="badge text-bg-light border">SpellId {{ currentDetail.spellId }}</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="card admin-card border-0">
-    <div class="card-body">
-      <h3 class="h5 mb-2">Alcance actual</h3>
-      <ul class="mb-0 ps-3">
-        <li>Catalogo Angular listo en <span class="font-monospace-soft">/admin/spells</span>.</li>
-        <li>Navegacion al spell seleccionada preservada para el operador.</li>
-        <li>Detalle, niveles y effects quedan diferidos a Phase 7 y siguientes.</li>
-      </ul>
+  <app-api-problem-panel [problem]="detailProblem"></app-api-problem-panel>
+  <app-api-problem-panel [problem]="levelsProblem"></app-api-problem-panel>
+
+  <div *ngIf="isLoadingDetail || isLoadingLevels" class="card admin-card border-0">
+    <div class="card-body text-secondary">
+      {{ isLoadingDetail ? 'Cargando detalle del spell...' : 'Cargando niveles del spell...' }}
+    </div>
+  </div>
+
+  <div *ngIf="detail as currentDetail" class="row g-4">
+    <div class="col-12 col-xl-8 d-grid gap-4">
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-3">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Identidad runtime</p>
+              <h3 class="h5 mb-1">{{ formatSpellName(currentDetail) }}</h3>
+              <p class="text-secondary mb-0">{{ formatDescription(currentDetail.description) }}</p>
+            </div>
+            <div class="alert alert-light border mb-0 spell-icon-note">
+              <strong>IconId:</strong> {{ currentDetail.iconId ?? 'Sin dato' }}<br />
+              <span class="small text-secondary">No se inventa sprite si el respaldo visual no es estable.</span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <div class="border rounded p-3 h-100">
+                <div class="small text-uppercase text-secondary fw-semibold mb-2">Clasificacion</div>
+                <div><strong>TypeLabel:</strong> {{ currentDetail.typeLabel || 'Sin dato' }}</div>
+                <div><strong>TypeId:</strong> {{ currentDetail.typeId ?? 'Sin dato' }}</div>
+                <div><strong>Clases:</strong> {{ formatBreeds(currentDetail.breeds) }}</div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="border rounded p-3 h-100">
+                <div class="small text-uppercase text-secondary fw-semibold mb-2">Cobertura</div>
+                <div><strong>Niveles:</strong> {{ currentDetail.levelCount }}</div>
+                <div><strong>Runtime:</strong> {{ formatBooleanFlag(currentDetail.runtimeAvailable) }}</div>
+                <div><strong>Referencia:</strong> {{ formatBooleanFlag(currentDetail.referenceAvailable) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-3">
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
+            <div>
+              <p class="text-uppercase small fw-semibold text-secondary mb-1">Niveles</p>
+              <h3 class="h5 mb-0">Resumen read-only por nivel</h3>
+            </div>
+            <span class="text-secondary small">
+              {{ levels.length }} nivel(es) cargado(s)
+            </span>
+          </div>
+
+          <div *ngIf="levels.length > 0; else noLevelsState" class="d-grid gap-3">
+            <div class="level-pill-wrap">
+              <button
+                *ngFor="let level of levels; trackBy: trackByLevelNumber"
+                type="button"
+                class="level-pill"
+                [class.selected]="selectedLevelNumber === level.levelNumber"
+                (click)="selectLevel(level.levelNumber)">
+                <strong>Nivel {{ level.levelNumber }}</strong>
+                <small>{{ buildLevelPillSummary(level) }}</small>
+              </button>
+            </div>
+
+            <section *ngIf="selectedLevel as activeLevel" class="border rounded p-3 d-grid gap-3">
+              <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+                <div>
+                  <h4 class="h6 mb-1">Nivel {{ activeLevel.levelNumber }}</h4>
+                  <p class="text-secondary mb-0">
+                    RuntimeLevelId {{ activeLevel.runtimeLevelId ?? 'Sin dato' }} |
+                    ReferenceLevelId {{ activeLevel.referenceLevelId ?? 'Sin dato' }}
+                  </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span
+                    class="badge"
+                    [class.text-bg-success]="activeLevel.runtimeAvailable"
+                    [class.text-bg-secondary]="!activeLevel.runtimeAvailable">
+                    Runtime {{ activeLevel.runtimeAvailable ? 'OK' : 'No' }}
+                  </span>
+                  <span
+                    class="badge"
+                    [class.text-bg-info]="activeLevel.referenceAvailable"
+                    [class.text-bg-secondary]="!activeLevel.referenceAvailable">
+                    Referencia {{ activeLevel.referenceAvailable ? 'OK' : 'No' }}
+                  </span>
+                  <span
+                    class="badge"
+                    [class.text-bg-primary]="activeLevel.hasEffects"
+                    [class.text-bg-secondary]="!activeLevel.hasEffects">
+                    Effects {{ activeLevel.hasEffects ? 'Si' : 'No' }}
+                  </span>
+                  <span
+                    class="badge"
+                    [class.text-bg-warning]="activeLevel.hasCriticalEffects"
+                    [class.text-bg-secondary]="!activeLevel.hasCriticalEffects">
+                    Criticos {{ activeLevel.hasCriticalEffects ? 'Si' : 'No' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>AP Cost</span>
+                    <strong>{{ activeLevel.apCost }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Min Player Level</span>
+                    <strong>{{ activeLevel.minPlayerLevel }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Rango</span>
+                    <strong>{{ activeLevel.minRange }} - {{ activeLevel.maxRange }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Initial Cooldown</span>
+                    <strong>{{ activeLevel.initialCooldown }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Min Cast Interval</span>
+                    <strong>{{ activeLevel.minCastInterval }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Max Cast Per Turn</span>
+                    <strong>{{ activeLevel.maxCastPerTurn }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Max Cast Per Target</span>
+                    <strong>{{ activeLevel.maxCastPerTarget }}</strong>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-xl-3">
+                  <div class="stat-card">
+                    <span>Critico / Falla</span>
+                    <strong>{{ activeLevel.criticalHitProbability }} / {{ activeLevel.criticalFailureProbability }}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-12 col-lg-7">
+                  <div class="border rounded p-3 h-100">
+                    <div class="small text-uppercase text-secondary fw-semibold mb-2">Flags</div>
+                    <div class="flag-grid">
+                      <div class="flag-row">
+                        <span>lineOfSight</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.castTestLos) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>castInLine</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.castInLine) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>castInDiagonal</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.castInDiagonal) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>needFreeCell</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.needFreeCell) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>needTakenCell</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.needTakenCell) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>rangeCanBeBoosted</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.rangeCanBeBoosted) }}</strong>
+                      </div>
+                      <div class="flag-row">
+                        <span>criticalFailureEndsTurn</span>
+                        <strong>{{ formatBooleanFlag(activeLevel.criticalFailureEndsTurn) }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-5">
+                  <div class="border rounded p-3 h-100 d-grid gap-3">
+                    <div>
+                      <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados requeridos</div>
+                      <div class="text-secondary" *ngIf="activeLevel.statesRequired.length === 0">
+                        Este nivel no exige estados previos.
+                      </div>
+                      <div class="chip-wrap" *ngIf="activeLevel.statesRequired.length > 0">
+                        <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesRequired">
+                          {{ stateId }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados prohibidos</div>
+                      <div class="text-secondary" *ngIf="activeLevel.statesForbidden.length === 0">
+                        Este nivel no bloquea estados concretos.
+                      </div>
+                      <div class="chip-wrap" *ngIf="activeLevel.statesForbidden.length > 0">
+                        <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesForbidden">
+                          {{ stateId }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 border-top pt-3">
+                <div class="text-secondary small">
+                  Esta fase mantiene niveles y effects en modo solo lectura.
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="toggleEffects(activeLevel.levelNumber)"
+                    [disabled]="isEffectsLoading(activeLevel.levelNumber)">
+                    {{
+                      isEffectsExpanded(activeLevel.levelNumber)
+                        ? 'Ocultar effects'
+                        : 'Ver effects por nivel'
+                    }}
+                  </button>
+                  <button
+                    *ngIf="isEffectsExpanded(activeLevel.levelNumber)"
+                    class="btn btn-outline-primary"
+                    type="button"
+                    (click)="reloadEffects(activeLevel.levelNumber)"
+                    [disabled]="isEffectsLoading(activeLevel.levelNumber)">
+                    Recargar effects
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="isEffectsExpanded(activeLevel.levelNumber)" class="d-grid gap-3">
+                <app-api-problem-panel [problem]="getEffectsProblem(activeLevel.levelNumber)"></app-api-problem-panel>
+
+                <div *ngIf="isEffectsLoading(activeLevel.levelNumber)" class="alert alert-light border mb-0">
+                  Cargando effects del nivel {{ activeLevel.levelNumber }}...
+                </div>
+
+                <div
+                  *ngIf="!isEffectsLoading(activeLevel.levelNumber) && selectedLevelEffects as effects"
+                  class="d-grid gap-3">
+                  <div class="card border-0 bg-body-tertiary">
+                    <div class="card-body d-grid gap-3">
+                      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
+                        <div>
+                          <p class="text-uppercase small fw-semibold text-secondary mb-1">Effects</p>
+                          <h5 class="h6 mb-0">Lectura read-only de efectos normales</h5>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                          <span
+                            class="badge"
+                            [class.text-bg-success]="effects.effects.runtimeAvailable"
+                            [class.text-bg-secondary]="!effects.effects.runtimeAvailable">
+                            Runtime {{ effects.effects.runtimeAvailable ? 'OK' : 'No' }}
+                          </span>
+                          <span
+                            class="badge"
+                            [class.text-bg-info]="effects.effects.referenceAvailable"
+                            [class.text-bg-secondary]="!effects.effects.referenceAvailable">
+                            Referencia {{ effects.effects.referenceAvailable ? 'OK' : 'No' }}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="row g-3">
+                        <div class="col-12 col-xl-6">
+                          <div class="border rounded p-3 h-100">
+                            <div class="d-flex justify-content-between gap-2 mb-2">
+                              <strong>Runtime rows</strong>
+                              <span class="small text-secondary">{{ effects.effects.runtimeRows.length }} fila(s)</span>
+                            </div>
+                            <div class="small text-secondary mb-2">
+                              Fuente: {{ effects.effects.runtimeSource || 'Sin dato' }}
+                            </div>
+                            <div class="warning-list" *ngIf="effects.effects.runtimeWarnings.length > 0">
+                              <div class="small text-warning" *ngFor="let warning of effects.effects.runtimeWarnings">
+                                {{ warning }}
+                              </div>
+                            </div>
+                            <div class="table-responsive" *ngIf="effects.effects.runtimeRows.length > 0; else noRuntimeEffectsRows">
+                              <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>EffectId</th>
+                                    <th>Label</th>
+                                    <th>Valor</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let row of effects.effects.runtimeRows; trackBy: trackByEffectRow">
+                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
+                                    <td>{{ row.label }}</td>
+                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
+                                    <td>{{ row.previewText }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <ng-template #noRuntimeEffectsRows>
+                              <div class="text-secondary small">Sin filas runtime visibles para este bucket.</div>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-xl-6">
+                          <div class="border rounded p-3 h-100">
+                            <div class="d-flex justify-content-between gap-2 mb-2">
+                              <strong>Reference rows</strong>
+                              <span class="small text-secondary">{{ effects.effects.referenceRows.length }} fila(s)</span>
+                            </div>
+                            <div class="small text-secondary mb-2">
+                              Fuente: {{ effects.effects.referenceSource || 'Sin dato' }}
+                            </div>
+                            <div class="warning-list" *ngIf="effects.effects.referenceWarnings.length > 0">
+                              <div class="small text-warning" *ngFor="let warning of effects.effects.referenceWarnings">
+                                {{ warning }}
+                              </div>
+                            </div>
+                            <div class="table-responsive" *ngIf="effects.effects.referenceRows.length > 0; else noReferenceEffectsRows">
+                              <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>EffectId</th>
+                                    <th>Label</th>
+                                    <th>Valor</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let row of effects.effects.referenceRows; trackBy: trackByEffectRow">
+                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
+                                    <td>{{ row.label }}</td>
+                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
+                                    <td>{{ row.previewText }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <ng-template #noReferenceEffectsRows>
+                              <div class="text-secondary small">Sin filas de referencia visibles para este bucket.</div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card border-0 bg-body-tertiary">
+                    <div class="card-body d-grid gap-3">
+                      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
+                        <div>
+                          <p class="text-uppercase small fw-semibold text-secondary mb-1">Critical Effects</p>
+                          <h5 class="h6 mb-0">Lectura read-only de efectos criticos</h5>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                          <span
+                            class="badge"
+                            [class.text-bg-success]="effects.criticalEffects.runtimeAvailable"
+                            [class.text-bg-secondary]="!effects.criticalEffects.runtimeAvailable">
+                            Runtime {{ effects.criticalEffects.runtimeAvailable ? 'OK' : 'No' }}
+                          </span>
+                          <span
+                            class="badge"
+                            [class.text-bg-info]="effects.criticalEffects.referenceAvailable"
+                            [class.text-bg-secondary]="!effects.criticalEffects.referenceAvailable">
+                            Referencia {{ effects.criticalEffects.referenceAvailable ? 'OK' : 'No' }}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="row g-3">
+                        <div class="col-12 col-xl-6">
+                          <div class="border rounded p-3 h-100">
+                            <div class="d-flex justify-content-between gap-2 mb-2">
+                              <strong>Runtime rows</strong>
+                              <span class="small text-secondary">{{ effects.criticalEffects.runtimeRows.length }} fila(s)</span>
+                            </div>
+                            <div class="small text-secondary mb-2">
+                              Fuente: {{ effects.criticalEffects.runtimeSource || 'Sin dato' }}
+                            </div>
+                            <div class="warning-list" *ngIf="effects.criticalEffects.runtimeWarnings.length > 0">
+                              <div class="small text-warning" *ngFor="let warning of effects.criticalEffects.runtimeWarnings">
+                                {{ warning }}
+                              </div>
+                            </div>
+                            <div class="table-responsive" *ngIf="effects.criticalEffects.runtimeRows.length > 0; else noRuntimeCriticalRows">
+                              <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>EffectId</th>
+                                    <th>Label</th>
+                                    <th>Valor</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let row of effects.criticalEffects.runtimeRows; trackBy: trackByEffectRow">
+                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
+                                    <td>{{ row.label }}</td>
+                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
+                                    <td>{{ row.previewText }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <ng-template #noRuntimeCriticalRows>
+                              <div class="text-secondary small">Sin filas runtime visibles para criticos.</div>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-xl-6">
+                          <div class="border rounded p-3 h-100">
+                            <div class="d-flex justify-content-between gap-2 mb-2">
+                              <strong>Reference rows</strong>
+                              <span class="small text-secondary">{{ effects.criticalEffects.referenceRows.length }} fila(s)</span>
+                            </div>
+                            <div class="small text-secondary mb-2">
+                              Fuente: {{ effects.criticalEffects.referenceSource || 'Sin dato' }}
+                            </div>
+                            <div class="warning-list" *ngIf="effects.criticalEffects.referenceWarnings.length > 0">
+                              <div class="small text-warning" *ngFor="let warning of effects.criticalEffects.referenceWarnings">
+                                {{ warning }}
+                              </div>
+                            </div>
+                            <div class="table-responsive" *ngIf="effects.criticalEffects.referenceRows.length > 0; else noReferenceCriticalRows">
+                              <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th>EffectId</th>
+                                    <th>Label</th>
+                                    <th>Valor</th>
+                                    <th>Preview</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let row of effects.criticalEffects.referenceRows; trackBy: trackByEffectRow">
+                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
+                                    <td>{{ row.label }}</td>
+                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
+                                    <td>{{ row.previewText }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <ng-template #noReferenceCriticalRows>
+                              <div class="text-secondary small">Sin filas de referencia visibles para criticos.</div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  *ngIf="
+                    !isEffectsLoading(activeLevel.levelNumber) &&
+                    !selectedLevelEffects &&
+                    !getEffectsProblem(activeLevel.levelNumber)
+                  "
+                  class="alert alert-light border mb-0">
+                  El nivel {{ activeLevel.levelNumber }} no devolvio payload de effects visible.
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <ng-template #noLevelsState>
+          <div class="alert alert-light border mb-0">
+            No se encontraron niveles runtime ni de referencia para este spell.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4 d-grid gap-4">
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-3">
+          <div>
+            <p class="text-uppercase small fw-semibold text-secondary mb-1">Referencia sana</p>
+            <h3 class="h5 mb-0">Metadata de referencia</h3>
+          </div>
+
+          <div *ngIf="currentDetail.reference as reference; else noReferenceState" class="d-grid gap-3">
+            <div class="border rounded p-3">
+              <div class="small text-uppercase text-secondary fw-semibold mb-2">Fuente</div>
+              <div>{{ reference.sourceDescription }}</div>
+            </div>
+
+            <div class="border rounded p-3">
+              <div class="small text-uppercase text-secondary fw-semibold mb-2">Identidad</div>
+              <div><strong>Name:</strong> {{ reference.name || 'Sin dato' }}</div>
+              <div><strong>Description:</strong> {{ reference.description || 'Sin dato' }}</div>
+              <div><strong>NameId:</strong> {{ reference.nameId ?? 'Sin dato' }}</div>
+              <div><strong>DescriptionId:</strong> {{ reference.descriptionId ?? 'Sin dato' }}</div>
+            </div>
+
+            <div class="border rounded p-3">
+              <div class="small text-uppercase text-secondary fw-semibold mb-2">Clasificacion</div>
+              <div><strong>TypeLabel:</strong> {{ reference.typeLabel || 'Sin dato' }}</div>
+              <div><strong>TypeId:</strong> {{ reference.typeId }}</div>
+              <div><strong>IconId:</strong> {{ reference.iconId ?? 'Sin dato' }}</div>
+              <div><strong>Clases:</strong> {{ formatReferenceBreeds() }}</div>
+              <div><strong>LevelCount:</strong> {{ reference.levelCount }}</div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noReferenceState>
+          <div class="card-body">
+            <div class="alert alert-light border mb-0">
+              No hay metadata de referencia disponible en este entorno. El detalle sigue funcionando
+              con runtime si el contrato lo resuelve.
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="card admin-card border-0">
+        <div class="card-body d-grid gap-3">
+          <div>
+            <p class="text-uppercase small fw-semibold text-secondary mb-1">Contexto operativo</p>
+            <h3 class="h5 mb-0">Reglas de esta fase</h3>
+          </div>
+
+          <div class="border rounded p-3">
+            <div><strong>Ruta:</strong> /admin/spells/{{ currentDetail.spellId }}</div>
+            <div><strong>Contrato principal:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}</div>
+            <div><strong>Niveles enriquecidos:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}/levels</div>
+            <div><strong>Effects por nivel:</strong> lectura bajo demanda</div>
+          </div>
+
+          <div class="alert alert-light border mb-0">
+            Phase 7 solo visualiza detalle, niveles y effects read-only. La edicion de niveles y de
+            effects sigue diferida.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
-<app-api-problem-panel [problem]="problem"></app-api-problem-panel>

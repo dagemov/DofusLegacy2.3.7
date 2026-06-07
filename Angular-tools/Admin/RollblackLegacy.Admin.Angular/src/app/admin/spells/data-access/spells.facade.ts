@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { SpellCatalogItemDto, SpellPagedResultDto, SpellSearchRequest } from './spells.models';
+import {
+  SpellCatalogItemDto,
+  SpellDetailDto,
+  SpellLevelDetailDto,
+  SpellLevelEffectsDto,
+  SpellPagedResultDto,
+  SpellSearchRequest
+} from './spells.models';
 import { SpellsApi } from './spells.api';
 
 @Injectable({
@@ -14,5 +21,17 @@ export class SpellsFacade {
     request: SpellSearchRequest
   ): Observable<SpellPagedResultDto<SpellCatalogItemDto>> {
     return this.spellsApi.getSpells(request);
+  }
+
+  getSpell(spellId: number): Observable<SpellDetailDto> {
+    return this.spellsApi.getSpell(spellId);
+  }
+
+  getSpellLevels(spellId: number): Observable<SpellLevelDetailDto[]> {
+    return this.spellsApi.getSpellLevels(spellId);
+  }
+
+  getSpellLevelEffects(spellId: number, levelNumber: number): Observable<SpellLevelEffectsDto> {
+    return this.spellsApi.getSpellLevelEffects(spellId, levelNumber);
   }
 }

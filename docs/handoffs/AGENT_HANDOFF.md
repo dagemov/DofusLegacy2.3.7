@@ -2,6 +2,43 @@
 
 Generated: `2026-06-06`
 
+## Macro 5 / Phase 7 - Angular Detail
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `d2e5cf1 feat: add angular spell catalog` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- Reemplazo del placeholder `admin/spells/:spellId` por vista real read-only
+- `SpellsApi` y `SpellsFacade` ampliados con `getSpell`, `getSpellLevels` y `getSpellLevelEffects`
+- Contratos TypeScript de detalle, niveles y effects en `spells.models.ts`
+- Selector visual de niveles con detalle activo read-only
+- Carga diferida de `effects` y `criticalEffects` por nivel
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase7-angular-detail.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+
+### Notas
+
+- La pantalla usa `GET /api/admin/v1/spells/{spellId}` como contrato principal para cabecera y referencia.
+- Para mostrar `castInDiagonal`, `needTakenCell` e `initialCooldown` se apoya tambien en `GET /api/admin/v1/spells/{spellId}/levels`.
+- `GET /api/admin/v1/spells/{spellId}/levels/{levelNumber}/effects` se consume solo bajo demanda al abrir un nivel.
+- Toda la fase se mantiene read-only: sin editor de niveles, sin editor de effects y sin write de effects.
+- Si la referencia no existe en el entorno, la pantalla mantiene un estado claro y no rompe la vista.
+
+### Siguiente
+
+- Macro 5 / Phase 8 - Spell Level Editor
+- Alcance esperado: habilitar escritura de campos de nivel ya soportados por `PATCH`, manteniendo los effects fuera de la fase
+
 ## Macro 5 / Phase 6 - Angular Catalog
 
 | Campo | Valor |

@@ -3,7 +3,14 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
-import { SpellCatalogItemDto, SpellPagedResultDto, SpellSearchRequest } from './spells.models';
+import {
+  SpellCatalogItemDto,
+  SpellDetailDto,
+  SpellLevelDetailDto,
+  SpellLevelEffectsDto,
+  SpellPagedResultDto,
+  SpellSearchRequest
+} from './spells.models';
 import { toSpellQueryParams } from './spells.queries';
 
 @Injectable({
@@ -21,6 +28,20 @@ export class SpellsApi {
       {
         params: toSpellQueryParams(request)
       }
+    );
+  }
+
+  getSpell(spellId: number): Observable<SpellDetailDto> {
+    return this.httpClient.get<SpellDetailDto>(`${this.baseUrl}/spells/${spellId}`);
+  }
+
+  getSpellLevels(spellId: number): Observable<SpellLevelDetailDto[]> {
+    return this.httpClient.get<SpellLevelDetailDto[]>(`${this.baseUrl}/spells/${spellId}/levels`);
+  }
+
+  getSpellLevelEffects(spellId: number, levelNumber: number): Observable<SpellLevelEffectsDto> {
+    return this.httpClient.get<SpellLevelEffectsDto>(
+      `${this.baseUrl}/spells/${spellId}/levels/${levelNumber}/effects`
     );
   }
 }
