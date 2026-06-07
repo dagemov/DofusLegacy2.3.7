@@ -3,7 +3,7 @@
 **Actualizado:** 2026-06-06  
 **Estado gate telemetría:** **CERRADO** — evidencia baseline capturada  
 **Estado Phase 3 código:** **IMPLEMENTADO** en `feature/combat-readychecker-phase3`  
-**Estado Phase 3 QA VPS:** **PENDIENTE OPERADOR**
+**Estado Phase 3 QA VPS:** **PARTIAL** — deploy OK 2026-06-07; smoke pendiente ([combat-readychecker-phase3-vps-qa.md](./combat-readychecker-phase3-vps-qa.md))
 
 ## Baseline (sesión 2026-06-06)
 
