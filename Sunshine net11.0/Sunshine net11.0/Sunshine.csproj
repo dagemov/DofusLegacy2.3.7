@@ -95,6 +95,7 @@
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterPaddockBootstrap.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\AccountVipBootstrap.cs" />
+		<Compile Include="Sunshine.MySql\Database\Managers\CharacterDopeulBootstrap.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\DungeonManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\GuildManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\HouseTableBootstrap.cs" />
@@ -292,6 +293,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Npc.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\AddItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\CinematicReply.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\DopeulReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\EndDialogReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\HasItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\LearnJobReply.cs" />
@@ -371,6 +373,7 @@
 		<Compile Include="Sunshine.MySql\Database\World\Breeds\Breed.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Breeds\BreedSpell.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterAlignmentRecord.cs" />
+		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterDopeulCooldown.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterSpellRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterStatsRecord.cs" />

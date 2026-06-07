@@ -53,6 +53,11 @@ namespace Sunshine.WorldServer.Game.Fights.Types
 
         public MonsterGroup SourceMonsterGroup { get; set; }
 
+        // Combate contra Dopeul: cuando se activa, la victoria entrega Doplones.
+        public bool IsDopeulFight { get; set; }
+
+        public int DopeulMonsterId { get; set; }
+
         public override FightCommonInformations GetFightCommonInformations
             => new FightCommonInformations(Id, (sbyte)Type, new List<FightTeamInformations> { Team.GetFightTeamInformations(true), Team.GetFightTeamInformations() },
                 new List<short>() { Team.BladePosition(true), Team.BladePosition() }, new List<FightOptionsInformations>() { Team.GetFightOptionsInformations(true), Team.GetFightOptionsInformations(false) });

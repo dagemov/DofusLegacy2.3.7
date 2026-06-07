@@ -185,7 +185,67 @@ namespace Sunshine.WorldServer.Game.Fights.Results
                         }
                     }
                 }
+
+                AddDopeulDoplons(fighter);
             }
+        }
+
+        private static readonly Dictionary<int, int> DoplonByMonsterId = new Dictionary<int, int>
+        {
+            { 160, 10306 }, // Feca
+            { 161, 10308 }, // Osamodas
+            { 162, 10305 }, // Enutrof
+            { 163, 10312 }, // Sram
+            { 164, 10313 }, // Xelor
+            { 165, 10303 }, // Ecaflip
+            { 166, 10304 }, // Eniripsa
+            { 167, 10307 }, // Iop
+            { 168, 10302 }, // Cra
+            { 169, 10311 }, // Sadida
+            { 455, 10310 }, // Sacrieur
+            { 969, 10309 }, // Pandawa
+            { 3131, 12148 }, // Tymador
+            { 3132, 12239 }, // Zobal
+        };
+
+        private void AddDopeulDoplons(CharacterFighter fighter)
+        {
+            if (!(_fight is FightPvM pvmFight) || !pvmFight.IsDopeulFight)
+                return;
+
+            if (!DoplonByMonsterId.TryGetValue(pvmFight.DopeulMonsterId, out int doplonItemId))
+                return;
+
+            int quantity = GetDopeulRewardQuantity();
+
+            var doplonItem = ItemManager.Instance.CreatePlayerItem(doplonItemId, quantity);
+            if (doplonItem == null)
+                return;
+
+            fighter.Character.Inventory.AddItem(doplonItem, quantity);
+            fighter.FightLoot.AddItem(doplonItemId, quantity);
+            fighter.Character.SendServerMessage($"¡Felicidades! Has ganado {quantity} Doplon(es).");
+        }
+
+        private int GetDopeulRewardQuantity()
+        {
+            var dopeul = _monsters.OfType<MonsterFighter>().FirstOrDefault();
+
+            if (dopeul == null)
+                return 1;
+
+            int level = dopeul.Level;
+
+            if (level >= 200) return 17;
+            if (level >= 180) return 14;
+            if (level >= 160) return 12;
+            if (level >= 140) return 10;
+            if (level >= 120) return 8;
+            if (level >= 100) return 6;
+            if (level >= 80) return 5;
+            if (level >= 60) return 3;
+            if (level >= 40) return 2;
+            return 1;
         }
 
         private void AddEarnedKamas(CharacterFighter fighter)
