@@ -171,7 +171,16 @@ namespace Sunshine.WorldServer.Handlers.Context
         [WorldHandler(716)]
         public static void HandleGameFightTurnReadyMessage(WorldClient client, GameFightTurnReadyMessage message)
         {
+            if (client?.Character?.Fight == null)
+                return;
 
+            var fight = client.Character.Fight;
+            var actor = client.Character.Fighter;
+            Game.Fights.Telemetry.CombatTelemetry.LogTurnEvent(
+                "GameFightTurnReadyMessageReceived",
+                fight,
+                actor,
+                detail: $"characterId={client.Character.Id} sessionId={client.Account?.Id ?? 0}");
         }
 
         [WorldHandler(718)]
@@ -187,7 +196,7 @@ namespace Sunshine.WorldServer.Handlers.Context
             }
 
             if (client.Character.Fighter == client.Character.Fight.FighterPlaying)
-                client.Character.Fighter.EndTurn();
+                client.Character.Fighter.EndTurn("Client");
         }
 
         [WorldHandler(GameFightOptionToggleMessage.Id)]
@@ -397,7 +406,15 @@ namespace Sunshine.WorldServer.Handlers.Context
         public static void SendGameFightTurnReadyRequestMessage(List<WorldClient> clients, FightActor actor)
         {
             for (int i = 0; i < clients.Count; i++)
-                clients[i].Send(new GameFightTurnReadyRequestMessage(actor.Id));
+                SendGameFightTurnReadyRequestMessage(clients[i], actor);
+        }
+
+        public static void SendGameFightTurnReadyRequestMessage(WorldClient client, FightActor actor)
+        {
+            if (client == null || actor == null)
+                return;
+
+            client.Send(new GameFightTurnReadyRequestMessage(actor.Id));
         }
 
         public static void SendChallengeFightJoinRefusedMessage(WorldClient client, Character character, FighterRefusedReasonEnum reason)

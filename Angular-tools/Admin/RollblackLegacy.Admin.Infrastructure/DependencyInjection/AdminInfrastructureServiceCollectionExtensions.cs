@@ -54,6 +54,7 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();
         services.AddScoped<IItemSetsAdminReadRepository, ItemSetsAdminReadRepository>();
+        services.AddScoped<IItemSetsAdminWriteRepository, ItemSetsAdminWriteRepository>();
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
         services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();

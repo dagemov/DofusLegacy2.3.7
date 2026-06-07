@@ -1,0 +1,30 @@
+@model IReadOnlyList<InvitationBulletViewModel>
+
+<section id="comunidad">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Rollblack Legacy</span>
+            <h2 class="section-title">Comunidad</h2>
+            <p class="section-desc">Una comunidad nueva, un mundo que despierta. Rollblack Legacy invita a aventureros que buscan un servidor privado honesto en Dofus 2.0.0.</p>
+        </div>
+        <div class="community-grid">
+            @foreach (var item in Model)
+            {
+                <div class="feature-card reveal">
+                    <div class="feature-icon" aria-hidden="true">
+                        @if (!string.IsNullOrWhiteSpace(item.IconEmoji))
+                        {
+                            <span>@item.IconEmoji</span>
+                        }
+                        else
+                        {
+                            <i class="@item.Icon"></i>
+                        }
+                    </div>
+                    <h3>@item.Title</h3>
+                    <p>@item.Text</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>

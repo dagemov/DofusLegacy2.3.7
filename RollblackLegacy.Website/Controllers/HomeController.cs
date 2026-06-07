@@ -17,7 +17,9 @@ public sealed class HomeController : Controller
     public IActionResult Index()
     {
         ViewData["ActiveNav"] = "home";
-        return View(WebsiteViewModelFactory.CreateHomePage(_configuration));
+        var page = WebsiteViewModelFactory.CreateHomePage(_configuration);
+        ViewData["BetaStatusLabel"] = page.BetaStatusLabel;
+        return View(page);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

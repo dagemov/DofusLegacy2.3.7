@@ -1,0 +1,70 @@
+<section class="d-grid gap-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3 class="h6 mb-0">Bonos por piezas equipadas</h3>
+    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="addTier()">Añadir tier</button>
+  </div>
+
+  <div class="bonus-tier border rounded p-3" *ngFor="let tier of tiers; let tierIndex = index">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+      <div class="d-flex align-items-center gap-2">
+        <label class="small text-secondary mb-0">Piezas</label>
+        <input
+          class="form-control form-control-sm"
+          style="width: 5rem"
+          type="number"
+          min="2"
+          [(ngModel)]="tier.pieceCount" />
+        <span class="fw-semibold">{{ tierLabel(tier.pieceCount, tierIndex) }}</span>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-primary" type="button" (click)="addEffect(tier)">Añadir efecto</button>
+        <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeTier(tierIndex)">Quitar tier</button>
+      </div>
+    </div>
+
+    <div *ngIf="tier.effects.length === 0" class="small text-secondary">Sin efectos en este tier.</div>
+
+    <div class="table-responsive" *ngIf="tier.effects.length > 0">
+      <table class="table table-sm align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Efecto</th>
+            <th>Valor</th>
+            <th>Dados</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let effect of tier.effects; let effectIndex = index">
+            <td>
+              <select
+                class="form-select form-select-sm"
+                [(ngModel)]="effect.effectId"
+                (ngModelChange)="onEffectChanged(effect)">
+                <option *ngFor="let option of effectOptions" [ngValue]="option.effectId">
+                  {{ option.label }} ({{ option.effectId }})
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control form-control-sm" type="number" [(ngModel)]="effect.value" />
+            </td>
+            <td>
+              <div class="d-flex gap-1" *ngIf="effect.format === 'Dice'">
+                <input class="form-control form-control-sm" type="number" min="0" [(ngModel)]="effect.diceNum" />
+                <span class="align-self-center">d</span>
+                <input class="form-control form-control-sm" type="number" min="0" [(ngModel)]="effect.diceSide" />
+              </div>
+              <span *ngIf="effect.format !== 'Dice'" class="text-secondary small">Entero</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeEffect(tier, effectIndex)">
+                Quitar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

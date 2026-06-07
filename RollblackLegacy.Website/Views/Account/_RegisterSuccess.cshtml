@@ -1,4 +1,8 @@
 @model RegisterAccountResultViewModel
+@{
+    string launcherUrl = ViewData["LauncherDownloadUrl"] as string ?? "#";
+    string adobeUrl = ViewData["AdobeAirDownloadUrl"] as string ?? "#";
+}
 
 <div class="register-success">
     @await Html.PartialAsync("~/Views/Shared/Atoms/_Badge.cshtml", new BadgeViewModel
@@ -13,7 +17,7 @@
 
     <div class="register-success__meta">
         <div>
-            <span class="register-success__label">Username</span>
+            <span class="register-success__label">Usuario</span>
             <strong>@Model.Username</strong>
         </div>
         <div>
@@ -24,21 +28,39 @@
 
     @if (Model.UsesWebsiteContactTable)
     {
-        <p class="register-success__note">El auth original no trae columna nativa de email en `accounts`, asi que el sitio lo guarda en una tabla complementaria del mismo esquema.</p>
+        <p class="register-success__note" style="color:var(--ol-muted);font-size:0.88rem;">
+            El email se guarda en la tabla complementaria del esquema web.
+        </p>
     }
+
+    <p class="landing-section__subtitle" style="margin:0;">Siguiente paso: descarga el launcher e instala Adobe AIR antes de abrir el cliente.</p>
 
     <div class="register-success__actions">
         @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
         {
-            Label = "Registrar otra cuenta",
-            Href = "/account/register",
-            Variant = "secondary"
+            Label = "Iniciar sesion",
+            Href = "/account/login",
+            Variant = "primary",
+            Icon = "fa-solid fa-right-to-bracket",
+            Size = "xl",
         })
         @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
         {
-            Label = "Volver al inicio",
-            Href = "/",
-            Variant = "ghost"
+            Label = "Descargar launcher",
+            Href = launcherUrl,
+            Variant = "secondary",
+            Icon = "fa-solid fa-download",
+            Size = "xl",
+            IsExternal = launcherUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase),
+        })
+        @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", new ButtonAtomViewModel
+        {
+            Label = "Descargar Adobe AIR",
+            Href = adobeUrl,
+            Variant = "ghost",
+            Icon = "fa-solid fa-plug-circle-exclamation",
+            Size = "xl",
+            IsExternal = adobeUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase),
         })
     </div>
 </div>

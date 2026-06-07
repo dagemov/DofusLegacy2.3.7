@@ -69,6 +69,9 @@ public sealed class AccountController : Controller
     [HttpGet("/account/login")]
     public IActionResult Login()
     {
+        if (User.Identity?.IsAuthenticated == true)
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+
         ViewData["ActiveNav"] = "login";
         return View(WebsiteViewModelFactory.CreateLoginPage(_configuration));
     }
@@ -142,11 +145,5 @@ public sealed class AccountController : Controller
         return View(viewModel);
     }
 
-    private IActionResult RenderLogin(LoginAccountPageViewModel viewModel)
-    {
-        if (Request.IsHtmxRequest())
-            return PartialView("~/Views/Account/_LoginPanelHtmx.cshtml", viewModel);
-
-        return View(viewModel);
-    }
+    private IActionResult RenderLogin(LoginAccountPageViewModel viewModel) => View(viewModel);
 }

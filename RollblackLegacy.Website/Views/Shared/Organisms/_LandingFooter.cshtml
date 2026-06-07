@@ -1,0 +1,20 @@
+@model BrandIdentityViewModel
+@{
+    string discordUrl = ViewData["DiscordUrl"] as string ?? "#";
+    int year = DateTime.UtcNow.Year;
+}
+
+<footer class="footer">
+    <div class="footer-brand">
+        <img src="@Model.LogoPath" alt="" />
+        <span>@Model.Name</span>
+    </div>
+    <p class="footer-meta">Servidor privado no oficial · Dofus 2.0.0 · Beta abierta</p>
+    <div class="footer-links">
+        <a href="/#inicio">Inicio</a>
+        <a href="/account/register">Registro</a>
+        <a href="@discordUrl" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="/#comunidad">Comunidad</a>
+    </div>
+    <p class="footer-copy">&copy; @year @Model.Name</p>
+</footer>

@@ -10,7 +10,11 @@ public interface IItemsAdminWriteService
 
     Task<ItemWriteResultDto> DuplicateAsync(int sourceItemId, ItemDuplicateRequest request, CancellationToken cancellationToken = default);
 
-    Task<ItemPreviewStateDto> ResolvePreviewStateAsync(int? itemId, int? iconId, CancellationToken cancellationToken = default);
+    Task<ItemPreviewStateDto> ResolvePreviewStateAsync(
+        int? itemId,
+        int? iconId,
+        int? typeId = null,
+        CancellationToken cancellationToken = default);
 
     Task<ItemAppearancePreviewStateDto> ResolveAppearancePreviewStateAsync(
         int appearanceId,

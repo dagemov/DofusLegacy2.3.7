@@ -1,0 +1,26 @@
+@model HomePageViewModel
+
+<section class="hero" id="inicio">
+    <div class="hero-bg">
+        <img src="@Model.HeroBackgroundPath" alt="" />
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            @Model.HeroBadge
+        </div>
+        <img src="@Model.Brand.LogoPath" alt="@Model.Brand.Name" class="hero-logo" />
+        <h1 class="hero-title">@Model.HeroTitle</h1>
+        <p class="hero-subtitle">@Html.Raw(Model.HeroSubtitle)</p>
+        <div class="hero-cta">
+            @foreach (var action in Model.HeroActions)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Atoms/_Button.cshtml", action)
+            }
+        </div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">
+        <span>Descubre mas</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</section>

@@ -24,7 +24,10 @@ import {
   ItemEffectsUpdateRequest,
   ItemEffectsUpdateResultDto,
   ItemSetDetailDto,
-  ItemSetListItemDto
+  ItemSetListItemDto,
+  ItemSetSearchRequest,
+  ItemSetWriteRequest,
+  ItemSetWriteResultDto
 } from './items.models';
 import { ClientIdentityApi } from './client-identity.api';
 import { ClientItemIdentityCheckResultDto } from './client-identity.models';
@@ -63,12 +66,26 @@ export class ItemsFacade {
     return this.itemsApi.getItemIconCategoryStats();
   }
 
-  getItemSets(): Observable<ItemSetListItemDto[]> {
-    return this.itemsApi.getItemSets();
+  searchItemSets(
+    request: ItemSetSearchRequest
+  ): Observable<ItemPagedResultDto<ItemSetListItemDto>> {
+    return this.itemsApi.searchItemSets(request);
   }
 
   getItemSet(setId: number): Observable<ItemSetDetailDto> {
     return this.itemsApi.getItemSet(setId);
+  }
+
+  createItemSet(request: ItemSetWriteRequest): Observable<ItemSetWriteResultDto> {
+    return this.itemsApi.createItemSet(request);
+  }
+
+  updateItemSet(setId: number, request: ItemSetWriteRequest): Observable<ItemSetWriteResultDto> {
+    return this.itemsApi.updateItemSet(setId, request);
+  }
+
+  deleteItemSet(setId: number): Observable<void> {
+    return this.itemsApi.deleteItemSet(setId);
   }
 
   getItem(itemId: number): Observable<ItemDetailDto> {
@@ -99,8 +116,12 @@ export class ItemsFacade {
     return this.itemsApi.getItemPublicationManifest(itemId);
   }
 
-  getPreviewState(itemId?: number | null, iconId?: number | null): Observable<ItemPreviewStateDto> {
-    return this.itemsApi.getPreviewState(itemId, iconId);
+  getPreviewState(
+    itemId?: number | null,
+    iconId?: number | null,
+    typeId?: number | null
+  ): Observable<ItemPreviewStateDto> {
+    return this.itemsApi.getPreviewState(itemId, iconId, typeId);
   }
 
   getAppearancePreviewState(

@@ -20,7 +20,10 @@
 }
 
 <div class="register-field">
-    <label class="register-field__label" for="@Model.FieldId">@Model.Label</label>
+    @if (!string.IsNullOrWhiteSpace(Model.Label))
+    {
+        <label class="register-field__label" for="@Model.FieldId">@Model.Label</label>
+    }
     @Html.TextBox(Model.FieldName, Model.Type == "password" ? null : Model.Value, attributes)
     @if (!string.IsNullOrWhiteSpace(Model.HelpText))
     {
