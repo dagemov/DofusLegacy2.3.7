@@ -1412,6 +1412,9 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\LoseHpByUsingAP.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\HpSteal.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APDebuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APSteal.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\StealKamas.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\RevealsInvisible.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APDebuffFix.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\DebuffEffects.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\MPDebuff.cs" />
@@ -1431,6 +1434,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\PushBack.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\SwitchPosition.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\Teleport.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\Dodge.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\ReducCooldown.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\RogueSpecialEffects.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\SpiritualLeash.cs" />
