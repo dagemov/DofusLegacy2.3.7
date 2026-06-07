@@ -4,7 +4,7 @@ namespace RollblackLegacy.Admin.Application.Abstractions.Items;
 
 public interface IItemSetsAdminReadService
 {
-    Task<IReadOnlyList<ItemSetListItemDto>> ListAsync(CancellationToken cancellationToken = default);
+    Task<ItemPagedResultDto<ItemSetListItemDto>> SearchAsync(ItemSetSearchRequest request, CancellationToken cancellationToken = default);
 
     Task<ItemSetDetailDto> GetByIdAsync(int setId, CancellationToken cancellationToken = default);
 }

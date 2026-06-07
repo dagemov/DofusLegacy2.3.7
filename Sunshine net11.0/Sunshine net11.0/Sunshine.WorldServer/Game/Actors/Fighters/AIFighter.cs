@@ -14,6 +14,8 @@ using Sunshine.WorldServer.Game.Spells;
 using Sunshine.WorldServer.Handlers.Actions;
 using Sunshine.WorldServer.Handlers.Context;
 using Sunshine.BaseServer.Configuration;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,11 +122,13 @@ namespace Sunshine.WorldServer.Game.Actors.AI
 
         public async Task PlayAIAsync()
         {
+            var aiStopwatch = Stopwatch.StartNew();
             try
             {
                 if (!IsAlive || Fight == null || Fight.State != FightStateEnum.Fighting || !IsFighterTurn())
                     return;
 
+                CombatTelemetry.LogTurnEvent("AiStarted", Fight, this);
                 int startDelay = TurnStartDelayMs;
                 if (startDelay > 0)
                     await Task.Delay(startDelay);
@@ -149,7 +153,10 @@ namespace Sunshine.WorldServer.Game.Actors.AI
                     await Task.Delay(endDelay);
 
                 if (IsAlive && Fight != null && Fight.State == FightStateEnum.Fighting && IsFighterTurn())
+                {
+                    CombatTelemetry.LogTurnEvent("AiFinished", Fight, this, durationMs: aiStopwatch.ElapsedMilliseconds);
                     EndTurn();
+                }
             }
             catch
             {

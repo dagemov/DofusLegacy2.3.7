@@ -37,6 +37,8 @@ using Sunshine.WorldServer.Game.Actors.AI;
 using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Triggers;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
+using System.Diagnostics;
 
 namespace Sunshine.WorldServer.Game.Actors.Fighters
 {
@@ -314,6 +316,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (Fight == null)
                 return;
 
+            CombatTelemetry.LogTurnEvent("NextTurnStarted", Fight, this);
+            CombatTelemetry.LogTurnEvent("TurnStarted", Fight, this);
+
             Fight.Timer?.Dispose();
             Fight.Timer = null;
 
@@ -409,17 +414,18 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             ContextHandler.SendGameFightTurnListMessage(Fight.Clients, Fight);
         }
 
-        public void EndTurn()
+        public void EndTurn(string source = "Unknown")
         {
             var currentFight = Fight;
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting || currentFight.FighterPlaying != this)
                 return;
 
-            FrigostBossMechanics.OnTurnEnded(this);
+            if (!currentFight.TryBeginTurnEnd(this, source, out _))
+                return;
 
-            currentFight.Timer?.Stop();
-            currentFight.Timer?.Dispose();
-            currentFight.Timer = null;
+            CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this, detail: $"source={source}");
+
+            FrigostBossMechanics.OnTurnEnded(this);
 
             currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
             currentFight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_END);
@@ -440,32 +446,17 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight.CheckFightEnd())
                 return;
 
-            currentFight.FighterPlaying = currentFight.GetFighterPlaying();
+            CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this, detail: $"source={source}");
 
-            if (this is SlaveFighter controlledSlave && controlledSlave.IsControlledBySummoner() && !controlledSlave.MustAutoUnspawnAfterTurn)
-                controlledSlave.RestoreSummonerContext();
-
-            if (this is SlaveFighter autoUnspawnSlave && autoUnspawnSlave.MustAutoUnspawnAfterTurn && autoUnspawnSlave.IsAlive)
+            if (CombatReadyCheckerSettings.Enabled)
             {
-                autoUnspawnSlave.IsAutoUnspawning = true;
-                autoUnspawnSlave.Die(this);
-
-                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
-                    return;
+                var waiters = currentFight.GetAllFighters(x => x is CharacterFighter)
+                    .Cast<CharacterFighter>()
+                    .ToArray();
+                currentFight.Checker.Start(this, waiters);
             }
-            else if (this is SummonedMonster summonedMonster && summonedMonster.IsAlive)
-            {
-                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
-                    summonedMonster.Die(this);
-                else if (summonedMonster.DiesAtTurnEnd)
-                    summonedMonster.Die(this);
-
-                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
-                    return;
-            }
-
-            if (currentFight.FighterPlaying != null)
-                currentFight.FighterPlaying.StartTurn();
+            else
+                currentFight.TryAdvanceTurn("ReadyCheckerDisabled");
         }
 
         public void ShowCell(short cellId, bool team = true)
@@ -732,6 +723,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (spell == null || spell.Template == null || Fight == null)
                 return;
 
+            var castStopwatch = Stopwatch.StartNew();
             var castResult = this.CanCastSpell(spell, cell);
             if (castResult != SpellCastResult.OK)
             {
@@ -741,12 +733,28 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 if (spell != null && spell.Id == SlaveFighter.RoublabotSpellId && this is CharacterFighter roublard && roublard.Character != null)
                     roublard.Character.SendServerMessage($"Roublabot : lancement refusé ({castResult}).", System.Drawing.Color.Red);
 
+                CombatTelemetry.LogSpellEvent(
+                    "SpellCastFailed",
+                    Fight,
+                    this,
+                    spell?.Id,
+                    spell?.Level,
+                    result: castResult.ToString(),
+                    durationMs: castStopwatch.ElapsedMilliseconds);
                 return;
             }
 
             var currentFight = Fight;
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting)
                 return;
+
+            CombatTelemetry.LogSpellEvent(
+                "SpellCastStarted",
+                currentFight,
+                this,
+                spell.Id,
+                spell.Level,
+                targetIds: new[] { cell });
 
             currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_SPELL);
 
@@ -833,6 +841,17 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             currentFight.EndSequence(SequenceTypeEnum.SEQUENCE_SPELL, ActionsEnum.ACTION_FIGHT_CAST_SPELL);
             RefreshControllingClientFightState();
             currentFight.CheckFightEnd();
+
+            castStopwatch.Stop();
+            CombatTelemetry.LogSpellEvent(
+                "SpellCastResolved",
+                currentFight,
+                this,
+                spell.Id,
+                spell.Level,
+                targetIds: new[] { cell },
+                result: "OK",
+                durationMs: castStopwatch.ElapsedMilliseconds);
         }
 
         public virtual SpellCastResult CanCastSpell(Spell spell, short cell)

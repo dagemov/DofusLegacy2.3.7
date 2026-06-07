@@ -49,7 +49,8 @@ export class ItemEffectsEditorComponent implements OnChanges {
   private readonly itemsFacade = inject(ItemsFacade);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Input({ required: true }) itemId!: number;
+  @Input() itemId: number | null = null;
+  @Input() draftMode = false;
 
   protected effectOptions: AdminEffectOptionDto[] = [];
   protected effectOptionsById = new Map<number, AdminEffectOptionDto>();
@@ -175,9 +176,13 @@ export class ItemEffectsEditorComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['itemId']) {
+    if (changes['itemId'] || changes['draftMode']) {
       this.loadEditor();
     }
+  }
+
+  buildCreateEffectsPayload(): ItemEffectEditRowRequest[] {
+    return this.rows.map((row) => this.toRequestRow(row));
   }
 
   protected trackRow(_index: number, row: ItemEffectEditDto): string {
@@ -348,7 +353,7 @@ export class ItemEffectsEditorComponent implements OnChanges {
   }
 
   protected saveEffects(): void {
-    if (!this.editState) {
+    if (!this.editState || !this.itemId || this.itemId <= 0) {
       return;
     }
 
@@ -400,6 +405,11 @@ export class ItemEffectsEditorComponent implements OnChanges {
   }
 
   private loadEditor(): void {
+    if (this.draftMode) {
+      this.loadDraftEditor();
+      return;
+    }
+
     if (!this.itemId || this.itemId <= 0) {
       return;
     }
@@ -434,6 +444,39 @@ export class ItemEffectsEditorComponent implements OnChanges {
         this.preservedSuffixHex = bundle.edit.preservedSuffixHex ?? null;
         this.warnings = bundle.edit.warnings ?? [];
         this.setEffectOptions(bundle.options);
+        this.refreshView();
+      });
+  }
+
+  private loadDraftEditor(): void {
+    this.isLoading = true;
+    this.loadProblem = null;
+    this.saveProblem = null;
+    this.saveMessage = null;
+
+    this.itemsFacade
+      .getItemEffectOptions()
+      .pipe(
+        catchError(() => of([] as AdminEffectOptionDto[])),
+        finalize(() => {
+          this.isLoading = false;
+          this.refreshView();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((options) => {
+        this.editState = {
+          itemId: 0,
+          effectsHex: '0000',
+          effects: [],
+          preservedSuffixHex: null,
+          warnings: [],
+          hasUnsupportedEffects: false
+        };
+        this.rows = [];
+        this.preservedSuffixHex = null;
+        this.warnings = [];
+        this.setEffectOptions(options);
         this.refreshView();
       });
   }

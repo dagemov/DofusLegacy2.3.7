@@ -1,71 +1,59 @@
-# Agent Handoff - Admin Tools Migration
+# Agent Handoff — Combat ReadyChecker Phase 3
 
-Generated: `2026-06-05`
+Generated: `2026-06-07`  
+Rama: **`feature/combat-readychecker-phase3`**
 
-## Gate final — Items Builder
+## Phase 3.1 — Analyzer polish + timer classification
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/items-preview-sets-polish-final` |
-| PR target | `devp` |
-| **Items Builder** | **`COMPLETE`** |
-| **Spell Builder** | **`NEXT, not started`** |
+| Estado | **`DONE`** |
+| Tipo | `analyzer + documentación` (sin lógica de combate) |
 
-### Validación gate (2026-06-05)
+- `readyCheckerStartCount` **145** (alias `ReadyCheckerStarted` corregido)
+- 11 `TimerElapsed` clasificados — rescate ~35 s jugador activo, no fallo ReadyChecker
+- **Phase 3:** PASS WITH MINOR RESIDUAL TIMERS
+- **Siguiente:** Phase 4 Spell/Summon telemetry analysis
 
-| Check | Resultado |
-| --- | --- |
-| Lock API limpiado | OK (`Stop-Process RollblackLegacy.Admin.Api`, `dotnet build-server shutdown`) |
-| `dotnet build` Admin.Api | OK |
-| `npm run build` | OK (warning budget +1.13 kB) |
-| `dotnet build` Sunshine.sln | OK (5 warnings, 0 errors) |
-| Git hygiene | OK — sin commit de `Client2.3.7/`, `OneLauncher/`, `config/`, `temporal-artifacts/` |
-| Spell Builder en rama PR | **Revertido** — commits `e5f0964` y `9031339` excluidos del scope Items |
+---
 
-### Browser QA
-
-| Estado | Notas |
-| --- | --- |
-| `PENDING_OPERATOR` | Rutas mínimas documentadas; builds OK como precondición |
-
-Rutas:
+## Estado VPS
 
 ```txt
-/admin/items/new
-/admin/items/12616/edit
-/admin/items/icon-selector
-/admin/item-sets
-/admin/item-sets/:setId
-/admin/publication
+sunshine-server UP — ReadyChecker build desplegado
+puertos 2450/5557 OK (corregidos post-rebuild)
+telemetría OFF (post-QA 2026-06-07)
+smoke 47 combates: PASS operador
 ```
 
-Confirmar: stats icons, preview BY_CATEGORY, sets con preview, bonos por piezas, sin errores consola críticos.
+| Campo | Valor |
+| --- | --- |
+| VPS | `174.138.35.107` |
+| Backup DB | `/root/backups/sunshine/sunshine-pre-restart-20260607T015107Z.sql` |
+| Backup inventario | `backups/vps/20260606-215057/` |
+| `.env` backup | `/opt/dofus-2.0.0/.env.bak-phase3qa-20260607` |
+| Telemetría | **OFF** |
+| ReadyChecker | **ON** |
 
-### Entregables Items (rama)
+## Collect (referencia)
 
-- Preview reconciliation (`BY_CATEGORY`)
-- Sets read UI + bonos por piezas
-- Stat icons fix (`src/assets` en `angular.json`)
-- Docs: preview reconciliation, stat icons, sets builder
+```powershell
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
+```
 
-### Merge flow
+Logs QA: `Infrastructure/temporal-artifacts/combat-logs/vps/20260607-113152/`
 
-1. PR `feature/items-preview-sets-polish-final` → `devp` (creado en gate)
-2. Tras aprobación: merge a `devp`
-3. Luego `devp` → `main` (no borrar ramas hasta main estable)
-
-### Siguiente
-
-- Abrir **Spell Builder** en rama dedicada **después** de merge Items a `devp`/`main`
-- Cherry-pick o re-aplicar trabajo Spell (`e5f0964`, `9031339`) en rama `feature/spell-builder-*` separada
-
-### Prohibiciones
-
-- No publicar cliente real, no VPS, no temporal-artifacts en git
-
-## Repo
+## Rollback rápido
 
 ```txt
-C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/items-preview-sets-polish-final
+CombatReadyCheckerEnabled=false + restart sunshine
 ```
+
+## Cierre Phase 3 QA
+
+- [x] Deploy sunshine OK
+- [x] TCP 2450/5557 OK
+- [x] 47 combates smoke
+- [x] Collect + métricas
+- [x] Telemetría OFF post-QA
+- [x] Phase 3.1 analyzer + clasificación timers
