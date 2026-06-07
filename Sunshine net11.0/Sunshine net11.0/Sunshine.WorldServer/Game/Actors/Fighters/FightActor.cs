@@ -37,6 +37,8 @@ using Sunshine.WorldServer.Game.Actors.AI;
 using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Triggers;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
+using System.Diagnostics;
 
 namespace Sunshine.WorldServer.Game.Actors.Fighters
 {
@@ -314,6 +316,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (Fight == null)
                 return;
 
+            CombatTelemetry.LogTurnEvent("NextTurnStarted", Fight, this);
+            CombatTelemetry.LogTurnEvent("TurnStarted", Fight, this);
+
             Fight.Timer?.Dispose();
             Fight.Timer = null;
 
@@ -415,6 +420,8 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting || currentFight.FighterPlaying != this)
                 return;
 
+            CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this);
+
             FrigostBossMechanics.OnTurnEnded(this);
 
             currentFight.Timer?.Stop();
@@ -440,7 +447,11 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight.CheckFightEnd())
                 return;
 
+            CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this);
+            CombatTelemetry.LogTurnEvent("NextTurnRequested", currentFight, this);
             currentFight.FighterPlaying = currentFight.GetFighterPlaying();
+            if (currentFight.FighterPlaying != null)
+                CombatTelemetry.LogTurnEvent("TurnOwner", currentFight, currentFight.FighterPlaying, detail: "source=EndTurn");
 
             if (this is SlaveFighter controlledSlave && controlledSlave.IsControlledBySummoner() && !controlledSlave.MustAutoUnspawnAfterTurn)
                 controlledSlave.RestoreSummonerContext();
@@ -732,6 +743,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (spell == null || spell.Template == null || Fight == null)
                 return;
 
+            var castStopwatch = Stopwatch.StartNew();
             var castResult = this.CanCastSpell(spell, cell);
             if (castResult != SpellCastResult.OK)
             {
@@ -741,12 +753,28 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 if (spell != null && spell.Id == SlaveFighter.RoublabotSpellId && this is CharacterFighter roublard && roublard.Character != null)
                     roublard.Character.SendServerMessage($"Roublabot : lancement refusé ({castResult}).", System.Drawing.Color.Red);
 
+                CombatTelemetry.LogSpellEvent(
+                    "SpellCastFailed",
+                    Fight,
+                    this,
+                    spell?.Id,
+                    spell?.Level,
+                    result: castResult.ToString(),
+                    durationMs: castStopwatch.ElapsedMilliseconds);
                 return;
             }
 
             var currentFight = Fight;
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting)
                 return;
+
+            CombatTelemetry.LogSpellEvent(
+                "SpellCastStarted",
+                currentFight,
+                this,
+                spell.Id,
+                spell.Level,
+                targetIds: new[] { cell });
 
             currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_SPELL);
 
@@ -833,6 +861,17 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             currentFight.EndSequence(SequenceTypeEnum.SEQUENCE_SPELL, ActionsEnum.ACTION_FIGHT_CAST_SPELL);
             RefreshControllingClientFightState();
             currentFight.CheckFightEnd();
+
+            castStopwatch.Stop();
+            CombatTelemetry.LogSpellEvent(
+                "SpellCastResolved",
+                currentFight,
+                this,
+                spell.Id,
+                spell.Level,
+                targetIds: new[] { cell },
+                result: "OK",
+                durationMs: castStopwatch.ElapsedMilliseconds);
         }
 
         public virtual SpellCastResult CanCastSpell(Spell spell, short cell)

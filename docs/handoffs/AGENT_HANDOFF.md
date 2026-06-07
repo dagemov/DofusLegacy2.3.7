@@ -1,143 +1,120 @@
-# Agent Handoff - Admin Tools Migration
+# Agent Handoff — Combat Sanitization / VPS Telemetry Active
 
-Generated: `2026-06-06`
+Generated: `2026-06-06`  
+Rama: **`feature/items-sets-visibility-and-vps-combat-telemetry`**
 
-## Items + Sets — Production acceptance test
+## Estado VPS (actual)
+
+```txt
+sunshine-server UP
+servidor funcional
+cliente conecta — CONFIRMADO por operador
+telemetría ON
+operador realizando combates reales AHORA
+```
 
 | Campo | Valor |
 | --- | --- |
-| Rama | **`feature/items-sets-production-acceptance-test`** |
-| Estado | **`PARTIAL / OPERATOR_REQUIRED`** |
-| Resultado QA in-game | **`NOT_RUN`** |
-| Create item + effects (un solo flujo) | **`PASS`** (código) |
-| Backup cliente local | **`OK`** — `pre_creation_new_items_20260605_0732` |
-| Backup DB VPS | **`OK`** — `/root/backups/sunshine-focused-20260606-004715.sql` |
-| Backup VPS inventario | **`OK`** — `backups/vps/20260606-004658/` |
-| SSH | **`OK`** — `SSH/private_key_sebas.pem` (gitignored) |
+| VPS | `174.138.35.107` |
+| Auth / World | `2450` / `5557` |
+| `WORLD_PUBLIC_HOST` | `174.138.35.107` |
+| `worlds.Id=18` | `174.138.35.107:5557` |
+| Telemetría path | `/app/logs/combat/` |
+| SSH key | `SSH/private_key_sebas.pem` (no `.ppk`) |
+| Phase 3 ReadyChecker | **BLOQUEADA** — esperar análisis de logs |
 
-### Documentación
+## Incidentes cerrados (2026-06-06)
 
-- [items-sets-production-acceptance-test.md](../admin-tools/items-builder/items-final/items-sets-production-acceptance-test.md)
-- [sets-production-acceptance-test.md](../admin-tools/sets-builder/sets-production-acceptance-test.md)
-- [itemsets-client-publication-plan.md](../admin-tools/client-publication/itemsets-client-publication-plan.md)
-- [items-final-production-backup.md](../admin-tools/items-builder/items-final-production-backup.md)
+### 1 — Items ObjectEffect → crash boot
 
-### Bloqueadores
+Items `12618–12622`: `UPDATE items SET Effects=0x30303030`.  
+Doc: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
 
-| Bloqueo | Estado |
-| --- | --- |
-| `ItemSets.d2o` staging automático | **PARTIAL** — apply/validate opcional si archivo en paquete |
-| Varita de la Flor | **`BLOCKED_WEAPON_PUBLICATION`** |
-| `Items.d2o` local en repo | ausente — publish requiere cliente operador |
-| QA in-game | **`OPERATOR_REQUIRED`** |
+### 2 — Puertos/hosts legacy
 
-### Si PASS (operador)
+`.env` corregido a `2450`/`5557`/`174.138.35.107`. Commit `a1b6c3e`.  
+Doc: [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
 
-```txt
-Items Builder = COMPLETE
-Sets Builder = COMPLETE
-Publication Pipeline = COMPLETE (con nota ItemSets)
-Siguiente = Combat Sanitization
+## Acción inmediata — cuando terminen los combates
+
+**NO apagar telemetría antes de recolectar.**
+
+### Paso 1 — Recolectar y analizar
+
+```powershell
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
+start Infrastructure\temporal-artifacts\combat-telemetry\report.html
 ```
 
-**No** abrir Spell Builder hasta PASS documentado.
-
-## Macro 5 / Git Sanity Before Phase 4
-
-| Campo | Valor |
-| --- | --- |
-| Estado | **`DOC_ONLY_AUDITED`** |
-| Rama activa verificada | `feature/sets-builder-crud-and-pagination` |
-| Commit de HEAD | `8ced8f6` |
-| Scope Spell Builder en tree actual | **`REVERTED_FROM_ITEMS_TREE`** |
-
-### Diagnostico rapido
-
-- La rama activa real es `feature/sets-builder-crud-and-pagination`.
-- `feature/sets-builder-crud-and-pagination` y `feature/items-preview-sets-polish-final` apuntan al mismo commit `8ced8f6`.
-- El worktree actual esta sucio con cambios de Items/Sets/Launcher/Client/config/scripts.
-- Los commits Spell Builder confirmados son:
-  - `ccfcb8a` -> Phase 1 docs
-  - `e5f0964` -> Phase 2 catalog api
-  - `9031339` -> Phase 3 detail api
-- En la historia de Items ya existen los reverts:
-  - `dd0f287` -> revert de `9031339`
-  - `8ced8f6` -> revert de `e5f0964`
-- Conclusion:
-  - la rama de Items ya no conserva el contenido Spell en el tree actual
-  - pero si conserva la historia de Spell Builder y sus reverts
-
-### Siguiente recomendado
-
-1. No iniciar Phase 4 todavia.
-2. Resolver saneamiento Git con aprobacion humana.
-3. Preservar rama dedicada de Spell Builder fuera de las ramas de Items.
-4. Reabrir Spell Builder sobre base limpia acordada antes de continuar.
-
-## Gate Final - Items Builder
-
-| Campo | Valor |
-| --- | --- |
-| Rama base gate | `feature/items-preview-sets-polish-final` |
-| Rama activa real al 2026-06-05 | `feature/sets-builder-crud-and-pagination` |
-| PR target | `devp` |
-| **Items Builder** | **`COMPLETE`** |
-| **Spell Builder** | **`PENDIENTE DE SANEAMIENTO GIT`** |
-
-### Validacion gate (2026-06-05)
-
-| Check | Resultado |
-| --- | --- |
-| Lock API limpiado | OK (`Stop-Process RollblackLegacy.Admin.Api`, `dotnet build-server shutdown`) |
-| `dotnet build` Admin.Api | OK |
-| `npm run build` | OK (warning budget +1.13 kB) |
-| `dotnet build` Sunshine.sln | OK (5 warnings, 0 errors) |
-| Git hygiene | OK en gate Items; el worktree actual volvio a ensuciarse con cambios locales de Items/Sets |
-| Spell Builder en rama PR | **Revertido** - commits `e5f0964` y `9031339` excluidos del tree de Items |
-
-### Browser QA
-
-| Estado | Notas |
-| --- | --- |
-| `PENDING_OPERATOR` | Rutas minimas documentadas; builds OK como precondicion |
-
-Rutas:
+Revisar:
 
 ```txt
-/admin/items/new
-/admin/items/12616/edit
-/admin/items/icon-selector
-/admin/item-sets
-/admin/item-sets/:setId
-/admin/publication
+Infrastructure/temporal-artifacts/combat-telemetry/report.md
+Infrastructure/temporal-artifacts/combat-telemetry/report.json
 ```
 
-Confirmar: stats icons, preview BY_CATEGORY, sets con preview, bonos por piezas, sin errores de consola criticos.
+Crear tras análisis: `docs/combat-sanitization/combat-vps-telemetry-analysis-YYYYMMDD.md`
 
-### Entregables Items (rama)
+### Paso 2 — Apagar telemetría (después de collect)
 
-- Preview reconciliation (`BY_CATEGORY`)
-- Sets read UI + bonos por piezas
-- Stat icons fix (`src/assets` en `angular.json`)
-- Docs: preview reconciliation, stat icons, sets builder
+```powershell
+$env:CONFIRM_RESTART="1"
+.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
+```
 
-### Merge flow
-
-1. PR `feature/items-preview-sets-polish-final` -> `devp`
-2. Tras aprobacion: merge a `devp`
-3. Luego `devp` -> `main` (no borrar ramas hasta main estable)
-4. Solo despues de eso, abrir rama dedicada `feature/spell-builder-*`
-
-### Prohibiciones
-
-- No publicar cliente real
-- No tocar VPS
-- No versionar `temporal-artifacts/`
-- No iniciar Phase 4 en `feature/sets-builder-crud-and-pagination`
-
-## Repo
+### Preguntas que el análisis debe responder
 
 ```txt
-C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/sets-builder-crud-and-pagination
+1. ¿Hay combat-turn-flow-*.jsonl reales?
+2. ¿Hay spell-casts-*.jsonl reales?
+3. ¿Cuántos combates capturados?
+4. ¿Hay TimerElapsed ~35000ms?
+5. ¿Llega GameFightTurnReadyMessage?
+6. ¿Cuánto tarda AiStarted -> AiFinished?
+7. ¿Cuánto tarda AiFinished -> NextTurnStarted?
+8. ¿Turno humano antes de fin animación enemiga?
+9. ¿Spells fallidos?
+10. ¿Effects fallidos?
 ```
+
+## Decisión Phase 3 (tras logs)
+
+| Evidencia | Rama / acción |
+| --- | --- |
+| Hand-off roto confirmado | `feature/combat-readychecker-phase3` — portar ReadyChecker / TryAdvanceTurn desde `RollBlackServer\2.0.0\Rollback` |
+| Logs ambiguos | `feature/combat-telemetry-phase2b` — más telemetría spell/AI/timers |
+| Sin reproducción | Documentar *Phase 3 bloqueada por falta de reproducción* |
+
+## Prohibido ahora
+
+```txt
+no tocar lógica de turnos sin analizar logs
+no ReadyChecker / IA / spells / summons fixes
+no items/admin changes
+no reiniciar VPS en bucle
+no docker compose down -v
+no commitear logs pesados
+```
+
+## Scripts
+
+```txt
+infrastructure/artifacts/combat-health/enable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/disable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/collect-vps-combat-logs.ps1
+infrastructure/artifacts/combat-health/analyze-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/fix-vps-client-ports.ps1
+```
+
+## Cierre del gate (pendiente)
+
+- [ ] Logs reales descargados del VPS
+- [ ] Analyzer → `report.md` / `report.html`
+- [ ] Decisión Phase 3 vs 2B con evidencia
+- [ ] Telemetría apagada al final (o documentar si sigue ON)
+- [ ] Handoff actualizado
+
+## Docs gate
+
+- [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md)
+- [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)
