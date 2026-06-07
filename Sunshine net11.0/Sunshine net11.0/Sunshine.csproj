@@ -225,6 +225,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\ShowElementCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\AlignmentCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\VipCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\JobCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\DebugMapCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\HelpCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\ParchotageCommand.cs" />
