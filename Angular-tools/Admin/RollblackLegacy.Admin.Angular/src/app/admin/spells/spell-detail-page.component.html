@@ -7,9 +7,8 @@
           <p class="text-uppercase small fw-semibold text-secondary mb-2">Spell Builder / Detail</p>
           <h2 class="h4 mb-1">{{ formatSpellName(detail) }}</h2>
           <p class="text-secondary mb-0">
-            El detalle ya conserva referencia, niveles y effects read-only. Phase 8 agrega
-            edicion Angular solo para los campos de nivel que el backend de Phase 4 soporta con
-            `PATCH`.
+            Phase 9 mantiene la edicion Angular de levels y deja `effects` / `criticalEffects`
+            en lectura reforzada hasta que exista un write path seguro en backend.
           </p>
         </div>
 
@@ -299,7 +298,7 @@
 
                 <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 border-top pt-3">
                   <div class="text-secondary small">
-                    Effects y critical effects siguen fuera del editor de esta fase.
+                    Effects y critical effects quedan bloqueados para escritura en esta fase.
                   </div>
                   <div class="d-flex flex-wrap gap-2">
                     <button
@@ -309,8 +308,8 @@
                       [disabled]="isEffectsLoading(activeLevel.levelNumber) || isEditingLevel || isSavingLevel">
                       {{
                         isEffectsExpanded(activeLevel.levelNumber)
-                          ? 'Ocultar effects'
-                          : 'Ver effects por nivel'
+                          ? 'Ocultar auditoria de effects'
+                          : 'Auditar effects por nivel'
                       }}
                     </button>
                     <button
@@ -553,8 +552,9 @@
                       </div>
 
                       <div class="small text-secondary">
-                        `statesRequired` y `statesForbidden` siguen solo lectura. El editor de effects y
-                        critical effects queda diferido a Phase 9.
+                        `statesRequired` y `statesForbidden` siguen solo lectura. Phase 9 mantiene
+                        `effects` y `criticalEffects` en auditoria read-only por bloqueo tecnico del
+                        write.
                       </div>
                     </div>
                   </div>
@@ -587,6 +587,31 @@
                 <div
                   *ngIf="!isEffectsLoading(activeLevel.levelNumber) && selectedLevelEffects as effects"
                   class="d-grid gap-3">
+                  <div class="alert alert-warning border mb-0 effects-guard">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
+                      <div>
+                        <p class="text-uppercase small fw-semibold mb-1">Phase 9 / Edicion bloqueada</p>
+                        <h5 class="h6 mb-1">No existe escritura segura para effects ni criticalEffects</h5>
+                        <p class="mb-0 small">
+                          La pantalla queda en modo auditoria read-only. No se inventa editor ni
+                          endpoint mientras el port no defina una reserializacion segura del
+                          payload.
+                        </p>
+                      </div>
+                      <span class="badge text-bg-warning text-dark">Read-only forzado</span>
+                    </div>
+
+                    <ul class="mb-0 ps-3 mt-3">
+                      <li *ngFor="let reason of effectsEditorBlockedReasons">{{ reason }}</li>
+                    </ul>
+
+                    <div class="small text-secondary mt-3">
+                      Legacy confirmado: `Rollback.Web` y `Rollback.Admin` editaban
+                      `BinaryEffects` y `BinaryCriticalEffects` por separado, pero ese write path
+                      todavia no esta portado al stack Angular/API actual.
+                    </div>
+                  </div>
+
                   <div class="card border-0 bg-body-tertiary">
                     <div class="card-body d-grid gap-3">
                       <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
@@ -626,21 +651,31 @@
                               </div>
                             </div>
                             <div class="table-responsive" *ngIf="effects.effects.runtimeRows.length > 0; else noRuntimeEffectsRows">
-                              <table class="table table-sm align-middle mb-0">
+                              <table class="table table-sm align-middle mb-0 effect-table">
                                 <thead>
                                   <tr>
-                                    <th>EffectId</th>
-                                    <th>Label</th>
-                                    <th>Valor</th>
+                                    <th>Fila</th>
+                                    <th>Efecto</th>
+                                    <th>Valores</th>
+                                    <th>Comportamiento</th>
+                                    <th>Target / Zona</th>
                                     <th>Preview</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="let row of effects.effects.runtimeRows; trackBy: trackByEffectRow">
-                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
-                                    <td>{{ row.label }}</td>
-                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
-                                    <td>{{ row.previewText }}</td>
+                                    <td class="font-monospace-soft">{{ row.rowIndex }}</td>
+                                    <td>
+                                      <div class="effect-cell-stack">
+                                        <strong>{{ row.label }}</strong>
+                                        <span class="small text-secondary">Id {{ row.effectId }}</span>
+                                        <span class="small text-secondary">{{ buildEffectSourceSummary(row) }}</span>
+                                      </div>
+                                    </td>
+                                    <td class="font-monospace-soft">{{ buildEffectValueSummary(row) }}</td>
+                                    <td>{{ buildEffectBehaviorSummary(row) }}</td>
+                                    <td>{{ buildEffectTargetZoneSummary(row) }}</td>
+                                    <td class="effect-preview-cell">{{ row.previewText }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -666,21 +701,31 @@
                               </div>
                             </div>
                             <div class="table-responsive" *ngIf="effects.effects.referenceRows.length > 0; else noReferenceEffectsRows">
-                              <table class="table table-sm align-middle mb-0">
+                              <table class="table table-sm align-middle mb-0 effect-table">
                                 <thead>
                                   <tr>
-                                    <th>EffectId</th>
-                                    <th>Label</th>
-                                    <th>Valor</th>
+                                    <th>Fila</th>
+                                    <th>Efecto</th>
+                                    <th>Valores</th>
+                                    <th>Comportamiento</th>
+                                    <th>Target / Zona</th>
                                     <th>Preview</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="let row of effects.effects.referenceRows; trackBy: trackByEffectRow">
-                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
-                                    <td>{{ row.label }}</td>
-                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
-                                    <td>{{ row.previewText }}</td>
+                                    <td class="font-monospace-soft">{{ row.rowIndex }}</td>
+                                    <td>
+                                      <div class="effect-cell-stack">
+                                        <strong>{{ row.label }}</strong>
+                                        <span class="small text-secondary">Id {{ row.effectId }}</span>
+                                        <span class="small text-secondary">{{ buildEffectSourceSummary(row) }}</span>
+                                      </div>
+                                    </td>
+                                    <td class="font-monospace-soft">{{ buildEffectValueSummary(row) }}</td>
+                                    <td>{{ buildEffectBehaviorSummary(row) }}</td>
+                                    <td>{{ buildEffectTargetZoneSummary(row) }}</td>
+                                    <td class="effect-preview-cell">{{ row.previewText }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -733,21 +778,31 @@
                               </div>
                             </div>
                             <div class="table-responsive" *ngIf="effects.criticalEffects.runtimeRows.length > 0; else noRuntimeCriticalRows">
-                              <table class="table table-sm align-middle mb-0">
+                              <table class="table table-sm align-middle mb-0 effect-table">
                                 <thead>
                                   <tr>
-                                    <th>EffectId</th>
-                                    <th>Label</th>
-                                    <th>Valor</th>
+                                    <th>Fila</th>
+                                    <th>Efecto</th>
+                                    <th>Valores</th>
+                                    <th>Comportamiento</th>
+                                    <th>Target / Zona</th>
                                     <th>Preview</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="let row of effects.criticalEffects.runtimeRows; trackBy: trackByEffectRow">
-                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
-                                    <td>{{ row.label }}</td>
-                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
-                                    <td>{{ row.previewText }}</td>
+                                    <td class="font-monospace-soft">{{ row.rowIndex }}</td>
+                                    <td>
+                                      <div class="effect-cell-stack">
+                                        <strong>{{ row.label }}</strong>
+                                        <span class="small text-secondary">Id {{ row.effectId }}</span>
+                                        <span class="small text-secondary">{{ buildEffectSourceSummary(row) }}</span>
+                                      </div>
+                                    </td>
+                                    <td class="font-monospace-soft">{{ buildEffectValueSummary(row) }}</td>
+                                    <td>{{ buildEffectBehaviorSummary(row) }}</td>
+                                    <td>{{ buildEffectTargetZoneSummary(row) }}</td>
+                                    <td class="effect-preview-cell">{{ row.previewText }}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -773,21 +828,31 @@
                               </div>
                             </div>
                             <div class="table-responsive" *ngIf="effects.criticalEffects.referenceRows.length > 0; else noReferenceCriticalRows">
-                              <table class="table table-sm align-middle mb-0">
+                              <table class="table table-sm align-middle mb-0 effect-table">
                                 <thead>
                                   <tr>
-                                    <th>EffectId</th>
-                                    <th>Label</th>
-                                    <th>Valor</th>
+                                    <th>Fila</th>
+                                    <th>Efecto</th>
+                                    <th>Valores</th>
+                                    <th>Comportamiento</th>
+                                    <th>Target / Zona</th>
                                     <th>Preview</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="let row of effects.criticalEffects.referenceRows; trackBy: trackByEffectRow">
-                                    <td class="font-monospace-soft">{{ row.effectId }}</td>
-                                    <td>{{ row.label }}</td>
-                                    <td>{{ row.minValue }} / {{ row.maxValue }} / {{ row.value }}</td>
-                                    <td>{{ row.previewText }}</td>
+                                    <td class="font-monospace-soft">{{ row.rowIndex }}</td>
+                                    <td>
+                                      <div class="effect-cell-stack">
+                                        <strong>{{ row.label }}</strong>
+                                        <span class="small text-secondary">Id {{ row.effectId }}</span>
+                                        <span class="small text-secondary">{{ buildEffectSourceSummary(row) }}</span>
+                                      </div>
+                                    </td>
+                                    <td class="font-monospace-soft">{{ buildEffectValueSummary(row) }}</td>
+                                    <td>{{ buildEffectBehaviorSummary(row) }}</td>
+                                    <td>{{ buildEffectTargetZoneSummary(row) }}</td>
+                                    <td class="effect-preview-cell">{{ row.previewText }}</td>
                                   </tr>
                                 </tbody>
                               </table>

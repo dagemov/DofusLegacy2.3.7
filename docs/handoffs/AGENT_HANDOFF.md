@@ -1,6 +1,43 @@
 # Agent Handoff - Admin Tools Migration
 
-Generated: `2026-06-06`
+Generated: `2026-06-07`
+
+## Macro 5 / Phase 9 - Spell Effects Editor Guard
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `35b3bfa feat: add spell level editor` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- Guardia Angular explicita de `edicion bloqueada` para `effects` y `criticalEffects`
+- Ajuste de UX para tratar la seccion como auditoria read-only y no como editor incompleto
+- Tablas runtime/reference ampliadas con metadata util por fila
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase9-effects-editor.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+
+### Notas
+
+- Se confirmo primero el cierre de `Phase 8` en `35b3bfa feat: add spell level editor`.
+- El stack actual solo expone `GET /api/admin/v1/spells/{spellId}/levels/{levelNumber}/effects`.
+- No existe `PATCH`, `PUT` ni `POST` seguro para escribir `effects` o `criticalEffects`.
+- Legacy si editaba `BinaryEffects` y `BinaryCriticalEffects`, pero ese write path no esta portado.
+- La fase cierra deliberadamente en read-only para no inventar un endpoint ni una reserializacion riesgosa.
+- Angular mantiene el warning conocido de budget inicial excedido por `1.51 kB`.
+- El build .NET mantiene warnings previos `NETSDK1057`, `CA1416` y `CS0169` sin errores nuevos del cambio.
+
+### Siguiente
+
+- Macro 5 / siguiente paso: definir estrategia segura de write de effects antes de abrir un editor real
+- Alcance esperado: contrato write, preservacion de payload hex/binario y reglas sobre rows no soportadas
 
 ## Macro 5 / Phase 8 - Spell Level Editor
 

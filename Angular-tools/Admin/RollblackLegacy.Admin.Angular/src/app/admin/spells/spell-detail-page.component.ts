@@ -60,6 +60,11 @@ export class SpellDetailPageComponent implements OnInit {
   private readonly spellsFacade = inject(SpellsFacade);
   private readonly ngZone = inject(NgZone);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  protected readonly effectsEditorBlockedReasons = [
+    'No existe endpoint PATCH, PUT ni POST para effects o criticalEffects en el Admin API actual.',
+    'El schema runtime actual no tiene identidad por fila de effect; cualquier write exigiria reserializar el payload completo del nivel.',
+    'Sunshine acepta payload hex serializado y fallback binario legacy; la regla segura para preservarlos todavia no esta definida.'
+  ];
 
   protected readonly levelForm = new FormGroup<SpellLevelEditFormControls>({
     apCost: new FormControl(0, {
@@ -421,6 +426,32 @@ export class SpellDetailPageComponent implements OnInit {
 
   protected formatBooleanFlag(value: boolean): string {
     return value ? 'Si' : 'No';
+  }
+
+  protected buildEffectValueSummary(row: SpellEffectRowDto): string {
+    return `${row.minValue} / ${row.maxValue} / ${row.value}`;
+  }
+
+  protected buildEffectBehaviorSummary(row: SpellEffectRowDto): string {
+    const parts = [row.operatorMode, `dur ${row.duration}`];
+
+    if (row.delay !== null && row.delay !== undefined) {
+      parts.push(`delay ${row.delay}`);
+    }
+
+    if (row.random !== null && row.random !== undefined) {
+      parts.push(`random ${row.random}`);
+    }
+
+    return parts.join(' | ');
+  }
+
+  protected buildEffectSourceSummary(row: SpellEffectRowDto): string {
+    return `${row.protocolName} | ${row.group}`;
+  }
+
+  protected buildEffectTargetZoneSummary(row: SpellEffectRowDto): string {
+    return `target ${row.targetType} | zone ${row.zoneShape}/${row.zoneMinSize}/${row.zoneSize}`;
   }
 
   protected getLevelFieldErrors(fieldName: string): string[] {

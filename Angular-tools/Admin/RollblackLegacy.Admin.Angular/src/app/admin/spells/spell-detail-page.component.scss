@@ -95,6 +95,23 @@
   margin-bottom: 0.75rem;
 }
 
+.effects-guard {
+  background: rgba(var(--bs-warning-rgb), 0.12);
+}
+
+.effect-table td {
+  vertical-align: top;
+}
+
+.effect-cell-stack {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.effect-preview-cell {
+  min-width: 16rem;
+}
+
 .editor-check {
   display: flex;
   align-items: center;
