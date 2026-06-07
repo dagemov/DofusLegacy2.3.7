@@ -8,7 +8,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
     [CommandHandler("god", RoleEnum.Administrator)]
     public class GodCommand : WorldCommand
     {
-        public override string Description => "Active ou désactive le mode god (.god on / .god off [joueur]).";
+        public override string Description => "Activa o desactiva el modo dios (.god on / .god off [jugador]).";
 
         public override void Execute()
         {
@@ -17,8 +17,8 @@ namespace Sunshine.WorldServer.Commands.Administrator
 
             if (Parameters == null || Parameters.Length == 0)
             {
-                Client.Character.SendServerMessage($".god est {(Client.Character.GodMode ? "activé" : "désactivé")}.");
-                Client.Character.SendServerMessage("Usage: .god on|off [joueur]");
+                Client.Character.SendServerMessage($".god está {(Client.Character.GodMode ? "activado" : "desactivado")}.");
+                Client.Character.SendServerMessage("Uso: .god on|off [jugador]");
                 return;
             }
 
@@ -30,28 +30,28 @@ namespace Sunshine.WorldServer.Commands.Administrator
                 enabled = false;
             else
             {
-                Client.Character.SendServerMessage("Usage: .god on|off [joueur]");
+                Client.Character.SendServerMessage("Uso: .god on|off [jugador]");
                 return;
             }
 
             var target = ResolveTarget();
             if (target == null)
             {
-                Client.Character.SendServerMessage("Cible introuvable.");
+                Client.Character.SendServerMessage("Objetivo no encontrado.");
                 return;
             }
 
             target.GodMode = enabled;
             ApplyImmediateGodState(target, enabled);
 
-            var state = enabled ? "activé" : "désactivé";
+            var state = enabled ? "activado" : "desactivado";
             if (target == Client.Character)
-                Client.Character.SendServerMessage($"Mode god {state}.");
+                Client.Character.SendServerMessage($"Modo dios {state}.");
             else
-                Client.Character.SendServerMessage($"Mode god {state} sur {target.Name}.");
+                Client.Character.SendServerMessage($"Modo dios {state} en {target.Name}.");
 
             if (target.Client != null && target != Client.Character)
-                target.SendServerMessage($"Mode god {state}.");
+                target.SendServerMessage($"Modo dios {state}.");
         }
 
         private Game.Characters.Character ResolveTarget()

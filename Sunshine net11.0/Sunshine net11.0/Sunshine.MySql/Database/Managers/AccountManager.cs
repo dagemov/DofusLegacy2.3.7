@@ -26,6 +26,7 @@ namespace Sunshine.MySql.Database.Managers
         {
             try
             {
+                AccountVipBootstrap.EnsureVipColumn();
                 if (isForServer)
                 {
                     var connectedCharacter = CharacterManager.Instance.Characters.Values
@@ -152,6 +153,12 @@ namespace Sunshine.MySql.Database.Managers
 
             const string cmd = @"UPDATE accounts SET Tokens = @Tokens, NewTokens = @NewTokens WHERE Id = @Id";
             DatabaseManager.Connection.Execute(cmd, account);
+        }
+
+        public void UpdateVip(int accountId, bool vip)
+        {
+            AccountVipBootstrap.EnsureVipColumn();
+            DatabaseManager.Connection.Execute("UPDATE accounts SET Vip = @Vip WHERE Id = @Id", new { Vip = vip, Id = accountId });
         }
 
         public bool IsBadVersion(Protocol.Types.Version clientVersion)

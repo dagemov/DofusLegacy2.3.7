@@ -22,7 +22,8 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Heals
                 Effect.GenerateEffect();
                 if (Duration > 0)
                 {
-                    // buff
+                    var hotBuff = new HealOverTimeBuff(Caster, actor, Spell, Effect, (short)Duration, (short)Effect.Value);
+                    actor.AddBuff(hotBuff);
                 }
                 else
                 {

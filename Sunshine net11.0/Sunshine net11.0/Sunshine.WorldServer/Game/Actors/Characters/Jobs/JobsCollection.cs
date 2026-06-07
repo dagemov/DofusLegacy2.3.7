@@ -16,7 +16,14 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
 
         private static readonly HashSet<sbyte> SpecializationJobs = new HashSet<sbyte>
         {
-            43, 44, 45, 46, 47, 48, 49, 50, 62, 63, 64, 65
+            43, 44, 45, 46, 47, 48, 49, 50, 62, 63, 64
+        };
+
+        // Specialization job id -> required base job id (base must be level 61+ to specialize).
+        public static readonly Dictionary<sbyte, sbyte> SpecializationBaseMap = new Dictionary<sbyte, sbyte>
+        {
+            { 43, 17 }, { 44, 11 }, { 45, 14 }, { 46, 20 }, { 47, 31 },
+            { 48, 13 }, { 49, 19 }, { 50, 18 }, { 62, 15 }, { 63, 16 }, { 64, 27 }
         };
 
         private readonly Character _character;
@@ -52,6 +59,11 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
                 .ToList();
 
             _displayJobsCache = null;
+        }
+
+        public static bool IsSpecializationStatic(sbyte jobId)
+        {
+            return SpecializationJobs.Contains(jobId);
         }
 
         private static bool IsSpecialization(sbyte jobId)
@@ -110,7 +122,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
         public IEnumerable<JobDescription> GetJobsDescriptions()
         {
             var jobsDescriptions = new List<JobDescription>();
-            foreach (var job in _jobs)
+            foreach (var job in GetDisplayedJobs())
             {
                 jobsDescriptions.Add(new JobDescription(job.Job,
                     JobManager.Instance.GetSkillActionDescription(job.Job,
@@ -123,7 +135,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
         public IEnumerable<JobExperience> GetJobsExperiences()
         {
             var jobsExperiences = new List<JobExperience>();
-            foreach (var job in _jobs)
+            foreach (var job in GetDisplayedJobs())
             {
                 var jobLevel = ExperienceManager.Instance.GetJobLevelExperienceFloor(job.Experience);
                 var jobExp = job.Experience;
@@ -155,6 +167,16 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
             if (HasJob(job))
                 return;
 
+            bool isSpecialization = IsSpecialization(job);
+            int currentBaseCount = _jobs.Count(x => !IsSpecialization(x.Job));
+            int currentSpecCount = _jobs.Count(x => IsSpecialization(x.Job));
+
+            if (!isSpecialization && currentBaseCount >= MaxDisplayedBaseJobs)
+                return;
+
+            if (isSpecialization && currentSpecCount >= MaxDisplayedSpecializationJobs)
+                return;
+
             _jobs.Add(new CharacterJobRecord
             {
                 OwnerId = _character.Id,
@@ -168,6 +190,10 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
         public void AddExperience(sbyte job, long amount)
         {
             amount = GameRates.ApplyJobXp(amount);
+
+            if (_character?.Client?.Account?.Vip == true)
+                amount = (long)System.Math.Min(amount * 1.5, long.MaxValue);
+
             var jobRecord = GetJob(job);
             if (jobRecord == null)
                 return;

@@ -84,6 +84,9 @@ namespace Sunshine.WorldServer.Game.Maps.Interactives.Skills
                 var ressource = ItemManager.Instance.CreatePlayerItem(item.GatheredRessourceItem);
                 var quantity = JobManager.Instance.GetRandomQuantity(ressource, Level);
 
+                if (Client?.Account?.Vip == true)
+                    quantity = System.Math.Max(1, quantity * 2);
+
                 if (Client.Character.Inventory.IsFull(ressource, quantity))
                 {
                     Client.Character.SendInformationMessage(TextInformationTypeEnum.TEXT_INFORMATION_MESSAGE, 144);

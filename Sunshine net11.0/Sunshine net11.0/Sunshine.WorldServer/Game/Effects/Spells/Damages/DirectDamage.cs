@@ -21,10 +21,20 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
         public override void Apply()
         {
             var effectSchool = GetEffectSchool(Id);
+            int effectiveDuration = Duration;
             foreach(var actor in GetAffectedActors())
             {
                 uint baseDiceNum = DiceNum;
-                
+
+                // Duration > 0 means damage over time (poison/trap): apply as a ticking buff.
+                if (effectiveDuration > 0)
+                {
+                    var dotBuff = new Fights.Buffs.Spells.DamageOverTimeBuff(Caster, actor, Spell, Effect,
+                        (short)effectiveDuration, effectSchool, baseDiceNum, DiceFace);
+                    actor.AddBuff(dotBuff);
+                    continue;
+                }
+
                 // Iop's Wrath (Yopuka) logic
                 if (Spell.Id == 159) // Colère de Iop
                 {
