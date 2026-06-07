@@ -2,6 +2,49 @@
 
 Generated: `2026-06-07`
 
+## Spell Builder Production Parity / Fase 1 - Risk Closure Audit
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `e65a5e4 docs: finalize spell builder qa` |
+| Estado | **`DONE`** |
+| Tipo de cambio | `solo documentacion` |
+
+### Entregables
+
+- Documento de auditoria principal `docs/admin-tools/spell-builder/spell-builder-production-risk-audit.md`
+- Documento de estrategia de write `docs/admin-tools/spell-builder/spell-builder-effects-write-strategy.md`
+- Documento de estrategia de publicacion cliente `docs/admin-tools/spell-builder/spell-builder-client-publication-strategy.md`
+- Documento de mapa de effects especiales `docs/admin-tools/spell-builder/spell-builder-special-effects-map.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `LOCKED_BY_VS` |
+
+### Notas
+
+- La fase se ejecuto sin tocar Angular funcional, API funcional, base de datos, cliente ni publicacion real.
+- Legacy si tenia flujo productivo de `guardar + publicar` para spells; el stack actual todavia no.
+- El stack actual mantiene catalogo, detalle, edicion parcial de levels y auditoria read-only de `effects`.
+- No existe write seguro de `effects` ni `criticalEffects` en API actual.
+- No existe pipeline actual de publicacion cliente de spells equivalente al pipeline moderno de items.
+- Se detectaron multiples textos visibles en ingles o spanglish en Angular Spell Builder; la UI final debe quedar 100% en español.
+- `dotnet build` compilo los proyectos relevantes pero fallo al copiar DLLs del Admin API porque Visual Studio mantiene lock sobre:
+  - `RollblackLegacy.Admin.Contracts.dll`
+  - `RollblackLegacy.Admin.Application.dll`
+  - `RollblackLegacy.Admin.Infrastructure.dll`
+- Lock verificado sobre `RollblackLegacy.Admin.Api` por `Microsoft Visual Studio (14588), RollblackLegacy.Admin.Api (62476)`.
+- Durante el cierre reaparecieron cambios ajenos del pipeline de items en el worktree; deben quedar fuera del commit de esta fase.
+
+### Siguiente
+
+- `Fase 2 - Effects Write Closure Spec`
+- Abrir macro aparte si hace falta corregir motor de combate para handlers especiales
+
 ## Macro 5 / Phase 10 - QA Final
 
 | Campo | Valor |
