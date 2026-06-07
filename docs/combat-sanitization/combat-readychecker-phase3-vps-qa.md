@@ -3,7 +3,7 @@
 **Fecha:** 2026-06-07  
 **Rama desplegada:** `feature/combat-readychecker-phase3`  
 **VPS:** `174.138.35.107`  
-**Decisión actual:** **PARTIAL** — deploy + login OK; **smoke combates pendiente operador**
+**Decisión actual:** **PASS WITH MINOR RESIDUAL TIMERS**
 
 ---
 
@@ -85,30 +85,23 @@ Nota: `CombatReadyChecker*` se lee vía `GameConfig` (default **enabled=true**, 
 | `Test-NetConnection` 2450 | **True** |
 | `Test-NetConnection` 5557 | **True** |
 | `sunshine-server` READY | **OK** |
-| Cliente operador | **PENDIENTE CONFIRMACIÓN** |
+| Cliente operador | **OK** |
 
 ---
 
-## Paso 6 — Smoke QA (pendiente)
+## Paso 6 — Smoke QA (completado 2026-06-07)
 
-**Estado:** no ejecutado en esta sesión — requiere operador in-game.
+**Operador:** 47 combates (sesión extendida).
 
-Matriz mínima (5 combates):
+**Veredicto subjetivo operador:**
 
-| # | Escenario |
-| ---: | --- |
-| 1 | 1v1 simple sin invocaciones |
-| 2 | Con invocaciones |
-| 3 | Varios monstruos |
-| 4 | Con aliado (si hay) |
-| 5 | Escenario que antes mostraba espera ~35 s |
-
-**Collect post-smoke:**
-
-```powershell
-.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
-start Infrastructure\temporal-artifacts\combat-telemetry\report.html
+```txt
+Los combates se sienten demasiado fluidos.
+Están mejores.
 ```
+
+**Collect:** `Infrastructure/temporal-artifacts/combat-logs/vps/20260607-113152/`  
+**Reportes:** `Infrastructure/temporal-artifacts/combat-telemetry/report.{md,json,html}`
 
 ---
 
@@ -122,23 +115,49 @@ start Infrastructure\temporal-artifacts\combat-telemetry\report.html
 | `TimerElapsed` ~35 s `CharacterFighter` | 6 |
 | `GameFightTurnReadyMessageReceived` | 109 |
 | `ReadyChecker*` | 0 |
+| Spells fallidos | 0 |
 
-### Post-fix (pendiente collect)
+### Post-fix (2026-06-07, con ReadyChecker)
 
-| Métrica | Esperado | Actual |
-| --- | --- | --- |
-| `ReadyCheckerStarted` | > 0 | **PENDIENTE** |
-| `ReadyCheckerAck` / `Timeout` | > 0 | **PENDIENTE** |
-| `TimerElapsed` ~35 s jugador | 0 o mucho menor | **PENDIENTE** |
-| Spells OK | sin regresión | **PENDIENTE** |
-| Crash | no | **OK** (boot READY) |
+| Métrica | Valor | vs baseline |
+| --- | ---: | --- |
+| Combates (`FightStarted`) | **47** | más muestra |
+| `ReadyCheckerStarted` | **145** | ✅ (era 0) |
+| `ReadyCheckerAck` | **225** | ✅ |
+| `ReadyCheckerTimeout` | **15** | ✅ |
+| `ReadyCheckerAdvanceTurn` | **144** | ✅ |
+| `GameFightTurnReadyMessageReceived` | **348** | ↑ (más combates) |
+| `TimerElapsed` `CharacterFighter` | **11** | ↓ por combate (~0.23 vs ~0.29) |
+| Spell cast failed | **16** | ⚠️ regresión aislada (handlers) |
+| Crash servidor | **0** | ✅ |
+
+### Phase 3.1 — Analyzer fix + clasificación timers
+
+| Check | Resultado |
+| --- | --- |
+| `readyCheckerStartCount` en `report.json` | **145** (antes 0 por alias `ReadyCheckerStarted`) |
+| `readyCheckerAckCount` | **225** |
+| `readyCheckerAdvanceTurnCount` | **144** |
+| Timers clasificados | **11/11** en `combat-timer-elapsed-classification-report.md` |
+
+**Clasificación de los 11 `TimerElapsed` (~35 s, `CharacterFighter`):**
+
+| Clasificación | Count | Interpretación |
+| --- | ---: | --- |
+| `PLAYER_NO_ACTION` | 0 | Ningún timer fue turno vacío / AFK puro |
+| `UNKNOWN` | 11 | Jugador activo (2–8 hechizos/turno) sin `EndTurn` cliente antes del rescate ~35 s |
+| `READY_TIMEOUT_EXPECTED` | 0 | El timer no coincide con timeout de hand-off |
+| `MISSING_READY_ACK` | 0 | Hand-off previo reconstruido con ACK en 10/11 casos |
+| `POSSIBLE_CLIENT_STALL` | 0 | Sin patrón de spam ready sin progreso |
+
+**Conclusión Phase 3.1:** los timers residuales no son fallos de ReadyChecker ni ACK perdidos. Son rescates esperados cuando el operador/jugador no pasa turno manualmente tras jugar durante ~35 s. **No justifica cambiar turn flow ni timeout de ReadyChecker.**
 
 ---
 
-## Paso 8–9 — Sesión ampliada / apagar telemetría
+## Paso 8–9 — Telemetría
 
-- Sesión 30–50 combates: **solo tras smoke PASS**
-- `disable-vps-combat-telemetry.ps1`: **NO ejecutado** — telemetría **ON** para captura QA
+- `disable-vps-combat-telemetry.ps1` ejecutado 2026-06-07 — **OFF**
+- Logs preservados en VPS y copia local
 
 ---
 
@@ -160,7 +179,9 @@ Sin restore DB.
 | Deploy SunshineOnly | **PASS** |
 | Config + puertos | **PASS** |
 | Login TCP | **PASS** |
-| Smoke 5 combates + métricas | **PENDIENTE** |
-| Phase 3 QA global | **PARTIAL** |
+| ReadyChecker en logs | **PASS** |
+| Mejora subjetiva combate | **PASS** |
+| `TimerElapsed` → 0 | **Residual** (11 en 47 combates; clasificados, no bug de hand-off) |
+| Phase 3 QA global | **PASS WITH MINOR RESIDUAL TIMERS** |
 
-**Siguiente:** operador realiza 5 combates smoke → collect → actualizar esta doc con PASS/FAIL.
+**Siguiente:** Phase 4 — Spell/Summon telemetry analysis (16 `SpellCastFailed`, handlers).

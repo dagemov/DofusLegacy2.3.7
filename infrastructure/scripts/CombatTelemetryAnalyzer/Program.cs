@@ -171,7 +171,7 @@ internal sealed class CombatTelemetryAnalyzer
         if (events.Count is 0 && turnEvents.Count is 0 && spellEvents.Count is 0)
             throw new InvalidOperationException($"No combat telemetry lines found in {_options.InputDirectory}");
 
-        var turnAnalysis = BuildTurnAnalysis(turnEvents);
+        var turnAnalysis = BuildTurnAnalysis(turnEvents, spellEvents);
         var report = BuildReport(_options.InputDirectory, logFiles.Select(path => NormalizePath(path, _options.InputDirectory)).ToArray(), filePerfCounts, fileTurnCounts, events, turnEvents, turnAnalysis);
         var turnLatencyReport = BuildTurnLatencyReport(_options.InputDirectory, turnAnalysis);
         var outputDirectory = Path.GetDirectoryName(_options.OutputFile);
@@ -196,10 +196,13 @@ internal sealed class CombatTelemetryAnalyzer
         {
             var turnLatencyOutputFile = Path.Combine(outputDirectory, "combat-turn-latency-analysis-report.md");
             var turnTransitionOutputFile = Path.Combine(outputDirectory, "combat-turn-transition-phase2-report.md");
+            var timerClassificationOutputFile = Path.Combine(outputDirectory, "combat-timer-elapsed-classification-report.md");
             File.WriteAllText(turnLatencyOutputFile, turnLatencyReport, new UTF8Encoding(false));
             File.WriteAllText(turnTransitionOutputFile, BuildTurnTransitionPhase2Report(_options.InputDirectory, turnAnalysis), new UTF8Encoding(false));
+            File.WriteAllText(timerClassificationOutputFile, BuildTimerElapsedClassificationReport(_options.InputDirectory, turnAnalysis), new UTF8Encoding(false));
             Console.WriteLine($"Turn latency report written to {turnLatencyOutputFile}");
             Console.WriteLine($"Turn transition report written to {turnTransitionOutputFile}");
+            Console.WriteLine($"Timer classification report written to {timerClassificationOutputFile}");
         }
 
         Console.WriteLine($"Analyzed {events.Count} FIGHT-PERF, {turnEvents.Count} turn event(s), {spellEvents.Count} spell event(s) from {logFiles.Length} file(s).");
@@ -238,9 +241,13 @@ internal sealed class CombatTelemetryAnalyzer
             var atUnixMs = TryReadTimestampUtcMs(root);
             var actorId = TryReadInt(root, "actorId");
             var actorType = TryReadString(root, "actorType");
+            var actorName = TryReadString(root, "actorName");
+            var turnId = TryReadString(root, "turnId");
             var detail = TryReadString(root, "detail");
+            var reason = TryReadString(root, "reason");
             var source = TryParseDetailValue(detail, "source");
             var timerType = TryParseDetailValue(detail, "timer");
+            var waiters = TryParseDetailInt(detail, "waiters") ?? TryParseDetailInt(reason, "waiters");
 
             turnEvent = new TurnEvent(
                 FileName: fileLabel,
@@ -256,7 +263,7 @@ internal sealed class CombatTelemetryAnalyzer
                 ElapsedMs: TryReadLong(root, "durationMs"),
                 ElapsedSinceTurnStartMs: null,
                 Source: source,
-                Waiters: null,
+                Waiters: waiters,
                 Missing: null,
                 ActiveSequences: null,
                 PendingSequences: null,
@@ -265,7 +272,9 @@ internal sealed class CombatTelemetryAnalyzer
                 TurnTimeMs: null,
                 Status: null,
                 Detail: detail,
-                RawLine: line);
+                RawLine: line,
+                TurnId: turnId,
+                ActorName: actorName);
 
             return true;
         }
@@ -334,7 +343,14 @@ internal sealed class CombatTelemetryAnalyzer
             or "NextTurnStarted"
             or "TimerElapsed"
             or "FightEnded"
-            or "GameFightTurnReadyMessageReceived";
+            or "GameFightTurnReadyMessageReceived"
+            or "ReadyCheckerStarted"
+            or "ReadyCheckerStart"
+            or "ReadyCheckerAck"
+            or "ReadyCheckerTimeout"
+            or "ReadyCheckerAdvanceTurn"
+            or "ReadyCheckerCompleted"
+            or "ReadyCheckerIgnored";
 
     private static bool IsJsonlSpellEvent(string eventName) =>
         eventName is "SpellCastStarted"
@@ -349,6 +365,7 @@ internal sealed class CombatTelemetryAnalyzer
             "TurnStarted" => "TurnStart",
             "AiStarted" => "AIStart",
             "AiFinished" => "AIEnd",
+            "ReadyCheckerStarted" => "ReadyCheckerStart",
             _ => eventName
         };
 
@@ -370,15 +387,17 @@ internal sealed class CombatTelemetryAnalyzer
             : (short)0;
     }
 
-    private static long TryReadTimestampUtcMs(JsonElement root)
-    {
-        var timestamp = TryReadString(root, "timestampUtc");
-        if (string.IsNullOrWhiteSpace(timestamp))
-            return 0;
+    private static long TryReadTimestampUtcMs(JsonElement root) =>
+        TryParseTimestampUtcMs(TryReadString(root, "timestampUtc")) ?? 0;
 
-        return DateTime.TryParse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsed)
+    private static long? TryParseTimestampUtcMs(string? timestampUtc)
+    {
+        if (string.IsNullOrWhiteSpace(timestampUtc))
+            return null;
+
+        return DateTime.TryParse(timestampUtc, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsed)
             ? new DateTimeOffset(parsed.ToUniversalTime()).ToUnixTimeMilliseconds()
-            : 0;
+            : null;
     }
 
     private static string? TryReadString(JsonElement root, string propertyName) =>
@@ -461,12 +480,34 @@ internal sealed class CombatTelemetryAnalyzer
                 turnAnalysis.ReadyCheckerStartCount,
                 turnAnalysis.ReadyCheckerAckCount,
                 turnAnalysis.ReadyCheckerTimeoutCount,
+                turnAnalysis.ReadyCheckerAdvanceTurnCount,
                 turnAnalysis.TimerElapsedCount,
                 turnAnalysis.TurnsEndedByTimerCount,
                 turnAnalysis.PendingSequenceTurnCount,
                 turnAnalysis.CauseCounts,
                 turnAnalysis.EndTurnMissingCount,
-                readyMessageReceivedCount = turnEvents.Count(entry => string.Equals(entry.EventName, "GameFightTurnReadyMessageReceived", StringComparison.Ordinal))
+                readyMessageReceivedCount = turnEvents.Count(entry => string.Equals(entry.EventName, "GameFightTurnReadyMessageReceived", StringComparison.Ordinal)),
+                timerElapsedClassifications = turnAnalysis.TimerElapsedClassifications.Select(entry => new
+                {
+                    entry.LogFile,
+                    entry.FightId,
+                    entry.TurnId,
+                    entry.ActorId,
+                    entry.ActorName,
+                    entry.Classification,
+                    entry.ReadyCheckerState,
+                    entry.HadReadyAck,
+                    entry.HadReadyTimeout,
+                    entry.PreviousActorType,
+                    entry.TimeSinceTurnStartedMs,
+                    entry.SpellCountDuringTurn,
+                    entry.ReadyMessageCountDuringTurn,
+                    entry.HadClientEndTurnBeforeTimer,
+                    entry.Notes
+                }),
+                timerElapsedClassificationCounts = turnAnalysis.TimerElapsedClassifications
+                    .GroupBy(entry => entry.Classification, StringComparer.Ordinal)
+                    .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal)
             },
             spellCastSummary = new
             {
@@ -836,10 +877,12 @@ internal sealed class CombatTelemetryAnalyzer
             builder.AppendLine($"Player turns avg/max: `{Format(turnAnalysis.PlayerAverageTurnMs)}` / `{turnAnalysis.PlayerMaxTurnMs}` ms");
             builder.AppendLine($"Turns > 5000 ms: `{turnAnalysis.TurnsOver5s}`");
             builder.AppendLine($"Turns > 30000 ms: `{turnAnalysis.TurnsOver30s}`");
-            builder.AppendLine($"ReadyChecker timeouts: `{turnAnalysis.ReadyCheckerTimeoutCount}`");
+            builder.AppendLine($"ReadyChecker starts/ACKs/advance/timeouts: `{turnAnalysis.ReadyCheckerStartCount}` / `{turnAnalysis.ReadyCheckerAckCount}` / `{turnAnalysis.ReadyCheckerAdvanceTurnCount}` / `{turnAnalysis.ReadyCheckerTimeoutCount}`");
+            builder.AppendLine($"TimerElapsed count: `{turnAnalysis.TimerElapsedCount}`");
             builder.AppendLine($"Turns without explicit EndTurn: `{turnAnalysis.EndTurnMissingCount}`");
             builder.AppendLine();
             builder.AppendLine("Detailed turn-gap breakdown lives in `combat-turn-latency-analysis-report.md`.");
+            builder.AppendLine("Residual `CharacterFighter` rescue timers are classified in `combat-timer-elapsed-classification-report.md`.");
             builder.AppendLine();
             builder.AppendLine("| Session Fight | Round | FighterId | FighterType | MonsterId | DurationMs | AIEnd->EndTurnMs | EndTurn->NextTurnMs | ProbableCause |");
             builder.AppendLine("| --- | ---: | ---: | --- | ---: | ---: | ---: | ---: | --- |");
@@ -847,6 +890,28 @@ internal sealed class CombatTelemetryAnalyzer
             {
             builder.AppendLine($"| `{turn.SessionFight}` | {turn.Round} | {FormatNullable(turn.FighterId)} | `{turn.FighterType}` | {FormatNullable(turn.MonsterId)} | {turn.DurationMs} | {FormatNullable(turn.AiEndToEndTurnMs)} | {FormatNullable(turn.EndTurnToNextTurnMs)} | `{turn.ProbableCauseCode}` |");
             }
+        }
+        builder.AppendLine();
+
+        builder.AppendLine("## TimerElapsed Classification");
+        builder.AppendLine();
+        if (turnAnalysis.TimerElapsedClassifications.Length is 0)
+        {
+            builder.AppendLine("No `CharacterFighter` `TimerElapsed` rescue timers were found in this sample.");
+        }
+        else
+        {
+            builder.AppendLine("| Classification | Count |");
+            builder.AppendLine("| --- | ---: |");
+            foreach (var group in turnAnalysis.TimerElapsedClassifications
+                         .GroupBy(entry => entry.Classification, StringComparer.Ordinal)
+                         .OrderByDescending(entry => entry.Count())
+                         .ThenBy(entry => entry.Key, StringComparer.Ordinal))
+            {
+                builder.AppendLine($"| `{group.Key}` | {group.Count()} |");
+            }
+            builder.AppendLine();
+            builder.AppendLine("See `combat-timer-elapsed-classification-report.md` for per-turn context.");
         }
         builder.AppendLine();
 
@@ -972,14 +1037,12 @@ internal sealed class CombatTelemetryAnalyzer
             .ThenByDescending(stat => stat.EventCount)
             .ToArray();
 
-    private static TurnAnalysis BuildTurnAnalysis(IReadOnlyList<TurnEvent> turnEvents)
+    private static TurnAnalysis BuildTurnAnalysis(IReadOnlyList<TurnEvent> turnEvents, IReadOnlyList<SpellCastTelemetryEvent> spellEvents)
     {
         if (turnEvents.Count is 0)
             return TurnAnalysis.Empty;
 
         var completedTurns = new List<CompletedTurn>();
-        var readyCheckerStartCount = 0;
-        var readyCheckerAckCount = 0;
         var timerElapsedCount = 0;
         var turnsEndedByTimerCount = 0;
 
@@ -1035,7 +1098,6 @@ internal sealed class CombatTelemetryAnalyzer
                             activeTurn.TimerDisposedSource = turnEvent.Source;
                             break;
                         case "ReadyCheckerStart":
-                            readyCheckerStartCount++;
                             activeTurn.ReadyCheckerStarted = true;
                             activeTurn.ReadyCheckerStartCount++;
                             activeTurn.ReadyCheckerStartedAtUnixMs ??= turnEvent.AtUnixMs;
@@ -1047,8 +1109,13 @@ internal sealed class CombatTelemetryAnalyzer
                             activeTurn.ReadyCheckerWaiters = turnEvent.Waiters;
                             activeTurn.ReadyCheckerMissing = turnEvent.Missing;
                             break;
+                        case "ReadyCheckerAdvanceTurn":
+                            activeTurn.ReadyCheckerOutcome ??= TryParseDetailValue(turnEvent.Detail, "reason")
+                                ?? TryParseDetailValue(turnEvent.Detail, "source")
+                                ?? turnEvent.EventName;
+                            activeTurn.ReadyCheckerCompletedAtUnixMs ??= turnEvent.AtUnixMs;
+                            break;
                         case "ReadyCheckerCompleted":
-                            readyCheckerAckCount++;
                             activeTurn.ReadyCheckerOutcome = turnEvent.Source ?? turnEvent.EventName;
                             activeTurn.ReadyCheckerCompletedAtUnixMs = turnEvent.AtUnixMs;
                             activeTurn.ReadyCheckerDurationMs = turnEvent.ElapsedMs;
@@ -1144,6 +1211,7 @@ internal sealed class CombatTelemetryAnalyzer
         var causeCounts = completedTurns
             .GroupBy(turn => turn.ProbableCauseCode, StringComparer.Ordinal)
             .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
+        var timerElapsedClassifications = BuildTimerElapsedClassifications(turnEvents, spellEvents);
 
         return new TurnAnalysis(
             CompletedTurns: completedTurns.ToArray(),
@@ -1155,14 +1223,258 @@ internal sealed class CombatTelemetryAnalyzer
             PlayerMaxTurnMs: playerTurns.Length is 0 ? 0 : playerTurns.Max(turn => turn.DurationMs),
             TurnsOver5s: completedTurns.Count(turn => turn.DurationMs > 5_000),
             TurnsOver30s: completedTurns.Count(turn => turn.DurationMs > 30_000),
-            ReadyCheckerStartCount: readyCheckerStartCount,
-            ReadyCheckerAckCount: readyCheckerAckCount,
-            ReadyCheckerTimeoutCount: completedTurns.Count(turn => turn.HadReadyCheckerTimeout),
+            ReadyCheckerStartCount: turnEvents.Count(entry => string.Equals(entry.EventName, "ReadyCheckerStart", StringComparison.Ordinal)),
+            ReadyCheckerAckCount: turnEvents.Count(entry => string.Equals(entry.EventName, "ReadyCheckerAck", StringComparison.Ordinal)),
+            ReadyCheckerTimeoutCount: turnEvents.Count(entry => string.Equals(entry.EventName, "ReadyCheckerTimeout", StringComparison.Ordinal)),
+            ReadyCheckerAdvanceTurnCount: turnEvents.Count(entry => string.Equals(entry.EventName, "ReadyCheckerAdvanceTurn", StringComparison.Ordinal)),
             TimerElapsedCount: timerElapsedCount,
             TurnsEndedByTimerCount: turnsEndedByTimerCount,
             PendingSequenceTurnCount: completedTurns.Count(turn => turn.PendingSequencesObserved || turn.MaxActiveSequences > 1 || turn.MaxPendingSequences > 0),
             CauseCounts: causeCounts,
-            EndTurnMissingCount: completedTurns.Count(turn => !turn.EndTurnCalled));
+            EndTurnMissingCount: completedTurns.Count(turn => !turn.EndTurnCalled),
+            TimerElapsedClassifications: timerElapsedClassifications);
+    }
+
+    private static TimerElapsedClassification[] BuildTimerElapsedClassifications(
+        IReadOnlyList<TurnEvent> turnEvents,
+        IReadOnlyList<SpellCastTelemetryEvent> spellEvents)
+    {
+        var classifications = new List<TimerElapsedClassification>();
+
+        foreach (var sessionFight in turnEvents
+                     .GroupBy(entry => $"{entry.FileName}#{entry.FightId}", StringComparer.OrdinalIgnoreCase)
+                     .OrderBy(group => group.Key, StringComparer.OrdinalIgnoreCase))
+        {
+            var orderedEvents = sessionFight.OrderBy(entry => entry.AtUnixMs).ThenBy(entry => entry.LineNumber).ToArray();
+            TurnEvent? lastTurnStart = default;
+            TurnEvent? previousTurnStart = default;
+
+            foreach (var turnEvent in orderedEvents)
+            {
+                if (string.Equals(turnEvent.EventName, "TurnStart", StringComparison.Ordinal))
+                {
+                    previousTurnStart = lastTurnStart;
+                    lastTurnStart = turnEvent;
+                }
+
+                if (!string.Equals(turnEvent.EventName, "TimerElapsed", StringComparison.Ordinal))
+                    continue;
+
+                if (!string.Equals(turnEvent.FighterType, "CharacterFighter", StringComparison.Ordinal))
+                    continue;
+
+                if (!string.Equals(turnEvent.TimerType, "EndTurn", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(TryParseDetailValue(turnEvent.Detail, "timer"), "EndTurn", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                var turnId = turnEvent.TurnId ?? $"{turnEvent.Round}-{turnEvent.FighterId}";
+                var turnStart = orderedEvents.LastOrDefault(entry =>
+                    string.Equals(entry.EventName, "TurnStart", StringComparison.Ordinal)
+                    && string.Equals(entry.TurnId, turnId, StringComparison.Ordinal)
+                    && entry.AtUnixMs < turnEvent.AtUnixMs);
+
+                var timeSinceTurnStartedMs = turnStart is null
+                    ? turnEvent.ElapsedSinceTurnStartMs
+                    : Math.Max(0, turnEvent.AtUnixMs - turnStart.AtUnixMs);
+
+                var hadClientEndTurnBeforeTimer = orderedEvents.Any(entry =>
+                    string.Equals(entry.EventName, "EndTurnRequested", StringComparison.Ordinal)
+                    && string.Equals(entry.TurnId, turnId, StringComparison.Ordinal)
+                    && entry.AtUnixMs < turnEvent.AtUnixMs
+                    && !string.Equals(entry.Source, "Timer", StringComparison.OrdinalIgnoreCase));
+
+                var spellWindowStart = turnStart?.AtUnixMs ?? 0;
+                var spellWindowEnd = turnEvent.AtUnixMs;
+                var spellCountDuringTurn = spellEvents.Count(entry =>
+                {
+                    if (!string.Equals(entry.TurnId, turnId, StringComparison.Ordinal)
+                        || entry.FightId != turnEvent.FightId
+                        || !string.Equals(entry.EventName, "SpellCastStarted", StringComparison.Ordinal))
+                        return false;
+
+                    var spellAtUnixMs = TryParseTimestampUtcMs(entry.TimestampUtc);
+                    return spellAtUnixMs.HasValue
+                        && spellAtUnixMs.Value >= spellWindowStart
+                        && spellAtUnixMs.Value <= spellWindowEnd;
+                });
+
+                var readyMessageCountDuringTurn = orderedEvents.Count(entry =>
+                    string.Equals(entry.EventName, "GameFightTurnReadyMessageReceived", StringComparison.Ordinal)
+                    && string.Equals(entry.TurnId, turnId, StringComparison.Ordinal)
+                    && entry.AtUnixMs >= (turnStart?.AtUnixMs ?? 0)
+                    && entry.AtUnixMs <= turnEvent.AtUnixMs);
+
+                var handOffWindowEnd = turnStart?.AtUnixMs ?? turnEvent.AtUnixMs;
+                var previousEndTurnCompleted = orderedEvents.LastOrDefault(entry =>
+                    string.Equals(entry.EventName, "EndTurnCompleted", StringComparison.Ordinal)
+                    && entry.AtUnixMs < handOffWindowEnd
+                    && entry.AtUnixMs >= (previousTurnStart?.AtUnixMs ?? 0));
+                var handOffWindowStart = previousEndTurnCompleted?.AtUnixMs ?? previousTurnStart?.AtUnixMs ?? 0;
+                var handOffEvents = orderedEvents
+                    .Where(entry => entry.AtUnixMs >= handOffWindowStart && entry.AtUnixMs < handOffWindowEnd)
+                    .ToArray();
+
+                var hadReadyStarted = handOffEvents.Any(entry => string.Equals(entry.EventName, "ReadyCheckerStart", StringComparison.Ordinal));
+                var hadReadyAck = handOffEvents.Any(entry => string.Equals(entry.EventName, "ReadyCheckerAck", StringComparison.Ordinal));
+                var hadReadyTimeout = handOffEvents.Any(entry => string.Equals(entry.EventName, "ReadyCheckerTimeout", StringComparison.Ordinal));
+                var hadReadyAdvance = handOffEvents.Any(entry => string.Equals(entry.EventName, "ReadyCheckerAdvanceTurn", StringComparison.Ordinal));
+
+                var readyCheckerState = hadReadyTimeout
+                    ? "Timeout"
+                    : hadReadyAdvance
+                        ? "AdvanceSuccess"
+                        : hadReadyStarted && !hadReadyAck
+                            ? "StartedNoAck"
+                            : hadReadyStarted
+                                ? "StartedWithAck"
+                                : "None";
+
+                var previousActorType = previousTurnStart?.FighterType;
+                var classification = ClassifyTimerElapsed(
+                    hadClientEndTurnBeforeTimer,
+                    spellCountDuringTurn,
+                    readyMessageCountDuringTurn,
+                    timeSinceTurnStartedMs,
+                    hadReadyStarted,
+                    hadReadyAck,
+                    hadReadyTimeout,
+                    hadReadyAdvance);
+
+                classifications.Add(new TimerElapsedClassification(
+                    LogFile: turnEvent.FileName,
+                    FightId: turnEvent.FightId,
+                    TurnId: turnId,
+                    ActorId: turnEvent.FighterId,
+                    ActorName: turnEvent.ActorName,
+                    Classification: classification,
+                    ReadyCheckerState: readyCheckerState,
+                    HadReadyAck: hadReadyAck,
+                    HadReadyTimeout: hadReadyTimeout,
+                    PreviousActorType: previousActorType,
+                    TimeSinceTurnStartedMs: timeSinceTurnStartedMs,
+                    SpellCountDuringTurn: spellCountDuringTurn,
+                    ReadyMessageCountDuringTurn: readyMessageCountDuringTurn,
+                    HadClientEndTurnBeforeTimer: hadClientEndTurnBeforeTimer,
+                    Notes: DescribeTimerElapsedClassification(classification, spellCountDuringTurn, hadClientEndTurnBeforeTimer, timeSinceTurnStartedMs)));
+            }
+        }
+
+        return classifications.ToArray();
+    }
+
+    private static string ClassifyTimerElapsed(
+        bool hadClientEndTurnBeforeTimer,
+        int spellCountDuringTurn,
+        int readyMessageCountDuringTurn,
+        long? timeSinceTurnStartedMs,
+        bool hadReadyStarted,
+        bool hadReadyAck,
+        bool hadReadyTimeout,
+        bool hadReadyAdvance)
+    {
+        if (hadReadyStarted && !hadReadyAck && !hadReadyAdvance && hadReadyTimeout)
+            return "READY_TIMEOUT_EXPECTED";
+
+        if (hadReadyStarted && !hadReadyAck && !hadReadyAdvance)
+            return "MISSING_READY_ACK";
+
+        if (readyMessageCountDuringTurn >= 3 && spellCountDuringTurn is 0 && !hadClientEndTurnBeforeTimer)
+            return "POSSIBLE_CLIENT_STALL";
+
+        if (!hadClientEndTurnBeforeTimer && spellCountDuringTurn is 0
+            && timeSinceTurnStartedMs is >= 30_000)
+            return "PLAYER_NO_ACTION";
+
+        if (!hadClientEndTurnBeforeTimer && spellCountDuringTurn > 0
+            && timeSinceTurnStartedMs is >= 30_000)
+            return "UNKNOWN";
+
+        return "UNKNOWN";
+    }
+
+    private static string DescribeTimerElapsedClassification(
+        string classification,
+        int spellCountDuringTurn,
+        bool hadClientEndTurnBeforeTimer,
+        long? timeSinceTurnStartedMs)
+    {
+        return classification switch
+        {
+            "PLAYER_NO_ACTION" when spellCountDuringTurn is 0 =>
+                $"Player turn hit the ~35s rescue timer after {timeSinceTurnStartedMs ?? 0} ms with no spells and no client EndTurn.",
+            "UNKNOWN" when spellCountDuringTurn > 0 =>
+                $"Player cast {spellCountDuringTurn} spell(s) during the turn but still hit the ~35s rescue timer without a client EndTurn.",
+            "READY_TIMEOUT_EXPECTED" =>
+                "Preceding hand-off used ReadyChecker timeout before this turn started.",
+            "MISSING_READY_ACK" =>
+                "ReadyChecker started before this turn but no ACK/advance was reconstructed in the hand-off window.",
+            "POSSIBLE_CLIENT_STALL" =>
+                "Client sent repeated GameFightTurnReady messages during the turn without gameplay progress.",
+            "UNKNOWN" when hadClientEndTurnBeforeTimer =>
+                "Client EndTurn was requested before TimerElapsed; investigate duplicate timer or race.",
+            _ => "Residual timer pattern does not match the common AFK / ready-hand-off buckets."
+        };
+    }
+
+    private static string BuildTimerElapsedClassificationReport(string inputDirectory, TurnAnalysis turnAnalysis)
+    {
+        var builder = new StringBuilder();
+        var generatedAt = DateTimeOffset.Now;
+        var classifications = turnAnalysis.TimerElapsedClassifications;
+        var summary = classifications
+            .GroupBy(entry => entry.Classification, StringComparer.Ordinal)
+            .OrderByDescending(group => group.Count())
+            .ThenBy(group => group.Key, StringComparer.Ordinal)
+            .ToArray();
+
+        builder.AppendLine("# Combat TimerElapsed Classification Report");
+        builder.AppendLine();
+        builder.AppendLine($"Generated at: `{generatedAt:yyyy-MM-dd HH:mm:ss zzz}`");
+        builder.AppendLine($"Input directory: `{inputDirectory}`");
+        builder.AppendLine($"CharacterFighter rescue timers classified: `{classifications.Length}`");
+        builder.AppendLine();
+
+        builder.AppendLine("## Classification Summary");
+        builder.AppendLine();
+        if (summary.Length is 0)
+        {
+            builder.AppendLine("No `TimerElapsed` events for `CharacterFighter` were found in this sample.");
+        }
+        else
+        {
+            builder.AppendLine("| Classification | Count |");
+            builder.AppendLine("| --- | ---: |");
+            foreach (var group in summary)
+                builder.AppendLine($"| `{group.Key}` | {group.Count()} |");
+        }
+        builder.AppendLine();
+
+        builder.AppendLine("## Timer Details");
+        builder.AppendLine();
+        if (classifications.Length is 0)
+        {
+            builder.AppendLine("No timer rows to display.");
+        }
+        else
+        {
+            builder.AppendLine("| File | FightId | TurnId | ActorId | ActorName | Classification | ReadyCheckerState | HadReadyAck | HadReadyTimeout | PreviousActorType | TimeSinceTurnStartedMs | SpellCount | ReadyMsgs | Notes |");
+            builder.AppendLine("| --- | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |");
+            foreach (var entry in classifications)
+            {
+                builder.AppendLine(
+                    $"| `{entry.LogFile}` | {entry.FightId} | `{entry.TurnId}` | {FormatNullable(entry.ActorId)} | `{entry.ActorName ?? "-"}` | `{entry.Classification}` | `{entry.ReadyCheckerState}` | `{entry.HadReadyAck}` | `{entry.HadReadyTimeout}` | `{entry.PreviousActorType ?? "-"}` | {FormatNullable(entry.TimeSinceTurnStartedMs)} | {entry.SpellCountDuringTurn} | {entry.ReadyMessageCountDuringTurn} | {EscapeTable(entry.Notes, 96)} |");
+            }
+        }
+        builder.AppendLine();
+
+        builder.AppendLine("## Interpretation");
+        builder.AppendLine();
+        builder.AppendLine("- `PLAYER_NO_ACTION` means the visible ~35s wait happened during the player's own turn, not in ReadyChecker.");
+        builder.AppendLine("- `READY_TIMEOUT_EXPECTED` and `MISSING_READY_ACK` refer to the hand-off window before the timed turn started.");
+        builder.AppendLine("- `POSSIBLE_CLIENT_STALL` highlights repeated ready messages without spell or EndTurn progress.");
+        builder.AppendLine("- `UNKNOWN` should be inspected manually before changing combat logic.");
+
+        return builder.ToString();
     }
 
     private static CompletedTurn CompleteTurn(ActiveTurnState activeTurn, long completedAtUnixMs, string completionEvent)
@@ -1583,8 +1895,12 @@ internal sealed class CombatTelemetryAnalyzer
         builder.AppendLine($"- Player turns avg/max: `{Format(turnAnalysis.PlayerAverageTurnMs)}` / `{turnAnalysis.PlayerMaxTurnMs} ms`");
         builder.AppendLine($"- Turns > 5000 ms: `{turnAnalysis.TurnsOver5s}`");
         builder.AppendLine($"- Turns > 30000 ms: `{turnAnalysis.TurnsOver30s}`");
-        builder.AppendLine($"- ReadyChecker starts/ACKs/timeouts: `{turnAnalysis.ReadyCheckerStartCount}` / `{turnAnalysis.ReadyCheckerAckCount}` / `{turnAnalysis.ReadyCheckerTimeoutCount}`");
+        builder.AppendLine($"- ReadyChecker starts/ACKs/advance/timeouts: `{turnAnalysis.ReadyCheckerStartCount}` / `{turnAnalysis.ReadyCheckerAckCount}` / `{turnAnalysis.ReadyCheckerAdvanceTurnCount}` / `{turnAnalysis.ReadyCheckerTimeoutCount}`");
         builder.AppendLine($"- TimerElapsed count: `{turnAnalysis.TimerElapsedCount}`");
+        if (turnAnalysis.TimerElapsedClassifications.Length > 0)
+        {
+            builder.AppendLine($"- TimerElapsed classifications: `{string.Join(", ", turnAnalysis.TimerElapsedClassifications.GroupBy(entry => entry.Classification, StringComparer.Ordinal).OrderByDescending(group => group.Count()).Select(group => $"{group.Key}={group.Count()}"))}`");
+        }
         builder.AppendLine($"- Turns ended by timer: `{turnAnalysis.TurnsEndedByTimerCount}`");
         builder.AppendLine($"- Turns with pending sequences: `{turnAnalysis.PendingSequenceTurnCount}`");
         builder.AppendLine();
@@ -2026,6 +2342,23 @@ internal sealed record TelemetryEvent(
     string? ExceptionMessage,
     string RawLine);
 
+internal sealed record TimerElapsedClassification(
+    string LogFile,
+    short FightId,
+    string TurnId,
+    int? ActorId,
+    string? ActorName,
+    string Classification,
+    string ReadyCheckerState,
+    bool HadReadyAck,
+    bool HadReadyTimeout,
+    string? PreviousActorType,
+    long? TimeSinceTurnStartedMs,
+    int SpellCountDuringTurn,
+    int ReadyMessageCountDuringTurn,
+    bool HadClientEndTurnBeforeTimer,
+    string? Notes);
+
 internal sealed record TurnEvent(
     string FileName,
     string FilePath,
@@ -2049,7 +2382,9 @@ internal sealed record TurnEvent(
     int? TurnTimeMs,
     string? Status,
     string? Detail,
-    string RawLine);
+    string RawLine,
+    string? TurnId = null,
+    string? ActorName = null);
 
 internal sealed record PhaseStat(
     string Phase,
@@ -2147,11 +2482,13 @@ internal sealed record TurnAnalysis(
     int ReadyCheckerStartCount,
     int ReadyCheckerAckCount,
     int ReadyCheckerTimeoutCount,
+    int ReadyCheckerAdvanceTurnCount,
     int TimerElapsedCount,
     int TurnsEndedByTimerCount,
     int PendingSequenceTurnCount,
     IReadOnlyDictionary<string, int> CauseCounts,
-    int EndTurnMissingCount)
+    int EndTurnMissingCount,
+    TimerElapsedClassification[] TimerElapsedClassifications)
 {
     public static TurnAnalysis Empty { get; } = new(
         CompletedTurns: Array.Empty<CompletedTurn>(),
@@ -2166,11 +2503,13 @@ internal sealed record TurnAnalysis(
         ReadyCheckerStartCount: 0,
         ReadyCheckerAckCount: 0,
         ReadyCheckerTimeoutCount: 0,
+        ReadyCheckerAdvanceTurnCount: 0,
         TimerElapsedCount: 0,
         TurnsEndedByTimerCount: 0,
         PendingSequenceTurnCount: 0,
         CauseCounts: new Dictionary<string, int>(StringComparer.Ordinal),
-        EndTurnMissingCount: 0);
+        EndTurnMissingCount: 0,
+        TimerElapsedClassifications: Array.Empty<TimerElapsedClassification>());
 }
 
 internal sealed record MonsterWaitSummary(
