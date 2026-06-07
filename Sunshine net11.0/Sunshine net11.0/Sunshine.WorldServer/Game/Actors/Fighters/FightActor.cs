@@ -1558,7 +1558,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Fight.Clients.ForEach(x => x.Send(new GameActionFightStateChangeMessage(950, Id, Id, (short)state, false)));
             }
         }
-        public void ResetUsedPoints()
+        public virtual void ResetUsedPoints()
         {
             Stats.AP.Used = 0;
             Stats.MP.Used = 0;
