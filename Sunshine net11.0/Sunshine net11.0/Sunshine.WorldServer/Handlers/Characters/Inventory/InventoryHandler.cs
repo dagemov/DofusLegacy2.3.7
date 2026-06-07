@@ -188,6 +188,102 @@ namespace Sunshine.WorldServer.Handlers.Characters.Inventory
 
                 if (TryUseSpellScroll(client, item))
                     return;
+
+                if (TryUseCharacteristicScroll(client, item))
+                    return;
+            }
+
+            private static readonly Dictionary<EffectsEnum, StatsEnum> CharacteristicScrollEffects = new Dictionary<EffectsEnum, StatsEnum>
+            {
+                { EffectsEnum.Effect_AddStrength, StatsEnum.Strength },
+                { EffectsEnum.Effect_AddIntelligence, StatsEnum.Intelligence },
+                { EffectsEnum.Effect_AddChance, StatsEnum.Chance },
+                { EffectsEnum.Effect_AddAgility, StatsEnum.Agility },
+                { EffectsEnum.Effect_AddVitality, StatsEnum.Vitality },
+                { EffectsEnum.Effect_AddWisdom, StatsEnum.Wisdom },
+                { EffectsEnum.Effect_AddPermanentStrength, StatsEnum.Strength },
+                { EffectsEnum.Effect_AddPermanentIntelligence, StatsEnum.Intelligence },
+                { EffectsEnum.Effect_AddPermanentChance, StatsEnum.Chance },
+                { EffectsEnum.Effect_AddPermanentAgility, StatsEnum.Agility },
+                { EffectsEnum.Effect_AddPermanentVitality, StatsEnum.Vitality },
+                { EffectsEnum.Effect_AddPermanentWisdom, StatsEnum.Wisdom },
+                { EffectsEnum.Effect_SubStrength, StatsEnum.Strength },
+                { EffectsEnum.Effect_SubIntelligence, StatsEnum.Intelligence },
+                { EffectsEnum.Effect_SubChance, StatsEnum.Chance },
+                { EffectsEnum.Effect_SubAgility, StatsEnum.Agility },
+                { EffectsEnum.Effect_SubVitality, StatsEnum.Vitality },
+                { EffectsEnum.Effect_SubWisdom, StatsEnum.Wisdom },
+            };
+
+            private static readonly HashSet<EffectsEnum> NegativeScrollEffects = new HashSet<EffectsEnum>
+            {
+                EffectsEnum.Effect_SubStrength,
+                EffectsEnum.Effect_SubIntelligence,
+                EffectsEnum.Effect_SubChance,
+                EffectsEnum.Effect_SubAgility,
+                EffectsEnum.Effect_SubVitality,
+                EffectsEnum.Effect_SubWisdom,
+            };
+
+            private static bool TryUseCharacteristicScroll(WorldClient client, BasePlayerItem item)
+            {
+                if (client?.Character == null || item?.Template == null)
+                    return false;
+
+                if (client.Character.IsInFight())
+                {
+                    client.Character.SendServerMessage("No puedes usar un pergamino en combate.", System.Drawing.Color.Red);
+                    return true;
+                }
+
+                if (client.Character.Fighter != null && client.Character.Fighter.IsDead())
+                {
+                    client.Character.SendServerMessage("No puedes usar un pergamino mientras estás muerto.", System.Drawing.Color.Red);
+                    return true;
+                }
+
+                if (item.Effects == null || item.Effects.Count == 0)
+                    return false;
+
+                foreach (var effect in item.Effects)
+                {
+                    if (effect == null)
+                        continue;
+
+                    if (!CharacteristicScrollEffects.TryGetValue(effect.Id, out var targetStat))
+                        continue;
+
+                    int value = effect.Value;
+                    if (value == 0)
+                        continue;
+
+                    if (NegativeScrollEffects.Contains(effect.Id))
+                        value = -value;
+
+                    var statData = client.Character.Stats[targetStat];
+                    if (statData == null)
+                        continue;
+
+                    statData.Base += value;
+                    client.Character.Stats.Update();
+                    client.Character.Inventory.RemoveItem(item, 1);
+
+                    if (client.Character.Stats.Health != null)
+                        Handlers.Characters.CharacterHandler.SendUpdateLifePointsMessage(client);
+
+                    client.Character.RefreshStats();
+                    CharacterManager.Instance.Save(client.Character);
+
+                    var statName = targetStat.ToString();
+                    if (value > 0)
+                        client.Character.SendServerMessage($"+{value} {statName}", System.Drawing.Color.Green);
+                    else
+                        client.Character.SendServerMessage($"{value} {statName}", System.Drawing.Color.Red);
+
+                    return true;
+                }
+
+                return false;
             }
 
             private static bool TryUseMagicFragments(WorldClient client, BasePlayerItem item)

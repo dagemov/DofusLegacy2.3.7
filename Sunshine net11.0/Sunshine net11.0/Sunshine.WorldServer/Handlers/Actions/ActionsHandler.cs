@@ -25,17 +25,9 @@ namespace Sunshine.WorldServer.Handlers.Actions
 
         public static void SendGameActionFightPointsVariationMessage(List<WorldClient> clients, ActionsEnum action, FightActor source, FightActor target, short delta)
         {
-            CharacterFighter characterTarget = target as CharacterFighter;
-
-            bool skipSelfClient = source == target
-                && characterTarget != null
-                && characterTarget.Client != null
-                && (action == ActionsEnum.ACTION_CHARACTER_ACTION_POINTS_USE
-                    || action == ActionsEnum.ACTION_CHARACTER_MOVEMENT_POINTS_USE);
-
             foreach (var client in clients)
             {
-                if (skipSelfClient && client == characterTarget.Client)
+                if (client == null)
                     continue;
 
                 client.Send(new GameActionFightPointsVariationMessage((short)action, source.Id, target.Id, delta));

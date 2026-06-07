@@ -15,7 +15,7 @@ namespace Sunshine.WorldServer.Commands.Player
 
             if (Client.Character.IsInFight() || Client.Character.IsBusy())
             {
-                Client.Character.SendServerMessage("Impossible de se téléporter pendant un combat ou un dialogue.", Color.Red);
+                Client.Character.SendServerMessage("No puedes teletransportarte durante un combate o un diálogo.", Color.Red);
                 return;
             }
 
@@ -26,7 +26,7 @@ namespace Sunshine.WorldServer.Commands.Player
             var map = MapManager.Instance.GetMap(mapId);
             if (map == null)
             {
-                Client.Character.SendServerMessage("La map 2323 est introuvable.", Color.Red);
+                Client.Character.SendServerMessage("El mapa 2323 no se encontró.", Color.Red);
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace Sunshine.WorldServer.Commands.Player
 
         public override string Description
         {
-            get { return "Téléporte sur la map debug (2323, cellule 328, direction 3)."; }
+            get { return "Teletransporta al mapa de depuración (2323, celda 328, dirección 3)."; }
         }
     }
 }
