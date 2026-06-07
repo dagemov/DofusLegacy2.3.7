@@ -1,0 +1,26 @@
+<section class="d-grid gap-4" *ngIf="spellId as currentSpellId">
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/spells">Volver a spells</a>
+      <p class="text-uppercase small fw-semibold text-secondary mb-2">Spell {{ currentSpellId }}</p>
+      <h2 class="h4 mb-2">Detalle pendiente de Phase 7</h2>
+      <p class="text-secondary mb-0">
+        La navegacion desde el catalogo ya esta habilitada, pero el detalle completo del Spell Builder
+        se implementa en la siguiente fase para no mezclar niveles, efectos ni edicion en este commit.
+      </p>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <h3 class="h5 mb-2">Alcance actual</h3>
+      <ul class="mb-0 ps-3">
+        <li>Catalogo Angular listo en <span class="font-monospace-soft">/admin/spells</span>.</li>
+        <li>Navegacion al spell seleccionada preservada para el operador.</li>
+        <li>Detalle, niveles y effects quedan diferidos a Phase 7 y siguientes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<app-api-problem-panel [problem]="problem"></app-api-problem-panel>

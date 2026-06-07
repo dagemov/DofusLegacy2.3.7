@@ -29,6 +29,16 @@ export const routes: Routes = [
       import('./admin/item-sets/item-set-detail-page.component').then((m) => m.ItemSetDetailPageComponent)
   },
   {
+    path: 'admin/spells',
+    loadComponent: () =>
+      import('./admin/spells/spells-page.component').then((m) => m.SpellsPageComponent)
+  },
+  {
+    path: 'admin/spells/:spellId',
+    loadComponent: () =>
+      import('./admin/spells/spell-detail-page.component').then((m) => m.SpellDetailPageComponent)
+  },
+  {
     path: 'admin/items/icon-selector',
     loadComponent: () =>
       import('./admin/items/item-icon-selector.component').then(

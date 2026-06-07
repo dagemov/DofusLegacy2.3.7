@@ -2,6 +2,43 @@
 
 Generated: `2026-06-06`
 
+## Macro 5 / Phase 6 - Angular Catalog
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `bb6c345 feat: add spell effects api` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- Ruta Angular `admin/spells`
+- Página `spells-page.component` con catálogo read-only
+- `SpellsApi`, `SpellsFacade`, `spells.models.ts`, `spells.queries.ts`
+- Integración del link `Spells` en el shell principal
+- Ruta placeholder `admin/spells/:spellId` para preparar Phase 7 sin abrir detalle real
+- Documentación `docs/admin-tools/spell-builder/spell-builder-phase6-angular-catalog.md`
+
+### Validación
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+
+### Notas
+
+- El Angular Admin usa standalone components y `loadComponent`, sin módulos por feature.
+- La configuración API sigue en `environment.adminApiBaseUrl = /api/admin/v1`.
+- Phase 6 no tocó backend, base de datos, cliente ni publicación.
+- La navegación a detalle quedó habilitada solo como placeholder; el detalle real sigue fuera de esta fase.
+- Los filtros implementados son `search`, `spellId`, `breedId`, `typeId`, paginación y `pageSize`.
+
+### Siguiente
+
+- Macro 5 / Phase 7 - Angular Detail
+- Alcance esperado: detalle real del spell consumiendo `GET /api/admin/v1/spells/{spellId}`, resumen de niveles y puente visual hacia Phase 4/5
+
 ## Macro 5 / Phase 5 - Spell Effects API
 
 | Campo | Valor |

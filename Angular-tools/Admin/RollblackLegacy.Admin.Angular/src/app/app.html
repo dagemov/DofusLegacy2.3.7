@@ -6,7 +6,7 @@
           <p class="app-shell__eyebrow mb-1">DofusLegacy 2.3.7</p>
           <h1 class="h3 mb-1">RollblackLegacy Admin</h1>
           <p class="text-secondary mb-0">
-            Items Builder: catalogo, detalle, escritura segura, QA y estabilizacion operativa.
+            Items Builder y Spell Builder: catalogos operativos del panel admin migrado.
           </p>
         </div>
         <nav class="nav nav-pills">
@@ -16,6 +16,13 @@
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: false }">
             Items
+          </a>
+          <a
+            class="nav-link"
+            routerLink="/admin/spells"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }">
+            Spells
           </a>
         </nav>
       </div>

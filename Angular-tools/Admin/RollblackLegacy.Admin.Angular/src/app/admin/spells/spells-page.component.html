@@ -1,0 +1,207 @@
+<section class="d-grid gap-4">
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-start">
+        <div>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">Spell Builder / Catalogo</p>
+          <h2 class="h4 mb-2">Catalogo de hechizos</h2>
+          <p class="text-secondary mb-0">
+            Port visual inicial del Spell Builder legacy: listado por runtime y referencia,
+            con filtros compatibles con la API Phase 2 y acceso preparado hacia Phase 7.
+          </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+          <a class="btn btn-outline-secondary" routerLink="/admin/items">Abrir Items Builder</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <form class="row g-3" (ngSubmit)="applyFilters()">
+        <div class="col-12 col-xl-5">
+          <label class="form-label" for="search">Buscar por nombre o TypeLabel</label>
+          <input
+            id="search"
+            name="search"
+            [(ngModel)]="filters.search"
+            class="form-control"
+            placeholder="Nombre, descripcion, TypeLabel o texto libre" />
+        </div>
+
+        <div class="col-6 col-md-4 col-xl-2">
+          <label class="form-label" for="spellId">SpellId</label>
+          <input
+            id="spellId"
+            name="spellId"
+            [(ngModel)]="filters.spellId"
+            class="form-control font-monospace-soft"
+            type="number"
+            min="1"
+            placeholder="123" />
+        </div>
+
+        <div class="col-6 col-md-4 col-xl-2">
+          <label class="form-label" for="breedId">BreedId</label>
+          <input
+            id="breedId"
+            name="breedId"
+            [(ngModel)]="filters.breedId"
+            class="form-control font-monospace-soft"
+            type="number"
+            min="1"
+            placeholder="1..12" />
+        </div>
+
+        <div class="col-12 col-md-4 col-xl-2">
+          <label class="form-label" for="typeId">TypeId</label>
+          <input
+            id="typeId"
+            name="typeId"
+            [(ngModel)]="filters.typeId"
+            class="form-control font-monospace-soft"
+            type="number"
+            min="0"
+            placeholder="Reemplaza categoria" />
+        </div>
+
+        <div class="col-12 d-flex flex-wrap gap-2">
+          <button class="btn btn-primary" type="submit" [disabled]="isLoadingList">
+            Aplicar filtros
+          </button>
+          <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()">
+            Limpiar
+          </button>
+          <div class="ms-auto d-flex align-items-center gap-2">
+            <label class="form-label mb-0" for="pageSize">Tamano de pagina</label>
+            <select
+              id="pageSize"
+              class="form-select form-select-sm"
+              [ngModel]="query.pageSize"
+              (ngModelChange)="changePageSize($event)"
+              name="pageSize">
+              <option [ngValue]="20">20</option>
+              <option [ngValue]="50">50</option>
+              <option [ngValue]="100">100</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <p class="text-secondary small mb-0 mt-3">
+        `search` ya cubre nombre, descripcion, SpellId, TypeId, TypeLabel e IconId. `typeId`
+        reemplaza la categoria legacy y `breedId` aplica filtro exacto por clase si la relacion existe.
+      </p>
+    </div>
+  </div>
+
+  <app-api-problem-panel [problem]="listProblem"></app-api-problem-panel>
+
+  <div class="card admin-card border-0">
+    <div class="card-body">
+      <div class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center mb-3">
+        <div>
+          <h3 class="h5 mb-1">Listado de spells</h3>
+          <p class="text-secondary mb-0">
+            {{ result.totalCount }} resultado(s), pagina {{ result.page }} de {{ totalPages }}.
+          </p>
+        </div>
+        <div *ngIf="isLoadingList" class="text-secondary small">Cargando spells...</div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>SpellId</th>
+              <th>Nombre</th>
+              <th>Descripcion</th>
+              <th>Tipo</th>
+              <th>Clases</th>
+              <th>Niveles</th>
+              <th>IconId</th>
+              <th>Disponibilidad</th>
+              <th class="text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let spell of result.items; trackBy: trackBySpellId">
+              <td class="font-monospace-soft fw-semibold">{{ spell.spellId }}</td>
+              <td>
+                <a
+                  class="fw-semibold text-decoration-none"
+                  [routerLink]="['/admin/spells', spell.spellId]">
+                  {{ spell.name || ('Hechizo #' + spell.spellId) }}
+                </a>
+              </td>
+              <td class="spell-description">
+                {{ formatDescription(spell.description) }}
+              </td>
+              <td>
+                <div>{{ spell.typeLabel || 'No disponible' }}</div>
+                <div class="small text-secondary">
+                  TypeId {{ spell.typeId ?? 'No disponible' }}
+                </div>
+              </td>
+              <td class="small">{{ formatBreeds(spell.breeds) }}</td>
+              <td>{{ spell.levelCount }}</td>
+              <td class="font-monospace-soft">
+                {{ spell.iconId ?? 'No disponible' }}
+              </td>
+              <td>
+                <div class="d-flex flex-wrap gap-1">
+                  <span
+                    class="badge"
+                    [class.text-bg-success]="spell.runtimeAvailable"
+                    [class.text-bg-secondary]="!spell.runtimeAvailable">
+                    Runtime {{ spell.runtimeAvailable ? 'OK' : 'No' }}
+                  </span>
+                  <span
+                    class="badge"
+                    [class.text-bg-info]="spell.referenceAvailable"
+                    [class.text-bg-secondary]="!spell.referenceAvailable">
+                    Referencia {{ spell.referenceAvailable ? 'OK' : 'No' }}
+                  </span>
+                </div>
+              </td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/spells', spell.spellId]">
+                  Abrir detalle
+                </a>
+              </td>
+            </tr>
+
+            <tr *ngIf="!isLoadingList && result.items.length === 0">
+              <td colspan="9" class="text-center text-secondary py-4">
+                No se encontraron spells para los filtros seleccionados.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center pt-2">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="goToPage(result.page - 1)"
+          [disabled]="!hasPreviousPage || isLoadingList">
+          Anterior
+        </button>
+
+        <p class="mb-0 text-secondary small">
+          Claves de query: <span class="font-monospace-soft">search, spellId, breedId, typeId</span>
+        </p>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="goToPage(result.page + 1)"
+          [disabled]="!hasNextPage || isLoadingList">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
