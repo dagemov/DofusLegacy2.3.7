@@ -533,20 +533,82 @@ namespace Sunshine.MySql.Database.Managers
 
         public void DeleteCharacterOnAccount(WorldClient client, Character character)
         {
-            client.Characters.ToList().Remove(character.Record);
-            DatabaseManager.Connection.Execute($"DELETE FROM worlds_characters WHERE Owner = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters WHERE Id = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters_stats WHERE OwnerId = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters_alignments WHERE OwnerId = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters_spells WHERE OwnerId = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters_items WHERE OwnerId = '{character.Id}'");
-            if (character.Shortcuts.SpellShortcuts.Count > 0)
-                DatabaseManager.Connection.Execute($"DELETE FROM characters_shortcuts_spells WHERE OwnerId = '{character.Id}'");
-            if (character.Shortcuts.ItemShortcuts.Count > 0)
-                DatabaseManager.Connection.Execute($"DELETE FROM characters_shortcuts_items WHERE OwnerId = '{character.Id}'");
-            if (character.Shortcuts.PresetShortcuts.Count > 0)
-                DatabaseManager.Connection.Execute($"DELETE FROM characters_shortcuts_items_presets WHERE OwnerId = '{character.Id}'");
-            DatabaseManager.Connection.Execute($"DELETE FROM characters_items_presets WHERE OwnerId = '{character.Id}'");
+            if (character == null)
+                return;
+
+            try
+            {
+                DeleteCharacterFromDatabase(character.Id);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError($"[ Character ] Failed to delete character {character.Id} ({character.Name}): {ex}");
+                throw;
+            }
+
+            ReleaseCharacterFromRuntime(character, client);
+        }
+
+        private static void ReleaseCharacterFromRuntime(Character character, WorldClient client)
+        {
+            CharacterManager.Instance.Characters.Remove(character.Id);
+
+            if (character.Client != null && character.Client != client)
+                character.Client.Disconnect();
+
+            if (client?.Character?.Id == character.Id)
+                client.Character = null;
+        }
+
+        private void DeleteCharacterFromDatabase(int characterId)
+        {
+            CharacterDopeulBootstrap.EnsureCooldownTable();
+
+            using var connection = DatabaseManager.CreateConnection();
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                ExecuteCharacterCascadeDelete(connection, transaction, characterId);
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
+
+        private static void ExecuteCharacterCascadeDelete(MySqlConnection connection, MySqlTransaction transaction, int characterId)
+        {
+            var ownerParams = new { OwnerId = characterId };
+            var characterParams = new { CharacterId = characterId };
+
+            connection.Execute("DELETE FROM characters_items WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_items_merchant WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_stats WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_spells WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_alignments WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_shortcuts_items WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_shortcuts_spells WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_shortcuts_items_presets WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_items_presets WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_jobs WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_quests WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_quests_objectives WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters_quests_steps WHERE OwnerId = @OwnerId", ownerParams, transaction);
+            connection.Execute(
+                "DELETE FROM character_friends WHERE CharacterId = @CharacterId OR FriendCharacterId = @CharacterId",
+                characterParams,
+                transaction);
+            connection.Execute(
+                "DELETE FROM character_enemies WHERE CharacterId = @CharacterId OR EnemyCharacterId = @CharacterId",
+                characterParams,
+                transaction);
+            connection.Execute("DELETE FROM characters_dopeul_cooldown WHERE CharacterId = @CharacterId", characterParams, transaction);
+            connection.Execute("DELETE FROM world_maps_merchant WHERE CharacterId = @CharacterId", characterParams, transaction);
+            connection.Execute("DELETE FROM worlds_characters WHERE Owner = @OwnerId", ownerParams, transaction);
+            connection.Execute("DELETE FROM characters WHERE Id = @OwnerId", ownerParams, transaction);
         }
 
         public Character GetCharacter(string name)
@@ -576,7 +638,7 @@ namespace Sunshine.MySql.Database.Managers
 
         public bool DoesNameExist(string name)
         {
-            return Characters.FirstOrDefault(x => x.Value.Name == name).Value == null ? false : true;
+            return AccountManager.Instance.IsCharacterNameTaken(name);
         }
 
         public string GenerateName()

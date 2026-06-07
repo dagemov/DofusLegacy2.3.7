@@ -450,10 +450,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
 
         private static bool IsCharacterNameTaken(string name, Character exceptCharacter = null)
         {
-            return CharacterManager.Instance.Characters.Values.Any(entry =>
-                entry != null &&
-                (exceptCharacter == null || entry.Id != exceptCharacter.Id) &&
-                string.Equals(entry.Name, name, StringComparison.OrdinalIgnoreCase));
+            return AccountManager.Instance.IsCharacterNameTaken(name, exceptCharacter?.Id);
         }
 
         private static ActorLook GetCharacterLook(Character character)
