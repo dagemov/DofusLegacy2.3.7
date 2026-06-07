@@ -1210,6 +1210,7 @@ namespace Sunshine.WorldServer.Game.Fights
                     {
                         CombatTelemetry.LogTurnEvent("TimerElapsed", this, FighterPlaying, detail: "timer=EndTurn");
                         FighterPlaying.EndTurn("Timer");
+                        FighterPlaying.EndTurn();
                     }
                     break;
 

@@ -54,6 +54,7 @@ if ($dockerCheck -match $ContainerName) {
         if ($LASTEXITCODE -ne 0) { throw "docker cp remoto falló." }
         $scpOpts = @("-i", $SshKey, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new")
         & scp -r @scpOpts "${sshTarget}:${remoteTmp}/." $destRoot
+        & scp -r @sshArgs "${sshTarget}:${remoteTmp}/." $destRoot
         if ($LASTEXITCODE -ne 0) { throw "scp falló." }
         & ssh @sshArgs "rm -rf '$remoteTmp'" | Out-Null
     }

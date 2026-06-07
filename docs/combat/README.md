@@ -19,6 +19,16 @@ Documentación de combate del emulador Sunshine.
 | [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md) | Deploy gate VPS |
 | [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
 | [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz combates |
+## Disponible en esta rama
+
+| Documento | Contenido |
+| --- | --- |
+| [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md) | **Deploy gate VPS (2026-06-06)** |
+| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | Gate Phase 3 — logs reales |
+| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
+| [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz 30–50 combates |
+
+Docs Phase 1/2/gate viven en `feature/combat-telemetry-phase2` (merge pendiente a `devp`).
 
 ## Scripts
 
@@ -41,6 +51,12 @@ CombatReadyCheckerEnabled=true
 CombatReadyCheckerTimeoutMs=5000
 ```
 
+| `enable-vps-combat-telemetry.ps1` | Activar telemetría VPS (`-DryRun`) |
+| `disable-vps-combat-telemetry.ps1` | Desactivar |
+| `collect-vps-combat-logs.ps1` | Descargar JSONL + `-RunAnalyzer` |
+| `analyze-combat-telemetry.ps1` | `report.md` / `report.json` / `report.html` |
+| `run-local-combat-lab.ps1` | Lab local |
+
 ## Fases
 
 | Fase | Estado |
@@ -49,3 +65,6 @@ CombatReadyCheckerTimeoutMs=5000
 | Gate baseline VPS | **CERRADO** |
 | Phase 3 ReadyChecker código | **DONE** (rama `feature/combat-readychecker-phase3`) |
 | Phase 3 QA VPS | **PENDIENTE** |
+| Telemetría código + analyzer | **En rama sprint** (cherry-pick) |
+| VPS on/off scripts | **DONE** |
+| Gate logs reales / Phase 3 ReadyChecker | **BLOQUEADA** |

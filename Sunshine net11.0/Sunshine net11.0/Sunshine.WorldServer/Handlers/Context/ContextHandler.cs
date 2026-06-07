@@ -194,6 +194,16 @@ namespace Sunshine.WorldServer.Handlers.Context
             }
 
             actor.SetReadyForNextTurn();
+            if (client?.Character?.Fight == null)
+                return;
+
+            var fight = client.Character.Fight;
+            var actor = client.Character.Fighter;
+            Game.Fights.Telemetry.CombatTelemetry.LogTurnEvent(
+                "GameFightTurnReadyMessageReceived",
+                fight,
+                actor,
+                detail: $"characterId={client.Character.Id} sessionId={client.Account?.Id ?? 0}");
         }
 
         [WorldHandler(718)]

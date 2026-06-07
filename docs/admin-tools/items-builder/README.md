@@ -38,6 +38,7 @@ Macro 2 - Client Identity Audit Tool: COMPLETE
 Macro 3 - Sprite Preview Pipeline: COMPLETE
 Macro Items Final - Effects catalog parity (7D.1-7D.5): DONE (browser QA partial)
 Macro Items Final Plus - Preview reconciliation + Sets + stat icons: DONE (browser QA pending) — [preview reconciliation](./items-preview-reconciliation-report.md), [stat icons](./items-stat-icons-fix-report.md), [sets builder](../sets-builder/sets-builder-preview-and-bonuses.md)
+Sets Builder CRUD + pagination + bonus editor: DONE (browser QA pending) — [sets-builder-crud-pagination](../sets-builder/sets-builder-crud-pagination.md), [sets-builder-bonus-editor](../sets-builder/sets-builder-bonus-editor.md)
 Macro 4 - Client Item Publication Pipeline: Phase 5 DONE (sandbox + UX) — [client-publication](../client-publication/README.md), [UX polish Phase 5](./items-final/items-creation-ux-polish-phase5.md)
 Macro Spells Builder: DEFERRED (until Items Final Plus merges)
 Macro 5 - Glyph Builder: DEFERRED
