@@ -470,6 +470,91 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 ContextHandler.SendShowCellMessage(this.Fight.Clients, this, cellId);
         }
 
+        /// <summary>
+        /// Retorna los luchadores enemigos vivos cuya celda está a distancia 1
+        /// (adyacente en diamante isométrico) de <paramref name="cell"/>.
+        /// </summary>
+        private IEnumerable<FightActor> GetAdjacentEnemies(short cell)
+        {
+            var origin = MapPoint.GetPoint(cell);
+            return Fight.GetAllFighters()
+                .Where(f => f != null
+                         && f.IsAlive
+                         && !f.IsFriendlyWith(this)
+                         && !f.IsCarried
+                         && f.Position != null
+                         && origin.DistanceToCell(f.Position.Point) == 1);
+        }
+
+        /// <summary>
+        /// Calcula cuántos PM y PA pierde este actor por el placaje de <paramref name="enemy"/>,
+        /// SIN aplicarlos todavía. Fórmula oficial Dofus 2.x:
+        ///   chance_PM = 50 × (TackleBlock_enemigo / (TackleEvade_yo + 1)) × (Level_enemigo / Level_yo)
+        ///   chance_PA = 50 × (TackleBlock_enemigo / (DodgeAP_yo + 1))    × (Level_enemigo / Level_yo)
+        /// Rango clampeado a [10 %, 90 %]. Cada PM/PA se tira individualmente.
+        /// </summary>
+        private (short lostMP, short lostAP) RollTackle(FightActor enemy)
+        {
+            if (enemy == null || IsDead())
+                return (0, 0);
+
+            int myLevel = Math.Max(1, (int)this.Level);
+            int enemyLevel = Math.Max(1, (int)enemy.Level);
+            double levelRatio = (double)enemyLevel / myLevel;
+
+            int tackleBlock = enemy.Stats[StatsEnum.TackleBlock].TotalMax;
+            int tackleEvadeMP = this.Stats[StatsEnum.TackleEvade].TotalMax;
+            int tackleEvadeAP = this.Stats[StatsEnum.DodgeAPProbability].TotalMax;
+
+            short lostMP = 0;
+            int currentMP = this.Stats.MP.Total;
+            if (currentMP > 0)
+            {
+                double chanceMP = 50.0 * ((double)tackleBlock / (tackleEvadeMP + 1)) * levelRatio;
+                chanceMP = Math.Max(10.0, Math.Min(90.0, chanceMP));
+                var rng = new AsyncRandom();
+                for (int i = 0; i < currentMP; i++)
+                    if (rng.Next(1, 100) <= (int)chanceMP)
+                        lostMP++;
+            }
+
+            short lostAP = 0;
+            int currentAP = this.Stats.AP.Total;
+            if (currentAP > 0)
+            {
+                double chanceAP = 50.0 * ((double)tackleBlock / (tackleEvadeAP + 1)) * levelRatio;
+                chanceAP = Math.Max(10.0, Math.Min(90.0, chanceAP));
+                var rng2 = new AsyncRandom();
+                for (int i = 0; i < currentAP; i++)
+                    if (rng2.Next(1, 100) <= (int)chanceAP)
+                        lostAP++;
+            }
+
+            return (lostMP, lostAP);
+        }
+
+        /// <summary>
+        /// Aplica la pérdida de PM/PA ya calculada por RollTackle, usando al enemigo como source
+        /// para que el cliente muestre el visual correcto. DEBE llamarse FUERA de SEQUENCE_MOVE.
+        /// </summary>
+        private void ApplyTackleResult(FightActor enemy, short lostMP, short lostAP)
+        {
+            if (IsDead())
+                return;
+
+            if (lostMP > 0)
+            {
+                Stats.MP.Used += lostMP;
+                Fight.OnFightPointsVariation(ActionsEnum.ACTION_CHARACTER_MOVEMENT_POINTS_LOST, enemy, this, -lostMP);
+            }
+
+            if (lostAP > 0)
+            {
+                Stats.AP.Used += lostAP;
+                Fight.OnFightPointsVariation(ActionsEnum.ACTION_CHARACTER_ACTION_POINTS_LOST, enemy, this, -lostAP);
+            }
+        }
+
         public void StartMove(Path path, bool traped = false)
         {
             if (IsCarried)
@@ -482,12 +567,19 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             Fight.StartSequence(SequenceTypeEnum.SEQUENCE_MOVE);
 
-            short[] cells = path.GetPath(); // add current cell so - 1 for total length
+            short[] cells = path.GetPath(); // índice 0 = celda inicial (ya ocupada)
             List<short> newCells = new List<short>();
             short newMPCount = 0;
 
+            // Acumula los resultados del placaje para aplicarlos DESPUÉS de EndSequence,
+            // así el cliente muestra la variación de PA/PM fuera de la animación de movimiento.
+            var pendingTackles = new List<(FightActor enemy, short lostMP, short lostAP)>();
+
             if (IsFighterTurn() && !path.IsEmpty())
             {
+                // Enemigos adyacentes a la celda de origen antes de cualquier movimiento.
+                var tacklingEnemies = GetAdjacentEnemies(cells[0]).ToList();
+
                 for (int i = 0; i < cells.Length; i++)
                 {
                     if (this.Stats.MP.Total < i)
@@ -495,6 +587,45 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
                     newMPCount++;
                     newCells.Add(cells[i]);
+
+                    // Detección de salida de zona de control (placaje).
+                    if (i > 0 && tacklingEnemies.Count > 0)
+                    {
+                        short prevCell = cells[i - 1];
+
+                        foreach (var enemy in tacklingEnemies.ToArray())
+                        {
+                            if (enemy == null || !enemy.IsAlive || enemy.Position == null)
+                            {
+                                tacklingEnemies.Remove(enemy);
+                                continue;
+                            }
+
+                            bool wasAdjacentBefore = MapPoint.GetPoint(prevCell).DistanceToCell(enemy.Position.Point) == 1;
+                            bool isAdjacentNow = MapPoint.GetPoint(cells[i]).DistanceToCell(enemy.Position.Point) == 1;
+
+                            if (wasAdjacentBefore && !isAdjacentNow)
+                            {
+                                var (lostMP, lostAP) = RollTackle(enemy);
+                                if (lostMP > 0 || lostAP > 0)
+                                    pendingTackles.Add((enemy, lostMP, lostAP));
+
+                                tacklingEnemies.Remove(enemy);
+
+                                if (this.Stats.MP.Total - lostMP <= 0)
+                                {
+                                    path.CutPath(i + 1);
+                                    goto MovementDone;
+                                }
+                            }
+                        }
+
+                        foreach (var newEnemy in GetAdjacentEnemies(cells[i]))
+                        {
+                            if (!tacklingEnemies.Contains(newEnemy))
+                                tacklingEnemies.Add(newEnemy);
+                        }
+                    }
 
                     if (i > 0 && Fight.ShouldTriggerOnMove(cells[i], this))
                     {
@@ -508,8 +639,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                         path.CutPath(i + 1);
                         break;
                     }
-
                 }
+
+            MovementDone:
 
                 short usedMp = (short)(newMPCount - 1);
                 path = new Path(this.Map, newCells);
@@ -535,7 +667,14 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     Fight?.EndSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP, ActionsEnum.ACTION_FIGHT_TRIGGER_TRAP);
                 }
             }
+
+            // Cerrar la secuencia de movimiento ANTES de aplicar el placaje, para que el
+            // cliente reciba los packets de PA/PM perdidos fuera de la animación de movimiento.
             Fight?.EndSequence(SequenceTypeEnum.SEQUENCE_MOVE, ActionsEnum.ACTION_CHARACTER_MOVEMENT);
+
+            foreach (var (enemy, lostMP, lostAP) in pendingTackles)
+                ApplyTackleResult(enemy, lostMP, lostAP);
+
             RefreshControllingClientFightState();
         }
 
