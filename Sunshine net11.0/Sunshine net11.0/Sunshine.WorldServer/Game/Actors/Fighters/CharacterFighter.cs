@@ -147,6 +147,13 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     return SpellCastResult.CELL_NOT_FREE;
             }
 
+            int maxWeaponUses = (weaponTemplate != null && (ItemTypeEnum)weaponTemplate.TypeId == ItemTypeEnum.DAGUE) ? 2 : 1;
+            if (_weaponUses >= maxWeaponUses)
+            {
+                Character.SendServerMessage($"No puedes atacar más de {maxWeaponUses} {(maxWeaponUses == 1 ? "vez" : "veces")} por turno.");
+                return SpellCastResult.CANNOT_PLAY;
+            }
+
             return SpellCastResult.OK;
         }
 
@@ -169,6 +176,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             bool silentCast = false;
             _isUsingWeapon = true;
+            _weaponUses++;
             _criticalWeaponBonus = critical == FightSpellCastCriticalEnum.CRITICAL_HIT && weaponTemplate != null
                 ? weaponTemplate.CriticalHitBonus
                 : 0;
@@ -196,6 +204,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             currentFight.EndSequence(SequenceTypeEnum.SEQUENCE_WEAPON, ActionsEnum.ACTION_FIGHT_CLOSE_COMBAT);
             RefreshControllingClientFightState();
             currentFight.CheckFightEnd();
+        }
+
+        public override void ResetUsedPoints()
+        {
+            base.ResetUsedPoints();
+            _weaponUses = 0;
         }
 
         protected override int CalculateDamage(FightActor caster, int damage, EffectSchoolEnum type)

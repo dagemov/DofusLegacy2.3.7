@@ -7,7 +7,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
     [CommandHandler("hp", RoleEnum.Administrator)]
     public class HpCommand : WorldCommand
     {
-        public override string Description => "Restaure complètement les points de vie.";
+        public override string Description => "Restaura completamente los puntos de vida.";
 
         public override void Execute()
         {
@@ -17,7 +17,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
             Client.Character.Stats.Health.Taken = 0;
             CharacterHandler.SendUpdateLifePointsMessage(Client);
             Client.Character.RefreshStats();
-            Client.Character.SendServerMessage("Points de vie restaurés.");
+            Client.Character.SendServerMessage("Puntos de vida restaurados.");
         }
     }
 }

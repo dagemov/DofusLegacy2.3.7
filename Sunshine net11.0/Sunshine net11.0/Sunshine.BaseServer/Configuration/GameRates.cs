@@ -43,6 +43,7 @@ namespace Sunshine.BaseServer.Configuration
             FightKamasLevel150Max = NormalizeInt(GameConfig.GetInt("FightKamasLevel150Max", 50000), 50000);
             FightKamasLevel190Min = NormalizeInt(GameConfig.GetInt("FightKamasLevel190Min", 40000), 40000);
             FightKamasLevel190Max = NormalizeInt(GameConfig.GetInt("FightKamasLevel190Max", 80000), 80000);
+            DropQuantityMultiplier = Normalize(GameConfig.GetDouble("DropQuantityMultiplier", 1d), 1d);
         }
 
         public static double Xp { get; private set; }
@@ -50,6 +51,8 @@ namespace Sunshine.BaseServer.Configuration
         public static double Drop { get; private set; }
         public static double JobXp { get; private set; }
         public static double MountXp { get; private set; }
+
+        public static double DropQuantityMultiplier { get; private set; }
 
         public static int FightKamasLevel1Min { get; private set; }
         public static int FightKamasLevel1Max { get; private set; }
