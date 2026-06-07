@@ -10,6 +10,7 @@ using Sunshine.WorldServer.Game.Fights.Mechanics;
 using Sunshine.WorldServer.Game.Maps.Pathfinding;
 using Sunshine.WorldServer.Game.Maps.Shapes;
 using Sunshine.WorldServer.Game.Spells;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -211,6 +212,11 @@ namespace Sunshine.WorldServer.Game.Actors.AI
                     fighter.CastSpell(spell, target.Position.Cell);
                     if (fighter.Stats.AP.Total < apBefore)
                     {
+                        CombatTelemetry.LogTurnEvent(
+                            "AiActionSelected",
+                            fighter.Fight,
+                            fighter,
+                            detail: $"actionType=CastSpell spellId={spell.Id} targetCell={target.Position.Cell}");
                         await PauseAfterActionAsync(fighter, spell);
                         return true;
                     }

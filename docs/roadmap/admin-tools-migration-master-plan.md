@@ -267,7 +267,27 @@ Macro 4 Phase 6D (`feature/item-preview-category-expansion-phase6d`): **`DONE`**
 
 Macro Items Final Plus (`feature/items-preview-sets-polish-final`): **`DONE`** (browser QA pending) — resolver preview `BY_CATEGORY`, UI `/admin/item-sets` + bonos por piezas, fix assets `src/assets/icons`, docs en [items-preview-reconciliation-report.md](../admin-tools/items-builder/items-preview-reconciliation-report.md), [items-stat-icons-fix-report.md](../admin-tools/items-builder/items-stat-icons-fix-report.md), [sets-builder-preview-and-bonuses.md](../admin-tools/sets-builder/sets-builder-preview-and-bonuses.md).
 
+Sets Builder CRUD (`feature/sets-builder-crud-and-pagination`): **`DONE`** (browser QA pending) — listado paginado, filtros, CRUD API, editor Angular new/edit, bonus editor por piezas — [sets-builder-crud-pagination.md](../admin-tools/sets-builder/sets-builder-crud-pagination.md), [sets-builder-bonus-editor.md](../admin-tools/sets-builder/sets-builder-bonus-editor.md).
+
+Items + Sets production acceptance (`feature/items-sets-production-acceptance-test`): **`PARTIAL`** — create item+effects PASS; sets/NPC/publish/QA **`OPERATOR_REQUIRED`** — [items-sets-production-acceptance-test.md](../admin-tools/items-builder/items-final/items-sets-production-acceptance-test.md), [sets-production-acceptance-test.md](../admin-tools/sets-builder/sets-production-acceptance-test.md), [itemsets-client-publication-plan.md](../admin-tools/client-publication/itemsets-client-publication-plan.md). **No** Spell Builder hasta PASS in-game.
+
+Items Final production acceptance (RollBlack Set, doc previo): [items-final-production-acceptance-test.md](../admin-tools/items-builder/items-final-production-acceptance-test.md).
+
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
+
+## Macro Combat Sanitization (`feature/combat-sanitization-phase1-audit`)
+
+| Fase | Estado | Entregable |
+| --- | --- | --- |
+| Phase 1 — Auditoría comparativa | **`DONE`** | `docs/combat-sanitization/*.md` |
+| Phase 2 — Combat Health Lab | **`SCAFFOLDING`** | `infrastructure/artifacts/combat-health/` scripts |
+| Phase 3 — Turn Transition Fix | **PENDING** | Requiere logs + evidencia |
+| Phase 4 — Spell Cast Telemetry | **PENDING** | `spell-casts-*.log` |
+| Phase 5 — Summons / Boss | **PENDING** | Tras Phase 4 |
+
+Referencia corregida: `RollBlackServer/2.0.0/Rollback` (`ReadyChecker`, `FightTelemetry`, `CombatTelemetryAnalyzer`).
+
+**No mezclar** con Admin items/spells. Flujo: lab local → PR → VPS beta → logs → analizador.
 
 ## Mandatory handoff
 

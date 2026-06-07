@@ -66,6 +66,11 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
         public override GameActionFightInvisibilityStateEnum Visibility { get; set; }
 
+        public void SetReadyForNextTurn()
+        {
+            Fight?.Checker?.ToggleReady(this);
+        }
+
         public bool IsSlaveTurn()
         {
             var slave = Fight?.FighterPlaying as SlaveFighter;

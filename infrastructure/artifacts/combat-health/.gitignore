@@ -1,0 +1,9 @@
+# Combat Health Lab — runtime artifacts (never commit)
+db-snapshots/
+logs/
+local-client/
+*.sql
+*.sql.gz
+*.pem
+*.env
+appsettings.*.local.json

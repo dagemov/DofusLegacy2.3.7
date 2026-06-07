@@ -50,7 +50,15 @@ AutoSaveInterval=${AUTO_SAVE_INTERVAL:-5}
 
 MonsterTurnStartDelayMs=${MONSTER_TURN_START_DELAY_MS:-350}
 MonsterTurnEndDelayMs=${MONSTER_TURN_END_DELAY_MS:-700}
+
+CombatTelemetryEnabled=${FIGHT_TELEMETRY_ENABLED:-false}
+CombatTelemetryLogDirectory=${FIGHT_TELEMETRY_LOG_DIRECTORY:-/app/logs/combat}
+CombatTelemetryWriteTurnFlow=${COMBAT_TELEMETRY_WRITE_TURN_FLOW:-true}
+CombatTelemetryWriteSpellCasts=${COMBAT_TELEMETRY_WRITE_SPELL_CASTS:-true}
 EOF
+
+mkdir -p "${FIGHT_TELEMETRY_LOG_DIRECTORY:-/app/logs/combat}"
+mkdir -p "${FIGHT_TELEMETRY_LOG_DIRECTORY:-/app/logs/combat}/spell-casts"
 
 cat > /app/Database.xml <<EOF
 Database Sunshine
