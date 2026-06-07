@@ -65,9 +65,9 @@ namespace Sunshine.Sunshine.WorldServer.Commands.Moderator
                             }
 
                             if (target != null && name != "")
-                                Client.Character.SendServerMessage($"{quantity} certificat(s) {itemId} ont été ajoutés à {target.Name} !");
+                                Client.Character.SendServerMessage($"¡{quantity} certificado(s) {itemId} añadidos a {target.Name}!");
                             else
-                                Client.Character.SendServerMessage($"{quantity} certificat(s) {itemId} ont été ajoutés !");
+                                Client.Character.SendServerMessage($"¡{quantity} certificado(s) {itemId} añadidos!");
                             break;
                         }
 

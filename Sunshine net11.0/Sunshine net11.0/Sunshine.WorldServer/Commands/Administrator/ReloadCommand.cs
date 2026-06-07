@@ -14,7 +14,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
     [CommandHandler("reload", RoleEnum.Administrator)]
     public class ReloadCommand : WorldCommand
     {
-        public override string Description => "Recharge une partie du monde (.reload interactives).";
+        public override string Description => "Recarga una parte del mundo (.reload interactives).";
 
         public override void Execute()
         {
@@ -24,7 +24,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
 
             if (target != "interactives")
             {
-                Client.Character.SendServerMessage("Usage: .reload interactives");
+                Client.Character.SendServerMessage("Uso: .reload interactives");
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
                 }
             }
 
-            Client.Character.SendServerMessage("Interactives rechargées sur tout le serveur.");
+            Client.Character.SendServerMessage("Interactivos recargados en todo el servidor.");
         }
     }
 }

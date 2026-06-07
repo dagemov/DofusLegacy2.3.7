@@ -11,7 +11,7 @@ namespace Sunshine.WorldServer.Commands.Moderator
     [CommandHandler("mount equip", RoleEnum.Moderator)]
     public class MountEquipCommand : WorldCommand
     {
-        public override string Description => "Consume a dragoturkey certificate and equips the linked mount.";
+        public override string Description => "Consume un certificado de dragopavo y equipa la montura vinculada.";
 
         public override void Execute()
         {
@@ -25,7 +25,7 @@ namespace Sunshine.WorldServer.Commands.Moderator
 
             if (!certificates.Any())
             {
-                Client.Character.SendServerMessage("Aucun certificat de dragodinde trouvé dans l'inventaire.", Color.Red);
+                Client.Character.SendServerMessage("No se encontró ningún certificado de dragopavo en el inventario.", Color.Red);
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace Sunshine.WorldServer.Commands.Moderator
 
             if (certificate == null)
             {
-                Client.Character.SendServerMessage("Plusieurs certificats trouvés. Utilise .mount equip <uidCertificat>.", Color.Red);
+                Client.Character.SendServerMessage("Se encontraron varios certificados. Usa .mount equip <uidCertificado>.", Color.Red);
                 return;
             }
 
@@ -51,18 +51,18 @@ namespace Sunshine.WorldServer.Commands.Moderator
             if (mount == null)
             {
                 Client.Send(new MountEquipedErrorMessage((sbyte)MountEquipedErrorEnum.UNSET));
-                Client.Character.SendServerMessage("Impossible de résoudre la monture du certificat.", Color.Red);
+                Client.Character.SendServerMessage("No se pudo resolver la montura del certificado.", Color.Red);
                 return;
             }
 
             if (!Handlers.Mounts.MountHandler.EquipMountFromInventoryCertificate(Client, certificate, mount))
             {
                 Client.Send(new MountEquipedErrorMessage((sbyte)MountEquipedErrorEnum.UNSET));
-                Client.Character.SendServerMessage("Impossible d'équiper la monture.", Color.Red);
+                Client.Character.SendServerMessage("No se pudo equipar la montura.", Color.Red);
                 return;
             }
 
-            Client.Character.SendServerMessage("Monture équipée depuis le certificat : " + mount.Name + ".");
+            Client.Character.SendServerMessage("Montura equipada desde el certificado: " + mount.Name + ".");
         }
     }
 }

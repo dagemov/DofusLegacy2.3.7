@@ -16,20 +16,20 @@ namespace Sunshine.WorldServer.Commands.Player
 
             if (Client.Character.IsInFight() || Client.Character.IsBusy())
             {
-                Client.Character.SendServerMessage("Impossible d'ouvrir le panel pendant un combat ou un dialogue.");
+                Client.Character.SendServerMessage("No puedes abrir el panel durante un combate o un diálogo.");
                 return;
             }
 
             var destinations = CustomTeleportService.GetDestinations(CustomTeleportCategory.Dungeons);
             if (!destinations.Any())
             {
-                Client.Character.SendServerMessage("Aucune destination .dj n'est configurée.");
+                Client.Character.SendServerMessage("No hay ningún destino .dj configurado.");
                 return;
             }
 
             new CustomTeleportDialog(Client.Character, destinations, ".dj").Open();
         }
 
-        public override string Description => "Ouvre le panel de téléportation des donjons.";
+        public override string Description => "Abre el panel de teletransporte de mazmorras.";
     }
 }
