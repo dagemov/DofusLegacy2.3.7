@@ -1411,6 +1411,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\DirectDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\LoseHpByUsingAP.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\HpSteal.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\SacrificeDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APDebuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APSteal.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\StealKamas.cs" />
@@ -1466,6 +1467,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\StateBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\StatsBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\LoseHpByUsingApBuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\DamageOverTimeBuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\HealOverTimeBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\FightManager.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\FigthCellsInformationProvider.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\History\SpellHistory.cs" />

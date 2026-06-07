@@ -355,6 +355,15 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Game.Fights.Bombs.BombManager.Instance.OnTurnStarted(this);
                 if (Fight == null || Fight.State != FightStateEnum.Fighting || !IsAlive)
                     return;
+
+                foreach (var buff in GetBuffs().ToArray())
+                {
+                    if (buff is Fights.Buffs.Spells.HealOverTimeBuff hotBuff)
+                        hotBuff.Tick();
+                    else if (buff is Fights.Buffs.Spells.DamageOverTimeBuff dotBuff)
+                        dotBuff.Tick();
+                }
+
                 Fight.DecrementGlyphDuration(this);
                 Fight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
                 Fight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_BEGIN);
