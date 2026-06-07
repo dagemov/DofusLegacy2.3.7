@@ -94,6 +94,7 @@
 		<Compile Include="Sunshine.MySql\Database\Managers\BreedManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterPaddockBootstrap.cs" />
+		<Compile Include="Sunshine.MySql\Database\Managers\AccountVipBootstrap.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\DungeonManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\GuildManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\HouseTableBootstrap.cs" />
@@ -217,11 +218,13 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\KamasCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnSpellCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnAllSpellsCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Administrator\AddVipCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\MonsterCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\NpcCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\SaveCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\ShowElementCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\AlignmentCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\VipCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\DebugMapCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\HelpCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\ParchotageCommand.cs" />

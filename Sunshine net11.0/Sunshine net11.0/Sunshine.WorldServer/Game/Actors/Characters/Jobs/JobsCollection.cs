@@ -168,6 +168,10 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
         public void AddExperience(sbyte job, long amount)
         {
             amount = GameRates.ApplyJobXp(amount);
+
+            if (_character?.Client?.Account?.Vip == true)
+                amount = (long)System.Math.Min(amount * 1.5, long.MaxValue);
+
             var jobRecord = GetJob(job);
             if (jobRecord == null)
                 return;

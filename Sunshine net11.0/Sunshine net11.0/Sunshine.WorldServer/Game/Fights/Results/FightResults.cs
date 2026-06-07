@@ -171,11 +171,12 @@ namespace Sunshine.WorldServer.Game.Fights.Results
         {
             if (_fight.Type == FightTypeEnum.FIGHT_TYPE_PvM)
             {
+                bool isVip = fighter.Character?.Client?.Account?.Vip == true;
                 foreach (MonsterFighter monster in _monsters)
                 {
                     foreach (var drop in monster.Drops)
                     {
-                        int quantity = FightFormulas.CalculateWinItems(drop, monster.Grade.GradeId, fighter.Stats.Prospecting.Total);
+                        int quantity = FightFormulas.CalculateWinItems(drop, monster.Grade.GradeId, fighter.Stats.Prospecting.Total, isVip);
                         if (quantity > 0)
                         {
                             var item = ItemManager.Instance.CreatePlayerItem(drop.ItemId, quantity);
@@ -195,6 +196,10 @@ namespace Sunshine.WorldServer.Game.Fights.Results
             int kamas = GameRates.RollFightKamas(fighter.Level);
             if (kamas <= 0)
                 return;
+
+            bool isVip = fighter.Character?.Client?.Account?.Vip == true;
+            if (isVip)
+                kamas = (int)System.Math.Min(int.MaxValue, kamas * 2L);
 
             fighter.Character.Inventory.SetKamas(kamas);
             fighter.FightLoot.AddKamas(kamas);
@@ -273,6 +278,10 @@ namespace Sunshine.WorldServer.Game.Fights.Results
             long expAdded = FightFormulas.CalculateWinExp(fighter.Stats[StatsEnum.Wisdom].Total, 0, MonsterGroup.ForcedStarBonus, totalLevelMonsters,
                 totalLevelCharacters, totalExp, (byte)_characters.Count());
             expAdded = GameRates.ApplyXp(expAdded);
+
+            bool isVipXp = fighter.Character?.Client?.Account?.Vip == true;
+            if (isVipXp)
+                expAdded = (long)System.Math.Min(expAdded * 2L, long.MaxValue);
 
             long expForMount = 0;
             bool showMountXp = false;
