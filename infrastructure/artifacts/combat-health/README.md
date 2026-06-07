@@ -17,9 +17,7 @@ Entorno local documentado para diagnosticar combate. **No es fuente de verdad** 
 | `sync-vps-db-snapshot.ps1` | Descarga dump VPS y restaura en MariaDB local |
 | `collect-combat-logs.ps1` | Archiva logs locales |
 | `collect-vps-combat-logs.ps1` | Descarga logs de combate del VPS |
-| `analyze-combat-telemetry.ps1` | Genera `report.md`, `report.json`, `report.html` |
-| `enable-vps-combat-telemetry.ps1` | Activa telemetría en VPS (`-DryRun`, `CONFIRM_RESTART=1`) |
-| `disable-vps-combat-telemetry.ps1` | Desactiva telemetría en VPS |
+| `analyze-combat-telemetry.ps1` | Genera informes markdown desde logs |
 
 ## Carpetas gitignored
 

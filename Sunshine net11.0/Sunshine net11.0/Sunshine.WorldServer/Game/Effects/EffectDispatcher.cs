@@ -10,7 +10,6 @@ using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Effects.Items;
 using Sunshine.WorldServer.Game.Maps;
-using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Telemetry;
 using System.Diagnostics;
 

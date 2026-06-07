@@ -171,29 +171,6 @@ namespace Sunshine.WorldServer.Handlers.Context
         [WorldHandler(716)]
         public static void HandleGameFightTurnReadyMessage(WorldClient client, GameFightTurnReadyMessage message)
         {
-            if (client?.Character?.Fight == null || client.Character.Fighter == null)
-                return;
-
-            var fight = client.Character.Fight;
-            var actor = client.Character.Fighter as CharacterFighter;
-            Game.Fights.Telemetry.CombatTelemetry.LogTurnEvent(
-                "GameFightTurnReadyMessageReceived",
-                fight,
-                actor,
-                detail: $"characterId={client.Character.Id} isReady={message.isReady} sessionId={client.Account?.Id ?? 0}");
-
-            if (!message.isReady || actor == null)
-            {
-                Game.Fights.Telemetry.CombatTelemetry.LogReadyCheckerEvent(
-                    "ReadyCheckerIgnored",
-                    fight,
-                    fight.FighterPlaying,
-                    actorOverride: actor,
-                    reason: message.isReady ? "not-character-fighter" : "isReady=false");
-                return;
-            }
-
-            actor.SetReadyForNextTurn();
             if (client?.Character?.Fight == null)
                 return;
 

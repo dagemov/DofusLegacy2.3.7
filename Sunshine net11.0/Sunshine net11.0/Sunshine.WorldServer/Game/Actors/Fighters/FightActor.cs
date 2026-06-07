@@ -420,8 +420,6 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting || currentFight.FighterPlaying != this)
                 return;
 
-            if (!currentFight.TryBeginTurnEnd(this, source, out _))
-                return;
             CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this);
 
             FrigostBossMechanics.OnTurnEnded(this);
@@ -449,7 +447,6 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight.CheckFightEnd())
                 return;
 
-            CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this, detail: $"source={source}");
             CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this);
             CombatTelemetry.LogTurnEvent("NextTurnRequested", currentFight, this);
             currentFight.FighterPlaying = currentFight.GetFighterPlaying();

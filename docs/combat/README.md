@@ -2,69 +2,36 @@
 
 Documentación de combate del emulador Sunshine.
 
-## Phase 3 — ReadyChecker (activa)
+## Macro Combat Sanitization (activo)
 
 | Documento | Contenido |
 | --- | --- |
-| [combat-readychecker-phase3.md](../combat-sanitization/combat-readychecker-phase3.md) | Implementación hand-off turno |
-| [combat-readychecker-phase3-diff.md](../combat-sanitization/combat-readychecker-phase3-diff.md) | Diff Sunshine vs Rollback |
-| [combat-readychecker-phase3-qa-plan.md](../combat-sanitization/combat-readychecker-phase3-qa-plan.md) | QA VPS post-fix |
-| [combat-vps-telemetry-analysis-20260606.md](../combat-sanitization/combat-vps-telemetry-analysis-20260606.md) | Baseline pre-fix |
+| [combat-system-audit.md](../combat-sanitization/combat-system-audit.md) | Auditoría comparativa Sunshine vs Rollback |
+| [combat-turn-flow-comparison.md](../combat-sanitization/combat-turn-flow-comparison.md) | Flujo de turnos y diferencias ReadyChecker |
+| [combat-telemetry-plan.md](../combat-sanitization/combat-telemetry-plan.md) | Plan de instrumentación (Phase 1 diseño) |
+| [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md) | **Phase 2 — telemetría JSONL implementada** |
+| [combat-log-schema.md](../combat-sanitization/combat-log-schema.md) | Esquema JSONL turn flow + spell casts |
+| [combat-phase2-test-plan.md](../combat-sanitization/combat-phase2-test-plan.md) | Plan de prueba Phase 2 |
+| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | **Gate Phase 3** — captura real obligatoria |
+| [combat-health-lab-plan.md](../combat-sanitization/combat-health-lab-plan.md) | Lab local temporal |
 
-## Gates y operaciones
-
-| Documento | Contenido |
-| --- | --- |
-| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | Gate telemetría + estado Phase 3 |
-| [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md) | Deploy gate VPS |
-| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
-| [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz combates |
-## Disponible en esta rama
-
-| Documento | Contenido |
-| --- | --- |
-| [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md) | **Deploy gate VPS (2026-06-06)** |
-| [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) | Gate Phase 3 — logs reales |
-| [vps-combat-telemetry-operations.md](../combat-sanitization/vps-combat-telemetry-operations.md) | Operaciones telemetría VPS |
-| [combat-vps-test-matrix.md](../combat-sanitization/combat-vps-test-matrix.md) | Matriz 30–50 combates |
-
-Docs Phase 1/2/gate viven en `feature/combat-telemetry-phase2` (merge pendiente a `devp`).
-
-## Scripts
+## Lab operativo
 
 ```txt
 infrastructure/artifacts/combat-health/
 ```
 
-| Script | Uso |
-| --- | --- |
-| `enable-vps-combat-telemetry.ps1` | Activar telemetría VPS |
-| `disable-vps-combat-telemetry.ps1` | Desactivar |
-| `collect-vps-combat-logs.ps1` | Descargar JSONL + `-RunAnalyzer` |
-| `analyze-combat-telemetry.ps1` | Reportes locales |
-| `run-local-combat-lab.ps1` | Lab local |
+Scripts: `run-local-combat-lab.ps1`, `collect-combat-logs.ps1`, `analyze-combat-telemetry.ps1`, …
 
-## Config Phase 3
-
-```txt
-CombatReadyCheckerEnabled=true
-CombatReadyCheckerTimeoutMs=5000
-```
-
-| `enable-vps-combat-telemetry.ps1` | Activar telemetría VPS (`-DryRun`) |
-| `disable-vps-combat-telemetry.ps1` | Desactivar |
-| `collect-vps-combat-logs.ps1` | Descargar JSONL + `-RunAnalyzer` |
-| `analyze-combat-telemetry.ps1` | `report.md` / `report.json` / `report.html` |
-| `run-local-combat-lab.ps1` | Lab local |
+Analizador: `Infrastructure/scripts/CombatTelemetryAnalyzer/`
 
 ## Fases
 
 | Fase | Estado |
 | --- | --- |
-| Telemetría + analyzer | **DONE** |
-| Gate baseline VPS | **CERRADO** |
-| Phase 3 ReadyChecker código | **DONE** (rama `feature/combat-readychecker-phase3`) |
-| Phase 3 QA VPS | **PENDIENTE** |
-| Telemetría código + analyzer | **En rama sprint** (cherry-pick) |
-| VPS on/off scripts | **DONE** |
-| Gate logs reales / Phase 3 ReadyChecker | **BLOQUEADA** |
+| 1 — Auditoría | **DONE** |
+| 2 — Fight Telemetry baseline | **DONE** (código + analyzer) |
+| 2.5 — Gate telemetría real | **ABIERTO** — sin combates PvM capturados |
+| 3 — Turn Transition Fix | **BLOQUEADA** hasta cerrar gate con logs reales |
+| 4 — Spell cast deep dive | Parcial (telemetría spell en Phase 2) |
+| 5 — Summons / Boss | Pendiente |

@@ -66,29 +66,8 @@ finally {
     Pop-Location
 }
 
-$htmlReport = Join-Path $OutputDirectory "report.html"
-if (Test-Path $primaryReport) {
-    $md = Get-Content -Path $primaryReport -Raw -Encoding UTF8
-    $escaped = [System.Net.WebUtility]::HtmlEncode($md)
-    $htmlBody = $escaped -replace "`r?`n", "<br/>"
-    @"
-<!DOCTYPE html>
-<html lang="es">
-<head><meta charset="utf-8"/><title>Combat Telemetry Report</title>
-<style>body{font-family:Segoe UI,sans-serif;margin:2rem;line-height:1.5}code{font-family:Consolas,monospace}</style>
-</head>
-<body><h1>Combat Telemetry Report</h1><p>Generado localmente — no commitear.</p><div>$htmlBody</div></body>
-</html>
-"@ | Set-Content -Path $htmlReport -Encoding UTF8
-}
-
 Write-Host "Informes generados en: $OutputDirectory"
 Write-Host "  - report.md"
 Write-Host "  - report.json"
-Write-Host "  - report.html"
 Write-Host "  - combat-turn-latency-analysis-report.md"
 Write-Host "  - combat-turn-transition-phase2-report.md"
-Write-Host "  - combat-timer-elapsed-classification-report.md"
-Write-Host ""
-Write-Host "Abrir en Windows: notepad `"$primaryReport`""
-Write-Host "O navegador: start `"$htmlReport`""

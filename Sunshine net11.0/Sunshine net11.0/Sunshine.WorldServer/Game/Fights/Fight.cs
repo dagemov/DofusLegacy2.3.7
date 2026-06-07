@@ -574,7 +574,6 @@ namespace Sunshine.WorldServer.Game.Fights
             }
 
             CombatTelemetry.LogTurnEvent("FightEnded", this, FighterPlaying);
-            Checker.Cancel();
 
             try
             {
@@ -1209,7 +1208,6 @@ namespace Sunshine.WorldServer.Game.Fights
                     if (State == FightStateEnum.Fighting && FighterPlaying != null)
                     {
                         CombatTelemetry.LogTurnEvent("TimerElapsed", this, FighterPlaying, detail: "timer=EndTurn");
-                        FighterPlaying.EndTurn("Timer");
                         FighterPlaying.EndTurn();
                     }
                     break;

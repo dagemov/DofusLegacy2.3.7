@@ -275,21 +275,19 @@ Items Final production acceptance (RollBlack Set, doc previo): [items-final-prod
 
 Macro 3 is **COMPLETE** (Phases 1–7). EntityLook renderer remains deferred and is not required for the Items Builder MVP.
 
-## Sprint puente (`feature/items-sets-visibility-and-vps-combat-telemetry`)
+## Macro Combat Sanitization (`feature/combat-sanitization-phase1-audit`)
 
-| Bloque | Estado | Entregable |
+| Fase | Estado | Entregable |
 | --- | --- | --- |
-| A — Items visibility (Jalato) | **IN PROGRESS** | diagnóstico + pipeline package |
-| A2 — Sets CRUD/bonuses | **DONE** (cherry-pick) | `/admin/item-sets` write + API |
-| B — VPS combat telemetry | **IN PROGRESS** | enable/disable/collect scripts |
+| Phase 1 — Auditoría comparativa | **`DONE`** | `docs/combat-sanitization/*.md` |
+| Phase 2 — Combat Health Lab | **`SCAFFOLDING`** | `infrastructure/artifacts/combat-health/` scripts |
+| Phase 3 — Turn Transition Fix | **PENDING** | Requiere logs + evidencia |
+| Phase 4 — Spell Cast Telemetry | **PENDING** | `spell-casts-*.log` |
+| Phase 5 — Summons / Boss | **PENDING** | Tras Phase 4 |
 
-## Macro Combat Sanitization
+Referencia corregida: `RollBlackServer/2.0.0/Rollback` (`ReadyChecker`, `FightTelemetry`, `CombatTelemetryAnalyzer`).
 
-| Fase | Estado |
-| --- | --- |
-| Phase 2 — Telemetría JSONL | **DONE** (cherry-pick a sprint branch) |
-| Gate logs reales | **ABIERTO** |
-| Phase 3 — ReadyChecker | **BLOQUEADA** |
+**No mezclar** con Admin items/spells. Flujo: lab local → PR → VPS beta → logs → analizador.
 
 ## Mandatory handoff
 

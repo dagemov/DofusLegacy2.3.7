@@ -1,6 +1,57 @@
 # Agent Handoff — Combat ReadyChecker Phase 3
 
-Generated: `2026-06-07`
+Generated: `2026-06-02`
+
+## Macro Combat Sanitization — Gate Phase 3
+
+| Campo | Valor |
+| --- | --- |
+| Rama | **`feature/combat-telemetry-phase2`** |
+| Phase 2 | **DONE** (`b59a97c`, `232447b`, `09196c3`) |
+| Gate telemetría real | **ABIERTO** — sin logs PvM en `Infrastructure/logs/combat/` |
+| Phase 3 ReadyChecker | **BLOQUEADA** — hipótesis sin confirmar en combate real |
+| Referencia | `C:\Users\Hombr\source\repos\RollBlackServer\2.0.0\Rollback` |
+
+### Entregables Phase 2
+
+- `CombatTelemetry` — `Sunshine.WorldServer/Game/Fights/Telemetry/CombatTelemetry.cs`
+- Logs JSONL: `combat-turn-flow-*.jsonl`, `spell-casts/*.jsonl`
+- `GameFightTurnReadyMessageReceived` registrado; handler **sin lógica funcional**
+- Analyzer: `Infrastructure/scripts/CombatTelemetryAnalyzer/` (JSONL + legacy `.log`)
+- Lab scripts actualizados → salida `Infrastructure/temporal-artifacts/combat-telemetry/report.md`
+
+### Validación gate (esta sesión)
+
+| Check | Resultado |
+| --- | --- |
+| `dotnet build Sunshine.csproj` | OK |
+| `dotnet build Sunshine.sln` | Bloqueado por lock Admin.Api (VS) — no bloquea lab combate |
+| Logs reales `Infrastructure/logs/combat/` | **Vacío** |
+| Analyzer | OK solo sobre sample sintético |
+
+### Documentación gate
+
+- [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md) ← **estado y decisión**
+- [combat-telemetry-phase2.md](../combat-sanitization/combat-telemetry-phase2.md)
+- [combat-log-schema.md](../combat-sanitization/combat-log-schema.md)
+
+### Siguiente acción exacta (operador)
+
+1. `sync-vps-db-snapshot.ps1` + `appsettings.Development.local.json` → `sunshine_lab`
+2. `run-local-combat-lab.ps1` con vars del gate doc → **3 escenarios PvM**
+3. `collect-combat-logs.ps1` → `analyze-combat-telemetry.ps1`
+4. Actualizar `combat-real-telemetry-gate.md` con latencias reales
+5. **Solo si report confirma hand-off roto:** abrir Phase 3 ReadyChecker
+
+### Prohibiciones activas
+
+```txt
+no fix ReadyChecker sin logs reales
+no VPS/deploy en esta fase
+no mezclar Admin items/spells
+```
+
+---
 
 ## Massive devp integration sync (2026-06-07)
 
