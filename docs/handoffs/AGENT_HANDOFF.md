@@ -1,7 +1,24 @@
 # Agent Handoff — Combat ReadyChecker Phase 3
 
-Generated: `2026-06-07`  
-Rama activa merge: **`fix/merge-readychecker-with-combat-patch32`** (reemplaza head conflictivo de PR #39)
+Generated: `2026-06-07`
+
+## Massive devp integration sync (2026-06-07)
+
+| Área | Estado |
+| --- | --- |
+| **Items Builder** | **COMPLETE** / pending operator publish only |
+| **Sets Builder** | **COMPLETE** — PR [#34](https://github.com/dagemov/DofusLegacy2.3.7/pull/34), [#35](https://github.com/dagemov/DofusLegacy2.3.7/pull/35) |
+| **Client Publication** | **COMPLETE** / operator controlled publish (ya en `devp`) |
+| **Combat Telemetry** | **ACTIVE** — PR [#36](https://github.com/dagemov/DofusLegacy2.3.7/pull/36)–[#38](https://github.com/dagemov/DofusLegacy2.3.7/pull/38) |
+| **ReadyChecker** | **PASS functional** — residual timers classified; PR [#39](https://github.com/dagemov/DofusLegacy2.3.7/pull/39) (conflictos con PR #32) |
+| **Spell Builder** | PR [#40](https://github.com/dagemov/DofusLegacy2.3.7/pull/40) — API + Angular read-only |
+| **`main`** | **Intacta** — integración solo vía `devp` |
+
+**Next:** Combat Phase 4 Spell/Summon telemetry analysis
+
+Detalle completo: [massive-devp-sync-20260607.md](../integration/massive-devp-sync-20260607.md)
+
+---
 
 ## PR #39 + PR #32 merge resolution
 
