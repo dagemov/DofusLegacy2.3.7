@@ -1,7 +1,7 @@
 using RollblackLegacy.Admin.Application.Abstractions.Items;
 using RollblackLegacy.Admin.Application.Exceptions;
-using RollblackLegacy.Admin.Contracts.Items;
 using RollblackLegacy.Admin.Application.Items;
+using RollblackLegacy.Admin.Contracts.Items;
 
 namespace RollblackLegacy.Admin.Application.Services;
 
@@ -10,27 +10,55 @@ public sealed class ItemSetsAdminReadService : IItemSetsAdminReadService
     private readonly IItemSetsAdminReadRepository _repository;
     private readonly IItemPreviewStateResolver _previewStateResolver;
     private readonly IItemEffectsCatalog _effectsCatalog;
+    private readonly IItemPublicationManifestService _publicationManifestService;
 
     public ItemSetsAdminReadService(
         IItemSetsAdminReadRepository repository,
         IItemPreviewStateResolver previewStateResolver,
-        IItemEffectsCatalog effectsCatalog)
+        IItemEffectsCatalog effectsCatalog,
+        IItemPublicationManifestService publicationManifestService)
     {
         _repository = repository;
         _previewStateResolver = previewStateResolver;
         _effectsCatalog = effectsCatalog;
+        _publicationManifestService = publicationManifestService;
     }
 
-    public async Task<IReadOnlyList<ItemSetListItemDto>> ListAsync(CancellationToken cancellationToken = default)
+    public async Task<ItemPagedResultDto<ItemSetListItemDto>> SearchAsync(
+        ItemSetSearchRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var rows = await _repository.ListAsync(cancellationToken);
-        return rows
+        request.Page = request.Page <= 0 ? 1 : request.Page;
+        request.PageSize = request.PageSize switch
+        {
+            <= 0 => 20,
+            > 100 => 100,
+            _ => request.PageSize,
+        };
+
+        var page = await _repository.SearchAsync(request, cancellationToken);
+        var items = page.Items
             .Select(row => new ItemSetListItemDto(
                 row.SetId,
                 row.Name,
+                row.Level,
                 row.ItemCount,
-                ItemSetEffectsCodec.DecodeTiers(row.EffectsHex).Count))
+                ItemSetEffectsCodec.DecodeTiers(row.EffectsHex).Count,
+                row.PreviewIconIds
+                    .Select(iconId =>
+                    {
+                        var preview = _previewStateResolver.Resolve(null, iconId, null);
+                        return preview.ResolvedPath ?? preview.ByCategoryPath ?? preview.ByIconPath;
+                    })
+                    .Where(path => !string.IsNullOrWhiteSpace(path))
+                    .ToList()))
             .ToList();
+
+        return new ItemPagedResultDto<ItemSetListItemDto>(
+            request.Page,
+            request.PageSize,
+            page.TotalCount,
+            items);
     }
 
     public async Task<ItemSetDetailDto> GetByIdAsync(int setId, CancellationToken cancellationToken = default)
@@ -41,7 +69,7 @@ public sealed class ItemSetsAdminReadService : IItemSetsAdminReadService
                 "SetId must be a positive integer.",
                 new Dictionary<string, string[]>
                 {
-                    ["setId"] = ["SetId must be a positive integer."]
+                    ["setId"] = ["SetId must be a positive integer."],
                 });
         }
 
@@ -61,24 +89,26 @@ public sealed class ItemSetsAdminReadService : IItemSetsAdminReadService
                     .ToList()))
             .ToList();
 
-        var members = row.Items
-            .Select(member =>
-            {
-                var preview = _previewStateResolver.Resolve(member.ItemId, member.IconId, member.TypeId);
-                return new ItemSetMemberDto(
-                    member.ItemId,
-                    member.Name,
-                    member.TypeId,
-                    member.TypeName,
-                    member.IconId,
-                    preview,
-                    preview.State == "FOUND" ? "Preview disponible" : "Preview pendiente");
-            })
-            .ToList();
+        var members = new List<ItemSetMemberDto>();
+        foreach (var member in row.Items)
+        {
+            var preview = _previewStateResolver.Resolve(member.ItemId, member.IconId, member.TypeId);
+            var publicationSummary = await TryResolvePublicationSummaryAsync(member.ItemId, cancellationToken);
+            members.Add(new ItemSetMemberDto(
+                member.ItemId,
+                member.Name,
+                member.TypeId,
+                member.TypeName,
+                member.IconId,
+                preview,
+                preview.ResolvedPath,
+                publicationSummary));
+        }
 
         return new ItemSetDetailDto(
             row.SetId,
             row.Name,
+            row.Level,
             row.BonusIsSecret,
             members,
             tiers);
@@ -95,6 +125,8 @@ public sealed class ItemSetsAdminReadService : IItemSetsAdminReadService
                 option.Label,
                 option.ProtocolName,
                 effect.Value,
+                effect.DiceNum,
+                effect.DiceSide,
                 effect.Format);
         }
 
@@ -103,6 +135,22 @@ public sealed class ItemSetsAdminReadService : IItemSetsAdminReadService
             $"Effect {effect.EffectId}",
             $"Effect_{effect.EffectId}",
             effect.Value,
+            effect.DiceNum,
+            effect.DiceSide,
             effect.Format);
     }
+
+    private async Task<string?> TryResolvePublicationSummaryAsync(int itemId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var manifest = await _publicationManifestService.GetManifestAsync(itemId, cancellationToken);
+            return manifest.PrimaryState;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 }

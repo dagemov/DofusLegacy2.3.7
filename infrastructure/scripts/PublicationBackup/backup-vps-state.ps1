@@ -68,7 +68,7 @@ echo '=== docker compose config (main stack) ==='
 cd $RemotePath/docker && docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.vps.yml -f docker-compose-onelauncher-api.yml -f docker-compose-website.yml config 2>/dev/null | head -n 120 || true
 "@
 
-ssh -i $SshKey -o BatchMode=yes -o StrictHostKeyChecking=accept-new $sshTarget $remoteScript `
+($remoteScript -replace "`r`n", "`n") | ssh -i $SshKey -o BatchMode=yes -o StrictHostKeyChecking=accept-new $sshTarget "bash -s" `
     | Set-Content -Path (Join-Path $backupRoot "vps-inventory.txt") -Encoding UTF8
 
 $manifest = @{

@@ -1,4 +1,4 @@
-# Agent Handoff - Admin Tools Migration
+# Agent Handoff — Combat ReadyChecker Phase 3
 
 Generated: `2026-06-07`
 
@@ -20,70 +20,192 @@ Detalle completo: [massive-devp-sync-20260607.md](../integration/massive-devp-sy
 
 ---
 
-## Gate final — Items Builder
+## PR #39 + PR #32 merge resolution
 
 | Campo | Valor |
 | --- | --- |
-| Rama | `feature/items-preview-sets-polish-final` |
-| PR target | `devp` |
-| **Items Builder** | **`COMPLETE`** |
-| **Spell Builder** | **`NEXT, not started`** |
+| Estado | **`DONE` local** — push + actualizar PR #39 pendiente |
+| Build | `Sunshine.csproj` **OK** |
+| Preservado #32 | IA monstruos, castigos, summons (`DiesAtTurnEnd`, Roublabot), `FightCombatLogger`, Sacrifice/DOT |
+| Integrado #39 | ReadyChecker, `TryAdvanceTurn`, telemetría, `SetReadyForNextTurn` |
 
-### Validación gate (2026-06-05)
+Detalle: [pr39-readychecker-merge-resolution.md](../integration/pr39-readychecker-merge-resolution.md)
 
-| Check | Resultado |
+**QA pendiente:** VPS smoke post-merge antes de merge a `devp`. **No merge a `main`.**
+
+---
+
+## Phase 3.1 — Analyzer polish + timer classification
+
+| Campo | Valor |
 | --- | --- |
-| Lock API limpiado | OK (`Stop-Process RollblackLegacy.Admin.Api`, `dotnet build-server shutdown`) |
-| `dotnet build` Admin.Api | OK |
-| `npm run build` | OK (warning budget +1.13 kB) |
-| `dotnet build` Sunshine.sln | OK (5 warnings, 0 errors) |
-| Git hygiene | OK — sin commit de `Client2.3.7/`, `OneLauncher/`, `config/`, `temporal-artifacts/` |
-| Spell Builder en rama PR | **Revertido** — commits `e5f0964` y `9031339` excluidos del scope Items |
+| Estado | **`DONE`** |
+| Tipo | `analyzer + documentación` (sin lógica de combate) |
 
-### Browser QA
+- `readyCheckerStartCount` **145** (alias `ReadyCheckerStarted` corregido)
+- 11 `TimerElapsed` clasificados — rescate ~35 s jugador activo, no fallo ReadyChecker
+- **Phase 3:** PASS WITH MINOR RESIDUAL TIMERS
+- **Siguiente:** Phase 4 Spell/Summon telemetry analysis
 
-| Estado | Notas |
-| --- | --- |
-| `PENDING_OPERATOR` | Rutas mínimas documentadas; builds OK como precondición |
+---
 
-Rutas:
+## Estado VPS
 
 ```txt
-/admin/items/new
-/admin/items/12616/edit
-/admin/items/icon-selector
-/admin/item-sets
-/admin/item-sets/:setId
-/admin/publication
+sunshine-server UP — ReadyChecker build desplegado
+puertos 2450/5557 OK (corregidos post-rebuild)
+telemetría OFF (post-QA 2026-06-07)
+smoke 47 combates: PASS operador
 ```
 
-Confirmar: stats icons, preview BY_CATEGORY, sets con preview, bonos por piezas, sin errores consola críticos.
+| Campo | Valor |
+| --- | --- |
+| VPS | `174.138.35.107` |
+| Backup DB | `/root/backups/sunshine/sunshine-pre-restart-20260607T015107Z.sql` |
+| Backup inventario | `backups/vps/20260606-215057/` |
+| `.env` backup | `/opt/dofus-2.0.0/.env.bak-phase3qa-20260607` |
+| Telemetría | **OFF** |
+| ReadyChecker | **ON** |
 
-### Entregables Items (rama)
+## Collect (referencia)
 
-- Preview reconciliation (`BY_CATEGORY`)
-- Sets read UI + bonos por piezas
-- Stat icons fix (`src/assets` en `angular.json`)
-- Docs: preview reconciliation, stat icons, sets builder
+```powershell
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
+```
 
-### Merge flow
+Logs QA: `Infrastructure/temporal-artifacts/combat-logs/vps/20260607-113152/`
 
-1. PR `feature/items-preview-sets-polish-final` → `devp` (creado en gate)
-2. Tras aprobación: merge a `devp`
-3. Luego `devp` → `main` (no borrar ramas hasta main estable)
-
-### Siguiente
-
-- Abrir **Spell Builder** en rama dedicada **después** de merge Items a `devp`/`main`
-- Cherry-pick o re-aplicar trabajo Spell (`e5f0964`, `9031339`) en rama `feature/spell-builder-*` separada
-
-### Prohibiciones
-
-- No publicar cliente real, no VPS, no temporal-artifacts en git
-
-## Repo
+## Rollback rápido
 
 ```txt
-C:\Users\Hombr\source\repos\DofusLegacy2.3.7
-feature/items-preview-sets-polish-final
+CombatReadyCheckerEnabled=false + restart sunshine
 ```
+
+## Cierre Phase 3 QA
+
+- [x] Deploy sunshine OK
+- [x] TCP 2450/5557 OK
+- [x] 47 combates smoke
+- [x] Collect + métricas
+- [x] Telemetría OFF post-QA
+- [x] Phase 3.1 analyzer + clasificación timers
+# Agent Handoff — Combat Sanitization / VPS Telemetry Active
+
+Generated: `2026-06-06`  
+Rama: **`feature/items-sets-visibility-and-vps-combat-telemetry`**
+
+## Estado VPS (actual)
+
+```txt
+sunshine-server UP
+servidor funcional
+cliente conecta — CONFIRMADO por operador
+telemetría ON
+operador realizando combates reales AHORA
+```
+
+| Campo | Valor |
+| --- | --- |
+| VPS | `174.138.35.107` |
+| Auth / World | `2450` / `5557` |
+| `WORLD_PUBLIC_HOST` | `174.138.35.107` |
+| `worlds.Id=18` | `174.138.35.107:5557` |
+| Telemetría path | `/app/logs/combat/` |
+| SSH key | `SSH/private_key_sebas.pem` (no `.ppk`) |
+| Phase 3 ReadyChecker | **BLOQUEADA** — esperar análisis de logs |
+
+## Incidentes cerrados (2026-06-06)
+
+### 1 — Items ObjectEffect → crash boot
+
+Items `12618–12622`: `UPDATE items SET Effects=0x30303030`.  
+Doc: [vps-telemetry-deploy-connection-incident.md](../combat-sanitization/vps-telemetry-deploy-connection-incident.md)
+
+### 2 — Puertos/hosts legacy
+
+`.env` corregido a `2450`/`5557`/`174.138.35.107`. Commit `a1b6c3e`.  
+Doc: [vps-client-port-host-diagnostic.md](../combat-sanitization/vps-client-port-host-diagnostic.md)
+
+## Acción inmediata — cuando terminen los combates
+
+**NO apagar telemetría antes de recolectar.**
+
+### Paso 1 — Recolectar y analizar
+
+```powershell
+.\infrastructure\artifacts\combat-health\collect-vps-combat-logs.ps1 -SshKey "SSH\private_key_sebas.pem" -RunAnalyzer
+start Infrastructure\temporal-artifacts\combat-telemetry\report.html
+```
+
+Revisar:
+
+```txt
+Infrastructure/temporal-artifacts/combat-telemetry/report.md
+Infrastructure/temporal-artifacts/combat-telemetry/report.json
+```
+
+Crear tras análisis: `docs/combat-sanitization/combat-vps-telemetry-analysis-YYYYMMDD.md`
+
+### Paso 2 — Apagar telemetría (después de collect)
+
+```powershell
+$env:CONFIRM_RESTART="1"
+.\infrastructure\artifacts\combat-health\disable-vps-combat-telemetry.ps1 -SshKey "SSH\private_key_sebas.pem"
+```
+
+### Preguntas que el análisis debe responder
+
+```txt
+1. ¿Hay combat-turn-flow-*.jsonl reales?
+2. ¿Hay spell-casts-*.jsonl reales?
+3. ¿Cuántos combates capturados?
+4. ¿Hay TimerElapsed ~35000ms?
+5. ¿Llega GameFightTurnReadyMessage?
+6. ¿Cuánto tarda AiStarted -> AiFinished?
+7. ¿Cuánto tarda AiFinished -> NextTurnStarted?
+8. ¿Turno humano antes de fin animación enemiga?
+9. ¿Spells fallidos?
+10. ¿Effects fallidos?
+```
+
+## Decisión Phase 3 (tras logs)
+
+| Evidencia | Rama / acción |
+| --- | --- |
+| Hand-off roto confirmado | `feature/combat-readychecker-phase3` — portar ReadyChecker / TryAdvanceTurn desde `RollBlackServer\2.0.0\Rollback` |
+| Logs ambiguos | `feature/combat-telemetry-phase2b` — más telemetría spell/AI/timers |
+| Sin reproducción | Documentar *Phase 3 bloqueada por falta de reproducción* |
+
+## Prohibido ahora
+
+```txt
+no tocar lógica de turnos sin analizar logs
+no ReadyChecker / IA / spells / summons fixes
+no items/admin changes
+no reiniciar VPS en bucle
+no docker compose down -v
+no commitear logs pesados
+```
+
+## Scripts
+
+```txt
+infrastructure/artifacts/combat-health/enable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/disable-vps-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/collect-vps-combat-logs.ps1
+infrastructure/artifacts/combat-health/analyze-combat-telemetry.ps1
+infrastructure/artifacts/combat-health/fix-vps-client-ports.ps1
+```
+
+## Cierre del gate (pendiente)
+
+- [ ] Logs reales descargados del VPS
+- [ ] Analyzer → `report.md` / `report.html`
+- [ ] Decisión Phase 3 vs 2B con evidencia
+- [ ] Telemetría apagada al final (o documentar si sigue ON)
+- [ ] Handoff actualizado
+
+## Docs gate
+
+- [combat-real-telemetry-gate.md](../combat-sanitization/combat-real-telemetry-gate.md)
+- [combat-vps-telemetry-deploy-gate.md](../combat-sanitization/combat-vps-telemetry-deploy-gate.md)

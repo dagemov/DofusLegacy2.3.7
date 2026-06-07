@@ -36,6 +36,15 @@
     </div>
   </div>
 
+  <div *ngIf="saveResult" class="alert alert-warning border-0 mb-0">
+    <strong>Item guardado en base de datos.</strong>
+    Pendiente de publicar al cliente real.
+    <a class="alert-link" [routerLink]="['/admin/items', saveResult.itemId, 'publication-status']">
+      Ver estado de publicación
+    </a>
+    — no implica visibilidad in-game hasta validar <span class="font-monospace-soft">Items.d2o</span> + i18n.
+  </div>
+
   <app-api-problem-panel [problem]="loadProblem"></app-api-problem-panel>
   <app-api-problem-panel [feedback]="saveFeedback"></app-api-problem-panel>
   <app-item-save-error-modal
@@ -339,7 +348,11 @@
                 </a>
                 <a class="btn btn-sm btn-outline-secondary" routerLink="/admin/publication">Dashboard backup/lane</a>
               </div>
-              <p class="small text-secondary mb-0 mt-2">Sin publicación automática al cliente real en esta fase.</p>
+              <p class="small text-secondary mb-0 mt-2">
+                Tras guardar, el item queda en DB. La visibilidad en cliente requiere package staging validado y publish controlado
+                (<span class="font-monospace-soft">CONFIRM_PUBLISH=1</span>). La UI no marca el item como visible hasta
+                <span class="font-monospace-soft">publication-status</span> lo confirme.
+              </p>
             </section>
 
             <div *ngIf="previewWarnings.length > 0">
@@ -455,25 +468,25 @@
 
     <div class="editor-layout__effects">
       <app-item-effects-editor
-        *ngIf="mode === 'edit' && sourceItemId; else effectsDeferred"
+        *ngIf="mode === 'create'"
+        #createEffectsEditor
+        [draftMode]="true"></app-item-effects-editor>
+
+      <app-item-effects-editor
+        *ngIf="mode === 'edit' && sourceItemId"
         [itemId]="sourceItemId"></app-item-effects-editor>
 
-      <ng-template #effectsDeferred>
-        <div class="card admin-card border-0">
-          <div class="card-body d-grid gap-2">
-            <div>
-              <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
-              <h3 class="h5 mb-1">Stats del item</h3>
-              <p class="text-secondary mb-0">
-                El editor de efectos queda abajo, como en el flujo Blazor. Solo se activa cuando el item ya existe y puede cargarse por ItemId.
-              </p>
-            </div>
-            <div class="alert alert-light border mb-0">
-              Guarda primero el item o abre un item existente para editar efectos runtime.
-            </div>
+      <div *ngIf="mode === 'duplicate'" class="card admin-card border-0">
+        <div class="card-body d-grid gap-2">
+          <div>
+            <p class="text-uppercase small fw-semibold text-secondary mb-1">Características del item</p>
+            <h3 class="h5 mb-1">Stats del item</h3>
+            <p class="text-secondary mb-0">
+              Al duplicar, los efectos del item origen se copian automáticamente. Edítalos después de guardar el duplicado.
+            </p>
           </div>
         </div>
-      </ng-template>
+      </div>
     </div>
   </div>
 </section>

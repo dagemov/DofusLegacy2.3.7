@@ -1,12 +1,46 @@
 <section class="d-grid gap-4">
   <div class="card admin-card border-0">
-    <div class="card-body d-flex flex-column flex-lg-row gap-3 justify-content-between">
+    <div class="card-body d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
       <div>
         <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/items">Volver a items</a>
         <p class="text-uppercase small fw-semibold text-secondary mb-2">Items Builder / Sets</p>
         <h2 class="h4 mb-2">Sets de equipo</h2>
-        <p class="text-secondary mb-0">Lista de sets con items vinculados y bonos por piezas equipadas.</p>
+        <p class="text-secondary mb-0">Listado paginado con filtros, previews y acceso al editor.</p>
       </div>
+      <a class="btn btn-primary" routerLink="/admin/item-sets/new">Crear set</a>
+    </div>
+  </div>
+
+  <div class="card admin-card border-0">
+    <div class="card-body d-grid gap-3">
+      <form class="row g-2 align-items-end" (ngSubmit)="applyFilters()">
+        <div class="col-12 col-md-4">
+          <label class="form-label small">Buscar</label>
+          <input class="form-control" name="search" [(ngModel)]="filters.search" placeholder="Nombre o SetId" />
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small">Nivel min</label>
+          <input class="form-control" type="number" name="minLevel" [(ngModel)]="filters.minLevel" min="0" />
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small">Nivel max</label>
+          <input class="form-control" type="number" name="maxLevel" [(ngModel)]="filters.maxLevel" min="0" />
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small">Partes min</label>
+          <input class="form-control" type="number" name="minParts" [(ngModel)]="filters.minParts" min="0" />
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label small">Partes max</label>
+          <input class="form-control" type="number" name="maxParts" [(ngModel)]="filters.maxParts" min="0" />
+        </div>
+        <div class="col-12 d-flex gap-2">
+          <button class="btn btn-primary" type="submit" [disabled]="isLoading">Filtrar</button>
+          <button class="btn btn-outline-secondary" type="button" (click)="clearFilters()" [disabled]="isLoading">
+            Limpiar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -15,30 +49,71 @@
   <div class="card admin-card border-0">
     <div class="card-body">
       <div *ngIf="isLoading" class="text-secondary small">Cargando sets...</div>
-      <div *ngIf="!isLoading && sets.length === 0" class="alert alert-light border mb-0">No hay sets en la base de datos.</div>
-      <div class="table-responsive" *ngIf="sets.length > 0">
+
+      <div *ngIf="!isLoading && result.items.length === 0" class="alert alert-light border mb-0">
+        No hay sets que coincidan con los filtros actuales.
+      </div>
+
+      <div class="table-responsive" *ngIf="!isLoading && result.items.length > 0">
         <table class="table table-sm align-middle mb-0">
           <thead>
             <tr>
               <th>SetId</th>
               <th>Nombre</th>
+              <th>Nivel</th>
               <th>Items</th>
               <th>Bonos</th>
+              <th>Previews</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let set of sets">
+            <tr *ngFor="let set of result.items">
               <td class="font-monospace-soft">{{ set.setId }}</td>
               <td>{{ set.name }}</td>
+              <td>{{ set.level }}</td>
               <td>{{ set.itemCount }}</td>
               <td>{{ set.bonusTierCount }}</td>
               <td>
-                <a class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/item-sets', set.setId]">Ver detalle</a>
+                <div class="d-flex gap-1">
+                  <img
+                    *ngFor="let icon of set.previewItemIcons; let i = index"
+                    [hidden]="!showPreviewIcon(set, i)"
+                    [src]="icon"
+                    alt=""
+                    class="set-preview-thumb"
+                    (error)="onPreviewIconError(set.setId, i)" />
+                </div>
+              </td>
+              <td class="text-nowrap">
+                <a class="btn btn-sm btn-outline-primary me-1" [routerLink]="['/admin/item-sets', set.setId]">Ver</a>
+                <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/item-sets', set.setId, 'edit']">
+                  Editar
+                </a>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div
+        class="d-flex justify-content-between align-items-center mt-3"
+        *ngIf="!isLoading && result.totalCount > 0">
+        <span class="small text-secondary">
+          {{ result.totalCount }} set(s) · página {{ result.page }} / {{ totalPages }}
+        </span>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="goToPage(result.page - 1)" [disabled]="result.page <= 1">
+            Anterior
+          </button>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            type="button"
+            (click)="goToPage(result.page + 1)"
+            [disabled]="result.page >= totalPages">
+            Siguiente
+          </button>
+        </div>
       </div>
     </div>
   </div>
