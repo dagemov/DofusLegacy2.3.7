@@ -49,6 +49,40 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
         return MapDetail(detail);
     }
 
+    public async Task<IReadOnlyList<SpellLevelDetailDto>> GetLevelsAsync(
+        short spellId,
+        CancellationToken cancellationToken = default)
+    {
+        EnsurePositiveSpellId(spellId);
+
+        var levels = await _repository.GetLevelsAsync(spellId, cancellationToken);
+        if (levels is null)
+        {
+            throw new AdminEntityNotFoundException("spell", spellId.ToString());
+        }
+
+        return levels
+            .Select(MapLevelDetail)
+            .ToList();
+    }
+
+    public async Task<SpellLevelDetailDto> GetLevelAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default)
+    {
+        EnsurePositiveSpellId(spellId);
+        EnsurePositiveLevelNumber(levelNumber);
+
+        var level = await _repository.GetLevelAsync(spellId, levelNumber, cancellationToken);
+        if (level is null)
+        {
+            throw new AdminEntityNotFoundException("spell level", $"{spellId}:{levelNumber}");
+        }
+
+        return MapLevelDetail(level);
+    }
+
     private static SpellCatalogItemDto MapItem(AdminSpellCatalogReadModel item)
     {
         return new SpellCatalogItemDto(
@@ -122,6 +156,37 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
                 .ToList());
     }
 
+    internal static SpellLevelDetailDto MapLevelDetail(AdminSpellLevelDetailReadModel level)
+    {
+        return new SpellLevelDetailDto(
+            level.LevelNumber,
+            level.RuntimeLevelId,
+            level.ReferenceLevelId,
+            level.MinPlayerLevel,
+            level.ApCost,
+            level.MinRange,
+            level.MaxRange,
+            level.CastInLine,
+            level.CastInDiagonal,
+            level.CastTestLos,
+            level.NeedFreeCell,
+            level.NeedTakenCell,
+            level.RangeCanBeBoosted,
+            level.CriticalFailureEndsTurn,
+            level.CriticalHitProbability,
+            level.CriticalFailureProbability,
+            level.MaxCastPerTurn,
+            level.MaxCastPerTarget,
+            level.MinCastInterval,
+            level.InitialCooldown,
+            level.StatesRequired.ToList(),
+            level.StatesForbidden.ToList(),
+            level.HasEffects,
+            level.HasCriticalEffects,
+            level.RuntimeAvailable,
+            level.ReferenceAvailable);
+    }
+
     private static void ValidateRequest(SpellCatalogSearchRequest request)
     {
         if (request.SpellId.HasValue && request.SpellId.Value <= 0)
@@ -175,6 +240,22 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
                     ["spellId"] = new[]
                     {
                         "spellId debe ser mayor que cero."
+                    }
+                });
+        }
+    }
+
+    private static void EnsurePositiveLevelNumber(int levelNumber)
+    {
+        if (levelNumber <= 0)
+        {
+            throw new AdminValidationException(
+                "El nivel solicitado no es valido.",
+                new Dictionary<string, string[]>
+                {
+                    ["levelNumber"] = new[]
+                    {
+                        "levelNumber debe ser mayor que cero."
                     }
                 });
         }

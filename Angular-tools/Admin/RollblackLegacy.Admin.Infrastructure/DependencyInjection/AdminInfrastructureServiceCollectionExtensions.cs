@@ -60,7 +60,9 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddScoped<IItemsAdminWriteRepository, ItemsAdminWriteRepository>();
         services.AddScoped<IItemEffectsAdminRepository, ItemEffectsAdminRepository>();
         services.AddSingleton<ReferenceSpellCatalogReader>();
-        services.AddScoped<ISpellsAdminReadRepository, SpellsAdminReadRepository>();
+        services.AddScoped<SpellsAdminReadRepository>();
+        services.AddScoped<ISpellsAdminReadRepository>(provider => provider.GetRequiredService<SpellsAdminReadRepository>());
+        services.AddScoped<ISpellsAdminWriteRepository>(provider => provider.GetRequiredService<SpellsAdminReadRepository>());
         services.AddSingleton<IItemPreviewStateResolver, FileSystemItemPreviewStateResolver>();
         services.AddSingleton<IItemAppearancePreviewStateResolver, FileSystemItemAppearancePreviewStateResolver>();
 

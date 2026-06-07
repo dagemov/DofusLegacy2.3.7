@@ -12,4 +12,13 @@ public interface ISpellsAdminReadRepository
     Task<AdminSpellDetailReadModel?> GetByIdAsync(
         short spellId,
         CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<AdminSpellLevelDetailReadModel>?> GetLevelsAsync(
+        short spellId,
+        CancellationToken cancellationToken = default);
+
+    Task<AdminSpellLevelDetailReadModel?> GetLevelAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default);
 }

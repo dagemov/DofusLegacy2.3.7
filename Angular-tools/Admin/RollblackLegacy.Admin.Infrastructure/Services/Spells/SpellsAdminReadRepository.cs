@@ -9,7 +9,7 @@ using RollblackLegacy.Admin.Infrastructure.Spells;
 
 namespace RollblackLegacy.Admin.Infrastructure.Services.Spells;
 
-public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository
+public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpellsAdminWriteRepository
 {
     private const int SpellAdminEntityType = 4;
 
@@ -152,6 +152,83 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository
             ReferenceAvailable: reference is not null,
             referenceMetadata,
             levels);
+    }
+
+    public async Task<IReadOnlyList<AdminSpellLevelDetailReadModel>?> GetLevelsAsync(
+        short spellId,
+        CancellationToken cancellationToken = default)
+    {
+        await using var connection = await _connectionFactory.CreateOpenConnectionAsync(cancellationToken);
+        var schema = await DetectSchemaAsync(connection, cancellationToken);
+        var referenceSnapshot = _referenceCatalogReader.GetSnapshot();
+        referenceSnapshot.SpellsById.TryGetValue(spellId, out var reference);
+
+        var runtime = await LoadRuntimeHeaderAsync(connection, schema, spellId, cancellationToken);
+        if (runtime is null && reference is null)
+        {
+            return null;
+        }
+
+        return await LoadLevelDetailsAsync(
+            connection,
+            schema,
+            spellId,
+            runtime,
+            reference,
+            cancellationToken);
+    }
+
+    public async Task<AdminSpellLevelDetailReadModel?> GetLevelAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default)
+    {
+        if (levelNumber <= 0)
+        {
+            return null;
+        }
+
+        var levels = await GetLevelsAsync(spellId, cancellationToken);
+        if (levels is null || levelNumber > levels.Count)
+        {
+            return null;
+        }
+
+        return levels[levelNumber - 1];
+    }
+
+    public async Task<AdminSpellLevelUpdateResultModel?> UpdateLevelAsync(
+        short spellId,
+        int levelNumber,
+        AdminSpellLevelUpdateDraft draft,
+        CancellationToken cancellationToken = default)
+    {
+        await using var connection = await _connectionFactory.CreateOpenConnectionAsync(cancellationToken);
+        var schema = await DetectSchemaAsync(connection, cancellationToken);
+        var runtime = await LoadRuntimeHeaderAsync(connection, schema, spellId, cancellationToken);
+        if (runtime is null || levelNumber <= 0)
+        {
+            return null;
+        }
+
+        return schema.LevelSchema switch
+        {
+            SpellLevelSchema.CurrentRows => await UpdateCurrentSpellLevelAsync(
+                connection,
+                spellId,
+                levelNumber,
+                draft,
+                cancellationToken),
+            SpellLevelSchema.LegacyRows => await UpdateLegacySpellLevelAsync(
+                connection,
+                runtime.LevelsCsv,
+                spellId,
+                levelNumber,
+                draft,
+                cancellationToken),
+            _ => throw new AdminNotConfiguredException(
+                "No se encontro un esquema de `spells_levels` compatible para escribir niveles de spells."),
+        };
     }
 
     private static bool MatchesFilters(AdminSpellCatalogReadModel item, SpellCatalogSearchRequest request)
@@ -851,6 +928,578 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository
         return result;
     }
 
+    private async Task<IReadOnlyList<AdminSpellLevelDetailReadModel>> LoadLevelDetailsAsync(
+        MySqlConnection connection,
+        SpellCatalogSchema schema,
+        short spellId,
+        RuntimeSpellHeaderRow? runtime,
+        ReferenceSpellCatalogReader.ReferenceSpellCatalogEntry? reference,
+        CancellationToken cancellationToken)
+    {
+        if (runtime is null)
+        {
+            return BuildReferenceOnlyLevelDetails(reference);
+        }
+
+        if (schema.LevelSchema == SpellLevelSchema.None)
+        {
+            throw new AdminNotConfiguredException(
+                "No se encontro un esquema de `spells_levels` compatible para leer niveles detallados de spells.");
+        }
+
+        var runtimeLevels = schema.LevelSchema switch
+        {
+            SpellLevelSchema.CurrentRows => await LoadCurrentSpellLevelDetailsAsync(connection, spellId, cancellationToken),
+            SpellLevelSchema.LegacyRows => await LoadLegacySpellLevelDetailsAsync(connection, runtime.LevelsCsv, cancellationToken),
+            _ => Array.Empty<RuntimeSpellLevelDetail>(),
+        };
+
+        return BuildMergedLevelDetails(runtimeLevels, reference);
+    }
+
+    private static IReadOnlyList<AdminSpellLevelDetailReadModel> BuildReferenceOnlyLevelDetails(
+        ReferenceSpellCatalogReader.ReferenceSpellCatalogEntry? reference)
+    {
+        if (reference is null || reference.OrderedLevelIds.Count == 0)
+        {
+            return Array.Empty<AdminSpellLevelDetailReadModel>();
+        }
+
+        return reference.OrderedLevelIds
+            .Select((levelId, index) =>
+            {
+                reference.LevelsById.TryGetValue(levelId, out var referenceLevel);
+                return MapLevelDetail(index + 1, runtime: null, referenceLevel);
+            })
+            .ToArray();
+    }
+
+    private static IReadOnlyList<AdminSpellLevelDetailReadModel> BuildMergedLevelDetails(
+        IReadOnlyList<RuntimeSpellLevelDetail> runtimeLevels,
+        ReferenceSpellCatalogReader.ReferenceSpellCatalogEntry? reference)
+    {
+        var referenceLevelIds = reference?.OrderedLevelIds ?? Array.Empty<int>();
+        var totalLevels = Math.Max(runtimeLevels.Count, referenceLevelIds.Count);
+        if (totalLevels == 0)
+        {
+            return Array.Empty<AdminSpellLevelDetailReadModel>();
+        }
+
+        var result = new List<AdminSpellLevelDetailReadModel>(totalLevels);
+        for (var index = 0; index < totalLevels; index++)
+        {
+            var runtimeLevel = index < runtimeLevels.Count
+                ? runtimeLevels[index]
+                : null;
+            ReferenceSpellCatalogReader.ReferenceSpellLevelEntry? referenceLevel = null;
+            if (index < referenceLevelIds.Count &&
+                reference is not null &&
+                reference.LevelsById.TryGetValue(referenceLevelIds[index], out var resolvedReferenceLevel))
+            {
+                referenceLevel = resolvedReferenceLevel;
+            }
+
+            result.Add(MapLevelDetail(index + 1, runtimeLevel, referenceLevel));
+        }
+
+        return result;
+    }
+
+    private static AdminSpellLevelDetailReadModel MapLevelDetail(
+        int levelNumber,
+        RuntimeSpellLevelDetail? runtime,
+        ReferenceSpellCatalogReader.ReferenceSpellLevelEntry? reference)
+    {
+        return new AdminSpellLevelDetailReadModel(
+            levelNumber,
+            runtime?.RuntimeLevelId,
+            reference?.LevelId,
+            runtime?.MinPlayerLevel ?? reference?.MinPlayerLevel ?? 0,
+            runtime?.ApCost ?? reference?.ApCost ?? 0,
+            runtime?.MinRange ?? reference?.MinRange ?? 0,
+            runtime?.MaxRange ?? reference?.MaxRange ?? 0,
+            runtime?.CastInLine ?? reference?.CastInLine ?? false,
+            runtime?.CastInDiagonal ?? reference?.CastInDiagonal ?? false,
+            runtime?.CastTestLos ?? reference?.CastTestLos ?? false,
+            runtime?.NeedFreeCell ?? reference?.NeedFreeCell ?? false,
+            runtime?.NeedTakenCell ?? reference?.NeedTakenCell ?? false,
+            runtime?.RangeCanBeBoosted ?? reference?.RangeCanBeBoosted ?? false,
+            runtime?.CriticalFailureEndsTurn ?? reference?.CriticalFailureEndsTurn ?? false,
+            runtime?.CriticalHitProbability ?? reference?.CriticalHitProbability ?? 0,
+            runtime?.CriticalFailureProbability ?? reference?.CriticalFailureProbability ?? 0,
+            runtime?.MaxCastPerTurn ?? reference?.MaxCastPerTurn ?? 0,
+            runtime?.MaxCastPerTarget ?? reference?.MaxCastPerTarget ?? 0,
+            runtime?.MinCastInterval ?? reference?.MinCastInterval ?? 0,
+            runtime?.InitialCooldown ?? reference?.InitialCooldown ?? 0,
+            runtime?.StatesRequired ?? ParseCsvShorts(reference?.StatesRequiredCsv),
+            runtime?.StatesForbidden ?? ParseCsvShorts(reference?.StatesForbiddenCsv),
+            runtime?.HasEffects ?? reference?.HasEffects ?? false,
+            runtime?.HasCriticalEffects ?? reference?.HasCriticalEffects ?? false,
+            RuntimeAvailable: runtime is not null,
+            ReferenceAvailable: reference is not null);
+    }
+
+    private static async Task<IReadOnlyList<RuntimeSpellLevelDetail>> LoadCurrentSpellLevelDetailsAsync(
+        MySqlConnection connection,
+        short spellId,
+        CancellationToken cancellationToken)
+    {
+        var rows = await LoadCurrentSpellLevelWriteRowsAsync(connection, spellId, cancellationToken);
+        return rows
+            .Select(row => new RuntimeSpellLevelDetail(
+                RuntimeLevelId: null,
+                row.ApCost,
+                ParseNonNegativeInt(row.MinRange),
+                ParseNonNegativeInt(row.Range),
+                row.CastInLine,
+                row.CastInDiagonal,
+                row.CastTestLos,
+                row.NeedFreeCell,
+                row.NeedTakenCell,
+                row.RangeCanBeBoosted,
+                row.CriticalFailureEndsTurn,
+                row.CriticalHitProbability,
+                row.CriticalFailureProbability,
+                row.MaxCastPerTurn,
+                row.MaxCastPerTarget,
+                row.MinCastInterval,
+                ParseNonNegativeInt(row.InitialCooldown),
+                row.MinPlayerLevel,
+                ParseCsvShorts(row.StatesRequiredCsv),
+                ParseCsvShorts(row.StatesForbiddenCsv),
+                HasSerializedPayload(row.Effects),
+                HasSerializedPayload(row.CriticalEffects)))
+            .ToArray();
+    }
+
+    private static async Task<IReadOnlyList<RuntimeSpellLevelDetail>> LoadLegacySpellLevelDetailsAsync(
+        MySqlConnection connection,
+        string? levelsCsv,
+        CancellationToken cancellationToken)
+    {
+        var levelIds = ParseCsvInts(levelsCsv);
+        if (levelIds.Count == 0)
+        {
+            return Array.Empty<RuntimeSpellLevelDetail>();
+        }
+
+        var sql = $"""
+            SELECT
+                Id AS RuntimeLevelId,
+                APCost AS ApCost,
+                MinRange,
+                MaxRange,
+                CastInLine,
+                CastTestLOS AS CastTestLos,
+                NeedFreeCell,
+                RangeCanBeBoosted,
+                CriticalFailureEndsTurn,
+                CriticalHitProbability,
+                CriticalFailureProbability,
+                MaxCastPerTurn,
+                MaxCastPerTarget,
+                MinCastInterval,
+                MinPlayerLevel,
+                StatesRequiredCSV,
+                StatesForbiddenCSV,
+                BinaryEffects,
+                BinaryCriticalEffects
+            FROM spells_levels
+            WHERE Id IN ({string.Join(",", levelIds)});
+            """;
+
+        var rows = await connection.QueryAsync<LegacySpellLevelRow>(new CommandDefinition(
+            sql,
+            cancellationToken: cancellationToken));
+        var rowsById = rows.ToDictionary(row => row.RuntimeLevelId);
+
+        var result = new List<RuntimeSpellLevelDetail>(levelIds.Count);
+        foreach (var levelId in levelIds)
+        {
+            if (!rowsById.TryGetValue(levelId, out var row))
+            {
+                continue;
+            }
+
+            result.Add(new RuntimeSpellLevelDetail(
+                row.RuntimeLevelId,
+                row.ApCost,
+                row.MinRange,
+                row.MaxRange,
+                row.CastInLine,
+                CastInDiagonal: null,
+                row.CastTestLos,
+                row.NeedFreeCell,
+                NeedTakenCell: null,
+                row.RangeCanBeBoosted,
+                row.CriticalFailureEndsTurn,
+                row.CriticalHitProbability,
+                row.CriticalFailureProbability,
+                row.MaxCastPerTurn,
+                row.MaxCastPerTarget,
+                row.MinCastInterval,
+                InitialCooldown: null,
+                row.MinPlayerLevel,
+                ParseCsvShorts(row.StatesRequiredCsv),
+                ParseCsvShorts(row.StatesForbiddenCsv),
+                HasBinaryPayload(row.BinaryEffects),
+                HasBinaryPayload(row.BinaryCriticalEffects)));
+        }
+
+        return result;
+    }
+
+    private async Task<AdminSpellLevelUpdateResultModel?> UpdateCurrentSpellLevelAsync(
+        MySqlConnection connection,
+        short spellId,
+        int levelNumber,
+        AdminSpellLevelUpdateDraft draft,
+        CancellationToken cancellationToken)
+    {
+        await LockCurrentSpellLevelsAsync(connection, cancellationToken);
+
+        try
+        {
+            var originalRows = (await LoadCurrentSpellLevelWriteRowsAsync(connection, spellId, cancellationToken)).ToList();
+            if (originalRows.Count == 0 || levelNumber > originalRows.Count)
+            {
+                return null;
+            }
+
+            var rewrittenRows = originalRows
+                .Select(CloneCurrentSpellLevelWriteRow)
+                .ToList();
+            ApplyDraft(rewrittenRows[levelNumber - 1], draft);
+
+            await DeleteCurrentSpellLevelsAsync(connection, spellId, cancellationToken);
+
+            try
+            {
+                await InsertCurrentSpellLevelsAsync(connection, rewrittenRows, cancellationToken);
+            }
+            catch
+            {
+                await RestoreCurrentSpellLevelsAsync(connection, spellId, originalRows, cancellationToken);
+                throw;
+            }
+
+            return new AdminSpellLevelUpdateResultModel(
+                spellId,
+                levelNumber,
+                "current-runtime-row-rewrite",
+                new[]
+                {
+                    "El esquema actual no tiene Id por nivel; se reescribieron las filas del spell preservando el orden runtime que consume Sunshine."
+                });
+        }
+        finally
+        {
+            await UnlockCurrentSpellLevelsAsync(connection, cancellationToken);
+        }
+    }
+
+    private async Task<AdminSpellLevelUpdateResultModel?> UpdateLegacySpellLevelAsync(
+        MySqlConnection connection,
+        string? levelsCsv,
+        short spellId,
+        int levelNumber,
+        AdminSpellLevelUpdateDraft draft,
+        CancellationToken cancellationToken)
+    {
+        var levelIds = ParseCsvInts(levelsCsv);
+        if (levelIds.Count == 0 || levelNumber > levelIds.Count)
+        {
+            return null;
+        }
+
+        var targetLevelId = levelIds[levelNumber - 1];
+        const string sql = """
+            UPDATE spells_levels
+            SET
+                APCost = @ApCost,
+                MinRange = @MinRange,
+                MaxRange = @MaxRange,
+                CastInLine = @CastInLine,
+                CastTestLOS = @CastTestLos,
+                NeedFreeCell = @NeedFreeCell,
+                CriticalHitProbability = @CriticalHitProbability,
+                CriticalFailureProbability = @CriticalFailureProbability,
+                MaxCastPerTurn = @MaxCastPerTurn,
+                MaxCastPerTarget = @MaxCastPerTarget,
+                MinCastInterval = @MinCastInterval
+            WHERE Id = @LevelId;
+            """;
+
+        var affectedRows = await connection.ExecuteAsync(new CommandDefinition(
+            sql,
+            new
+            {
+                LevelId = targetLevelId,
+                draft.ApCost,
+                draft.MinRange,
+                draft.MaxRange,
+                draft.CastInLine,
+                CastTestLos = draft.CastTestLos,
+                draft.NeedFreeCell,
+                draft.CriticalHitProbability,
+                draft.CriticalFailureProbability,
+                draft.MaxCastPerTurn,
+                draft.MaxCastPerTarget,
+                draft.MinCastInterval,
+            },
+            cancellationToken: cancellationToken));
+
+        if (affectedRows <= 0)
+        {
+            return null;
+        }
+
+        return new AdminSpellLevelUpdateResultModel(
+            spellId,
+            levelNumber,
+            "legacy-level-id-update",
+            Array.Empty<string>());
+    }
+
+    private static async Task LockCurrentSpellLevelsAsync(
+        MySqlConnection connection,
+        CancellationToken cancellationToken)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = "LOCK TABLES spells_levels WRITE;";
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    private static async Task UnlockCurrentSpellLevelsAsync(
+        MySqlConnection connection,
+        CancellationToken cancellationToken)
+    {
+        await using var command = connection.CreateCommand();
+        command.CommandText = "UNLOCK TABLES;";
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    private static async Task<IReadOnlyList<CurrentSpellLevelWriteRow>> LoadCurrentSpellLevelWriteRowsAsync(
+        MySqlConnection connection,
+        short spellId,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            SELECT
+                SpellId,
+                SpellBreed,
+                ApCost,
+                `Range`,
+                CastInLine,
+                CastInDiagonal,
+                CastTestLos,
+                CriticalHitProbability,
+                StatesRequiredCSV,
+                CriticalFailureProbability,
+                NeedFreeCell,
+                NeedFreeTrapCell,
+                NeedTakenCell,
+                RangeCanBeBoosted,
+                MaxStack,
+                MaxCastPerTurn,
+                MaxCastPerTarget,
+                MinCastInterval,
+                InitialCooldown,
+                GlobalCooldown,
+                MinPlayerLevel,
+                CriticalFailureEndsTurn,
+                HideEffects,
+                Hidden,
+                MinRange,
+                StatesForbiddenCSV,
+                Effects,
+                CriticalEffects
+            FROM spells_levels
+            WHERE SpellId = @SpellId;
+            """;
+
+        var rows = await connection.QueryAsync<CurrentSpellLevelWriteRow>(new CommandDefinition(
+            sql,
+            new
+            {
+                SpellId = spellId,
+            },
+            cancellationToken: cancellationToken));
+
+        return rows.ToArray();
+    }
+
+    private static CurrentSpellLevelWriteRow CloneCurrentSpellLevelWriteRow(CurrentSpellLevelWriteRow source) =>
+        new()
+        {
+            SpellId = source.SpellId,
+            SpellBreed = source.SpellBreed,
+            ApCost = source.ApCost,
+            Range = source.Range,
+            CastInLine = source.CastInLine,
+            CastInDiagonal = source.CastInDiagonal,
+            CastTestLos = source.CastTestLos,
+            CriticalHitProbability = source.CriticalHitProbability,
+            StatesRequiredCsv = source.StatesRequiredCsv,
+            CriticalFailureProbability = source.CriticalFailureProbability,
+            NeedFreeCell = source.NeedFreeCell,
+            NeedFreeTrapCell = source.NeedFreeTrapCell,
+            NeedTakenCell = source.NeedTakenCell,
+            RangeCanBeBoosted = source.RangeCanBeBoosted,
+            MaxStack = source.MaxStack,
+            MaxCastPerTurn = source.MaxCastPerTurn,
+            MaxCastPerTarget = source.MaxCastPerTarget,
+            MinCastInterval = source.MinCastInterval,
+            InitialCooldown = source.InitialCooldown,
+            GlobalCooldown = source.GlobalCooldown,
+            MinPlayerLevel = source.MinPlayerLevel,
+            CriticalFailureEndsTurn = source.CriticalFailureEndsTurn,
+            HideEffects = source.HideEffects,
+            Hidden = source.Hidden,
+            MinRange = source.MinRange,
+            StatesForbiddenCsv = source.StatesForbiddenCsv,
+            Effects = source.Effects,
+            CriticalEffects = source.CriticalEffects,
+        };
+
+    private static void ApplyDraft(CurrentSpellLevelWriteRow target, AdminSpellLevelUpdateDraft draft)
+    {
+        target.ApCost = draft.ApCost;
+        target.MinRange = draft.MinRange;
+        target.Range = draft.MaxRange;
+        target.CastInLine = draft.CastInLine;
+        target.CastTestLos = draft.CastTestLos;
+        target.CriticalHitProbability = draft.CriticalHitProbability;
+        target.CriticalFailureProbability = draft.CriticalFailureProbability;
+        target.NeedFreeCell = draft.NeedFreeCell;
+        target.MinCastInterval = draft.MinCastInterval;
+        target.MaxCastPerTurn = draft.MaxCastPerTurn;
+        target.MaxCastPerTarget = draft.MaxCastPerTarget;
+
+        if (draft.CastInDiagonal.HasValue)
+        {
+            target.CastInDiagonal = draft.CastInDiagonal.Value;
+        }
+
+        if (draft.NeedTakenCell.HasValue)
+        {
+            target.NeedTakenCell = draft.NeedTakenCell.Value;
+        }
+
+        if (draft.InitialCooldown.HasValue)
+        {
+            target.InitialCooldown = draft.InitialCooldown.Value;
+        }
+    }
+
+    private static async Task DeleteCurrentSpellLevelsAsync(
+        MySqlConnection connection,
+        short spellId,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            DELETE FROM spells_levels
+            WHERE SpellId = @SpellId;
+            """;
+
+        await connection.ExecuteAsync(new CommandDefinition(
+            sql,
+            new
+            {
+                SpellId = spellId,
+            },
+            cancellationToken: cancellationToken));
+    }
+
+    private static async Task RestoreCurrentSpellLevelsAsync(
+        MySqlConnection connection,
+        short spellId,
+        IReadOnlyList<CurrentSpellLevelWriteRow> originalRows,
+        CancellationToken cancellationToken)
+    {
+        await DeleteCurrentSpellLevelsAsync(connection, spellId, cancellationToken);
+        await InsertCurrentSpellLevelsAsync(connection, originalRows, cancellationToken);
+    }
+
+    private static async Task InsertCurrentSpellLevelsAsync(
+        MySqlConnection connection,
+        IReadOnlyList<CurrentSpellLevelWriteRow> rows,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            INSERT INTO spells_levels
+            (
+                SpellId,
+                SpellBreed,
+                ApCost,
+                `Range`,
+                CastInLine,
+                CastInDiagonal,
+                CastTestLos,
+                CriticalHitProbability,
+                StatesRequiredCSV,
+                CriticalFailureProbability,
+                NeedFreeCell,
+                NeedFreeTrapCell,
+                NeedTakenCell,
+                RangeCanBeBoosted,
+                MaxStack,
+                MaxCastPerTurn,
+                MaxCastPerTarget,
+                MinCastInterval,
+                InitialCooldown,
+                GlobalCooldown,
+                MinPlayerLevel,
+                CriticalFailureEndsTurn,
+                HideEffects,
+                Hidden,
+                MinRange,
+                StatesForbiddenCSV,
+                Effects,
+                CriticalEffects
+            )
+            VALUES
+            (
+                @SpellId,
+                @SpellBreed,
+                @ApCost,
+                @Range,
+                @CastInLine,
+                @CastInDiagonal,
+                @CastTestLos,
+                @CriticalHitProbability,
+                @StatesRequiredCsv,
+                @CriticalFailureProbability,
+                @NeedFreeCell,
+                @NeedFreeTrapCell,
+                @NeedTakenCell,
+                @RangeCanBeBoosted,
+                @MaxStack,
+                @MaxCastPerTurn,
+                @MaxCastPerTarget,
+                @MinCastInterval,
+                @InitialCooldown,
+                @GlobalCooldown,
+                @MinPlayerLevel,
+                @CriticalFailureEndsTurn,
+                @HideEffects,
+                @Hidden,
+                @MinRange,
+                @StatesForbiddenCsv,
+                @Effects,
+                @CriticalEffects
+            );
+            """;
+
+        foreach (var row in rows)
+        {
+            await connection.ExecuteAsync(new CommandDefinition(
+                sql,
+                row,
+                cancellationToken: cancellationToken));
+        }
+    }
+
     private static IReadOnlyList<int> ResolveBreeds(
         short spellId,
         IReadOnlyDictionary<short, IReadOnlyList<int>> runtimeBreedIds,
@@ -1070,6 +1719,30 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository
         bool HasEffects,
         bool HasCriticalEffects);
 
+    private sealed record RuntimeSpellLevelDetail(
+        int? RuntimeLevelId,
+        int ApCost,
+        int MinRange,
+        int MaxRange,
+        bool CastInLine,
+        bool? CastInDiagonal,
+        bool CastTestLos,
+        bool NeedFreeCell,
+        bool? NeedTakenCell,
+        bool RangeCanBeBoosted,
+        bool CriticalFailureEndsTurn,
+        int CriticalHitProbability,
+        int CriticalFailureProbability,
+        int MaxCastPerTurn,
+        int MaxCastPerTarget,
+        int MinCastInterval,
+        int? InitialCooldown,
+        int MinPlayerLevel,
+        IReadOnlyList<short> StatesRequired,
+        IReadOnlyList<short> StatesForbidden,
+        bool HasEffects,
+        bool HasCriticalEffects);
+
     private sealed record SpellTextOverride(
         string? DisplayName,
         string? Description);
@@ -1163,6 +1836,65 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository
         public int MinPlayerLevel { get; set; }
 
         public string? StatesRequiredCsv { get; set; }
+
+        public string? StatesForbiddenCsv { get; set; }
+
+        public string? Effects { get; set; }
+
+        public string? CriticalEffects { get; set; }
+    }
+
+    private sealed class CurrentSpellLevelWriteRow
+    {
+        public int SpellId { get; set; }
+
+        public int SpellBreed { get; set; }
+
+        public int ApCost { get; set; }
+
+        public int Range { get; set; }
+
+        public bool CastInLine { get; set; }
+
+        public bool CastInDiagonal { get; set; }
+
+        public bool CastTestLos { get; set; }
+
+        public int CriticalHitProbability { get; set; }
+
+        public string? StatesRequiredCsv { get; set; }
+
+        public int CriticalFailureProbability { get; set; }
+
+        public bool NeedFreeCell { get; set; }
+
+        public bool NeedFreeTrapCell { get; set; }
+
+        public bool NeedTakenCell { get; set; }
+
+        public bool RangeCanBeBoosted { get; set; }
+
+        public int MaxStack { get; set; }
+
+        public int MaxCastPerTurn { get; set; }
+
+        public int MaxCastPerTarget { get; set; }
+
+        public int MinCastInterval { get; set; }
+
+        public int InitialCooldown { get; set; }
+
+        public int GlobalCooldown { get; set; }
+
+        public int MinPlayerLevel { get; set; }
+
+        public bool CriticalFailureEndsTurn { get; set; }
+
+        public bool HideEffects { get; set; }
+
+        public bool Hidden { get; set; }
+
+        public int MinRange { get; set; }
 
         public string? StatesForbiddenCsv { get; set; }
 

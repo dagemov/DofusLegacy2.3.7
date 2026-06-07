@@ -2,6 +2,44 @@
 
 Generated: `2026-06-06`
 
+## Macro 5 / Phase 4 - Spell Levels API
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `9031339 feat: add spell detail api` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- `GET /api/admin/v1/spells/{spellId}/levels`
+- `GET /api/admin/v1/spells/{spellId}/levels/{levelNumber}`
+- `PATCH /api/admin/v1/spells/{spellId}/levels/{levelNumber}`
+- Contratos `SpellLevelDetailDto`, `SpellLevelUpdateRequest`, `SpellLevelUpdateResultDto`
+- Read models y write draft/result para spell levels
+- Estrategia dual de write:
+  - `legacy-level-id-update`
+  - `current-runtime-row-rewrite`
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase4-levels-api.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+| `npm run build` | `NOT_RUN` (Angular no fue tocado) |
+
+### Notas
+
+- El schema actual de Sunshine sigue sin `Id` por nivel en `spells_levels`; Phase 4 escribe preservando el orden runtime consumido por `SpellsLoader` y `SpellManager`.
+- En schema legacy la escritura sigue el orden de `SpellLevelsCSV` y actualiza por `spells_levels.Id`.
+- Effects normales, critical effects y editor Angular siguen fuera de esta fase.
+
+### Siguiente
+
+- Macro 5 / Phase 5: Spell Effects API
+- Alcance esperado: lectura detallada de rows de effects, separacion normal/critico y decision posterior del write API de effects
+
 ## Macro 5 / Phase 3 - Spell Detail API
 
 | Campo | Valor |
@@ -36,16 +74,16 @@ Generated: `2026-06-06`
 | Campo | Valor |
 | --- | --- |
 | Rama activa | `feature/spell-builder-api-migration` |
-| HEAD | `9031339 feat: add spell detail api` |
+| HEAD | `eb76a82 docs: prepare spell builder branch for phase4` |
 | Worktree | `CLEAN` |
 | Stash de resguardo | `stash@{Sat Jun 6 08:54:24 2026}: On feature/items-sets-production-acceptance-test: wip: preserve items sets work before spell builder phase4` |
-| Estado | **`READY_TO_START`** |
+| Estado | **`CONSUMED_BY_PHASE4`** |
 
 ### Notas
 
 - Los cambios locales de Items/Sets y auxiliares quedaron preservados en stash antes del cambio de rama.
 - No se toco codigo funcional de API, Angular, base de datos, cliente ni Items/Sets durante esta preparacion.
-- Macro 5 / Phase 4 queda lista para iniciar, pero todavia no fue iniciada en esta sesion.
+- Esta preparacion ya fue consumida por `Phase 4 - Spell Levels API`.
 
 ## Macro Items Final Plus - Preview + Sets + Stat icons
 
