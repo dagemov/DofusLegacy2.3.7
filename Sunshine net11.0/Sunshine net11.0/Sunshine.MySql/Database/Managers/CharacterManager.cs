@@ -536,28 +536,29 @@ namespace Sunshine.MySql.Database.Managers
             if (character == null)
                 return;
 
+            DeleteCharacterOnAccount(client, character.Id);
+        }
+
+        public void DeleteCharacterOnAccount(WorldClient client, int characterId)
+        {
+            Characters.TryGetValue(characterId, out var character);
+            var characterName = character?.Name;
+
+            if (character != null)
+                character.DetachForDeletion(client);
+
             try
             {
-                DeleteCharacterFromDatabase(character.Id);
+                DeleteCharacterFromDatabase(characterId);
             }
             catch (Exception ex)
             {
-                Logger.WriteError($"[ Character ] Failed to delete character {character.Id} ({character.Name}): {ex}");
+                Logger.WriteError($"[ Character ] Failed to delete character {characterId} ({characterName ?? "unknown"}) from database: {ex}");
                 throw;
             }
 
-            ReleaseCharacterFromRuntime(character, client);
-        }
-
-        private static void ReleaseCharacterFromRuntime(Character character, WorldClient client)
-        {
-            CharacterManager.Instance.Characters.Remove(character.Id);
-
-            if (character.Client != null && character.Client != client)
-                character.Client.Disconnect();
-
-            if (client?.Character?.Id == character.Id)
-                client.Character = null;
+            Characters.Remove(characterId);
+            Logger.Write($"[ Character ] {(characterName ?? characterId.ToString())} (Id={characterId}) deleted from database and server memory; name is available again.");
         }
 
         private void DeleteCharacterFromDatabase(int characterId)
@@ -638,7 +639,11 @@ namespace Sunshine.MySql.Database.Managers
 
         public bool DoesNameExist(string name)
         {
-            return AccountManager.Instance.IsCharacterNameTaken(name);
+            if (AccountManager.Instance.IsCharacterNameTaken(name))
+                return true;
+
+            return Characters.Values.Any(entry =>
+                entry != null && string.Equals(entry.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         public string GenerateName()

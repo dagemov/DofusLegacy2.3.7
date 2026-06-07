@@ -1676,6 +1676,77 @@ namespace Sunshine.WorldServer.Game.Characters
             Save();
         }
 
+        public void DetachForDeletion(WorldClient requestingClient)
+        {
+            try
+            {
+                if (IsInParty)
+                    LeaveParty();
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (IsInFight())
+                    LeaveFight();
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (IsInTrade())
+                    LeaveTrade();
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                DungeonPartyFinderManager.Instance.UnregisterPlayer(Id);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                MerchantManager.Instance.DeactivateForConnectedCharacter(this);
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (Map != null && IsInWorld())
+                    LeaveMap(Map);
+            }
+            catch
+            {
+            }
+
+            if (Client != null && Client != requestingClient)
+            {
+                try
+                {
+                    Client.Disconnect();
+                }
+                catch
+                {
+                }
+            }
+
+            Client = null;
+
+            if (requestingClient?.Character?.Id == Id)
+                requestingClient.Character = null;
+        }
+
         public void LoadRecord()
         {
             try

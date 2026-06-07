@@ -231,13 +231,24 @@ namespace Sunshine.WorldServer.Handlers.Characters
         [WorldHandler(165)]
         public static void HandleCharacterDeletionRequestMessage(WorldClient client, CharacterDeletionRequestMessage message)
         {
-            if (!CharacterManager.Instance.Characters.TryGetValue(message.characterId, out var character) || character == null)
+            Character character = null;
+            if (!CharacterManager.Instance.Characters.TryGetValue(message.characterId, out character) || character == null)
             {
-                client.Send(new CharacterDeletionErrorMessage(1));
-                return;
-            }
+                var record = AccountManager.Instance.GetCharacter(message.characterId);
+                if (record == null)
+                {
+                    client.Send(new CharacterDeletionErrorMessage(1));
+                    return;
+                }
 
-            if (character.Account.Id != client.Account.Id)
+                var ownerAccount = AccountManager.Instance.GetAccount(message.characterId);
+                if (ownerAccount == null || ownerAccount.Id != client.Account.Id)
+                {
+                    client.Send(new CharacterDeletionErrorMessage(1));
+                    return;
+                }
+            }
+            else if (character.Account.Id != client.Account.Id)
             {
                 client.Send(new CharacterDeletionErrorMessage(1));
                 return;
@@ -260,7 +271,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
                 return;
             }
 
-            CharacterManager.Instance.DeleteCharacterOnAccount(client, character);
+            CharacterManager.Instance.DeleteCharacterOnAccount(client, message.characterId);
             SendCharactersListMessage(client, false);
         }
 
@@ -450,7 +461,13 @@ namespace Sunshine.WorldServer.Handlers.Characters
 
         private static bool IsCharacterNameTaken(string name, Character exceptCharacter = null)
         {
-            return AccountManager.Instance.IsCharacterNameTaken(name, exceptCharacter?.Id);
+            if (AccountManager.Instance.IsCharacterNameTaken(name, exceptCharacter?.Id))
+                return true;
+
+            return CharacterManager.Instance.Characters.Values.Any(entry =>
+                entry != null &&
+                (exceptCharacter == null || entry.Id != exceptCharacter.Id) &&
+                string.Equals(entry.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         private static ActorLook GetCharacterLook(Character character)
