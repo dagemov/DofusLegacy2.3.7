@@ -2,6 +2,44 @@
 
 Generated: `2026-06-07`
 
+## Macro 5 / Phase 10 - QA Final
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `1535c29 feat: add spell effects read-only editor guard` |
+| Estado | **`DONE`** |
+| Decision QA | **`PARTIAL`** |
+
+### Entregables
+
+- Documento de cierre `docs/admin-tools/spell-builder/spell-builder-phase10-qa-final.md`
+- Documento de limites `docs/admin-tools/spell-builder/spell-builder-known-limitations.md`
+- Documento de siguientes pasos `docs/admin-tools/spell-builder/spell-builder-next-steps.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+
+### Notas
+
+- QA funcional ejecutado sobre API local y Angular local.
+- Se verifico catalogo, detalle, levels y auditoria read-only de effects.
+- El editor de levels se verifico en apertura y contrato expuesto, sin ejecutar `PATCH` real por regla de no tocar base de datos en esta fase.
+- No se encontro ningun spell con `referenceAvailable = true` al escanear el entorno actual, por lo que solo se valido el fallback con referencia nula.
+- La ruta directa `/admin/spells/:spellId` funciona; el click SPA desde catalogo no pudo confirmarse con el runtime automatizado del navegador integrado y queda como limite de QA, no como bug confirmado.
+- La macro cierra util para operacion admin incremental, pero no como paridad total 1:1 con legacy.
+- Angular mantiene el warning conocido de budget inicial excedido por `1.51 kB`.
+- El build .NET mantiene warnings previos `NETSDK1057`, `CA1416` y `CS0169`, sin errores.
+
+### Siguiente
+
+- Definir estrategia segura de write para effects antes de reabrir paridad total
+- Repetir QA cuando exista dataset con referencia sana disponible
+
 ## Macro 5 / Phase 9 - Spell Effects Editor Guard
 
 | Campo | Valor |
