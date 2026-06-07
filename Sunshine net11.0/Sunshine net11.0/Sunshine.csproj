@@ -216,6 +216,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\ItemCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\KamasCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnSpellCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnAllSpellsCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\MonsterCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\NpcCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\SaveCommand.cs" />
