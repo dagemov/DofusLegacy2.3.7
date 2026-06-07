@@ -52,7 +52,8 @@ if ($dockerCheck -match $ContainerName) {
         Write-Host "Descargando desde contenedor: $ContainerLogDir"
         & ssh @sshArgs "rm -rf '$remoteTmp' && docker cp ${ContainerName}:${ContainerLogDir} '$remoteTmp'"
         if ($LASTEXITCODE -ne 0) { throw "docker cp remoto falló." }
-        & scp -r @sshArgs "${sshTarget}:${remoteTmp}/." $destRoot
+        $scpOpts = @("-i", $SshKey, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new")
+        & scp -r @scpOpts "${sshTarget}:${remoteTmp}/." $destRoot
         if ($LASTEXITCODE -ne 0) { throw "scp falló." }
         & ssh @sshArgs "rm -rf '$remoteTmp'" | Out-Null
     }
