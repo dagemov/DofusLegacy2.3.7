@@ -110,6 +110,7 @@ docker exec -i -e MYSQL_PWD=<MYSQL_APP_PASSWORD> sunshine-db \
 | `.item` | `<itemId> <qty> [nombre]` | Dar objeto |
 | `.levelup` | `<nivel>` | Subir nivel (1–200) |
 | `.spell add` | *(ver código)* | Aprender hechizo |
+| `.spell learnall` | Administrator | **[QA]** Todos los hechizos del SpellManager (ver `docs/admin-tools/qa/spell-learnall-qa-fix.md`) |
 | `.honor` | *(ver código)* | Honor (máx 20000) |
 | `.monster` | `spawn <id> [count] [group]` | Spawn monstruos |
 | `.npc` | *(ver código)* | Spawn NPC |

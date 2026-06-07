@@ -13,40 +13,59 @@ namespace Sunshine.WorldServer.Game.Fights.Results
     {
         private static Dictionary<byte, double> GroupCoefficients = new Dictionary<byte, double>()
         {
-            {0, 0.5 }, {1, 1.0 }, {2, 1.1 }, {3, 1.5 },
-            {4, 2.3 }, {5, 3.1 }, {6, 3.6 }, {7, 4.2 },
-            {8, 4.7 }
+            {0, 1.0 }, {1, 1.0 }, {2, 1.1 }, {3, 1.3 },
+            {4, 1.5 }, {5, 1.7 }, {6, 1.9 }, {7, 2.1 },
+            {8, 2.3 }
         };
 
-        public static long CalculateWinExp(int totalWisdom, int bonusChall, int ageBonus, int levelMonsters, 
+        // Instancia compartida para evitar colisiones de semilla
+        private static readonly AsyncRandom _rdn = new AsyncRandom();
+
+        public static long CalculateWinExp(int totalWisdom, int bonusChall, int ageBonus, int levelMonsters,
             int levelMembers, long totalExp, byte membersCount)
         {
-            return (long)((1 + ((totalWisdom + (ageBonus * 20) + bonusChall) / 100)) * (GroupCoefficients[membersCount] + 
-                          GetMultiplicator(levelMonsters, levelMembers)) * (totalExp / membersCount));
+            double wisdomBonus = 1 + (totalWisdom / 100.0);
+            double groupBonus = GroupCoefficients[membersCount];
+
+            double exp =
+                wisdomBonus *
+                groupBonus *
+                (totalExp / (double)membersCount);
+
+            return (long)exp;
         }
 
-        public static int CalculateWinItems(MonsterDrop drop, byte gradeId, int prospection)
+        public static int CalculateWinItems(MonsterDrop drop, byte gradeId, int prospection, bool isVip = false)
         {
-            double percent = GameRates.ApplyDrop(GetDropPercent(gradeId, drop));
-            double luckTotal = (percent * prospection) / 100;
+            double basePercent = GameRates.ApplyDrop(GetDropPercent(gradeId, drop));
 
-            AsyncRandom rdn = new AsyncRandom();
+            double prospectionMultiplier = prospection / 100.0;
+            double realChance = Math.Min(100.0, basePercent * prospectionMultiplier);
 
-            if (rdn.Next(100) < Math.Min(100d, luckTotal))
-                return 1;
-            else
-                return 0;
+            if (isVip)
+                realChance = Math.Min(100.0, realChance * 2.0);
+
+            int roll = _rdn.Next(0, 10000);
+            int threshold = (int)(realChance * 100.0);
+
+            if (roll < threshold)
+            {
+                return Math.Max(1, (int)Math.Round(GameRates.DropQuantityMultiplier));
+            }
+
+            return 0;
         }
 
-        private static long GetMultiplicator(int levelGroup, int levelMembers)
+        private static double GetMultiplicator(int levelMonsters, int levelMembers)
         {
-            double maxLevel = levelGroup * 1.06;
-            double minLevel = levelGroup / 1.11;
+            // FIX: comparación correcta entre niveles de monstruos y personajes
+            double maxLevel = levelMembers * 1.06;
+            double minLevel = levelMembers / 1.11;
 
-            if (levelGroup >= minLevel && levelGroup <= maxLevel)
+            if (levelMonsters >= minLevel && levelMonsters <= maxLevel)
                 return 1;
             else
-                return levelGroup / levelMembers;
+                return levelMonsters / Math.Max(1, levelMembers);
         }
 
         private static double GetDropPercent(byte gradeId, MonsterDrop drop)

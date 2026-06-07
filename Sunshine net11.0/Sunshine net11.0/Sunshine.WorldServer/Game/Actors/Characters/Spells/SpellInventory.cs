@@ -49,6 +49,44 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Spells
             }
         }
 
+        /// <summary>
+        /// QA helper: grants every spell known to SpellManager without per-spell network packets.
+        /// Returns spells added, 0 if none, -1 if blocked (e.g. in fight).
+        /// </summary>
+        public int LearnAllAvailableSpellsForQa()
+        {
+            if (_character.IsInFight())
+                return -1;
+
+            var spellManager = SpellManager.Instance;
+            if (spellManager?.Spells == null || spellManager.Spells.Count == 0)
+                return 0;
+
+            int added = 0;
+            foreach (var spellId in spellManager.Spells.Keys)
+            {
+                if (spellId <= 0 || spellId > short.MaxValue)
+                    continue;
+
+                short id = (short)spellId;
+                if (HasSpell(id))
+                    continue;
+
+                _spells.Add(new CharacterSpellRecord
+                {
+                    OwnerId = _character.Id,
+                    Spell = id,
+                    Level = 1
+                });
+                added++;
+            }
+
+            if (added > 0)
+                InventoryHandler.SendSpellListMessage(_character.Client, true);
+
+            return added;
+        }
+
         public void LearnSpell(CharacterSpellRecord spell)
         {
             if (!this.HasSpell(spell.Spell))

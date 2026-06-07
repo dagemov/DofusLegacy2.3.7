@@ -94,6 +94,8 @@
 		<Compile Include="Sunshine.MySql\Database\Managers\BreedManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\CharacterPaddockBootstrap.cs" />
+		<Compile Include="Sunshine.MySql\Database\Managers\AccountVipBootstrap.cs" />
+		<Compile Include="Sunshine.MySql\Database\Managers\CharacterDopeulBootstrap.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\DungeonManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\GuildManager.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\HouseTableBootstrap.cs" />
@@ -216,11 +218,15 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\ItemCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\KamasCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnSpellCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LearnAllSpellsCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Administrator\AddVipCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\MonsterCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\NpcCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\SaveCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\ShowElementCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\AlignmentCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\VipCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\JobCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\DebugMapCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\HelpCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\ParchotageCommand.cs" />
@@ -287,6 +293,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Npc.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\AddItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\CinematicReply.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\DopeulReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\EndDialogReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\HasItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\LearnJobReply.cs" />
@@ -366,6 +373,7 @@
 		<Compile Include="Sunshine.MySql\Database\World\Breeds\Breed.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Breeds\BreedSpell.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterAlignmentRecord.cs" />
+		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterDopeulCooldown.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterSpellRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Characters\CharacterStatsRecord.cs" />
@@ -1406,7 +1414,11 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\DirectDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\LoseHpByUsingAP.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\HpSteal.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\SacrificeDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APDebuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APSteal.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\StealKamas.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\RevealsInvisible.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\APDebuffFix.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\DebuffEffects.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Debuffs\MPDebuff.cs" />
@@ -1426,6 +1438,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\PushBack.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\SwitchPosition.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\Teleport.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Moves\Dodge.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\ReducCooldown.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\RogueSpecialEffects.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Others\SpiritualLeash.cs" />
@@ -1457,6 +1470,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\StateBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\StatsBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\LoseHpByUsingApBuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\DamageOverTimeBuff.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Buffs\Spells\HealOverTimeBuff.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\FightManager.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\FigthCellsInformationProvider.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\History\SpellHistory.cs" />

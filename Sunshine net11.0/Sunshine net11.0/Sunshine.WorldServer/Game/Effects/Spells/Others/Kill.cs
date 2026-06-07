@@ -1,5 +1,7 @@
 using Sunshine.Protocol.Enums;
 using Sunshine.WorldServer.Game.Actors.Fighters;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sunshine.WorldServer.Game.Effects.Spells.Others
 {
@@ -8,7 +10,14 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Others
     {
         public override void Apply()
         {
-            foreach (var actor in GetAffectedActors())
+            var actors = GetAffectedActors().ToList();
+
+            // Self-target fallback: spells that kill the caster sometimes resolve with no
+            // affected actors (e.g. sacrificial casts). Target the caster in that case.
+            if (actors.Count == 0 && Caster != null && !Caster.DeathHandled)
+                actors.Add(Caster);
+
+            foreach (var actor in actors)
             {
                 if (actor != null && actor.IsAlive)
                     actor.Kill(Caster);
