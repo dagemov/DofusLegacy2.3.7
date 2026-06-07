@@ -2,6 +2,43 @@
 
 Generated: `2026-06-06`
 
+## Macro 5 / Phase 8 - Spell Level Editor
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `f2d0a96 feat: add angular spell detail` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- Editor Angular de levels integrado en `admin/spells/:spellId`
+- `PATCH` Angular para `spells/{spellId}/levels/{levelNumber}`
+- Request/response TypeScript para update de nivel
+- Validacion frontend minima alineada con backend
+- Respeto del bloqueo legacy de `castInDiagonal`, `needTakenCell` e `initialCooldown`
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase8-level-editor.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `npm run build` | `OK` |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+
+### Notas
+
+- Se confirmo en codigo de Phase 4 que el write real usa `PATCH`, no `PUT`.
+- El editor manda solo campos modificados y deja `states`, `effects` y `criticalEffects` fuera del write.
+- `Range` no existe como field separado en el contrato; el editor usa `minRange` y `maxRange`.
+- Si el runtime activo cae en schema legacy, `castInDiagonal`, `needTakenCell` e `initialCooldown` quedan visibles pero read-only.
+- Effects y critical effects siguen en lectura bajo demanda dentro del mismo detalle.
+
+### Siguiente
+
+- Macro 5 / Phase 9 - Spell Effects Editor
+- Alcance esperado: write controlado de effects/criticalEffects y estrategia segura de preservacion de payload
+
 ## Macro 5 / Phase 7 - Angular Detail
 
 | Campo | Valor |

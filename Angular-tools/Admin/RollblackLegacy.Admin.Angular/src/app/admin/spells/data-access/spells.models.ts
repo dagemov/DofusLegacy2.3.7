@@ -165,6 +165,31 @@ export interface SpellLevelEffectsDto {
   criticalEffects: SpellEffectCollectionDto;
 }
 
+export interface SpellLevelUpdateRequest {
+  apCost?: number;
+  minRange?: number;
+  maxRange?: number;
+  castInLine?: boolean;
+  castInDiagonal?: boolean;
+  castTestLos?: boolean;
+  criticalHitProbability?: number;
+  criticalFailureProbability?: number;
+  needFreeCell?: boolean;
+  needTakenCell?: boolean;
+  minCastInterval?: number;
+  initialCooldown?: number;
+  maxCastPerTurn?: number;
+  maxCastPerTarget?: number;
+}
+
+export interface SpellLevelUpdateResultDto {
+  spellId: number;
+  levelNumber: number;
+  writeStrategy: string;
+  level: SpellLevelDetailDto;
+  warnings: string[];
+}
+
 export function createEmptySpellSearchRequest(): SpellSearchRequest {
   return {
     page: 1,

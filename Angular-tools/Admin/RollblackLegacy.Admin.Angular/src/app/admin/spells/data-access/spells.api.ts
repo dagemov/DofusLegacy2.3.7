@@ -8,6 +8,8 @@ import {
   SpellDetailDto,
   SpellLevelDetailDto,
   SpellLevelEffectsDto,
+  SpellLevelUpdateRequest,
+  SpellLevelUpdateResultDto,
   SpellPagedResultDto,
   SpellSearchRequest
 } from './spells.models';
@@ -42,6 +44,17 @@ export class SpellsApi {
   getSpellLevelEffects(spellId: number, levelNumber: number): Observable<SpellLevelEffectsDto> {
     return this.httpClient.get<SpellLevelEffectsDto>(
       `${this.baseUrl}/spells/${spellId}/levels/${levelNumber}/effects`
+    );
+  }
+
+  updateSpellLevel(
+    spellId: number,
+    levelNumber: number,
+    request: SpellLevelUpdateRequest
+  ): Observable<SpellLevelUpdateResultDto> {
+    return this.httpClient.patch<SpellLevelUpdateResultDto>(
+      `${this.baseUrl}/spells/${spellId}/levels/${levelNumber}`,
+      request
     );
   }
 }

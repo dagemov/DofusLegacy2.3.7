@@ -1,9 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, switchMap } from 'rxjs';
 
+import {
+  AdminFeedback,
+  createAdminSuccessFeedback
+} from '../items/data-access/items.models';
 import { ApiProblemPanelComponent } from '../../shared/components/api-problem-panel.component';
 import { SpellsFacade } from './data-access/spells.facade';
 import {
@@ -13,12 +24,33 @@ import {
   SpellEffectRowDto,
   SpellLevelDetailDto,
   SpellLevelEffectsDto,
+  SpellLevelUpdateRequest,
+  SpellLevelUpdateResultDto,
   toAdminApiProblem
 } from './data-access/spells.models';
 
+type SpellLevelEditFormControls = {
+  apCost: FormControl<number>;
+  minRange: FormControl<number>;
+  maxRange: FormControl<number>;
+  castInLine: FormControl<boolean>;
+  castInDiagonal: FormControl<boolean>;
+  castTestLos: FormControl<boolean>;
+  criticalHitProbability: FormControl<number>;
+  criticalFailureProbability: FormControl<number>;
+  needFreeCell: FormControl<boolean>;
+  needTakenCell: FormControl<boolean>;
+  minCastInterval: FormControl<number>;
+  initialCooldown: FormControl<number>;
+  maxCastPerTurn: FormControl<number>;
+  maxCastPerTarget: FormControl<number>;
+};
+
+type SpellLevelEditableField = keyof SpellLevelEditFormControls;
+
 @Component({
   selector: 'app-spell-detail-page',
-  imports: [CommonModule, RouterLink, ApiProblemPanelComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ApiProblemPanelComponent],
   templateUrl: './spell-detail-page.component.html',
   styleUrl: './spell-detail-page.component.scss'
 })
@@ -29,6 +61,50 @@ export class SpellDetailPageComponent implements OnInit {
   private readonly ngZone = inject(NgZone);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
+  protected readonly levelForm = new FormGroup<SpellLevelEditFormControls>({
+    apCost: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    minRange: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    maxRange: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    castInLine: new FormControl(false, { nonNullable: true }),
+    castInDiagonal: new FormControl(false, { nonNullable: true }),
+    castTestLos: new FormControl(false, { nonNullable: true }),
+    criticalHitProbability: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    criticalFailureProbability: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    needFreeCell: new FormControl(false, { nonNullable: true }),
+    needTakenCell: new FormControl(false, { nonNullable: true }),
+    minCastInterval: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    initialCooldown: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    maxCastPerTurn: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    }),
+    maxCastPerTarget: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.min(0)]
+    })
+  });
+
   protected spellId: number | null = null;
   protected detail: SpellDetailDto | null = null;
   protected levels: SpellLevelDetailDto[] = [];
@@ -38,12 +114,20 @@ export class SpellDetailPageComponent implements OnInit {
   protected detailProblem: AdminApiProblem | null = null;
   protected levelsProblem: AdminApiProblem | null = null;
   protected effectsProblems: Record<number, AdminApiProblem | null> = {};
+  protected levelSaveProblem: AdminApiProblem | null = null;
+  protected levelSaveFeedback: AdminFeedback | null = null;
+  protected levelSaveWarnings: string[] = [];
 
   protected isLoadingDetail = false;
   protected isLoadingLevels = false;
   protected effectsLoading: Record<number, boolean> = {};
+  protected isEditingLevel = false;
+  protected isSavingLevel = false;
 
   protected levelEffectsCache: Record<number, SpellLevelEffectsDto | null> = {};
+
+  private hasTriedLevelSubmit = false;
+  private editingLevelSnapshot: SpellLevelDetailDto | null = null;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
@@ -74,11 +158,113 @@ export class SpellDetailPageComponent implements OnInit {
   }
 
   protected selectLevel(levelNumber: number): void {
+    if (this.isEditingLevel || this.isSavingLevel) {
+      return;
+    }
+
     this.selectedLevelNumber = levelNumber;
   }
 
+  protected startEditLevel(): void {
+    const level = this.selectedLevel;
+    if (!this.canEditSelectedLevel || !level) {
+      return;
+    }
+
+    this.expandedEffectsLevelNumber = null;
+    this.levelSaveProblem = null;
+    this.levelSaveFeedback = null;
+    this.levelSaveWarnings = [];
+    this.hasTriedLevelSubmit = false;
+    this.isEditingLevel = true;
+    this.applyLevelToForm(level);
+    this.refreshView();
+  }
+
+  protected cancelEditLevel(): void {
+    const level = this.selectedLevel;
+    this.isEditingLevel = false;
+    this.isSavingLevel = false;
+    this.hasTriedLevelSubmit = false;
+    this.levelSaveProblem = null;
+
+    if (level) {
+      this.applyLevelToForm(level);
+    }
+
+    this.refreshView();
+  }
+
+  protected saveLevel(): void {
+    const spellId = this.spellId;
+    const level = this.selectedLevel;
+    const baseline = this.editingLevelSnapshot;
+    if (!spellId || !level || !baseline) {
+      return;
+    }
+
+    this.hasTriedLevelSubmit = true;
+    this.levelForm.markAllAsTouched();
+
+    const request = this.buildLevelUpdateRequest(baseline);
+    if (
+      this.levelForm.invalid ||
+      !!this.levelRangeError ||
+      !request ||
+      !this.canEditSelectedLevel
+    ) {
+      this.refreshView();
+      return;
+    }
+
+    this.isSavingLevel = true;
+    this.levelSaveProblem = null;
+    this.levelSaveFeedback = null;
+    this.levelSaveWarnings = [];
+    this.refreshView();
+
+    this.spellsFacade
+      .updateSpellLevel(spellId, level.levelNumber, request)
+      .pipe(
+        catchError((error: unknown) => {
+          this.ngZone.run(() => {
+            this.levelSaveProblem = toAdminApiProblem(error);
+            this.refreshView();
+          });
+          return of(null);
+        }),
+        finalize(() => {
+          this.ngZone.run(() => {
+            this.isSavingLevel = false;
+            this.refreshView();
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((result) => {
+        if (!result || this.spellId !== spellId) {
+          return;
+        }
+
+        this.ngZone.run(() => {
+          this.levelSaveFeedback = createAdminSuccessFeedback(
+            'Nivel guardado',
+            this.buildLevelSaveDetail(result)
+          );
+          this.levelSaveWarnings = result.warnings;
+          this.isEditingLevel = false;
+          this.hasTriedLevelSubmit = false;
+          this.updateLevelInCollection(result.level);
+          this.applyLevelToForm(result.level);
+          this.refreshView();
+        });
+
+        this.reloadSpellDataAfterSave(spellId, result.levelNumber);
+      });
+  }
+
   protected toggleEffects(levelNumber: number): void {
-    if (!this.spellId) {
+    if (!this.spellId || this.isEditingLevel || this.isSavingLevel) {
       return;
     }
 
@@ -96,7 +282,7 @@ export class SpellDetailPageComponent implements OnInit {
   }
 
   protected reloadEffects(levelNumber: number): void {
-    if (!this.spellId) {
+    if (!this.spellId || this.isEditingLevel || this.isSavingLevel) {
       return;
     }
 
@@ -115,7 +301,9 @@ export class SpellDetailPageComponent implements OnInit {
   protected get selectedLevel(): SpellLevelDetailDto | null {
     if (this.levels.length > 0 && this.selectedLevelNumber !== null) {
       return (
-        this.levels.find((level) => level.levelNumber === this.selectedLevelNumber) ?? this.levels[0] ?? null
+        this.levels.find((level) => level.levelNumber === this.selectedLevelNumber) ??
+        this.levels[0] ??
+        null
       );
     }
 
@@ -133,6 +321,41 @@ export class SpellDetailPageComponent implements OnInit {
     }
 
     return this.levelEffectsCache[levelNumber] ?? null;
+  }
+
+  protected get canEditSelectedLevel(): boolean {
+    const level = this.selectedLevel;
+    return !!this.spellId && !!level && level.runtimeAvailable && !this.isLoadingLevels;
+  }
+
+  protected get isLegacySelectedLevel(): boolean {
+    const runtimeLevelId = this.selectedLevel?.runtimeLevelId;
+    return runtimeLevelId !== null && runtimeLevelId !== undefined;
+  }
+
+  protected get hasLevelChanges(): boolean {
+    return !!this.editingLevelSnapshot && !!this.buildLevelUpdateRequest(this.editingLevelSnapshot);
+  }
+
+  protected get levelSaveDisabled(): boolean {
+    return (
+      !this.isEditingLevel ||
+      this.isSavingLevel ||
+      !this.canEditSelectedLevel ||
+      this.levelForm.invalid ||
+      !!this.levelRangeError ||
+      !this.hasLevelChanges
+    );
+  }
+
+  protected get levelRangeError(): string | null {
+    if (!this.isEditingLevel) {
+      return null;
+    }
+
+    const minRange = this.levelForm.controls.minRange.value;
+    const maxRange = this.levelForm.controls.maxRange.value;
+    return maxRange < minRange ? 'maxRange debe ser mayor o igual a minRange.' : null;
   }
 
   protected isEffectsExpanded(levelNumber: number): boolean {
@@ -200,6 +423,62 @@ export class SpellDetailPageComponent implements OnInit {
     return value ? 'Si' : 'No';
   }
 
+  protected getLevelFieldErrors(fieldName: string): string[] {
+    return this.levelSaveProblem?.errors?.[fieldName] ?? [];
+  }
+
+  protected hasLevelFieldIssue(fieldName: SpellLevelEditableField): boolean {
+    return (
+      this.getLevelFieldErrors(fieldName).length > 0 || !!this.getLevelLocalError(fieldName)
+    );
+  }
+
+  protected getLevelLocalError(fieldName: SpellLevelEditableField): string | null {
+    const control = this.levelForm.controls[fieldName];
+    const shouldShow = this.shouldShowLevelLocalError(control);
+    const shouldShowRange =
+      fieldName === 'maxRange' &&
+      !!this.levelRangeError &&
+      (this.hasTriedLevelSubmit ||
+        this.levelForm.controls.maxRange.touched ||
+        this.levelForm.controls.minRange.touched);
+
+    if (!shouldShow && !shouldShowRange) {
+      return null;
+    }
+
+    if (fieldName === 'maxRange' && this.levelRangeError) {
+      return this.levelRangeError;
+    }
+
+    if (!control.hasError('min')) {
+      return null;
+    }
+
+    switch (fieldName) {
+      case 'apCost':
+        return 'apCost no puede ser negativo.';
+      case 'minRange':
+        return 'minRange no puede ser negativo.';
+      case 'maxRange':
+        return 'maxRange no puede ser negativo.';
+      case 'criticalHitProbability':
+        return 'criticalHitProbability no puede ser negativo.';
+      case 'criticalFailureProbability':
+        return 'criticalFailureProbability no puede ser negativo.';
+      case 'minCastInterval':
+        return 'minCastInterval no puede ser negativo.';
+      case 'initialCooldown':
+        return 'initialCooldown no puede ser negativo.';
+      case 'maxCastPerTurn':
+        return 'maxCastPerTurn no puede ser negativo.';
+      case 'maxCastPerTarget':
+        return 'maxCastPerTarget no puede ser negativo.';
+      default:
+        return 'El valor esta por debajo del minimo soportado.';
+    }
+  }
+
   private loadDetail(spellId: number): void {
     this.spellsFacade
       .getSpell(spellId)
@@ -259,6 +538,11 @@ export class SpellDetailPageComponent implements OnInit {
         this.ngZone.run(() => {
           this.levels = levels;
           this.ensureSelectedLevel();
+
+          if (this.isEditingLevel && this.selectedLevel) {
+            this.applyLevelToForm(this.selectedLevel);
+          }
+
           this.refreshView();
         });
       });
@@ -300,6 +584,148 @@ export class SpellDetailPageComponent implements OnInit {
       });
   }
 
+  private reloadSpellDataAfterSave(spellId: number, levelNumber: number): void {
+    this.ngZone.run(() => {
+      this.selectedLevelNumber = levelNumber;
+      this.isLoadingDetail = true;
+      this.isLoadingLevels = true;
+      this.refreshView();
+    });
+
+    this.loadDetail(spellId);
+    this.loadLevels(spellId);
+  }
+
+  private updateLevelInCollection(updatedLevel: SpellLevelDetailDto): void {
+    this.levels = this.levels.map((level) =>
+      level.levelNumber === updatedLevel.levelNumber ? updatedLevel : level
+    );
+  }
+
+  private applyLevelToForm(level: SpellLevelDetailDto): void {
+    this.editingLevelSnapshot = {
+      ...level,
+      statesRequired: [...level.statesRequired],
+      statesForbidden: [...level.statesForbidden]
+    };
+
+    this.levelForm.reset(
+      {
+        apCost: level.apCost,
+        minRange: level.minRange,
+        maxRange: level.maxRange,
+        castInLine: level.castInLine,
+        castInDiagonal: level.castInDiagonal,
+        castTestLos: level.castTestLos,
+        criticalHitProbability: level.criticalHitProbability,
+        criticalFailureProbability: level.criticalFailureProbability,
+        needFreeCell: level.needFreeCell,
+        needTakenCell: level.needTakenCell,
+        minCastInterval: level.minCastInterval,
+        initialCooldown: level.initialCooldown,
+        maxCastPerTurn: level.maxCastPerTurn,
+        maxCastPerTarget: level.maxCastPerTarget
+      },
+      { emitEvent: false }
+    );
+
+    this.setLegacyRestrictedControlsEnabled(!this.isLevelLegacy(level));
+    this.levelForm.markAsPristine();
+    this.levelForm.markAsUntouched();
+  }
+
+  private setLegacyRestrictedControlsEnabled(enabled: boolean): void {
+    if (enabled) {
+      this.levelForm.controls.castInDiagonal.enable({ emitEvent: false });
+      this.levelForm.controls.needTakenCell.enable({ emitEvent: false });
+      this.levelForm.controls.initialCooldown.enable({ emitEvent: false });
+      return;
+    }
+
+    this.levelForm.controls.castInDiagonal.disable({ emitEvent: false });
+    this.levelForm.controls.needTakenCell.disable({ emitEvent: false });
+    this.levelForm.controls.initialCooldown.disable({ emitEvent: false });
+  }
+
+  private buildLevelUpdateRequest(
+    baseline: SpellLevelDetailDto
+  ): SpellLevelUpdateRequest | null {
+    const formValue = this.levelForm.getRawValue();
+    const request: SpellLevelUpdateRequest = {};
+
+    if (formValue.apCost !== baseline.apCost) {
+      request.apCost = formValue.apCost;
+    }
+
+    if (formValue.minRange !== baseline.minRange) {
+      request.minRange = formValue.minRange;
+    }
+
+    if (formValue.maxRange !== baseline.maxRange) {
+      request.maxRange = formValue.maxRange;
+    }
+
+    if (formValue.castInLine !== baseline.castInLine) {
+      request.castInLine = formValue.castInLine;
+    }
+
+    if (formValue.castTestLos !== baseline.castTestLos) {
+      request.castTestLos = formValue.castTestLos;
+    }
+
+    if (formValue.criticalHitProbability !== baseline.criticalHitProbability) {
+      request.criticalHitProbability = formValue.criticalHitProbability;
+    }
+
+    if (formValue.criticalFailureProbability !== baseline.criticalFailureProbability) {
+      request.criticalFailureProbability = formValue.criticalFailureProbability;
+    }
+
+    if (formValue.needFreeCell !== baseline.needFreeCell) {
+      request.needFreeCell = formValue.needFreeCell;
+    }
+
+    if (formValue.minCastInterval !== baseline.minCastInterval) {
+      request.minCastInterval = formValue.minCastInterval;
+    }
+
+    if (formValue.maxCastPerTurn !== baseline.maxCastPerTurn) {
+      request.maxCastPerTurn = formValue.maxCastPerTurn;
+    }
+
+    if (formValue.maxCastPerTarget !== baseline.maxCastPerTarget) {
+      request.maxCastPerTarget = formValue.maxCastPerTarget;
+    }
+
+    if (!this.isLevelLegacy(baseline)) {
+      if (formValue.castInDiagonal !== baseline.castInDiagonal) {
+        request.castInDiagonal = formValue.castInDiagonal;
+      }
+
+      if (formValue.needTakenCell !== baseline.needTakenCell) {
+        request.needTakenCell = formValue.needTakenCell;
+      }
+
+      if (formValue.initialCooldown !== baseline.initialCooldown) {
+        request.initialCooldown = formValue.initialCooldown;
+      }
+    }
+
+    return Object.keys(request).length > 0 ? request : null;
+  }
+
+  private buildLevelSaveDetail(result: SpellLevelUpdateResultDto): string {
+    const baseMessage =
+      `PATCH /api/admin/v1/spells/${result.spellId}/levels/${result.levelNumber} aplicado ` +
+      `con estrategia ${result.writeStrategy}.`;
+
+    if (result.warnings.length === 0) {
+      return baseMessage;
+    }
+
+    return `${baseMessage} Warnings: ${result.warnings.join(' | ')}`;
+  }
+
   private refreshSelectedLevelFromDetail(detail: SpellDetailDto): void {
     if (this.selectedLevelNumber) {
       return;
@@ -327,6 +753,10 @@ export class SpellDetailPageComponent implements OnInit {
     this.selectedLevelNumber = this.levels[0]?.levelNumber ?? null;
   }
 
+  private isLevelLegacy(level: SpellLevelDetailDto): boolean {
+    return level.runtimeLevelId !== null && level.runtimeLevelId !== undefined;
+  }
+
   private resetPageState(): void {
     this.ngZone.run(() => {
       this.spellId = null;
@@ -337,10 +767,39 @@ export class SpellDetailPageComponent implements OnInit {
       this.detailProblem = null;
       this.levelsProblem = null;
       this.effectsProblems = {};
+      this.levelSaveProblem = null;
+      this.levelSaveFeedback = null;
+      this.levelSaveWarnings = [];
       this.effectsLoading = {};
       this.levelEffectsCache = {};
       this.isLoadingDetail = false;
       this.isLoadingLevels = false;
+      this.isEditingLevel = false;
+      this.isSavingLevel = false;
+      this.hasTriedLevelSubmit = false;
+      this.editingLevelSnapshot = null;
+      this.levelForm.reset(
+        {
+          apCost: 0,
+          minRange: 0,
+          maxRange: 0,
+          castInLine: false,
+          castInDiagonal: false,
+          castTestLos: false,
+          criticalHitProbability: 0,
+          criticalFailureProbability: 0,
+          needFreeCell: false,
+          needTakenCell: false,
+          minCastInterval: 0,
+          initialCooldown: 0,
+          maxCastPerTurn: 0,
+          maxCastPerTarget: 0
+        },
+        { emitEvent: false }
+      );
+      this.setLegacyRestrictedControlsEnabled(true);
+      this.levelForm.markAsPristine();
+      this.levelForm.markAsUntouched();
       this.refreshView();
     });
   }
@@ -354,6 +813,10 @@ export class SpellDetailPageComponent implements OnInit {
       };
       this.refreshView();
     });
+  }
+
+  private shouldShowLevelLocalError(control: AbstractControl): boolean {
+    return control.invalid && (control.touched || this.hasTriedLevelSubmit);
   }
 
   private refreshView(): void {

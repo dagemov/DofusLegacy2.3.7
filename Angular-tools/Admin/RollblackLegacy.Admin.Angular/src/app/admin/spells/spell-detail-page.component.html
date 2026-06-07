@@ -4,13 +4,12 @@
       <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-start gap-3">
         <div>
           <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/spells">Volver a spells</a>
-          <p class="text-uppercase small fw-semibold text-secondary mb-2">
-            Spell Builder / Detail
-          </p>
+          <p class="text-uppercase small fw-semibold text-secondary mb-2">Spell Builder / Detail</p>
           <h2 class="h4 mb-1">{{ formatSpellName(detail) }}</h2>
           <p class="text-secondary mb-0">
-            Port read-only del detalle legacy: identidad principal, referencia opcional, selector de
-            niveles y lectura diferida de effects por nivel.
+            El detalle ya conserva referencia, niveles y effects read-only. Phase 8 agrega
+            edicion Angular solo para los campos de nivel que el backend de Phase 4 soporta con
+            `PATCH`.
           </p>
         </div>
 
@@ -54,7 +53,9 @@
             </div>
             <div class="alert alert-light border mb-0 spell-icon-note">
               <strong>IconId:</strong> {{ currentDetail.iconId ?? 'Sin dato' }}<br />
-              <span class="small text-secondary">No se inventa sprite si el respaldo visual no es estable.</span>
+              <span class="small text-secondary">
+                No se inventa sprite si el respaldo visual no es estable.
+              </span>
             </div>
           </div>
 
@@ -72,7 +73,9 @@
                 <div class="small text-uppercase text-secondary fw-semibold mb-2">Cobertura</div>
                 <div><strong>Niveles:</strong> {{ currentDetail.levelCount }}</div>
                 <div><strong>Runtime:</strong> {{ formatBooleanFlag(currentDetail.runtimeAvailable) }}</div>
-                <div><strong>Referencia:</strong> {{ formatBooleanFlag(currentDetail.referenceAvailable) }}</div>
+                <div>
+                  <strong>Referencia:</strong> {{ formatBooleanFlag(currentDetail.referenceAvailable) }}
+                </div>
               </div>
             </div>
           </div>
@@ -84,11 +87,9 @@
           <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2">
             <div>
               <p class="text-uppercase small fw-semibold text-secondary mb-1">Niveles</p>
-              <h3 class="h5 mb-0">Resumen read-only por nivel</h3>
+              <h3 class="h5 mb-0">Selector y editor por nivel</h3>
             </div>
-            <span class="text-secondary small">
-              {{ levels.length }} nivel(es) cargado(s)
-            </span>
+            <span class="text-secondary small">{{ levels.length }} nivel(es) cargado(s)</span>
           </div>
 
           <div *ngIf="levels.length > 0; else noLevelsState" class="d-grid gap-3">
@@ -98,10 +99,20 @@
                 type="button"
                 class="level-pill"
                 [class.selected]="selectedLevelNumber === level.levelNumber"
+                [disabled]="isEditingLevel || isSavingLevel"
                 (click)="selectLevel(level.levelNumber)">
                 <strong>Nivel {{ level.levelNumber }}</strong>
                 <small>{{ buildLevelPillSummary(level) }}</small>
               </button>
+            </div>
+
+            <app-api-problem-panel [feedback]="levelSaveFeedback"></app-api-problem-panel>
+
+            <div *ngIf="levelSaveWarnings.length > 0" class="alert alert-warning border mb-0">
+              <p class="fw-semibold mb-2">Warnings del save</p>
+              <ul class="mb-0 ps-3">
+                <li *ngFor="let warning of levelSaveWarnings">{{ warning }}</li>
+              </ul>
             </div>
 
             <section *ngIf="selectedLevel as activeLevel" class="border rounded p-3 d-grid gap-3">
@@ -113,179 +124,460 @@
                     ReferenceLevelId {{ activeLevel.referenceLevelId ?? 'Sin dato' }}
                   </p>
                 </div>
-                <div class="d-flex flex-wrap gap-2">
-                  <span
-                    class="badge"
-                    [class.text-bg-success]="activeLevel.runtimeAvailable"
-                    [class.text-bg-secondary]="!activeLevel.runtimeAvailable">
-                    Runtime {{ activeLevel.runtimeAvailable ? 'OK' : 'No' }}
-                  </span>
-                  <span
-                    class="badge"
-                    [class.text-bg-info]="activeLevel.referenceAvailable"
-                    [class.text-bg-secondary]="!activeLevel.referenceAvailable">
-                    Referencia {{ activeLevel.referenceAvailable ? 'OK' : 'No' }}
-                  </span>
-                  <span
-                    class="badge"
-                    [class.text-bg-primary]="activeLevel.hasEffects"
-                    [class.text-bg-secondary]="!activeLevel.hasEffects">
-                    Effects {{ activeLevel.hasEffects ? 'Si' : 'No' }}
-                  </span>
-                  <span
-                    class="badge"
-                    [class.text-bg-warning]="activeLevel.hasCriticalEffects"
-                    [class.text-bg-secondary]="!activeLevel.hasCriticalEffects">
-                    Criticos {{ activeLevel.hasCriticalEffects ? 'Si' : 'No' }}
-                  </span>
-                </div>
-              </div>
 
-              <div class="row g-3">
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>AP Cost</span>
-                    <strong>{{ activeLevel.apCost }}</strong>
+                <div class="d-flex flex-column align-items-lg-end gap-2">
+                  <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                    <span
+                      class="badge"
+                      [class.text-bg-success]="activeLevel.runtimeAvailable"
+                      [class.text-bg-secondary]="!activeLevel.runtimeAvailable">
+                      Runtime {{ activeLevel.runtimeAvailable ? 'OK' : 'No' }}
+                    </span>
+                    <span
+                      class="badge"
+                      [class.text-bg-info]="activeLevel.referenceAvailable"
+                      [class.text-bg-secondary]="!activeLevel.referenceAvailable">
+                      Referencia {{ activeLevel.referenceAvailable ? 'OK' : 'No' }}
+                    </span>
+                    <span
+                      class="badge"
+                      [class.text-bg-primary]="activeLevel.hasEffects"
+                      [class.text-bg-secondary]="!activeLevel.hasEffects">
+                      Effects {{ activeLevel.hasEffects ? 'Si' : 'No' }}
+                    </span>
+                    <span
+                      class="badge"
+                      [class.text-bg-warning]="activeLevel.hasCriticalEffects"
+                      [class.text-bg-secondary]="!activeLevel.hasCriticalEffects">
+                      Criticos {{ activeLevel.hasCriticalEffects ? 'Si' : 'No' }}
+                    </span>
                   </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Min Player Level</span>
-                    <strong>{{ activeLevel.minPlayerLevel }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Rango</span>
-                    <strong>{{ activeLevel.minRange }} - {{ activeLevel.maxRange }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Initial Cooldown</span>
-                    <strong>{{ activeLevel.initialCooldown }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Min Cast Interval</span>
-                    <strong>{{ activeLevel.minCastInterval }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Max Cast Per Turn</span>
-                    <strong>{{ activeLevel.maxCastPerTurn }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Max Cast Per Target</span>
-                    <strong>{{ activeLevel.maxCastPerTarget }}</strong>
-                  </div>
-                </div>
-                <div class="col-6 col-md-4 col-xl-3">
-                  <div class="stat-card">
-                    <span>Critico / Falla</span>
-                    <strong>{{ activeLevel.criticalHitProbability }} / {{ activeLevel.criticalFailureProbability }}</strong>
+
+                  <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                    <button
+                      *ngIf="!isEditingLevel && canEditSelectedLevel"
+                      class="btn btn-primary"
+                      type="button"
+                      (click)="startEditLevel()">
+                      Editar nivel
+                    </button>
+                    <span *ngIf="!activeLevel.runtimeAvailable" class="small text-secondary">
+                      Este nivel solo esta disponible en referencia; no puede editarse.
+                    </span>
+                    <span
+                      *ngIf="activeLevel.runtimeAvailable && isLegacySelectedLevel && !isEditingLevel"
+                      class="small text-secondary">
+                      Esquema legacy activo: `castInDiagonal`, `needTakenCell` e
+                      `initialCooldown` quedan bloqueados en escritura.
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div class="row g-3">
-                <div class="col-12 col-lg-7">
-                  <div class="border rounded p-3 h-100">
-                    <div class="small text-uppercase text-secondary fw-semibold mb-2">Flags</div>
-                    <div class="flag-grid">
-                      <div class="flag-row">
-                        <span>lineOfSight</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.castTestLos) }}</strong>
+              <app-api-problem-panel [problem]="levelSaveProblem"></app-api-problem-panel>
+
+              <div *ngIf="!isEditingLevel" class="d-grid gap-3">
+                <div class="row g-3">
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>AP Cost</span>
+                      <strong>{{ activeLevel.apCost }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Min Player Level</span>
+                      <strong>{{ activeLevel.minPlayerLevel }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Rango</span>
+                      <strong>{{ activeLevel.minRange }} - {{ activeLevel.maxRange }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Initial Cooldown</span>
+                      <strong>{{ activeLevel.initialCooldown }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Min Cast Interval</span>
+                      <strong>{{ activeLevel.minCastInterval }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Max Cast Per Turn</span>
+                      <strong>{{ activeLevel.maxCastPerTurn }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Max Cast Per Target</span>
+                      <strong>{{ activeLevel.maxCastPerTarget }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4 col-xl-3">
+                    <div class="stat-card">
+                      <span>Critico / Falla</span>
+                      <strong>
+                        {{ activeLevel.criticalHitProbability }} /
+                        {{ activeLevel.criticalFailureProbability }}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-12 col-lg-7">
+                    <div class="border rounded p-3 h-100">
+                      <div class="small text-uppercase text-secondary fw-semibold mb-2">Flags</div>
+                      <div class="flag-grid">
+                        <div class="flag-row">
+                          <span>lineOfSight</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.castTestLos) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>castInLine</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.castInLine) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>castInDiagonal</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.castInDiagonal) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>needFreeCell</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.needFreeCell) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>needTakenCell</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.needTakenCell) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>rangeCanBeBoosted</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.rangeCanBeBoosted) }}</strong>
+                        </div>
+                        <div class="flag-row">
+                          <span>criticalFailureEndsTurn</span>
+                          <strong>{{ formatBooleanFlag(activeLevel.criticalFailureEndsTurn) }}</strong>
+                        </div>
                       </div>
-                      <div class="flag-row">
-                        <span>castInLine</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.castInLine) }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-5">
+                    <div class="border rounded p-3 h-100 d-grid gap-3">
+                      <div>
+                        <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados requeridos</div>
+                        <div class="text-secondary" *ngIf="activeLevel.statesRequired.length === 0">
+                          Este nivel no exige estados previos.
+                        </div>
+                        <div class="chip-wrap" *ngIf="activeLevel.statesRequired.length > 0">
+                          <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesRequired">
+                            {{ stateId }}
+                          </span>
+                        </div>
                       </div>
-                      <div class="flag-row">
-                        <span>castInDiagonal</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.castInDiagonal) }}</strong>
-                      </div>
-                      <div class="flag-row">
-                        <span>needFreeCell</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.needFreeCell) }}</strong>
-                      </div>
-                      <div class="flag-row">
-                        <span>needTakenCell</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.needTakenCell) }}</strong>
-                      </div>
-                      <div class="flag-row">
-                        <span>rangeCanBeBoosted</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.rangeCanBeBoosted) }}</strong>
-                      </div>
-                      <div class="flag-row">
-                        <span>criticalFailureEndsTurn</span>
-                        <strong>{{ formatBooleanFlag(activeLevel.criticalFailureEndsTurn) }}</strong>
+
+                      <div>
+                        <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados prohibidos</div>
+                        <div class="text-secondary" *ngIf="activeLevel.statesForbidden.length === 0">
+                          Este nivel no bloquea estados concretos.
+                        </div>
+                        <div class="chip-wrap" *ngIf="activeLevel.statesForbidden.length > 0">
+                          <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesForbidden">
+                            {{ stateId }}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="col-12 col-lg-5">
-                  <div class="border rounded p-3 h-100 d-grid gap-3">
-                    <div>
-                      <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados requeridos</div>
-                      <div class="text-secondary" *ngIf="activeLevel.statesRequired.length === 0">
-                        Este nivel no exige estados previos.
-                      </div>
-                      <div class="chip-wrap" *ngIf="activeLevel.statesRequired.length > 0">
-                        <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesRequired">
-                          {{ stateId }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="small text-uppercase text-secondary fw-semibold mb-2">Estados prohibidos</div>
-                      <div class="text-secondary" *ngIf="activeLevel.statesForbidden.length === 0">
-                        Este nivel no bloquea estados concretos.
-                      </div>
-                      <div class="chip-wrap" *ngIf="activeLevel.statesForbidden.length > 0">
-                        <span class="badge text-bg-light border" *ngFor="let stateId of activeLevel.statesForbidden">
-                          {{ stateId }}
-                        </span>
-                      </div>
-                    </div>
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 border-top pt-3">
+                  <div class="text-secondary small">
+                    Effects y critical effects siguen fuera del editor de esta fase.
+                  </div>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      (click)="toggleEffects(activeLevel.levelNumber)"
+                      [disabled]="isEffectsLoading(activeLevel.levelNumber) || isEditingLevel || isSavingLevel">
+                      {{
+                        isEffectsExpanded(activeLevel.levelNumber)
+                          ? 'Ocultar effects'
+                          : 'Ver effects por nivel'
+                      }}
+                    </button>
+                    <button
+                      *ngIf="isEffectsExpanded(activeLevel.levelNumber)"
+                      class="btn btn-outline-primary"
+                      type="button"
+                      (click)="reloadEffects(activeLevel.levelNumber)"
+                      [disabled]="isEffectsLoading(activeLevel.levelNumber) || isEditingLevel || isSavingLevel">
+                      Recargar effects
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 border-top pt-3">
-                <div class="text-secondary small">
-                  Esta fase mantiene niveles y effects en modo solo lectura.
+              <form *ngIf="isEditingLevel" class="d-grid gap-4" [formGroup]="levelForm" novalidate>
+                <div class="alert alert-light border mb-0">
+                  <strong>Endpoint de escritura:</strong>
+                  <span class="font-monospace-soft">
+                    PATCH /api/admin/v1/spells/{{ currentDetail.spellId }}/levels/{{ activeLevel.levelNumber }}
+                  </span>
+                  <div class="small text-secondary mt-2">
+                    Solo se envian los campos realmente modificados. `Range` legacy se representa como
+                    `maxRange`; no existe un campo separado en el contrato Phase 4.
+                  </div>
                 </div>
-                <div class="d-flex flex-wrap gap-2">
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    (click)="toggleEffects(activeLevel.levelNumber)"
-                    [disabled]="isEffectsLoading(activeLevel.levelNumber)">
-                    {{
-                      isEffectsExpanded(activeLevel.levelNumber)
-                        ? 'Ocultar effects'
-                        : 'Ver effects por nivel'
-                    }}
-                  </button>
-                  <button
-                    *ngIf="isEffectsExpanded(activeLevel.levelNumber)"
-                    class="btn btn-outline-primary"
-                    type="button"
-                    (click)="reloadEffects(activeLevel.levelNumber)"
-                    [disabled]="isEffectsLoading(activeLevel.levelNumber)">
-                    Recargar effects
-                  </button>
-                </div>
-              </div>
 
-              <div *ngIf="isEffectsExpanded(activeLevel.levelNumber)" class="d-grid gap-3">
+                <div class="row g-3">
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="apCost">AP Cost</label>
+                    <input
+                      id="apCost"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="apCost" />
+                    <div *ngFor="let message of getLevelFieldErrors('apCost')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('apCost').length && getLevelLocalError('apCost')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('apCost') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="minRange">Min Range</label>
+                    <input
+                      id="minRange"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="minRange" />
+                    <div *ngFor="let message of getLevelFieldErrors('minRange')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('minRange').length && getLevelLocalError('minRange')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('minRange') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="maxRange">Max Range</label>
+                    <input
+                      id="maxRange"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="maxRange" />
+                    <div *ngFor="let message of getLevelFieldErrors('maxRange')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('maxRange').length && getLevelLocalError('maxRange')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('maxRange') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="criticalHitProbability">Critical Rate</label>
+                    <input
+                      id="criticalHitProbability"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="criticalHitProbability" />
+                    <div *ngFor="let message of getLevelFieldErrors('criticalHitProbability')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('criticalHitProbability').length && getLevelLocalError('criticalHitProbability')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('criticalHitProbability') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="criticalFailureProbability">Critical Failure</label>
+                    <input
+                      id="criticalFailureProbability"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="criticalFailureProbability" />
+                    <div *ngFor="let message of getLevelFieldErrors('criticalFailureProbability')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('criticalFailureProbability').length && getLevelLocalError('criticalFailureProbability')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('criticalFailureProbability') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="minCastInterval">Cooldown</label>
+                    <input
+                      id="minCastInterval"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="minCastInterval" />
+                    <div *ngFor="let message of getLevelFieldErrors('minCastInterval')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('minCastInterval').length && getLevelLocalError('minCastInterval')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('minCastInterval') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="initialCooldown">Initial Cooldown</label>
+                    <input
+                      id="initialCooldown"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="initialCooldown"
+                      [readonly]="isLegacySelectedLevel" />
+                    <div *ngFor="let message of getLevelFieldErrors('initialCooldown')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('initialCooldown').length && getLevelLocalError('initialCooldown')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('initialCooldown') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="maxCastPerTurn">Max Cast Per Turn</label>
+                    <input
+                      id="maxCastPerTurn"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="maxCastPerTurn" />
+                    <div *ngFor="let message of getLevelFieldErrors('maxCastPerTurn')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('maxCastPerTurn').length && getLevelLocalError('maxCastPerTurn')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('maxCastPerTurn') }}
+                    </div>
+                  </div>
+
+                  <div class="col-6 col-md-4">
+                    <label class="form-label" for="maxCastPerTarget">Max Cast Per Target</label>
+                    <input
+                      id="maxCastPerTarget"
+                      type="number"
+                      min="0"
+                      class="form-control font-monospace-soft"
+                      formControlName="maxCastPerTarget" />
+                    <div *ngFor="let message of getLevelFieldErrors('maxCastPerTarget')" class="invalid-feedback d-block">
+                      {{ message }}
+                    </div>
+                    <div *ngIf="!getLevelFieldErrors('maxCastPerTarget').length && getLevelLocalError('maxCastPerTarget')" class="invalid-feedback d-block">
+                      {{ getLevelLocalError('maxCastPerTarget') }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-12 col-lg-7">
+                    <div class="border rounded p-3 h-100 d-grid gap-3">
+                      <div class="small text-uppercase text-secondary fw-semibold">Flags editables</div>
+                      <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                          <label class="form-check editor-check">
+                            <input type="checkbox" class="form-check-input" formControlName="castTestLos" />
+                            <span class="form-check-label">Line Of Sight</span>
+                          </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-check editor-check">
+                            <input type="checkbox" class="form-check-input" formControlName="castInLine" />
+                            <span class="form-check-label">Cast In Line</span>
+                          </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-check editor-check">
+                            <input
+                              type="checkbox"
+                              class="form-check-input"
+                              formControlName="castInDiagonal" />
+                            <span class="form-check-label">Cast In Diagonal</span>
+                          </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-check editor-check">
+                            <input type="checkbox" class="form-check-input" formControlName="needFreeCell" />
+                            <span class="form-check-label">Need Free Cell</span>
+                          </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="form-check editor-check">
+                            <input type="checkbox" class="form-check-input" formControlName="needTakenCell" />
+                            <span class="form-check-label">Need Taken Cell</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div *ngIf="isLegacySelectedLevel" class="alert alert-light border mb-0">
+                        El runtime activo cae en esquema legacy para este nivel. `castInDiagonal`,
+                        `needTakenCell` e `initialCooldown` se muestran, pero quedan read-only porque
+                        Phase 4 los bloquea en backend.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-5">
+                    <div class="border rounded p-3 h-100 d-grid gap-3">
+                      <div>
+                        <div class="small text-uppercase text-secondary fw-semibold mb-2">Read-only en Phase 8</div>
+                        <div class="readonly-grid">
+                          <div class="readonly-row">
+                            <span>Min Player Level</span>
+                            <strong>{{ activeLevel.minPlayerLevel }}</strong>
+                          </div>
+                          <div class="readonly-row">
+                            <span>rangeCanBeBoosted</span>
+                            <strong>{{ formatBooleanFlag(activeLevel.rangeCanBeBoosted) }}</strong>
+                          </div>
+                          <div class="readonly-row">
+                            <span>criticalFailureEndsTurn</span>
+                            <strong>{{ formatBooleanFlag(activeLevel.criticalFailureEndsTurn) }}</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="small text-secondary">
+                        `statesRequired` y `statesForbidden` siguen solo lectura. El editor de effects y
+                        critical effects queda diferido a Phase 9.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 border-top pt-3">
+                  <div class="text-secondary small">
+                    Guardar queda deshabilitado si no hay cambios o si alguna validacion local rompe el
+                    contrato backend.
+                  </div>
+
+                  <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-secondary" type="button" (click)="cancelEditLevel()" [disabled]="isSavingLevel">
+                      Cancelar
+                    </button>
+                    <button class="btn btn-primary" type="button" (click)="saveLevel()" [disabled]="levelSaveDisabled">
+                      {{ isSavingLevel ? 'Guardando nivel...' : 'Guardar nivel' }}
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <div *ngIf="!isEditingLevel && isEffectsExpanded(activeLevel.levelNumber)" class="d-grid gap-3">
                 <app-api-problem-panel [problem]="getEffectsProblem(activeLevel.levelNumber)"></app-api-problem-panel>
 
                 <div *ngIf="isEffectsLoading(activeLevel.levelNumber)" class="alert alert-light border mb-0">
@@ -579,19 +871,22 @@
         <div class="card-body d-grid gap-3">
           <div>
             <p class="text-uppercase small fw-semibold text-secondary mb-1">Contexto operativo</p>
-            <h3 class="h5 mb-0">Reglas de esta fase</h3>
+            <h3 class="h5 mb-0">Reglas de Phase 8</h3>
           </div>
 
           <div class="border rounded p-3">
             <div><strong>Ruta:</strong> /admin/spells/{{ currentDetail.spellId }}</div>
-            <div><strong>Contrato principal:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}</div>
-            <div><strong>Niveles enriquecidos:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}/levels</div>
-            <div><strong>Effects por nivel:</strong> lectura bajo demanda</div>
+            <div><strong>Detalle:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}</div>
+            <div><strong>Niveles:</strong> GET /api/admin/v1/spells/{{ currentDetail.spellId }}/levels</div>
+            <div>
+              <strong>Write de nivel:</strong>
+              PATCH /api/admin/v1/spells/{{ currentDetail.spellId }}/levels/:levelNumber
+            </div>
           </div>
 
           <div class="alert alert-light border mb-0">
-            Phase 7 solo visualiza detalle, niveles y effects read-only. La edicion de niveles y de
-            effects sigue diferida.
+            States, effects y critical effects siguen fuera del write. El editor solo cubre campos
+            ya respaldados por el contrato de Phase 4.
           </div>
         </div>
       </div>
