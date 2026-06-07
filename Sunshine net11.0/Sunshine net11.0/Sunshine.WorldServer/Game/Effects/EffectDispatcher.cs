@@ -30,6 +30,7 @@ namespace Sunshine.WorldServer.Game.Effects
                 {
                     SpellEffectHandler spellEffect = EffectManager.Instance.SpellEffects[effect.Id]();
                     var affectedActors = EffectManager.Instance.GetAffectedActors(caster, effect, cell);
+                    FightCombatLogger.LogEffectDispatch(caster.Fight, caster, spell, effect);
                     spellEffect.Initialize(new List<object> { effect.Id, effect.DiceNum, effect.DiceFace, effect.Value,
                                                               effect.Delay, effect.Duration, effect.Target, cell,
                                                               affectedActors, caster, spell, effect, trapCell, firstPosition, countPushed});

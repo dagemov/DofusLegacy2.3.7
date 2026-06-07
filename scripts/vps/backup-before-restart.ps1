@@ -37,6 +37,15 @@ function Invoke-Remote {
     }
 }
 
+function Invoke-RemoteBashScript {
+    param([Parameter(Mandatory = $true)][string]$Script)
+
+    ($Script -replace "`r`n", "`n") | & ssh @sshArgs "bash -s"
+    if ($LASTEXITCODE -ne 0) {
+        throw "SSH bash script failed."
+    }
+}
+
 $containers = Invoke-Remote -Command "docker ps -a --format '{{.Names}}'"
 $dbContainer = $containers | Where-Object { $_ -like "*$DbNameHint*" } | Select-Object -First 1
 if (-not $dbContainer) {
@@ -70,4 +79,4 @@ printf 'BACKUP_BYTES=%s\n' "$bytes"
 
 $remoteScript = $remoteScript.Replace('__REMOTE_BACKUP_DIR__', $RemoteBackupDir).Replace('__DB_CONTAINER__', $dbContainer).Replace('__TABLES__', $Tables)
 
-Invoke-Remote -Command $remoteScript
+Invoke-RemoteBashScript -Script $remoteScript

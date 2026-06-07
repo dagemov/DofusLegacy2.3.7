@@ -50,6 +50,18 @@ namespace Sunshine.WorldServer.Game.Fights
         private bool _endFightScheduled;
         private bool _isEndingFight;
 
+        private readonly object _turnTransitionLock = new object();
+        private int _turnTransitionRound;
+        private int _turnTransitionFighterId;
+        private bool _turnEndStarted;
+        private bool _turnAdvanceStarted;
+        private ReadyChecker _readyChecker;
+
+        public ReadyChecker Checker =>
+            _readyChecker ?? (_readyChecker = new ReadyChecker(
+                () => TryAdvanceTurn("ReadyCheckerSuccess"),
+                laggers => TryAdvanceTurn("ReadyCheckerTimeout", laggers)));
+
         public abstract int Id { get; }
 
         public abstract FightTeam Team { get; }
@@ -760,6 +772,8 @@ namespace Sunshine.WorldServer.Game.Fights
 
         public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast)
         {
+            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell);
+
             foreach (CharacterFighter entry in GetAllFighters(x => x is CharacterFighter))
             {
                 if (spell != null && spell.Id == 0)
@@ -1008,6 +1022,161 @@ namespace Sunshine.WorldServer.Game.Fights
                 Winners = Team.Defenders;
                 Losers = Team.Attackers;
             }
+        }
+
+        public bool TryBeginTurnEnd(FightActor fighter, string source, out bool hadActiveTimer)
+        {
+            hadActiveTimer = Timer != null;
+
+            lock (_turnTransitionLock)
+            {
+                if (State != FightStateEnum.Fighting || FighterPlaying?.Id != fighter?.Id)
+                    return false;
+
+                var round = TimeLine?.RoundNumber ?? 0;
+                if (_turnTransitionRound != round || _turnTransitionFighterId != fighter.Id)
+                {
+                    _turnTransitionRound = round;
+                    _turnTransitionFighterId = fighter.Id;
+                    _turnEndStarted = false;
+                    _turnAdvanceStarted = false;
+                }
+
+                if (_turnEndStarted)
+                    return false;
+
+                _turnEndStarted = true;
+            }
+
+            if (Timer != null)
+            {
+                Timer.Stop();
+                Timer.Dispose();
+                Timer = null;
+            }
+
+            return true;
+        }
+
+        public bool TryAdvanceTurn(string source, CharacterFighter[] laggers = null)
+        {
+            var previousFighter = FighterPlaying;
+            var round = TimeLine?.RoundNumber ?? 0;
+
+            lock (_turnTransitionLock)
+            {
+                if (State == FightStateEnum.Ended)
+                {
+                    LogAdvanceIgnored(previousFighter, source, laggers, "fight-ended");
+                    return false;
+                }
+
+                if (State != FightStateEnum.Fighting)
+                {
+                    LogAdvanceIgnored(previousFighter, source, laggers, "fight-not-started");
+                    return false;
+                }
+
+                if (!_turnEndStarted)
+                {
+                    LogAdvanceIgnored(previousFighter, source, laggers, "turn-end-not-started");
+                    return false;
+                }
+
+                if (_turnAdvanceStarted)
+                {
+                    LogAdvanceIgnored(previousFighter, source, laggers, "turn-advance-already-started");
+                    return false;
+                }
+
+                _turnAdvanceStarted = true;
+            }
+
+            var nextFighter = GetFighterPlaying();
+            CombatTelemetry.LogReadyCheckerEvent(
+                "ReadyCheckerAdvanceTurn",
+                this,
+                previousFighter,
+                nextActor: nextFighter,
+                reason: source);
+
+            if (laggers != null && laggers.Length > 0)
+                NotifyReadyLaggers(laggers);
+
+            AdvanceToNextTurn(previousFighter, nextFighter, source, round);
+            return true;
+        }
+
+        private void LogAdvanceIgnored(FightActor previousFighter, string source, CharacterFighter[] laggers, string reason)
+        {
+            CombatTelemetry.LogReadyCheckerEvent(
+                "ReadyCheckerIgnored",
+                this,
+                previousFighter,
+                reason: $"{source}:{reason}",
+                waiters: laggers);
+        }
+
+        private void NotifyReadyLaggers(CharacterFighter[] laggers)
+        {
+            if (laggers == null || laggers.Length == 0)
+                return;
+
+            foreach (var lagger in laggers)
+            {
+                try
+                {
+                    lagger?.Character?.SendServerMessage(
+                        laggers.Length == 1
+                            ? $"En attente du joueur {lagger.Name}..."
+                            : $"En attente des joueurs {string.Join(", ", laggers.Select(x => x.Name))}...");
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        internal void AdvanceToNextTurn(FightActor endingFighter, FightActor nextFighter, string source, int round)
+        {
+            CombatTelemetry.LogTurnEvent("NextTurnRequested", this, endingFighter, detail: $"source={source}");
+
+            FighterPlaying = nextFighter;
+            if (nextFighter != null)
+                CombatTelemetry.LogTurnEvent("TurnOwner", this, nextFighter, detail: $"source={source}");
+
+            lock (_turnTransitionLock)
+            {
+                _turnTransitionRound = TimeLine?.RoundNumber ?? round;
+                _turnTransitionFighterId = nextFighter?.Id ?? 0;
+                _turnEndStarted = false;
+                _turnAdvanceStarted = false;
+            }
+
+            if (endingFighter is SlaveFighter controlledSlave && controlledSlave.IsControlledBySummoner() && !controlledSlave.MustAutoUnspawnAfterTurn)
+                controlledSlave.RestoreSummonerContext();
+
+            if (endingFighter is SlaveFighter autoUnspawnSlave && autoUnspawnSlave.MustAutoUnspawnAfterTurn && autoUnspawnSlave.IsAlive)
+            {
+                autoUnspawnSlave.IsAutoUnspawning = true;
+                autoUnspawnSlave.Die(endingFighter);
+
+                if (State != FightStateEnum.Fighting || CheckFightEnd())
+                    return;
+            }
+            else if (endingFighter is SummonedMonster summonedMonster && summonedMonster.IsAlive)
+            {
+                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
+                    summonedMonster.Die(endingFighter);
+                else if (summonedMonster.DiesAtTurnEnd)
+                    summonedMonster.Die(endingFighter);
+
+                if (State != FightStateEnum.Fighting || CheckFightEnd())
+                    return;
+            }
+
+            if (FighterPlaying != null)
+                FighterPlaying.StartTurn();
         }
 
         public void StartAction(double interval, object parameter)

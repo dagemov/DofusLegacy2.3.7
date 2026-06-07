@@ -7,7 +7,7 @@ namespace Sunshine.WorldServer.Commands.Player
     [CommandHandler("parchotage", RoleEnum.Player)]
     public class ParchotageCommand : WorldCommand
     {
-        public override string Description => "Applique un parchotage 101 en sagesse, force, agilité, chance, intelligence et vitalité.";
+        public override string Description => "Aplica un parchotage 101 en sabiduría, fuerza, agilidad, suerte, inteligencia y vitalidad.";
 
         public override void Execute()
         {
@@ -16,18 +16,18 @@ namespace Sunshine.WorldServer.Commands.Player
 
             if (Parameters.Length > 0 && Parameters[0] != null && Parameters[0].ToString() != "101")
             {
-                Client.Character.SendServerMessage("Usage : .parchotage 101", Color.Red);
+                Client.Character.SendServerMessage("Uso: .parchotage 101", Color.Red);
                 return;
             }
 
             if (Client.Character.IsInFight() || Client.Character.IsBusy())
             {
-                Client.Character.SendServerMessage("Impossible d'utiliser .parchotage 101 pendant un combat, un échange ou un dialogue.", Color.Red);
+                Client.Character.SendServerMessage("No puedes usar .parchotage 101 durante un combate, un intercambio o un diálogo.", Color.Red);
                 return;
             }
 
             Client.Character.ApplyParchotage101();
-            Client.Character.SendServerMessage("Parchotage 101 appliqué sur sagesse, force, agilité, chance, intelligence et vitalité.");
+            Client.Character.SendServerMessage("Parchotage 101 aplicado en sabiduría, fuerza, agilidad, suerte, inteligencia y vitalidad.");
         }
     }
 }

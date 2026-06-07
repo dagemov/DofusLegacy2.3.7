@@ -3,11 +3,16 @@
     <div class="card-body">
       <a class="btn btn-link px-0 text-decoration-none" routerLink="/admin/item-sets">Volver a sets</a>
       <p class="text-uppercase small fw-semibold text-secondary mb-2">Set {{ set.setId }}</p>
-      <h2 class="h4 mb-1">{{ set.name }}</h2>
-      <p class="text-secondary mb-0">
-        {{ set.items.length }} item(s) · {{ set.bonusTiers.length }} nivel(es) de bono
-        <span *ngIf="set.bonusIsSecret"> · bonus secreto</span>
-      </p>
+      <div class="d-flex flex-wrap justify-content-between gap-2 align-items-start">
+        <div>
+          <h2 class="h4 mb-1">{{ set.name }}</h2>
+          <p class="text-secondary mb-0">
+            Nivel {{ set.level }} · {{ set.items.length }} item(s) · {{ set.bonusTiers.length }} nivel(es) de bono
+            <span *ngIf="set.bonusIsSecret"> · bonus secreto</span>
+          </p>
+        </div>
+        <a class="btn btn-outline-primary" [routerLink]="['/admin/item-sets', set.setId, 'edit']">Editar set</a>
+      </div>
     </div>
   </div>
 
@@ -54,6 +59,7 @@
                 <th>EffectId</th>
                 <th>Label</th>
                 <th>Valor</th>
+                <th>Dados</th>
                 <th>Formato</th>
               </tr>
             </thead>
@@ -62,6 +68,10 @@
                 <td class="font-monospace-soft">{{ effect.effectId }}</td>
                 <td>{{ effect.label }}</td>
                 <td>{{ effect.value }}</td>
+                <td>
+                  <span *ngIf="effect.diceNum || effect.diceSide">{{ effect.diceNum }}d{{ effect.diceSide }}</span>
+                  <span *ngIf="!effect.diceNum && !effect.diceSide" class="text-secondary">—</span>
+                </td>
                 <td>{{ effect.format }}</td>
               </tr>
             </tbody>

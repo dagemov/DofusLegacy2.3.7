@@ -6,6 +6,7 @@ param(
     [string]$RemotePath = "/opt/dofus-2.0.0",
     [switch]$SkipSync,
     [switch]$StackOnly,
+    [switch]$SunshineOnly,
     [switch]$TraefikOnly
 )
 
@@ -23,6 +24,14 @@ function Invoke-Ssh {
     & ssh @sshArgs $Command
     if ($LASTEXITCODE -ne 0) {
         throw "SSH command failed: $Command"
+    }
+}
+
+function Invoke-SshBash {
+    param([Parameter(Mandatory = $true)][string]$Script)
+    ($Script -replace "`r`n", "`n") | & ssh @sshArgs "bash -s"
+    if ($LASTEXITCODE -ne 0) {
+        throw "SSH bash script failed."
     }
 }
 
@@ -82,7 +91,7 @@ if ($TraefikOnly) {
 }
 
 if (-not $StackOnly) {
-    Invoke-Ssh @"
+    Invoke-SshBash @"
 set -eu
 if ! command -v docker >/dev/null 2>&1; then
   curl -fsSL https://get.docker.com | sh
@@ -98,15 +107,22 @@ fi
 "@
 }
 
-$composeCmd = @"
-cd $RemotePath/docker && docker compose --env-file ../.env \
-  -f docker-compose.yml \
-  -f docker-compose.vps.yml \
-  -f docker-compose-onelauncher-api.yml \
-  -f docker-compose-website.yml \
-  up -d --build && \
+if ($SunshineOnly) {
+    $composeCmd = @"
+set -eu
+cd $RemotePath/docker
+docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.vps.yml up -d --build sunshine
+docker ps --filter name=sunshine-server --format '{{.Names}} {{.Status}}'
+"@
+}
+else {
+    $composeCmd = @"
+set -eu
+cd $RemotePath/docker
+docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.vps.yml -f docker-compose-onelauncher-api.yml -f docker-compose-website.yml up -d --build
 docker compose -f docker-compose-traefik.yml up -d
 "@
+}
 
-Invoke-Ssh $composeCmd
+Invoke-SshBash $composeCmd
 Write-Output "Deploy finished. Verify: docker ps on $VpsHost"

@@ -6,13 +6,13 @@ namespace Sunshine.WorldServer.Commands.Administrator
     [CommandHandler("stop", RoleEnum.Administrator)]
     public class StopCommand : WorldCommand
     {
-        public override string Description => "Planifie ou annule l'arrêt du serveur (.stop 60 / .stop cancel).";
+        public override string Description => "Programa o cancela el apagado del servidor (.stop 60 / .stop cancel).";
 
         public override void Execute()
         {
             if (Parameters == null || Parameters.Length == 0)
             {
-                Client.Character.SendServerMessage("Usage: .stop <secondes> | .stop cancel");
+                Client.Character.SendServerMessage("Uso: .stop <segundos> | .stop cancel");
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
             int seconds;
             if (!int.TryParse(value, out seconds))
             {
-                Client.Character.SendServerMessage("Usage: .stop <secondes> | .stop cancel");
+                Client.Character.SendServerMessage("Uso: .stop <segundos> | .stop cancel");
                 return;
             }
 

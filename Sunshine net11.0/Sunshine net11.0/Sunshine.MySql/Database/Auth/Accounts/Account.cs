@@ -27,5 +27,10 @@ namespace Sunshine.MySql.Database.Auth.Accounts
         public int Tokens { get; set; }
         public int NewTokens { get; set; }
 
+        // Persisted column, written via AccountManager.UpdateVip. Marked Computed so Dapper.Contrib
+        // inserts/updates do not break when the `vip` column has not been migrated yet.
+        [Computed]
+        public bool Vip { get; set; }
+
     }
 }

@@ -15,6 +15,7 @@ using System.Linq;
 namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
 {
     [EffectHandler(EffectsEnum.Effect_Summon)]
+    [EffectHandler(EffectsEnum.Effect_185)]
     [EffectHandler(EffectsEnum.Effect_SummonBomb)]
     [EffectHandler(EffectsEnum.Effect_SummonSlave)]
     public class Summon : SpellEffectHandler
@@ -32,7 +33,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot summon monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}.");
                 if (Caster is CharacterFighter errorCaster && errorCaster.Character != null)
-                    errorCaster.Character.SendServerMessage("Impossible d'invoquer cette entité : template manquant.", System.Drawing.Color.Red);
+                    errorCaster.Character.SendServerMessage("No se puede invocar esta entidad: plantilla no encontrada.", System.Drawing.Color.Red);
                 return;
             }
 
@@ -47,7 +48,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot instantiate summoned monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}: {ex}");
                 if (Caster is CharacterFighter summonCaster && summonCaster.Character != null)
-                    summonCaster.Character.SendServerMessage("Impossible d'invoquer cette entité : erreur sur le template monstre.", System.Drawing.Color.Red);
+                    summonCaster.Character.SendServerMessage("No se puede invocar esta entidad: error en la plantilla del monstruo.", System.Drawing.Color.Red);
                 return;
             }
 
@@ -60,7 +61,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                 if (bombCount >= BombFighter.BombLimit)
                 {
                     if (Caster is CharacterFighter characterCaster && characterCaster.Character != null)
-                        characterCaster.Character.SendServerMessage("Vous ne pouvez pas poser plus de 3 bombes.", System.Drawing.Color.Red);
+                        characterCaster.Character.SendServerMessage("No puedes colocar más de 3 bombas.", System.Drawing.Color.Red);
 
                     return;
                 }
@@ -77,8 +78,17 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             if (needsSummonSlot && !Caster.CanSummon())
             {
                 if (Caster is CharacterFighter maxSummonCaster && maxSummonCaster.Character != null)
-                    maxSummonCaster.Character.SendServerMessage("Vous avez atteint votre nombre maximum d'invocations.", System.Drawing.Color.Red);
+                    maxSummonCaster.Character.SendServerMessage("Has alcanzado el número máximo de invocaciones.", System.Drawing.Color.Red);
                 return;
+            }
+
+            // If the target cell is occupied, relocate the summon to the nearest free cell.
+            short summonCell = TargetedCell;
+            if (Fight.GetOneFighter(summonCell) != null)
+            {
+                short freeCell = FindNearestFreeCell(summonCell, Caster.Position.Cell);
+                if (freeCell >= 0)
+                    summonCell = freeCell;
             }
 
             FightActor summonedActor;
@@ -86,7 +96,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             if (Effect.Id == EffectsEnum.Effect_SummonBomb)
             {
                 int element = ResolveBombElement(monster, Spell != null ? Spell.Id : 0);
-                summonedActor = new BombFighter(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction), element);
+                summonedActor = new BombFighter(monster, Caster, new ObjectPosition(Fight.Map, summonCell, Caster.Position.Direction), element);
             }
             else
             {
@@ -94,9 +104,18 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                     || monster?.Record?.Id == SlaveFighter.RoublabotMonsterId
                     || (Spell != null && Spell.Id == SlaveFighter.RoublabotSpellId);
 
-                summonedActor = summonAsSlave
-                    ? new SlaveFighter(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction))
-                    : new SummonedMonster(monster, Caster, new ObjectPosition(Fight.Map, TargetedCell, Caster.Position.Direction));
+                if (summonAsSlave)
+                {
+                    summonedActor = new SlaveFighter(monster, Caster, new ObjectPosition(Fight.Map, summonCell, Caster.Position.Direction));
+                }
+                else if (!monster.CanPlay())
+                {
+                    summonedActor = new SummonedStaticMonster(monster, Caster, new ObjectPosition(Fight.Map, summonCell, Caster.Position.Direction));
+                }
+                else
+                {
+                    summonedActor = new SummonedMonster(monster, Caster, new ObjectPosition(Fight.Map, summonCell, Caster.Position.Direction));
+                }
 
                 applySlaveStates = summonedActor is SlaveFighter && (Effect.Id == EffectsEnum.Effect_SummonSlave || monster?.Record?.Id == SlaveFighter.RoublabotMonsterId || (Spell != null && Spell.Id == SlaveFighter.RoublabotSpellId));
             }
@@ -153,6 +172,59 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                 if (damage != null)
                     target.InflictDamage(damage);
             }
+        }
+
+        private short FindNearestFreeCell(short targetCell, short casterCell)
+        {
+            var map = Fight?.Map;
+            if (map == null)
+                return targetCell;
+
+            if (Fight.IsCellFree(targetCell))
+                return targetCell;
+
+            if (Fight.IsCellFree(casterCell))
+                return casterCell;
+
+            short found = SearchFreeCellRing(targetCell);
+            if (found >= 0)
+                return found;
+
+            found = SearchFreeCellRing(casterCell);
+            if (found >= 0)
+                return found;
+
+            for (short i = 0; i < map.Cells.Length; i++)
+            {
+                if (Fight.IsCellFree(i))
+                    return i;
+            }
+
+            return targetCell;
+        }
+
+        private short SearchFreeCellRing(short centerCell)
+        {
+            var startPoint = MapPoint.GetPoint(centerCell);
+            if (startPoint == null)
+                return -1;
+
+            for (int radius = 1; radius <= 12; radius++)
+            {
+                for (int dx = -radius; dx <= radius; dx++)
+                {
+                    for (int dy = -radius; dy <= radius; dy++)
+                    {
+                        if (System.Math.Abs(dx) != radius && System.Math.Abs(dy) != radius)
+                            continue;
+
+                        var point = MapPoint.GetPoint(startPoint.X + dx, startPoint.Y + dy);
+                        if (point != null && Fight.IsCellFree(point.CellId))
+                            return point.CellId;
+                    }
+                }
+            }
+            return -1;
         }
 
         private int ResolveBombElement(Monster monster, int summonSpellId)

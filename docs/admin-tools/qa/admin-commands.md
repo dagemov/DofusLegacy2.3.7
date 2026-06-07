@@ -29,6 +29,7 @@ From `Sunshine.Protocol.Enums.RoleEnum`:
 | `.kamas` | `.kamas <amount>` or `.kamas add <amount>` or `.kamas remove <amount>` | Moderator | `.kamas 100000000` | Medium. Mutates only the caller economy state. No target character argument is implemented. |
 | `.levelup` | `.levelup <amount> [CharacterName]` | Moderator | `.levelup 200 Dagemov` | Medium. Gameplay mutation. |
 | `.spell add` | `.spell add <spellId> [CharacterName]` | Moderator | `.spell add 1901 Dagemov` | Medium. Gameplay mutation. |
+| `.spell learnall` | `.spell learnall` | Administrator | `.spell learnall` | Medium. **[QA fix]** Bulk grant all SpellManager spells; one `SpellListMessage` (no lag). Not in fight. See [spell-learnall-qa-fix.md](./spell-learnall-qa-fix.md). |
 | `.look` | `.look ...` | Moderator | `.look help` | Medium. Visual mutation. |
 | `.npc` | `.npc ...` | Moderator | `.npc help` | High. World mutation. |
 | `.monster` | `.monster ...` | Moderator | `.monster help` | High. World mutation. |

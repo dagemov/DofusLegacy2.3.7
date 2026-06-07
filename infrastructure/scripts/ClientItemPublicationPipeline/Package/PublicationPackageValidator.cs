@@ -88,14 +88,24 @@ internal sealed class PublicationPackageValidator
             }
 
             ValidateIcon(blocking, warnings, checks, request, item.iconId);
+
+            if (item.itemSetId > 0)
+            {
+                ValidateOptionalItemSet(blocking, warnings, checks, packageDirectory, item.itemSetId);
+            }
         }
 
-        var generatedFiles = new[]
+        var generatedFiles = PublicationPackagePatchFiles.ResolveRelativeFiles(packageDirectory).ToArray();
+        if (request.ExpectedItemSetId is > 0
+            && !generatedFiles.Contains(PublicationPackagePaths.ItemSetsRelative, StringComparer.OrdinalIgnoreCase))
         {
-            PublicationPackagePaths.ItemsRelative,
-            PublicationPackagePaths.I18nEsRelative,
-            PublicationPackagePaths.I18nEnRelative
-        };
+            warnings.Add(
+                $"ItemSetId {request.ExpectedItemSetId} esperado pero el paquete no incluye {PublicationPackagePaths.ItemSetsRelative}.");
+        }
+        else if (request.ExpectedItemSetId is > 0)
+        {
+            ValidateOptionalItemSet(blocking, warnings, checks, packageDirectory, request.ExpectedItemSetId.Value);
+        }
 
         var checksums = PublicationPackageChecksumWriter.ComputeChecksums(packageDirectory, generatedFiles);
         foreach (var relative in generatedFiles)
@@ -451,6 +461,40 @@ internal sealed class PublicationPackageValidator
         - nameId / descriptionId: {manifest.NameId} / {manifest.DescriptionId}
         """;
 
+    private static void ValidateOptionalItemSet(
+        List<string> blocking,
+        List<string> warnings,
+        List<string> checks,
+        string packageDirectory,
+        int expectedSetId)
+    {
+        var itemSetsPath = PublicationPackagePaths.TryResolveItemSetsPath(packageDirectory);
+        if (itemSetsPath is null)
+        {
+            warnings.Add($"ItemSetId {expectedSetId} referenciado pero {PublicationPackagePaths.ItemSetsRelative} no está en el paquete.");
+            checks.Add($"ItemSetId {expectedSetId}: ITEMSETS_FILE_MISSING");
+            return;
+        }
+
+        try
+        {
+            var indexIds = ReadD2oIndexIds(itemSetsPath);
+            if (!indexIds.Contains(expectedSetId))
+            {
+                blocking.Add($"ItemSetId {expectedSetId} no existe en ItemSets.d2o del paquete.");
+                checks.Add($"ItemSetId {expectedSetId}: MISSING");
+            }
+            else
+            {
+                checks.Add($"ItemSetId {expectedSetId}: FOUND_IN_ITEMSETS_D2O");
+            }
+        }
+        catch (Exception exception)
+        {
+            blocking.Add($"No se pudo leer ItemSets.d2o del paquete: {exception.Message}");
+        }
+    }
+
     private static readonly JsonSerializerOptions JsonWriteOptions = new() { WriteIndented = true };
 }
 
@@ -472,7 +516,8 @@ internal sealed record PublicationPackageValidationRequest(
     int? ExpectedTypeId,
     int? ExpectedNameId,
     int? ExpectedDescriptionId,
-    int? ExpectedAppearanceId);
+    int? ExpectedAppearanceId,
+    int? ExpectedItemSetId = null);
 
 internal sealed record PublicationPackageValidationResult(
     bool IsValid,

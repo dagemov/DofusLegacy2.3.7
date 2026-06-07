@@ -6,7 +6,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
     [CommandHandler("bank", RoleEnum.Administrator)]
     public class BankCommand : WorldCommand
     {
-        public override string Description => "Ouvre la banque du personnage ciblé ou du lanceur (.bank [nom]).";
+        public override string Description => "Abre el banco del personaje objetivo o del lanzador (.bank [nombre]).";
 
         public override void Execute()
         {
@@ -20,7 +20,7 @@ namespace Sunshine.WorldServer.Commands.Administrator
                     target = MySql.Database.Managers.CharacterManager.Instance.GetCharacter(targetName);
                     if (target == null || target.Client == null)
                     {
-                        Client.Character.SendServerMessage($"Personnage introuvable ou hors ligne : {targetName}");
+                        Client.Character.SendServerMessage($"Personaje no encontrado o desconectado: {targetName}");
                         return;
                     }
                 }
@@ -33,9 +33,9 @@ namespace Sunshine.WorldServer.Commands.Administrator
             target.Trade.Open();
 
             if (target == Client.Character)
-                Client.Character.SendServerMessage("Banque ouverte.");
+                Client.Character.SendServerMessage("Banco abierto.");
             else
-                Client.Character.SendServerMessage($"Banque ouverte pour {target.Name}.");
+                Client.Character.SendServerMessage($"Banco abierto para {target.Name}.");
         }
     }
 }

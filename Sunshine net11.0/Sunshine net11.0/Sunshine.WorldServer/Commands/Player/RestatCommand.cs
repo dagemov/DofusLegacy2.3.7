@@ -7,7 +7,7 @@ namespace Sunshine.WorldServer.Commands.Player
     [CommandHandler("restat", RoleEnum.Player)]
     public class RestatCommand : WorldCommand
     {
-        public override string Description => "Réinitialise vos caractéristiques et vos points de sorts de base.";
+        public override string Description => "Reinicia tus características y tus puntos de hechizo a los valores base.";
 
         public override void Execute()
         {
@@ -16,12 +16,12 @@ namespace Sunshine.WorldServer.Commands.Player
 
             if (Client.Character.IsInFight() || Client.Character.IsBusy())
             {
-                Client.Character.SendServerMessage("Impossible d'utiliser .restat pendant un combat, un échange ou un dialogue.", Color.Red);
+                Client.Character.SendServerMessage("No puedes usar .restat durante un combate, un intercambio o un diálogo.", Color.Red);
                 return;
             }
 
             Client.Character.ResetCharacteristicsToBase(true);
-            Client.Character.SendServerMessage("Vos caractéristiques et vos sorts ont été réinitialisés.");
+            Client.Character.SendServerMessage("Tus características y tus hechizos han sido reiniciados.");
         }
     }
 }

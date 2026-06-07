@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, NgZone, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, switchMap } from 'rxjs';
@@ -24,6 +24,8 @@ export class ItemSetDetailPageComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly itemsFacade = inject(ItemsFacade);
+  private readonly ngZone = inject(NgZone);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   protected detail: ItemSetDetailDto | null = null;
   protected problem: AdminApiProblem | null = null;
@@ -36,30 +38,52 @@ export class ItemSetDetailPageComponent implements OnInit {
         switchMap((paramMap) => {
           const setId = Number(paramMap.get('setId'));
           if (!Number.isInteger(setId) || setId <= 0) {
-            this.problem = {
-              title: 'SetId inválido',
-              detail: 'El identificador del set no es válido.',
-              status: 400
-            };
+            this.ngZone.run(() => {
+              this.problem = {
+                title: 'SetId inválido',
+                detail: 'El identificador del set no es válido.',
+                status: 400
+              };
+              this.detail = null;
+              this.isLoading = false;
+              this.refreshView();
+            });
             return of(null);
           }
 
-          this.isLoading = true;
-          this.problem = null;
+          this.ngZone.run(() => {
+            this.isLoading = true;
+            this.problem = null;
+            this.refreshView();
+          });
+
           return this.itemsFacade.getItemSet(setId).pipe(
             catchError((error: unknown) => {
-              this.problem = toAdminApiProblem(error);
+              this.ngZone.run(() => {
+                this.problem = toAdminApiProblem(error);
+                this.refreshView();
+              });
               return of(null);
             }),
             finalize(() => {
-              this.isLoading = false;
+              this.ngZone.run(() => {
+                this.isLoading = false;
+                this.refreshView();
+              });
             })
           );
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((detail) => {
-        this.detail = detail;
+        this.ngZone.run(() => {
+          this.detail = detail;
+          this.refreshView();
+        });
       });
+  }
+
+  private refreshView(): void {
+    this.changeDetectorRef.markForCheck();
   }
 }
