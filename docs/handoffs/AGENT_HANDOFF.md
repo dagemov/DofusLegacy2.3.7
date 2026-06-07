@@ -2,6 +2,42 @@
 
 Generated: `2026-06-07`
 
+## Combat Sanitization / Phase 3.1 — Analyzer polish + timer classification
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/combat-readychecker-phase3` |
+| Estado | **`DONE`** |
+| Tipo de cambio | `analyzer + documentación` (sin lógica de combate) |
+
+### Entregables
+
+- `infrastructure/scripts/CombatTelemetryAnalyzer/Program.cs` — reconoce `ReadyCheckerStarted` y eventos Phase 3; clasifica `TimerElapsed` residuales
+- `Infrastructure/temporal-artifacts/combat-telemetry/combat-timer-elapsed-classification-report.md` — 11 timers clasificados
+- `docs/combat-sanitization/combat-readychecker-phase3-vps-qa.md` — **PASS WITH MINOR RESIDUAL TIMERS**
+
+### Validación (`20260607-113152`)
+
+| Métrica | Valor |
+| --- | ---: |
+| `readyCheckerStartCount` | 145 |
+| `readyCheckerAckCount` | 225 |
+| `readyCheckerAdvanceTurnCount` | 144 |
+| `readyCheckerTimeoutCount` | 15 |
+| Timers clasificados | 11 (`UNKNOWN` = jugador activo sin `EndTurn` cliente) |
+
+### Decisión
+
+- **Phase 3:** PASS WITH MINOR RESIDUAL TIMERS
+- Timers residuales = rescate ~35 s en turno jugador, no fallo ReadyChecker
+- **Prohibido tocado:** turn flow, ReadyChecker timeout, IA, spells, summons, deploy VPS
+
+### Siguiente
+
+- **Phase 4** — Spell/Summon telemetry analysis (`16` `SpellCastFailed`, handlers)
+
+---
+
 ## Spell Builder Production Parity / Fase 2 - Effects Write Closure Spec
 
 | Campo | Valor |
