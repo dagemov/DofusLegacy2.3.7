@@ -3,6 +3,7 @@ namespace ClientItemPublicationPipeline.Package;
 internal static class PublicationPackagePaths
 {
     public const string ItemsRelative = "data/common/Items.d2o";
+    public const string ItemSetsRelative = "data/common/ItemSets.d2o";
     public const string I18nEsRelative = "data/i18n/i18n_es.d2i";
     public const string I18nEnRelative = "data/i18n/i18n_en.d2i";
     public const string ManifestJson = "publication-package-manifest.json";
@@ -19,6 +20,18 @@ internal static class PublicationPackagePaths
 
     public static string ResolveI18nEnPath(string packageDirectory) =>
         ResolveExistingPath(packageDirectory, I18nEnRelative, "i18n_en.d2i");
+
+    public static string? TryResolveItemSetsPath(string packageDirectory)
+    {
+        var structured = Path.Combine(packageDirectory, ItemSetsRelative.Replace('/', Path.DirectorySeparatorChar));
+        if (File.Exists(structured))
+        {
+            return structured;
+        }
+
+        var legacy = Path.Combine(packageDirectory, "ItemSets.d2o");
+        return File.Exists(legacy) ? legacy : null;
+    }
 
     private static string ResolveExistingPath(string packageDirectory, string structuredRelative, string legacyFileName)
     {

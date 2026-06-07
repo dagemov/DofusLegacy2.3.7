@@ -8,13 +8,6 @@ namespace ClientItemPublicationPipeline.Package;
 
 internal sealed class ClientPatchRealPublisher
 {
-    private static readonly string[] PatchRelativeFiles =
-    [
-        PublicationPackagePaths.ItemsRelative,
-        PublicationPackagePaths.I18nEsRelative,
-        PublicationPackagePaths.I18nEnRelative
-    ];
-
     public RealClientApplyResult ApplyPackageToRealClient(
         string repoRoot,
         string packageDirectory,
@@ -37,12 +30,10 @@ internal sealed class ClientPatchRealPublisher
                 string.Join(Environment.NewLine, errors));
         }
 
-        var packageItems = PublicationPackagePaths.ResolveItemsPath(packageDirectory);
-        var packageEs = PublicationPackagePaths.ResolveI18nEsPath(packageDirectory);
-        var packageEn = PublicationPackagePaths.ResolveI18nEnPath(packageDirectory);
+        var patchRelativeFiles = PublicationPackagePatchFiles.ResolveRelativeFiles(packageDirectory);
 
         var prePatchChecksums = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var relative in PatchRelativeFiles)
+        foreach (var relative in patchRelativeFiles)
         {
             var destination = Path.Combine(clientRoot, relative.Replace('/', Path.DirectorySeparatorChar));
             if (!File.Exists(destination))
@@ -53,16 +44,9 @@ internal sealed class ClientPatchRealPublisher
             prePatchChecksums[relative] = HashFile(destination);
         }
 
-        foreach (var relative in PatchRelativeFiles)
+        foreach (var relative in patchRelativeFiles)
         {
-            var source = relative switch
-            {
-                _ when relative == PublicationPackagePaths.ItemsRelative => packageItems,
-                _ when relative == PublicationPackagePaths.I18nEsRelative => packageEs,
-                _ when relative == PublicationPackagePaths.I18nEnRelative => packageEn,
-                _ => throw new InvalidOperationException($"Archivo no mapeado: {relative}")
-            };
-
+            var source = PublicationPackagePatchFiles.ResolvePackageSourcePath(packageDirectory, relative);
             var destination = Path.Combine(clientRoot, relative.Replace('/', Path.DirectorySeparatorChar));
             var parent = Path.GetDirectoryName(destination)!;
             Directory.CreateDirectory(parent);
@@ -85,9 +69,9 @@ internal sealed class ClientPatchRealPublisher
             ClientRoot = ToRepoRelative(repoRoot, clientRoot),
             BackupDirectory = ToRepoRelative(repoRoot, backupDir),
             ExpectedItemId = expectedItemId,
-            AppliedFiles = PatchRelativeFiles,
+            AppliedFiles = patchRelativeFiles,
             PrePatchChecksums = prePatchChecksums,
-            PostPatchChecksums = PublicationPackageChecksumWriter.ComputeChecksums(clientRoot, PatchRelativeFiles),
+            PostPatchChecksums = PublicationPackageChecksumWriter.ComputeChecksums(clientRoot, patchRelativeFiles),
             ConfirmPublish = true
         };
 
@@ -167,8 +151,9 @@ internal sealed class ClientPatchRealPublisher
             }
         }
 
-        var checksums = PublicationPackageChecksumWriter.ComputeChecksums(clientRoot, PatchRelativeFiles);
-        foreach (var relative in PatchRelativeFiles)
+        var patchedFiles = PublicationPackagePatchFiles.ResolveClientRelativeFiles(clientRoot);
+        var checksums = PublicationPackageChecksumWriter.ComputeChecksums(clientRoot, patchedFiles);
+        foreach (var relative in patchedFiles)
         {
             if (checksums.ContainsKey(relative))
             {
