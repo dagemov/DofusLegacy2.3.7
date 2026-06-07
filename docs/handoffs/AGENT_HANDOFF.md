@@ -1,7 +1,22 @@
 # Agent Handoff — Combat ReadyChecker Phase 3
 
 Generated: `2026-06-07`  
-Rama: **`feature/combat-readychecker-phase3`**
+Rama activa merge: **`fix/merge-readychecker-with-combat-patch32`** (reemplaza head conflictivo de PR #39)
+
+## PR #39 + PR #32 merge resolution
+
+| Campo | Valor |
+| --- | --- |
+| Estado | **`DONE` local** — push + actualizar PR #39 pendiente |
+| Build | `Sunshine.csproj` **OK** |
+| Preservado #32 | IA monstruos, castigos, summons (`DiesAtTurnEnd`, Roublabot), `FightCombatLogger`, Sacrifice/DOT |
+| Integrado #39 | ReadyChecker, `TryAdvanceTurn`, telemetría, `SetReadyForNextTurn` |
+
+Detalle: [pr39-readychecker-merge-resolution.md](../integration/pr39-readychecker-merge-resolution.md)
+
+**QA pendiente:** VPS smoke post-merge antes de merge a `devp`. **No merge a `main`.**
+
+---
 
 ## Phase 3.1 — Analyzer polish + timer classification
 
