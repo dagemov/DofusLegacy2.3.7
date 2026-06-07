@@ -162,6 +162,8 @@ public sealed class ReferenceSpellCatalogReader
                 ToInt32(values[21]),
                 NormalizeCsv(values[9]),
                 NormalizeCsv(values[26]),
+                NormalizeSerializedPayload(values[27]),
+                NormalizeSerializedPayload(values[28]),
                 HasSerializedPayload(values[27]),
                 HasSerializedPayload(values[28]));
 
@@ -395,6 +397,18 @@ public sealed class ReferenceSpellCatalogReader
         return normalized.Any(character => character != '0');
     }
 
+    private static string? NormalizeSerializedPayload(string? value)
+    {
+        var normalized = (value ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(normalized) ||
+            string.Equals(normalized, "null", StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return normalized;
+    }
+
     private static int CountCsv(string? csv)
     {
         return (csv ?? string.Empty)
@@ -484,6 +498,8 @@ public sealed class ReferenceSpellCatalogReader
         int MinPlayerLevel,
         string StatesRequiredCsv,
         string StatesForbiddenCsv,
+        string? EffectsPayload,
+        string? CriticalEffectsPayload,
         bool HasEffects,
         bool HasCriticalEffects);
 }

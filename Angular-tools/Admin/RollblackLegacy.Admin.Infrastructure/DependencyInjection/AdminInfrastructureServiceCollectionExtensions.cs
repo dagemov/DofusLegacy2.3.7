@@ -54,6 +54,7 @@ public static class AdminInfrastructureServiceCollectionExtensions
         services.AddSingleton<IItemClientPublicationInspector, FileSystemItemClientPublicationInspector>();
         services.AddSingleton<IStagingPublicationPackageProbe, StagingPublicationPackageProbe>();
         services.AddSingleton<IPublicationBackupStatusService, FileSystemPublicationBackupStatusService>();
+        services.AddSingleton<SpellEffectsDecoder>();
         services.AddScoped<IAdminDatabaseHealthService, MySqlAdminDatabaseHealthService>();
         services.AddScoped<IItemsAdminReadRepository, ItemsAdminReadRepository>();
         services.AddScoped<IItemSetsAdminReadRepository, ItemSetsAdminReadRepository>();

@@ -2,6 +2,44 @@
 
 Generated: `2026-06-06`
 
+## Macro 5 / Phase 5 - Spell Effects API
+
+| Campo | Valor |
+| --- | --- |
+| Rama | `feature/spell-builder-api-migration` |
+| Base funcional | `f81d492 feat: add spell levels api` |
+| Estado | **`DONE`** |
+
+### Entregables
+
+- `GET /api/admin/v1/spells/{spellId}/levels/{levelNumber}/effects`
+- Contratos `SpellLevelEffectsDto`, `SpellEffectCollectionDto`, `SpellEffectRowDto`
+- Read models dedicados para effects de spells
+- Decoder backend para:
+  - payload hex runtime Sunshine
+  - payload binario legacy compatible
+  - payload de referencia desde `spellsReferences`
+- Documentacion `docs/admin-tools/spell-builder/spell-builder-phase5-effects-api.md`
+
+### Validacion
+
+| Check | Resultado |
+| --- | --- |
+| `dotnet build "Sunshine net11.0\Sunshine net11.0\Sunshine.sln"` | `OK` |
+| `npm run build` | `NOT_RUN` (Angular no fue tocado) |
+
+### Notas
+
+- La API separa `effects` y `criticalEffects`, y dentro de cada bucket separa `runtimeRows` y `referenceRows`.
+- En schema actual se respeta la prioridad runtime: payload serializado primero y fallback binario despues.
+- `ReferenceSpellCatalogReader` ahora conserva `EffectsPayload` y `CriticalEffectsPayload` cuando `Documents/spellsReferences` esta disponible.
+- No se abrio write API de effects en esta fase.
+
+### Siguiente
+
+- Macro 5 / siguiente fase: decision controlada de write API de effects antes del editor Angular
+- Alcance esperado: preservacion segura de payloads, estrategia frente a fallback binario y posible catalogo de opciones para UI
+
 ## Macro 5 / Phase 4 - Spell Levels API
 
 | Campo | Valor |

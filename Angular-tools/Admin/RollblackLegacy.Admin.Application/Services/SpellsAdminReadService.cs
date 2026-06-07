@@ -83,6 +83,27 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
         return MapLevelDetail(level);
     }
 
+    public async Task<SpellLevelEffectsDto> GetLevelEffectsAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default)
+    {
+        EnsurePositiveSpellId(spellId);
+        EnsurePositiveLevelNumber(levelNumber);
+
+        var effects = await _repository.GetLevelEffectsAsync(spellId, levelNumber, cancellationToken);
+        if (effects is null)
+        {
+            throw new AdminEntityNotFoundException("spell level effects", $"{spellId}:{levelNumber}");
+        }
+
+        return new SpellLevelEffectsDto(
+            effects.SpellId,
+            effects.LevelNumber,
+            MapEffectCollection(effects.Effects),
+            MapEffectCollection(effects.CriticalEffects));
+    }
+
     private static SpellCatalogItemDto MapItem(AdminSpellCatalogReadModel item)
     {
         return new SpellCatalogItemDto(
@@ -185,6 +206,41 @@ public sealed class SpellsAdminReadService : ISpellsAdminReadService
             level.HasCriticalEffects,
             level.RuntimeAvailable,
             level.ReferenceAvailable);
+    }
+
+    private static SpellEffectCollectionDto MapEffectCollection(AdminSpellEffectCollectionReadModel collection)
+    {
+        return new SpellEffectCollectionDto(
+            collection.RuntimeAvailable,
+            collection.ReferenceAvailable,
+            collection.RuntimeSource,
+            collection.ReferenceSource,
+            collection.RuntimeRows.Select(MapEffectRow).ToList(),
+            collection.ReferenceRows.Select(MapEffectRow).ToList(),
+            collection.RuntimeWarnings.ToList(),
+            collection.ReferenceWarnings.ToList());
+    }
+
+    private static SpellEffectRowDto MapEffectRow(AdminSpellEffectRowReadModel row)
+    {
+        return new SpellEffectRowDto(
+            row.RowIndex,
+            row.EffectId,
+            row.Label,
+            row.ProtocolName,
+            row.Group,
+            row.OperatorMode,
+            row.Value,
+            row.MinValue,
+            row.MaxValue,
+            row.Delay,
+            row.Random,
+            row.Duration,
+            row.TargetType,
+            row.ZoneShape,
+            row.ZoneMinSize,
+            row.ZoneSize,
+            row.PreviewText);
     }
 
     private static void ValidateRequest(SpellCatalogSearchRequest request)

@@ -15,13 +15,16 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpe
 
     private readonly AdminDbConnectionFactory _connectionFactory;
     private readonly ReferenceSpellCatalogReader _referenceCatalogReader;
+    private readonly SpellEffectsDecoder _spellEffectsDecoder;
 
     public SpellsAdminReadRepository(
         AdminDbConnectionFactory connectionFactory,
-        ReferenceSpellCatalogReader referenceCatalogReader)
+        ReferenceSpellCatalogReader referenceCatalogReader,
+        SpellEffectsDecoder spellEffectsDecoder)
     {
         _connectionFactory = connectionFactory;
         _referenceCatalogReader = referenceCatalogReader;
+        _spellEffectsDecoder = spellEffectsDecoder;
     }
 
     public async Task<AdminPagedSpellsReadModel> SearchAsync(
@@ -195,6 +198,57 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpe
         }
 
         return levels[levelNumber - 1];
+    }
+
+    public async Task<AdminSpellLevelEffectsReadModel?> GetLevelEffectsAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default)
+    {
+        if (levelNumber <= 0)
+        {
+            return null;
+        }
+
+        await using var connection = await _connectionFactory.CreateOpenConnectionAsync(cancellationToken);
+        var schema = await DetectSchemaAsync(connection, cancellationToken);
+        var referenceSnapshot = _referenceCatalogReader.GetSnapshot();
+        referenceSnapshot.SpellsById.TryGetValue(spellId, out var reference);
+
+        var runtime = await LoadRuntimeHeaderAsync(connection, schema, spellId, cancellationToken);
+        if (runtime is null && reference is null)
+        {
+            return null;
+        }
+
+        var runtimeEffectSources = runtime is null
+            ? Array.Empty<RuntimeSpellLevelEffectsSource>()
+            : await LoadRuntimeLevelEffectSourcesAsync(
+                connection,
+                schema,
+                runtime,
+                spellId,
+                cancellationToken);
+
+        var referenceEffectSources = BuildReferenceLevelEffectSources(reference);
+        if (levelNumber > runtimeEffectSources.Count &&
+            levelNumber > referenceEffectSources.Count)
+        {
+            return null;
+        }
+
+        var runtimeLevel = levelNumber <= runtimeEffectSources.Count
+            ? runtimeEffectSources[levelNumber - 1]
+            : null;
+        var referenceLevel = levelNumber <= referenceEffectSources.Count
+            ? referenceEffectSources[levelNumber - 1]
+            : null;
+
+        return new AdminSpellLevelEffectsReadModel(
+            spellId,
+            levelNumber,
+            BuildEffectCollection(runtimeLevel?.Effects, referenceLevel?.Effects, runtimeLevel is not null, referenceLevel is not null),
+            BuildEffectCollection(runtimeLevel?.CriticalEffects, referenceLevel?.CriticalEffects, runtimeLevel is not null, referenceLevel is not null));
     }
 
     public async Task<AdminSpellLevelUpdateResultModel?> UpdateLevelAsync(
@@ -1149,6 +1203,217 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpe
         return result;
     }
 
+    private async Task<IReadOnlyList<RuntimeSpellLevelEffectsSource>> LoadRuntimeLevelEffectSourcesAsync(
+        MySqlConnection connection,
+        SpellCatalogSchema schema,
+        RuntimeSpellHeaderRow runtime,
+        short spellId,
+        CancellationToken cancellationToken)
+    {
+        if (schema.LevelSchema == SpellLevelSchema.None)
+        {
+            throw new AdminNotConfiguredException(
+                "No se encontro un esquema de `spells_levels` compatible para leer effects detallados de spells.");
+        }
+
+        return schema.LevelSchema switch
+        {
+            SpellLevelSchema.CurrentRows => await LoadCurrentSpellLevelEffectSourcesAsync(connection, spellId, cancellationToken),
+            SpellLevelSchema.LegacyRows => await LoadLegacySpellLevelEffectSourcesAsync(connection, runtime.LevelsCsv, cancellationToken),
+            _ => Array.Empty<RuntimeSpellLevelEffectsSource>(),
+        };
+    }
+
+    private async Task<IReadOnlyList<RuntimeSpellLevelEffectsSource>> LoadCurrentSpellLevelEffectSourcesAsync(
+        MySqlConnection connection,
+        short spellId,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            SELECT *
+            FROM spells_levels
+            WHERE SpellId = @SpellId;
+            """;
+
+        var rows = await connection.QueryAsync<CurrentSpellLevelEffectSourceRow>(new CommandDefinition(
+            sql,
+            new
+            {
+                SpellId = spellId,
+            },
+            cancellationToken: cancellationToken));
+
+        return rows
+            .Select(row => new RuntimeSpellLevelEffectsSource(
+                ResolveCurrentEffects(row.Effects, row.BinaryEffect, row.BinaryEffects, "current-serialized-effects"),
+                ResolveCurrentEffects(row.CriticalEffects, row.BinaryCriticalEffect, row.BinaryCriticalEffects, "current-serialized-critical-effects")))
+            .ToArray();
+    }
+
+    private async Task<IReadOnlyList<RuntimeSpellLevelEffectsSource>> LoadLegacySpellLevelEffectSourcesAsync(
+        MySqlConnection connection,
+        string? levelsCsv,
+        CancellationToken cancellationToken)
+    {
+        var levelIds = ParseCsvInts(levelsCsv);
+        if (levelIds.Count == 0)
+        {
+            return Array.Empty<RuntimeSpellLevelEffectsSource>();
+        }
+
+        var sql = $"""
+            SELECT
+                Id AS RuntimeLevelId,
+                BinaryEffects,
+                BinaryCriticalEffects
+            FROM spells_levels
+            WHERE Id IN ({string.Join(",", levelIds)});
+            """;
+
+        var rows = await connection.QueryAsync<LegacySpellLevelEffectSourceRow>(new CommandDefinition(
+            sql,
+            cancellationToken: cancellationToken));
+        var rowsById = rows.ToDictionary(row => row.RuntimeLevelId);
+
+        var result = new List<RuntimeSpellLevelEffectsSource>(levelIds.Count);
+        foreach (var levelId in levelIds)
+        {
+            if (!rowsById.TryGetValue(levelId, out var row))
+            {
+                result.Add(new RuntimeSpellLevelEffectsSource(
+                    SpellEffectsDecoder.SpellEffectDecodeResult.Empty(),
+                    SpellEffectsDecoder.SpellEffectDecodeResult.Empty()));
+                continue;
+            }
+
+            result.Add(new RuntimeSpellLevelEffectsSource(
+                ResolveLegacyEffects(row.BinaryEffects, "legacy-binary-effects"),
+                ResolveLegacyEffects(row.BinaryCriticalEffects, "legacy-binary-critical-effects")));
+        }
+
+        return result;
+    }
+
+    private IReadOnlyList<ReferenceSpellLevelEffectsSource> BuildReferenceLevelEffectSources(
+        ReferenceSpellCatalogReader.ReferenceSpellCatalogEntry? reference)
+    {
+        if (reference is null || reference.OrderedLevelIds.Count == 0)
+        {
+            return Array.Empty<ReferenceSpellLevelEffectsSource>();
+        }
+
+        var result = new List<ReferenceSpellLevelEffectsSource>(reference.OrderedLevelIds.Count);
+        foreach (var levelId in reference.OrderedLevelIds)
+        {
+            if (!reference.LevelsById.TryGetValue(levelId, out var level))
+            {
+                result.Add(new ReferenceSpellLevelEffectsSource(
+                    SpellEffectsDecoder.SpellEffectDecodeResult.Empty(),
+                    SpellEffectsDecoder.SpellEffectDecodeResult.Empty()));
+                continue;
+            }
+
+            result.Add(new ReferenceSpellLevelEffectsSource(
+                ResolveReferenceEffects(level.EffectsPayload, "reference-serialized-effects"),
+                ResolveReferenceEffects(level.CriticalEffectsPayload, "reference-serialized-critical-effects")));
+        }
+
+        return result;
+    }
+
+    private AdminSpellEffectCollectionReadModel BuildEffectCollection(
+        SpellEffectsDecoder.SpellEffectDecodeResult? runtime,
+        SpellEffectsDecoder.SpellEffectDecodeResult? reference,
+        bool runtimeAvailable,
+        bool referenceAvailable)
+    {
+        return new AdminSpellEffectCollectionReadModel(
+            runtimeAvailable,
+            referenceAvailable,
+            runtime?.Source,
+            reference?.Source,
+            MapEffectRows(runtime?.Rows),
+            MapEffectRows(reference?.Rows),
+            runtime?.Warnings ?? Array.Empty<string>(),
+            reference?.Warnings ?? Array.Empty<string>());
+    }
+
+    private static IReadOnlyList<AdminSpellEffectRowReadModel> MapEffectRows(
+        IReadOnlyList<SpellEffectsDecoder.SpellEffectDecodedRow>? rows)
+    {
+        if (rows is null || rows.Count == 0)
+        {
+            return Array.Empty<AdminSpellEffectRowReadModel>();
+        }
+
+        return rows
+            .Select(row => new AdminSpellEffectRowReadModel(
+                row.RowIndex,
+                row.EffectId,
+                row.Label,
+                row.ProtocolName,
+                row.Group,
+                row.OperatorMode,
+                row.Value,
+                row.MinValue,
+                row.MaxValue,
+                row.Delay,
+                row.Random,
+                row.Duration,
+                row.TargetType,
+                row.ZoneShape,
+                row.ZoneMinSize,
+                row.ZoneSize,
+                row.PreviewText))
+            .ToArray();
+    }
+
+    private SpellEffectsDecoder.SpellEffectDecodeResult ResolveCurrentEffects(
+        string? serializedPayload,
+        byte[]? singularBinaryPayload,
+        byte[]? pluralBinaryPayload,
+        string serializedSourceLabel)
+    {
+        var binarySourceLabel = serializedSourceLabel.Contains("critical", StringComparison.OrdinalIgnoreCase)
+            ? "current-binary-critical-fallback"
+            : "current-binary-fallback";
+
+        if (SpellEffectsDecoder.HasSerializedContainer(serializedPayload))
+        {
+            return _spellEffectsDecoder.DecodeSerializedHex(serializedPayload, serializedSourceLabel);
+        }
+
+        if (HasBinaryPayload(singularBinaryPayload))
+        {
+            return _spellEffectsDecoder.DecodeLegacyBinary(singularBinaryPayload, binarySourceLabel);
+        }
+
+        if (HasBinaryPayload(pluralBinaryPayload))
+        {
+            return _spellEffectsDecoder.DecodeLegacyBinary(pluralBinaryPayload, binarySourceLabel);
+        }
+
+        return SpellEffectsDecoder.SpellEffectDecodeResult.Empty();
+    }
+
+    private SpellEffectsDecoder.SpellEffectDecodeResult ResolveLegacyEffects(
+        byte[]? binaryPayload,
+        string sourceLabel)
+    {
+        return HasBinaryPayload(binaryPayload)
+            ? _spellEffectsDecoder.DecodeLegacyBinary(binaryPayload, sourceLabel)
+            : SpellEffectsDecoder.SpellEffectDecodeResult.Empty();
+    }
+
+    private SpellEffectsDecoder.SpellEffectDecodeResult ResolveReferenceEffects(
+        string? serializedPayload,
+        string sourceLabel)
+    {
+        return SpellEffectsDecoder.HasSerializedContainer(serializedPayload)
+            ? _spellEffectsDecoder.DecodeSerializedHex(serializedPayload, sourceLabel)
+            : SpellEffectsDecoder.SpellEffectDecodeResult.Empty();
+    }
+
     private async Task<AdminSpellLevelUpdateResultModel?> UpdateCurrentSpellLevelAsync(
         MySqlConnection connection,
         short spellId,
@@ -1743,6 +2008,14 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpe
         bool HasEffects,
         bool HasCriticalEffects);
 
+    private sealed record RuntimeSpellLevelEffectsSource(
+        SpellEffectsDecoder.SpellEffectDecodeResult Effects,
+        SpellEffectsDecoder.SpellEffectDecodeResult CriticalEffects);
+
+    private sealed record ReferenceSpellLevelEffectsSource(
+        SpellEffectsDecoder.SpellEffectDecodeResult Effects,
+        SpellEffectsDecoder.SpellEffectDecodeResult CriticalEffects);
+
     private sealed record SpellTextOverride(
         string? DisplayName,
         string? Description);
@@ -1901,6 +2174,30 @@ public sealed class SpellsAdminReadRepository : ISpellsAdminReadRepository, ISpe
         public string? Effects { get; set; }
 
         public string? CriticalEffects { get; set; }
+    }
+
+    private sealed class CurrentSpellLevelEffectSourceRow
+    {
+        public string? Effects { get; set; }
+
+        public string? CriticalEffects { get; set; }
+
+        public byte[]? BinaryEffect { get; set; }
+
+        public byte[]? BinaryEffects { get; set; }
+
+        public byte[]? BinaryCriticalEffect { get; set; }
+
+        public byte[]? BinaryCriticalEffects { get; set; }
+    }
+
+    private sealed class LegacySpellLevelEffectSourceRow
+    {
+        public int RuntimeLevelId { get; set; }
+
+        public byte[]? BinaryEffects { get; set; }
+
+        public byte[]? BinaryCriticalEffects { get; set; }
     }
 
     private sealed class LegacySpellLevelRow

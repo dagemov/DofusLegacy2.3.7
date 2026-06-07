@@ -21,4 +21,9 @@ public interface ISpellsAdminReadRepository
         short spellId,
         int levelNumber,
         CancellationToken cancellationToken = default);
+
+    Task<AdminSpellLevelEffectsReadModel?> GetLevelEffectsAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default);
 }

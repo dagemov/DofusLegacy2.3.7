@@ -20,4 +20,9 @@ public interface ISpellsAdminReadService
         short spellId,
         int levelNumber,
         CancellationToken cancellationToken = default);
+
+    Task<SpellLevelEffectsDto> GetLevelEffectsAsync(
+        short spellId,
+        int levelNumber,
+        CancellationToken cancellationToken = default);
 }

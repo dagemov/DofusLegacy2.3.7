@@ -63,6 +63,18 @@ public sealed class SpellsAdminController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{spellId:int}/levels/{levelNumber:int}/effects")]
+    [ProducesResponseType(typeof(SpellLevelEffectsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<SpellLevelEffectsDto>> GetLevelEffects(
+        [FromRoute] short spellId,
+        [FromRoute] int levelNumber,
+        CancellationToken cancellationToken)
+    {
+        var result = await _spellsAdminReadService.GetLevelEffectsAsync(spellId, levelNumber, cancellationToken);
+        return Ok(result);
+    }
+
     [HttpPatch("{spellId:int}/levels/{levelNumber:int}")]
     [ProducesResponseType(typeof(SpellLevelUpdateResultDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
