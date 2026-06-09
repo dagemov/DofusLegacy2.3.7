@@ -2,6 +2,7 @@ using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Effects.Spells.Damages;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Spells;
 using System;
 
@@ -12,6 +13,10 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
         private EffectSchoolEnum _effectSchool;
         private uint _diceNum;
         private uint _diceFace;
+
+        public EffectSchoolEnum EffectSchool => _effectSchool;
+        public uint DiceNum => _diceNum;
+        public uint DiceFace => _diceFace;
 
         public DamageOverTimeBuff(FightActor caster, FightActor target, Spell spell, Effect effect,
             short duration, EffectSchoolEnum effectSchool, uint diceNum, uint diceFace)
@@ -43,6 +48,7 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
 
             Damage damage = new Damage(_effectSchool, _diceNum, _diceFace, Spell, Caster);
             Target.InflictDamage(damage, true);
+            FightCombatLogger.LogBuffTick(Target.Fight, Target, this, "DOT", damage.Amount, Duration);
         }
 
         public override AbstractFightDispellableEffect GetAbstractFightDispellableEffect()

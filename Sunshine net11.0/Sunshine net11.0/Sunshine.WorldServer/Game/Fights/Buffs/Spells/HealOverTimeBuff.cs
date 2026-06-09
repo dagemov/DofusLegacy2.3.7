@@ -1,6 +1,7 @@
 using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Actors.Fighters;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Spells;
 using System;
 
@@ -37,6 +38,7 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
                 return;
 
             Target.Heal(Value, Caster, true);
+            FightCombatLogger.LogBuffTick(Target.Fight, Target, this, "HOT", Value, Duration);
         }
 
         public override AbstractFightDispellableEffect GetAbstractFightDispellableEffect()

@@ -3,6 +3,7 @@ using Sunshine.Protocol.Enums;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Actors.Monsters;
 using Sunshine.WorldServer.Game.Fights.Bombs;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Game.Spells;
@@ -136,6 +137,10 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             ContextHandler.SendGameFightUpdateTeamMessage(Fight.Clients, Caster.Team);
             ContextHandler.SendGameFightTurnListMessage(Fight.Clients, Fight);
             ActionsHandler.SendGameActionFightSummonMessage(Fight.Clients, (ISummoned)summonedActor);
+
+            bool usesSummonSlot = summonedActor is SummonedMonster summonSlotMonster && summonSlotMonster.Monster.Record.UseSummonSlot;
+            FightCombatLogger.LogSummonCreate(Fight, Caster, summonedActor, monsterId, summonCell,
+                usesSummonSlot, Caster.SummonedCount, Caster.Stats[StatsEnum.SummonLimit].Total);
 
             if (applySlaveStates && summonedActor is SlaveFighter slave)
             {

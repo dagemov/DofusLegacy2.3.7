@@ -380,12 +380,14 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
                 if (this is PrismFighter || this is BombFighter)
                 {
+                    Fights.Diagnostics.FightCombatLogger.LogTurnSkip(Fight, this, this is BombFighter ? "bomb" : "prism");
                     this.EndTurn();
                     return;
                 }
 
                 if (!controlledSlaveTurn && this is SummonedMonster staticSummon && !staticSummon.CanPlayTurn)
                 {
+                    Fights.Diagnostics.FightCombatLogger.LogTurnSkip(Fight, this, "static-summon");
                     this.EndTurn();
                     return;
                 }
@@ -2140,6 +2142,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             this.m_buffList.Add(buff);
             ContextHandler.SendGameActionFightDispellableEffectMessage(Fight.Clients, buff, false);
 
+            if (buff is Fights.Buffs.Spells.DamageOverTimeBuff || buff is Fights.Buffs.Spells.HealOverTimeBuff)
+                FightCombatLogger.LogBuffAdd(Fight, this, buff);
+
             if (apply)
                 buff.Apply();
 
@@ -2206,7 +2211,11 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             Buff[] buffs = this.m_buffList.Where(x => x.Caster == caster && x.IsBuffEnded()).ToArray();
             Buff[] buffs2 = buffs;
             for (int i = 0; i < buffs2.Length; i++)
+            {
+                if (buffs2[i] is Fights.Buffs.Spells.DamageOverTimeBuff || buffs2[i] is Fights.Buffs.Spells.HealOverTimeBuff)
+                    FightCombatLogger.LogBuffExpire(Fight, this, buffs2[i], "duration");
                 this.RemoveBuff(buffs2[i]);
+            }
         }
 
         public void DecrementsAllBuffsDuration()

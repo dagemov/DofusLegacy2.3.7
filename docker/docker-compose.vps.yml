@@ -8,4 +8,4 @@ services:
       - "0.0.0.0:${AUTH_PORT:-2450}:${AUTH_PORT:-2450}"
       - "0.0.0.0:${WORLD_PORT:-5557}:${WORLD_PORT:-5557}"
     volumes:
-      - ./logs/fights:/app/logs/fights
+      - /opt/dofus-2.0.0/logs/fights:/app/logs/fights
