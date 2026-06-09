@@ -47,6 +47,50 @@ namespace Sunshine.WorldServer.Game.Fights.Telemetry
             WriteJsonLine(_turnFlowWriter, payload);
         }
 
+        public static void LogReadyCheckerEvent(
+            string eventName,
+            Fight fight,
+            FightActor turnOwner,
+            FightActor actorOverride = null,
+            FightActor nextActor = null,
+            long? elapsedMs = null,
+            string reason = null,
+            IEnumerable<CharacterFighter> waiters = null)
+        {
+            if (!WriteTurnFlow || fight == null)
+                return;
+
+            var extra = new Dictionary<string, object>(StringComparer.Ordinal);
+            if (nextActor != null)
+            {
+                extra["nextActorId"] = nextActor.Id;
+                extra["nextActorName"] = ResolveActorName(nextActor);
+            }
+
+            if (!string.IsNullOrWhiteSpace(reason))
+                extra["reason"] = reason;
+
+            if (waiters != null)
+            {
+                var builder = new StringBuilder();
+                foreach (var waiter in waiters)
+                {
+                    if (waiter == null)
+                        continue;
+
+                    if (builder.Length > 0)
+                        builder.Append(',');
+
+                    builder.Append(waiter.Id.ToString(CultureInfo.InvariantCulture));
+                }
+
+                if (builder.Length > 0)
+                    extra["waiterIds"] = builder.ToString();
+            }
+
+            LogTurnEvent(eventName, fight, actorOverride ?? turnOwner, elapsedMs, reason, extra);
+        }
+
         public static void LogSpellEvent(
             string eventName,
             Fight fight,

@@ -11,6 +11,7 @@ using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Effects.Items;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Game.Fights.Telemetry;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using System.Diagnostics;
 
 namespace Sunshine.WorldServer.Game.Effects
