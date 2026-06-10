@@ -237,7 +237,7 @@ namespace Sunshine.WorldServer.Handlers.Context
                 return;
 
             fighter.Position.Cell = message.cellId;
-            SendGameEntitiesDispositionMessage(fight.Clients, new[] { fighter });
+            fight.UpdateDirection();
         }
 
         [WorldHandler(5611)]
