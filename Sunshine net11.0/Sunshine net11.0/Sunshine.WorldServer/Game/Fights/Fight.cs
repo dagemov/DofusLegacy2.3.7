@@ -1001,8 +1001,23 @@ namespace Sunshine.WorldServer.Game.Fights
                     if (monster.Position.Point.DistanceToCell(fighter.Position.Point) <= monster.Position.Point.DistanceToCell(firstPosition.Point))
                     {
                         firstPosition = fighter.Position;
-                        monster.Position.Direction = monster.Position.Point.OrientationTo(fighter.Position.Point);
-                        fighter.Position.Direction = fighter.Position.Point.OrientationTo(monster.Position.Point);
+
+                        // PvP (jugador vs jugador): conservar orientación cardinal por equipo (EAST/WEST)
+                        // tal como GeneratePosition. OrientationTo(diagonal:true) producía SE/SW diagonales.
+                        if (monster is CharacterFighter && fighter is CharacterFighter)
+                        {
+                            monster.Position.Direction = monster.IsAttacker()
+                                ? DirectionsEnum.DIRECTION_EAST
+                                : DirectionsEnum.DIRECTION_WEST;
+                            fighter.Position.Direction = fighter.IsAttacker()
+                                ? DirectionsEnum.DIRECTION_EAST
+                                : DirectionsEnum.DIRECTION_WEST;
+                        }
+                        else
+                        {
+                            monster.Position.Direction = monster.Position.Point.OrientationTo(fighter.Position.Point);
+                            fighter.Position.Direction = fighter.Position.Point.OrientationTo(monster.Position.Point);
+                        }
                     }
                 }
             }
