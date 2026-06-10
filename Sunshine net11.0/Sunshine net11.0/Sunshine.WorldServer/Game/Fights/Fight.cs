@@ -1002,16 +1002,16 @@ namespace Sunshine.WorldServer.Game.Fights
                     {
                         firstPosition = fighter.Position;
 
-                        // PvP (jugador vs jugador): conservar orientación cardinal por equipo (EAST/WEST)
-                        // tal como GeneratePosition. OrientationTo(diagonal:true) producía SE/SW diagonales.
+                        // PvP: orientación cardinal hacia el rival (rojo→WEST, azul→EAST). EAST/WEST invertidos
+                        // dejaban a los jugadores espalda con espalda en el grid isométrico.
                         if (monster is CharacterFighter && fighter is CharacterFighter)
                         {
                             monster.Position.Direction = monster.IsAttacker()
-                                ? DirectionsEnum.DIRECTION_EAST
-                                : DirectionsEnum.DIRECTION_WEST;
+                                ? DirectionsEnum.DIRECTION_WEST
+                                : DirectionsEnum.DIRECTION_EAST;
                             fighter.Position.Direction = fighter.IsAttacker()
-                                ? DirectionsEnum.DIRECTION_EAST
-                                : DirectionsEnum.DIRECTION_WEST;
+                                ? DirectionsEnum.DIRECTION_WEST
+                                : DirectionsEnum.DIRECTION_EAST;
                         }
                         else
                         {

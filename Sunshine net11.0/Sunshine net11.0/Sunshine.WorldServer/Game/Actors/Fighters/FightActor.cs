@@ -2069,12 +2069,14 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             var cells = IsAttacker() ? (Map.RedCells ?? new List<short>()) : (Map.BlueCells ?? new List<short>());
 
+            // Atacante (rojo) mira WEST hacia el bando azul; defensor (azul) mira EAST hacia el rojo.
+            var placementDirection = IsAttacker() ? DirectionsEnum.DIRECTION_WEST : DirectionsEnum.DIRECTION_EAST;
             if (Position == null)
-                Position = new ObjectPosition(Map, 0, IsAttacker() ? DirectionsEnum.DIRECTION_EAST : DirectionsEnum.DIRECTION_WEST);
+                Position = new ObjectPosition(Map, 0, placementDirection);
             else
             {
                 Position.Map = Map;
-                Position.Direction = IsAttacker() ? DirectionsEnum.DIRECTION_EAST : DirectionsEnum.DIRECTION_WEST;
+                Position.Direction = placementDirection;
             }
 
             short? selectedCell = null;
