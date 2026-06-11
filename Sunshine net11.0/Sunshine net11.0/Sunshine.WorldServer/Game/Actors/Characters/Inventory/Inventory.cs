@@ -371,6 +371,9 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Inventory
 
         public bool CanEquip(BasePlayerItem item, CharacterInventoryPositionEnum position)
         {
+            if (!Game.Items.ItemCriteriaEvaluator.IsRespected(_character, item?.Template?.Criteria))
+                return false;
+
             if (_character.Level < item.Level)
                 return false;
 
@@ -636,7 +639,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Inventory
             {
                 if (ItemEffectHandler.TryGetRelatedStat(effect.Id, out var stats))
                 {
-                    var value = (short)effect.Value;
+                    var value = (short)Effects.EffectNumericResolver.GetNumericValue(effect);
                     if (ItemEffectHandler.IsNegativeEffectForStats(effect.Id))
                         value = (short)-value;
 
@@ -664,7 +667,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Inventory
             {
                 if (ItemEffectHandler.TryGetRelatedStat(effect.Id, out var stats))
                 {
-                    var value = (short)effect.Value;
+                    var value = (short)Effects.EffectNumericResolver.GetNumericValue(effect);
                     if (ItemEffectHandler.IsNegativeEffectForStats(effect.Id))
                         value = (short)-value;
 

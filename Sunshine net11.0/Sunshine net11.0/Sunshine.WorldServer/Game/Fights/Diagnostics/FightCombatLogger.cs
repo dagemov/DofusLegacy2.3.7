@@ -61,12 +61,34 @@ namespace Sunshine.WorldServer.Game.Fights.Diagnostics
                 $"event=DISPATCH caster={FighterId(caster)} spell={SpellId(spell)} effect={effect.Id} duration={effect.Duration} dice={effect.DiceNum}-{effect.DiceFace}");
         }
 
-        public static void LogSpellCast(Fight fight, FightActor caster, Spell spell, short cell)
+        public static void LogSpellCast(Fight fight, FightActor caster, Spell spell, short cell,
+            FightSpellCastCriticalEnum critical = FightSpellCastCriticalEnum.NORMAL, int handlerCount = -1)
         {
             if (!Enabled || fight == null)
                 return;
 
-            Write(fight.Id, $"event=CAST caster={FighterId(caster)} spell={SpellId(spell)} cell={cell}");
+            var detail = $"event=CAST caster={FighterId(caster)} spell={SpellId(spell)} cell={cell} critical={critical}";
+            if (handlerCount >= 0)
+                detail += $" handlers={handlerCount}";
+            Write(fight.Id, detail);
+        }
+
+        public static void LogSpellCastFailed(Fight fight, FightActor caster, Spell spell, string reason)
+        {
+            if (!Enabled || fight == null)
+                return;
+
+            Write(fight.Id,
+                $"event=CAST_FAIL caster={FighterId(caster)} spell={SpellId(spell)} reason={reason}");
+        }
+
+        public static void LogSummonFail(Fight fight, FightActor caster, Spell spell, int monsterId, string reason)
+        {
+            if (!Enabled || fight == null)
+                return;
+
+            Write(fight.Id,
+                $"event=SUMMON_FAIL caster={FighterId(caster)} spell={SpellId(spell)} monster={monsterId} reason={reason}");
         }
 
         public static void LogTrigger(Fight fight, FightActor target, BuffTriggerType trigger, TriggerBuff buff)

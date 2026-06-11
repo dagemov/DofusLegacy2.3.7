@@ -22,15 +22,17 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
         {
             var effectSchool = GetEffectSchool(Id);
             int effectiveDuration = Duration;
+            var (resolvedDiceNum, resolvedDiceFace, fixedBonus) = EffectDamageResolver.ResolveDice(Effect);
+
             foreach(var actor in GetAffectedActors())
             {
-                uint baseDiceNum = DiceNum;
+                uint baseDiceNum = resolvedDiceNum;
 
                 // Duration > 0 means damage over time (poison/trap): apply as a ticking buff.
                 if (effectiveDuration > 0)
                 {
                     var dotBuff = new Fights.Buffs.Spells.DamageOverTimeBuff(Caster, actor, Spell, Effect,
-                        (short)effectiveDuration, effectSchool, baseDiceNum, DiceFace);
+                        (short)effectiveDuration, effectSchool, baseDiceNum, resolvedDiceFace, fixedBonus);
                     actor.AddBuff(dotBuff);
                     continue;
                 }
@@ -52,7 +54,10 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
                     }
                 }
 
-                Damage damage = new Damage(effectSchool, baseDiceNum, DiceFace, Spell, Caster);
+                Damage damage = new Damage(effectSchool, baseDiceNum, resolvedDiceFace, Spell, Caster)
+                {
+                    FixedBonus = fixedBonus
+                };
                 actor.InflictDamage(damage);
             }
         }

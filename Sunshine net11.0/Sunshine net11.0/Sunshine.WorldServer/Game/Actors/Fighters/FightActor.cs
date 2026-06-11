@@ -768,6 +768,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     spell?.Level,
                     result: castResult.ToString(),
                     durationMs: castStopwatch.ElapsedMilliseconds);
+                Diagnostics.FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
                 return;
             }
 
@@ -816,7 +817,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (Visibility == GameActionFightInvisibilityStateEnum.INVISIBLE && !IsInvisibleSpellCast(effects))
                 SetInvisibilityState(GameActionFightInvisibilityStateEnum.DETECTED, this);
 
-            currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast);
+            int handlerCount = customCastHandler?.Handlers?.Length
+                ?? (effects != null ? effects.Count : 0);
+            currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast, handlerCount);
             this.UseAP((short)spell.Template.ApCost);
 
             if (spellCastCritical != FightSpellCastCriticalEnum.CRITICAL_FAIL)
@@ -1040,6 +1043,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             NormalizeFightHealth(false);
 
             damage.GenerateDamages();
+            damage.Amount += damage.FixedBonus;
 
             if (damage.Source != null && damage.Spell != null)
                 damage.Amount += damage.Source.GetSpellBoost(damage.Spell);
@@ -1966,7 +1970,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         private int CalculateDamageResistance(FightActor caster, int damage, EffectSchoolEnum type, bool pvp, double armor = 0, bool isPoisoned = false)
         {
             if (isPoisoned)
-                return 0;
+                return damage;
 
             double percentResist;
             double flatResist;

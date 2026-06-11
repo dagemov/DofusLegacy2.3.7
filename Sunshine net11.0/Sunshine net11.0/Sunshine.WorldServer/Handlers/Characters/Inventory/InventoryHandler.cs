@@ -474,41 +474,7 @@ namespace Sunshine.WorldServer.Handlers.Characters.Inventory
                         return spellPointAmount;
                 }
 
-                int value = 0;
-
-                if (item.RawObjectEffects != null)
-                {
-                    foreach (var rawEffect in item.RawObjectEffects.Where(x => x != null && x.actionId == (short)effectId))
-                    {
-                        switch (rawEffect)
-                        {
-                            case ObjectEffectInteger integerEffect when integerEffect.value > 0:
-                                value += integerEffect.value;
-                                break;
-                            case ObjectEffectMinMax minMaxEffect when minMaxEffect.max > 0:
-                                value += minMaxEffect.max;
-                                break;
-                            case ObjectEffectDice diceEffect when diceEffect.diceNum > 0:
-                                value += diceEffect.diceNum;
-                                break;
-                        }
-                    }
-                }
-
-                if (value <= 0 && item.Effects != null)
-                {
-                    foreach (var effect in item.Effects.Where(x => x != null && x.Id == effectId))
-                    {
-                        if (effect.Value > 0)
-                            value += effect.Value;
-                        else if (effect.DiceNum > 0)
-                            value += (int)effect.DiceNum;
-                        else if (effect.DiceFace > 0)
-                            value += (int)effect.DiceFace;
-                    }
-                }
-
-                return value > 0 ? value : 0;
+                return Game.Effects.EffectNumericResolver.GetNumericValue(item, effectId);
             }
 
             private static bool TryUseCharacterModificationItem(WorldClient client, BasePlayerItem item)

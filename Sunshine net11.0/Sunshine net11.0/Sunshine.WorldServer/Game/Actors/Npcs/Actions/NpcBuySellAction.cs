@@ -57,6 +57,12 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
                 return;
             }
 
+            if (!ItemCriteriaEvaluator.IsRespected(_character, template.Criteria))
+            {
+                InventoryHandler.SendExchangeErrorMessage(_character.Client, ExchangeErrorEnum.BUY_ERROR);
+                return;
+            }
+
             var newItem = ItemManager.Instance.CreatePlayerItem(objectGid, quantity);
             if (newItem == null)
             {

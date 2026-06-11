@@ -770,9 +770,9 @@ namespace Sunshine.WorldServer.Game.Fights
             ActionsHandler.SendGameActionFightReflectDamagesMessage(Clients, source, target, reflected);
         }
 
-        public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast)
+        public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast, int handlerCount = -1)
         {
-            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell);
+            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell, critical, handlerCount);
 
             foreach (CharacterFighter entry in GetAllFighters(x => x is CharacterFighter))
             {

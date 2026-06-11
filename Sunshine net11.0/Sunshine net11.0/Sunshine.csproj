@@ -1402,6 +1402,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectDispatcher.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectManager.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectNumericResolver.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Items\ItemEffectHandler.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Armor\DamageReduction.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Armor\DamageReflect.cs" />
@@ -1411,6 +1412,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Buffs\ReduceEffectDuration.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Buffs\SpellBoost.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\Damage.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\EffectDamageResolver.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\FixedDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\DirectDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\LoseHpByUsingAP.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\HpSteal.cs" />
@@ -1486,6 +1489,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\Guild.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\GuildDialog.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\GuildMember.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Items\ItemCriteriaEvaluator.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\BasePlayerItem.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\Custom\BoundLivingObjectItem.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\Custom\CommonLivingObject.cs" />
