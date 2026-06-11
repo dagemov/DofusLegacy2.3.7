@@ -768,7 +768,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     spell?.Level,
                     result: castResult.ToString(),
                     durationMs: castStopwatch.ElapsedMilliseconds);
-                Diagnostics.FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
+                FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
                 return;
             }
 
