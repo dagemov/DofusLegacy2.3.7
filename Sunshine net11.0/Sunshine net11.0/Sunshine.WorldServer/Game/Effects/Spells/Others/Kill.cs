@@ -8,8 +8,21 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Others
     [EffectHandler(EffectsEnum.Effect_Kill)]
     public class Kill : SpellEffectHandler
     {
+        /// <summary>
+        /// Sacrificial doll explosion (spell 233): Effect_Kill removes only the doll.
+        /// Enemies are damaged by the spell's damage effect, never by instant kill.
+        /// </summary>
+        private static bool IsSacrificialDollSuicide(int? spellId) => spellId == 233;
+
         public override void Apply()
         {
+            if (IsSacrificialDollSuicide(Spell?.Id))
+            {
+                if (Caster != null && Caster.IsAlive && !Caster.DeathHandled)
+                    Caster.Kill(Caster);
+                return;
+            }
+
             var actors = GetAffectedActors().ToList();
 
             // Self-target fallback: spells that kill the caster sometimes resolve with no
