@@ -18,7 +18,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Others
         {
             if (IsSacrificialDollSuicide(Spell?.Id))
             {
-                if (Caster != null && Caster.IsAlive && !Caster.DeathHandled)
+                if (Caster is SummonedMonster summoned && summoned.IsAlive && !Caster.DeathHandled)
+                    summoned.Die(Caster);
+                else if (Caster != null && Caster.IsAlive && !Caster.DeathHandled)
                     Caster.Kill(Caster);
                 return;
             }

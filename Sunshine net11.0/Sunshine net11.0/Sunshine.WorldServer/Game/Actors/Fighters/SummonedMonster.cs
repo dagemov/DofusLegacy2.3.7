@@ -13,7 +13,9 @@ using Sunshine.WorldServer.Game.Fights.Teams;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Handlers.Actions;
 using Sunshine.WorldServer.Handlers.Context;
+using Sunshine.WorldServer.Client;
 using Sunshine.WorldServer.Game.Fights.Diagnostics;
+using Sunshine.Protocol.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +60,20 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         }
 
         public override bool IsAlive { get { return base.IsAlive; } }
+
+        public override GameFightMinimalStats GetGameFightMinimalStats(WorldClient client = null)
+        {
+            var stats = base.GetGameFightMinimalStats(client);
+            stats.summoner = Summoner?.Id ?? 0;
+            return stats;
+        }
+
+        public override GameFightMinimalStatsPreparation GetGameFightMinimalStatsPreparation(WorldClient client = null)
+        {
+            var stats = base.GetGameFightMinimalStatsPreparation(client);
+            stats.summoner = Summoner?.Id ?? 0;
+            return stats;
+        }
 
         public virtual bool CanPlayTurn => Monster?.Record?.CanPlay ?? true;
 

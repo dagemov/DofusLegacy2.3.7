@@ -139,7 +139,24 @@ El Sadida (`378`) y el enemigo deben **sobrevivir** salvo que el daño de `Effec
 3. **Sacrificada:** invocar 189, muñeca camina y explota con 233 cerca del rival → daño parcial al enemigo, muñeca muere, Sadida vivo.
 4. Revisar logs: ausencia de `HEAL` enemigo desde Gonflable; ausencia de `KILL`/muerte instantánea del enemigo tras `Effect_Kill` en spell 233.
 
-## 5. Referencias
+## 6. Fix contador invocaciones (stats.summoner) — jun 2026
+
+### Síntoma
+Tras invocar el máximo de muñecas (p. ej. 3/3 Sadida), al morir una (Sacrificada al explotar) el hechizo de invocación queda **no seleccionable** en cliente aunque haya hueco.
+
+### Causa
+`GameFightMinimalStats.summoner` se rellenaba con `SummonLimit` (3) en lugar del id del invocador (378). El cliente solo hace `removeSummonedCreature()` si `stats.summoner == player.id`.
+
+### Fix
+- `FightActor`: campo `summoner` en stats = `0` para no-invocaciones.
+- `SummonedMonster`: override con `stats.summoner = Summoner.Id`.
+- `Kill.cs` spell 233: `summoned.Die()` para `SUMMON_DIE` + liberar slot en cliente.
+
+### Validación
+1. Invocar 3 muñecas, matar una (Sacrificada 233).
+2. Debe poderse volver a lanzar spell 189 u otra invocación.
+3. Log: `SUMMON_DIE` al explotar; sin bloqueo de UI.
+
 
 - Informe HTML: `docs/informe-combate-osa-sadida.html`
 - Contexto fixes previos: `docs/informe-logs-combate-y-fix-hechizos.md` (§6.1, §6.3)
