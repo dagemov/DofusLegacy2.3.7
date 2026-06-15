@@ -714,7 +714,8 @@ namespace Sunshine.WorldServer.Handlers.Characters
             if (client.Character != null)
             {
                 SyncAccountTokens(client, client.Character);
-                EnsureAutoLearnJobs(client.Character);
+                // EnsureAutoLearnJobs disabled for P0 — blocks NPC profession learning validation. See P1 config flag.
+                // EnsureAutoLearnJobs(client.Character);
                 int receivedTokens = client.Character.Inventory != null ? client.Character.Inventory.MergePendingTokens(false) : 0;
                 client.Send(new CharacterSelectedSuccessMessage(client.Character.GetCharacterBaseInformations()));
                 InventoryHandler.SendInventoryContentMessage(client);
@@ -766,7 +767,8 @@ namespace Sunshine.WorldServer.Handlers.Characters
             if (client.Character != null)
             {
                 SyncAccountTokens(client, client.Character);
-                EnsureAutoLearnJobs(client.Character);
+                // EnsureAutoLearnJobs disabled for P0 — blocks NPC profession learning validation. See P1 config flag.
+                // EnsureAutoLearnJobs(client.Character);
                 int receivedTokens = client.Character.Inventory != null ? client.Character.Inventory.MergePendingTokens(false) : 0;
                 client.Send(new CharacterSelectedSuccessMessage(client.Character.GetCharacterBaseInformations()));
                 InventoryHandler.SendInventoryContentMessage(client);
