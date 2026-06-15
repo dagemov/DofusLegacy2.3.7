@@ -24,6 +24,7 @@ using Sunshine.WorldServer.Game.Effects;
 using Sunshine.WorldServer.Game.Effects.Items;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.Protocol.Utils;
+using Sunshine.BaseServer.Configuration;
 
 namespace Sunshine.WorldServer.Game.Actors.Fighters
 {
@@ -32,6 +33,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         public Character Character { get; set; }
 
         private int _weaponUses;
+        private int _weaponUsesPerFight;
         private bool _isUsingWeapon;
         private int _criticalWeaponBonus;
 
@@ -152,10 +154,19 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     return SpellCastResult.CELL_NOT_FREE;
             }
 
-            int maxWeaponUses = (weaponTemplate != null && (ItemTypeEnum)weaponTemplate.TypeId == ItemTypeEnum.DAGUE) ? 2 : 1;
-            if (_weaponUses >= maxWeaponUses)
+            var serverRates = ServerRatesProvider.Instance.Current;
+            int maxWeaponUses = serverRates.ResolveMaxWeaponUsesPerTurn();
+            int maxWeaponUsesPerFight = serverRates.ResolveMaxWeaponUsesPerFight();
+
+            if (maxWeaponUses != int.MaxValue && _weaponUses >= maxWeaponUses)
             {
                 Character.SendServerMessage($"No puedes atacar más de {maxWeaponUses} {(maxWeaponUses == 1 ? "vez" : "veces")} por turno.");
+                return SpellCastResult.CANNOT_PLAY;
+            }
+
+            if (maxWeaponUsesPerFight != int.MaxValue && _weaponUsesPerFight >= maxWeaponUsesPerFight)
+            {
+                Character.SendServerMessage($"No puedes atacar más de {maxWeaponUsesPerFight} {(maxWeaponUsesPerFight == 1 ? "vez" : "veces")} por combate.");
                 return SpellCastResult.CANNOT_PLAY;
             }
 
@@ -182,6 +193,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             bool silentCast = false;
             _isUsingWeapon = true;
             _weaponUses++;
+            _weaponUsesPerFight++;
             _criticalWeaponBonus = critical == FightSpellCastCriticalEnum.CRITICAL_HIT && weaponTemplate != null
                 ? weaponTemplate.CriticalHitBonus
                 : 0;

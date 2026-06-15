@@ -39,7 +39,7 @@ namespace Sunshine.WorldServer.Game.Fights.Results
         {
             double basePercent = GameRates.ApplyDrop(GetDropPercent(gradeId, drop));
 
-            double prospectionMultiplier = prospection / 100.0;
+            double prospectionMultiplier = (prospection / 100.0) * GameRates.ProspectingMultiplier;
             double realChance = Math.Min(100.0, basePercent * prospectionMultiplier);
 
             if (isVip)
