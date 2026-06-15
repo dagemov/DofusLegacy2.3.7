@@ -17,7 +17,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
 
             if (alreadyKnown)
             {
-                Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=already_known");
+                NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "already_known");
                 Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=true saved=false notified=false");
                 return false;
             }
@@ -28,7 +28,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
 
             if (!added)
             {
-                Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=rejected_max_jobs");
+                NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "rejected_max_jobs");
                 Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=false notified=false baseCountBefore={baseCountBefore}");
                 return false;
             }
@@ -37,7 +37,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             JobHandler.SendVisibleJobDataMessage(Client);
             Client.Send(new JobListedUpdateMessage(true, job));
 
-            Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=success");
+            NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "success");
             Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=true notified=true baseCountBefore={baseCountBefore}");
             return true;
         }

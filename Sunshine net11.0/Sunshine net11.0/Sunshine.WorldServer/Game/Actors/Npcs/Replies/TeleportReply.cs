@@ -29,8 +29,11 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
                 Client.Character.Teleport(map, cell);
                 Client.Character.Dialog = null;
                 DialogHandler.SendLeaveDialogMessage(Client);
+                NpcReplyActionDiagnostics.LogTeleport(Npc, 0, Parameters[0] as string, "success");
                 return true;
             }
+
+            NpcReplyActionDiagnostics.LogTeleport(Npc, 0, Parameters[0] as string, "map_not_found");
             return false;
         }
     }
