@@ -64,20 +64,22 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
             {
                 int type = _npc.GetNpcTypes[replyIndex];
                 var args = _npc.GetParameters.Count > replyIndex ? _npc.GetParameters[replyIndex] : string.Empty;
-                Logger.WriteInfo($"[NpcReply] charId={_character.Id} npcId={_npc.Record.Id} replyId={reply} actionType={type} args={args}");
 
-                if (type != 1)
+                if (type == 1)
                 {
-                    if (!ReplyDispatcher.Dispatch(_character.Client, _npc, new List<object>
-                    {
-                        type,
-                        _npc.GetParameters.Count > replyIndex ? _npc.GetParameters[replyIndex] : string.Empty
-                    }))
-                        return;
-
-                    if (_character.Dialog == null || _character.Dialog != this)
-                        return;
+                    NpcReplyActionDiagnostics.LogReplySelection(_character.Client, _npc, currentMessage, reply, type, args, "Navigate");
                 }
+                else if (!ReplyDispatcher.Dispatch(_character.Client, _npc, currentMessage, reply, new List<object>
+                {
+                    type,
+                    args
+                }))
+                {
+                    return;
+                }
+
+                if (_character.Dialog == null || _character.Dialog != this)
+                    return;
             }
 
             short nextMessage = _npc.GetNextDialogMessageId(currentMessage);

@@ -305,6 +305,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\Reply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\ReplyAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\ReplyDispatcher.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\NpcReplyActionDiagnostics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\SellItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\TeleportReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\UpdateObjectiveReply.cs" />
