@@ -1,0 +1,9 @@
+# Server rates — edit and restart Sunshine to apply.
+# 0 on combat limits means unlimited where documented.
+XP_RATE=2
+DROP_RATE=1
+KAMAS_RATE=1
+PP_RATE=1
+WEAPON_USES_PER_TURN=2
+WEAPON_USES_PER_FIGHT=0
+SPELL_USES_DEFAULT=0
