@@ -28,6 +28,7 @@ namespace Sunshine
         static void Main(string[] args)
         {
             BaseServer.Configuration.GameConfig.Load();
+            BaseServer.Configuration.ServerRatesProvider.Instance.Reload();
             BaseServer.Configuration.GameRates.Reload();
             ApplyStartupSettings(args);
 

@@ -22,6 +22,15 @@ namespace Sunshine.Logs
                 SaveLog(message);
         }
 
+        public static void WriteWarning(string warning)
+        {
+            string message = string.Format("[ Warning ] {0}", warning);
+            Program.WriteConsoleLine(message, ConsoleColor.Yellow);
+
+            if (EnableDiskLogs)
+                SaveLog(message);
+        }
+
         public static void WriteError(string error)
         {
             string message = string.Format("[ Error ] {0}", error);

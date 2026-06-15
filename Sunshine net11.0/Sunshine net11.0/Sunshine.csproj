@@ -63,6 +63,10 @@
 		<Compile Include="Sunshine.BaseServer\Shutdown\ShutdownManager.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\GameRates.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\GameConfig.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\IServerRatesProvider.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesConfig.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesConfigLoader.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesProvider.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\ListenAddressResolver.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\Commands\CommandsLoader.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\World\BidsHouse\BidsHouseLoader.cs" />
