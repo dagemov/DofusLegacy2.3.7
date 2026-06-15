@@ -25,6 +25,8 @@ using Sunshine.WorldServer.Game.Maps.Interactives;
 using Sunshine.WorldServer.Handlers.Houses;
 using Sunshine.WorldServer.Handlers.Mounts;
 using Sunshine.WorldServer.Handlers.Paddocks;
+using Sunshine.WorldServer.Handlers.Dialogs;
+using Sunshine.Logs;
 
 namespace Sunshine.WorldServer.Handlers.Context.Roleplay
 {
@@ -193,6 +195,7 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
 
         public static void SendNpcDialogCreationMessage(WorldClient client, Npc npc)
         {
+            Logger.WriteInfo($"[NpcDialog] charId={client.Character.Id} npcId={npc.Record.Id} mapId={client.Character.Map.Id} dialogId=open");
             client.Send(new NpcDialogCreationMessage(client.Character.Map.Id, npc.Id));
         }
 
@@ -212,7 +215,8 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
 
             if (npc.GetDialogRepliesId.Count <= 0)
             {
-                client.Character.Dialog = null;
+                Logger.WriteWarning($"[NpcDialog] charId={client.Character.Id} npcId={npc.Record.Id} mapId={client.Character.Map.Id} dialogId={npc.GetFirstDialogMessageId()} replies=0 result=AutoClose");
+                DialogHandler.SendLeaveDialogMessage(client);
                 return;
             }
 
@@ -224,6 +228,7 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
 
             if (!npc.Record.HasQuest)
             {
+                Logger.WriteInfo($"[NpcDialog] charId={client.Character.Id} npcId={npc.Record.Id} mapId={client.Character.Map.Id} dialogId={firstMessage}");
                 client.Send(new NpcDialogQuestionMessage(firstMessage, dialogParams, visibleReplies));
             }
             else
@@ -462,6 +467,12 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
 
         public static void SendNpcDialogQuestionMessage(WorldClient client, short messageId, IEnumerable<string> dialogs, IEnumerable<short> replies)
         {
+            if (client?.Character != null)
+            {
+                var npcId = client.Character.Dialog is NpcTalkAction talk ? talk.Npc.Record.Id : 0;
+                Logger.WriteInfo($"[NpcDialog] charId={client.Character.Id} npcId={npcId} mapId={client.Character.Map.Id} dialogId={messageId}");
+            }
+
             client.Send(new NpcDialogQuestionMessage(messageId, dialogs, replies));
         }
 
