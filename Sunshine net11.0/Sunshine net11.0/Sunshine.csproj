@@ -63,6 +63,10 @@
 		<Compile Include="Sunshine.BaseServer\Shutdown\ShutdownManager.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\GameRates.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\GameConfig.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\IServerRatesProvider.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesConfig.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesConfigLoader.cs" />
+		<Compile Include="Sunshine.BaseServer\Configuration\ServerRatesProvider.cs" />
 		<Compile Include="Sunshine.BaseServer\Configuration\ListenAddressResolver.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\Commands\CommandsLoader.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\World\BidsHouse\BidsHouseLoader.cs" />
@@ -1402,6 +1406,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectDispatcher.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectManager.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\EffectNumericResolver.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Items\ItemEffectHandler.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Armor\DamageReduction.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Armor\DamageReflect.cs" />
@@ -1411,6 +1416,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Buffs\ReduceEffectDuration.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Buffs\SpellBoost.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\Damage.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\EffectDamageResolver.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\FixedDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\DirectDamage.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\LoseHpByUsingAP.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Damages\HpSteal.cs" />
@@ -1486,6 +1493,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\Guild.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\GuildDialog.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Guilds\GuildMember.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Items\ItemCriteriaEvaluator.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\BasePlayerItem.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\Custom\BoundLivingObjectItem.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Items\Custom\CommonLivingObject.cs" />
@@ -1563,6 +1571,8 @@
 		<Compile Include="Sunshine.WorldServer\Game\Spells\Effect.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Diagnostics\FightCombatLogger.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Fight.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\CombatReadyCheckerSettings.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\ReadyChecker.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\CombatTelemetry.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Mechanics\FrigostBossMechanics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Types\FightPvM.cs" />

@@ -770,9 +770,9 @@ namespace Sunshine.WorldServer.Game.Fights
             ActionsHandler.SendGameActionFightReflectDamagesMessage(Clients, source, target, reflected);
         }
 
-        public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast)
+        public void OnSpellCasted(FightActor caster, Spell spell, short targetCell, FightSpellCastCriticalEnum critical, bool silentCast, int handlerCount = -1)
         {
-            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell);
+            Diagnostics.FightCombatLogger.LogSpellCast(this, caster, spell, targetCell, critical, handlerCount);
 
             foreach (CharacterFighter entry in GetAllFighters(x => x is CharacterFighter))
             {
@@ -1001,8 +1001,18 @@ namespace Sunshine.WorldServer.Game.Fights
                     if (monster.Position.Point.DistanceToCell(fighter.Position.Point) <= monster.Position.Point.DistanceToCell(firstPosition.Point))
                     {
                         firstPosition = fighter.Position;
-                        monster.Position.Direction = monster.Position.Point.OrientationTo(fighter.Position.Point);
-                        fighter.Position.Direction = fighter.Position.Point.OrientationTo(monster.Position.Point);
+
+                        // PvP: orientationTo del cliente (OrientationToAdjacent). Ej. celdas 59/88 → SE(1) / NW(5).
+                        if (monster is CharacterFighter && fighter is CharacterFighter)
+                        {
+                            monster.Position.Direction = monster.Position.Point.OrientationToAdjacent(fighter.Position.Point);
+                            fighter.Position.Direction = fighter.Position.Point.OrientationToAdjacent(monster.Position.Point);
+                        }
+                        else
+                        {
+                            monster.Position.Direction = monster.Position.Point.OrientationTo(fighter.Position.Point);
+                            fighter.Position.Direction = fighter.Position.Point.OrientationTo(monster.Position.Point);
+                        }
                     }
                 }
             }

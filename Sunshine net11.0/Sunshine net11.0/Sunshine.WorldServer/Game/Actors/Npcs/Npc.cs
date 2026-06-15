@@ -153,7 +153,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs
 
                 var item = ItemManager.Instance.Items[shop.Item];
                 var npcPrice = shop.GetPrice((int)item.Price);
-                objectItems.Add(new ObjectItemToSellInNpcShop((short)shop.Item, 0, false, item.EffectsBase.Select(x => x.GetObjectEffectMinMax()), npcPrice, string.Empty));
+                objectItems.Add(new ObjectItemToSellInNpcShop((short)shop.Item, 0, false, item.EffectsBase.Select(x => x.GetObjectEffectMinMax()), npcPrice, item.Criteria ?? string.Empty));
             }
 
             GetObjectItemToSellInNpcShops = objectItems;

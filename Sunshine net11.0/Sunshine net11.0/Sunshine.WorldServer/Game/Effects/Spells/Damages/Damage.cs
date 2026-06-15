@@ -62,6 +62,8 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
 
         public int Amount { get; set; }
 
+        public int FixedBonus { get; set; }
+
         public EffectGenerationEnum EffectGenerationType { get; set; }
        
     }

@@ -2,6 +2,7 @@ using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Effects.Spells.Damages;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Spells;
 using System;
 
@@ -12,9 +13,14 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
         private EffectSchoolEnum _effectSchool;
         private uint _diceNum;
         private uint _diceFace;
+        private int _fixedBonus;
+
+        public EffectSchoolEnum EffectSchool => _effectSchool;
+        public uint DiceNum => _diceNum;
+        public uint DiceFace => _diceFace;
 
         public DamageOverTimeBuff(FightActor caster, FightActor target, Spell spell, Effect effect,
-            short duration, EffectSchoolEnum effectSchool, uint diceNum, uint diceFace)
+            short duration, EffectSchoolEnum effectSchool, uint diceNum, uint diceFace, int fixedBonus = 0)
         {
             Id = caster.PopNextBuffId();
             Caster = caster;
@@ -26,6 +32,7 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             _effectSchool = effectSchool;
             _diceNum = diceNum;
             _diceFace = diceFace;
+            _fixedBonus = fixedBonus;
         }
 
         public override void Apply()
@@ -41,8 +48,12 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             if (Target == null || Target.IsDead())
                 return;
 
-            Damage damage = new Damage(_effectSchool, _diceNum, _diceFace, Spell, Caster);
+            Damage damage = new Damage(_effectSchool, _diceNum, _diceFace, Spell, Caster)
+            {
+                FixedBonus = _fixedBonus
+            };
             Target.InflictDamage(damage, true);
+            FightCombatLogger.LogBuffTick(Target.Fight, Target, this, "DOT", damage.Amount, Duration);
         }
 
         public override AbstractFightDispellableEffect GetAbstractFightDispellableEffect()

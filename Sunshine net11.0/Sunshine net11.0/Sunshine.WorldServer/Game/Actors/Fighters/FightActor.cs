@@ -225,7 +225,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             return pvpResist;
         }
-        public GameFightMinimalStatsPreparation GetGameFightMinimalStatsPreparation(WorldClient client = null)
+        public virtual GameFightMinimalStatsPreparation GetGameFightMinimalStatsPreparation(WorldClient client = null)
         {
             return new GameFightMinimalStatsPreparation(
                 Stats.Health.Total,
@@ -235,7 +235,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Shield].TotalMax,
                 (short)Stats.AP.Total,
                 (short)Stats.MP.Total,
-                Stats[StatsEnum.SummonLimit].TotalMax,
+                0,
                 GetDisplayedResistPercent(StatsEnum.NeutralResistPercent),
                 GetDisplayedResistPercent(StatsEnum.EarthResistPercent),
                 GetDisplayedResistPercent(StatsEnum.WaterResistPercent),
@@ -249,7 +249,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Initiative].TotalMax);
         }
 
-        public GameFightMinimalStats GetGameFightMinimalStats(WorldClient client = null)
+        public virtual GameFightMinimalStats GetGameFightMinimalStats(WorldClient client = null)
         {
             return new GameFightMinimalStats(
                 Stats.Health.Total,
@@ -259,7 +259,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Shield].TotalMax,
                 (short)Stats.AP.Total,
                 (short)Stats.MP.Total,
-                Stats[StatsEnum.SummonLimit].TotalMax,
+                0,
                 GetDisplayedResistPercent(StatsEnum.NeutralResistPercent),
                 GetDisplayedResistPercent(StatsEnum.EarthResistPercent),
                 GetDisplayedResistPercent(StatsEnum.WaterResistPercent),
@@ -318,6 +318,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             CombatTelemetry.LogTurnEvent("NextTurnStarted", Fight, this);
             CombatTelemetry.LogTurnEvent("TurnStarted", Fight, this);
+            FightCombatLogger.LogTurnStart(Fight, this, Fight.GetCompletedRounds());
 
             Fight.Timer?.Dispose();
             Fight.Timer = null;
@@ -380,12 +381,14 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
                 if (this is PrismFighter || this is BombFighter)
                 {
+                    Fights.Diagnostics.FightCombatLogger.LogTurnSkip(Fight, this, this is BombFighter ? "bomb" : "prism");
                     this.EndTurn();
                     return;
                 }
 
                 if (!controlledSlaveTurn && this is SummonedMonster staticSummon && !staticSummon.CanPlayTurn)
                 {
+                    Fights.Diagnostics.FightCombatLogger.LogTurnSkip(Fight, this, "static-summon");
                     this.EndTurn();
                     return;
                 }
@@ -420,13 +423,13 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (currentFight == null || currentFight.State != FightStateEnum.Fighting || currentFight.FighterPlaying != this)
                 return;
 
-            CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this);
-
-            FrigostBossMechanics.OnTurnEnded(this);
-
             CombatTelemetry.LogTurnEvent("EndTurnRequested", currentFight, this, detail: $"source={source}");
 
             FrigostBossMechanics.OnTurnEnded(this);
+
+            currentFight.Timer?.Stop();
+            currentFight.Timer?.Dispose();
+            currentFight.Timer = null;
 
             currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_GLYPH_TRAP);
             currentFight.TriggerMarks(this.Position.Cell, this, TriggerTypeEnum.TURN_END);
@@ -448,20 +451,40 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 return;
 
             CombatTelemetry.LogTurnEvent("EndTurnCompleted", currentFight, this);
-            CombatTelemetry.LogTurnEvent("NextTurnRequested", currentFight, this);
+
+            // Direct turn hand-off. The ReadyChecker state machine introduced by the merge
+            // was incomplete (_turnEndStarted was never set, so TryAdvanceTurn always aborted
+            // and the next fighter's StartTurn never ran, freezing the turn order). Advance
+            // immediately, as the stable pre-merge build did. GetFighterPlaying() is stateful
+            // and must be called exactly once.
             currentFight.FighterPlaying = currentFight.GetFighterPlaying();
             if (currentFight.FighterPlaying != null)
-                CombatTelemetry.LogTurnEvent("TurnOwner", currentFight, currentFight.FighterPlaying, detail: "source=EndTurn");
+                CombatTelemetry.LogTurnEvent("TurnOwner", currentFight, currentFight.FighterPlaying, detail: $"source={source}");
 
-            if (CombatReadyCheckerSettings.Enabled)
+            if (this is SlaveFighter controlledSlave && controlledSlave.IsControlledBySummoner() && !controlledSlave.MustAutoUnspawnAfterTurn)
+                controlledSlave.RestoreSummonerContext();
+
+            if (this is SlaveFighter autoUnspawnSlave && autoUnspawnSlave.MustAutoUnspawnAfterTurn && autoUnspawnSlave.IsAlive)
             {
-                var waiters = currentFight.GetAllFighters(x => x is CharacterFighter)
-                    .Cast<CharacterFighter>()
-                    .ToArray();
-                currentFight.Checker.Start(this, waiters);
+                autoUnspawnSlave.IsAutoUnspawning = true;
+                autoUnspawnSlave.Die(this);
+
+                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
+                    return;
             }
-            else
-                currentFight.TryAdvanceTurn("ReadyCheckerDisabled");
+            else if (this is SummonedMonster summonedMonster && summonedMonster.IsAlive)
+            {
+                if (summonedMonster.Monster?.Record?.Id == SlaveFighter.RoublabotMonsterId)
+                    summonedMonster.Die(this);
+                else if (summonedMonster.DiesAtTurnEnd)
+                    summonedMonster.Die(this);
+
+                if (currentFight.State != FightStateEnum.Fighting || currentFight.CheckFightEnd())
+                    return;
+            }
+
+            if (currentFight.FighterPlaying != null)
+                currentFight.FighterPlaying.StartTurn();
         }
 
         public void ShowCell(short cellId, bool team = true)
@@ -746,6 +769,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                     spell?.Level,
                     result: castResult.ToString(),
                     durationMs: castStopwatch.ElapsedMilliseconds);
+                FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
                 return;
             }
 
@@ -794,7 +818,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (Visibility == GameActionFightInvisibilityStateEnum.INVISIBLE && !IsInvisibleSpellCast(effects))
                 SetInvisibilityState(GameActionFightInvisibilityStateEnum.DETECTED, this);
 
-            currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast);
+            int handlerCount = customCastHandler?.Handlers?.Length
+                ?? (effects != null ? effects.Count : 0);
+            currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast, handlerCount);
             this.UseAP((short)spell.Template.ApCost);
 
             if (spellCastCritical != FightSpellCastCriticalEnum.CRITICAL_FAIL)
@@ -1018,6 +1044,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             NormalizeFightHealth(false);
 
             damage.GenerateDamages();
+            damage.Amount += damage.FixedBonus;
 
             if (damage.Source != null && damage.Spell != null)
                 damage.Amount += damage.Source.GetSpellBoost(damage.Spell);
@@ -1146,7 +1173,10 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             int realHeal = Math.Max(0, Stats.Health.Total - lifeBefore);
             if (realHeal > 0)
+            {
+                FightCombatLogger.LogHeal(Fight, source, this, realHeal);
                 Fight.OnLifePointsChanged(realHeal, source, this);
+            }
         }
 
         public void ExchangePositions(FightActor with)
@@ -1944,7 +1974,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         private int CalculateDamageResistance(FightActor caster, int damage, EffectSchoolEnum type, bool pvp, double armor = 0, bool isPoisoned = false)
         {
             if (isPoisoned)
-                return 0;
+                return damage;
 
             double percentResist;
             double flatResist;
@@ -2140,6 +2170,9 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             this.m_buffList.Add(buff);
             ContextHandler.SendGameActionFightDispellableEffectMessage(Fight.Clients, buff, false);
 
+            if (buff is Fights.Buffs.Spells.DamageOverTimeBuff || buff is Fights.Buffs.Spells.HealOverTimeBuff)
+                FightCombatLogger.LogBuffAdd(Fight, this, buff);
+
             if (apply)
                 buff.Apply();
 
@@ -2206,7 +2239,11 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             Buff[] buffs = this.m_buffList.Where(x => x.Caster == caster && x.IsBuffEnded()).ToArray();
             Buff[] buffs2 = buffs;
             for (int i = 0; i < buffs2.Length; i++)
+            {
+                if (buffs2[i] is Fights.Buffs.Spells.DamageOverTimeBuff || buffs2[i] is Fights.Buffs.Spells.HealOverTimeBuff)
+                    FightCombatLogger.LogBuffExpire(Fight, this, buffs2[i], "duration");
                 this.RemoveBuff(buffs2[i]);
+            }
         }
 
         public void DecrementsAllBuffsDuration()

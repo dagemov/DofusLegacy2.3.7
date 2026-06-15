@@ -27,11 +27,16 @@ namespace Sunshine.BaseServer.Configuration
 
         public static void Reload()
         {
-            Xp = Normalize(GameConfig.GetDouble("RateXp", 5d), 5d);
-            Kamas = Normalize(GameConfig.GetDouble("RateKamas", 5d), 5d);
-            Drop = Normalize(GameConfig.GetDouble("RateDrop", 5d), 5d);
+            var serverRates = string.IsNullOrWhiteSpace(ServerRatesProvider.Instance.LoadedFilePath)
+                ? null
+                : ServerRatesProvider.Instance.Current;
+
+            Xp = Normalize(serverRates != null ? serverRates.XpRate : GameConfig.GetDouble("RateXp", 5d), 5d);
+            Kamas = Normalize(serverRates != null ? serverRates.KamasRate : GameConfig.GetDouble("RateKamas", 5d), 5d);
+            Drop = Normalize(serverRates != null ? serverRates.DropRate : GameConfig.GetDouble("RateDrop", 5d), 5d);
             JobXp = Normalize(GameConfig.GetDouble("RateJobXp", 5d), 5d);
             MountXp = Normalize(GameConfig.GetDouble("RateMountXp", 5d), 5d);
+            ProspectingMultiplier = Normalize(serverRates != null ? serverRates.PpRate : 1d, 1d);
 
             FightKamasLevel1Min = NormalizeInt(GameConfig.GetInt("FightKamasLevel1Min", 2500), 2500);
             FightKamasLevel1Max = NormalizeInt(GameConfig.GetInt("FightKamasLevel1Max", 7500), 7500);
@@ -53,6 +58,8 @@ namespace Sunshine.BaseServer.Configuration
         public static double MountXp { get; private set; }
 
         public static double DropQuantityMultiplier { get; private set; }
+
+        public static double ProspectingMultiplier { get; private set; }
 
         public static int FightKamasLevel1Min { get; private set; }
         public static int FightKamasLevel1Max { get; private set; }

@@ -125,7 +125,25 @@ namespace Sunshine.MySql.Database.Managers
         public CharacterRecord GetCharacter(string name)
         {
             CharacterPaddockBootstrap.EnsurePaddockIdColumn();
-            return DatabaseManager.Connection.QueryFirstOrDefault<CharacterRecord>($"SELECT * FROM characters WHERE Name = '{name}'");
+            return DatabaseManager.Connection.QueryFirstOrDefault<CharacterRecord>(
+                "SELECT * FROM characters WHERE LOWER(Name) = LOWER(@Name) LIMIT 1",
+                new { Name = (name ?? string.Empty).Trim() });
+        }
+
+        public bool IsCharacterNameTaken(string name, int? exceptCharacterId = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            CharacterPaddockBootstrap.EnsurePaddockIdColumn();
+            var existingId = DatabaseManager.Connection.QueryFirstOrDefault<int?>(
+                "SELECT Id FROM characters WHERE LOWER(Name) = LOWER(@Name) LIMIT 1",
+                new { Name = name.Trim() });
+
+            if (!existingId.HasValue)
+                return false;
+
+            return !exceptCharacterId.HasValue || existingId.Value != exceptCharacterId.Value;
         }
 
         public void InsertCharacter(WorldCharacter worldCharacter)

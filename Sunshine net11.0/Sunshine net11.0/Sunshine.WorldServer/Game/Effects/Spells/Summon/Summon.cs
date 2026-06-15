@@ -3,6 +3,7 @@ using Sunshine.Protocol.Enums;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Actors.Monsters;
 using Sunshine.WorldServer.Game.Fights.Bombs;
+using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Game.Spells;
@@ -23,7 +24,10 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
         public override void Apply()
         {
             if (Caster == null || !Caster.IsAlive || Fight == null)
+            {
+                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, (int)Effect.DiceNum, "invalid_caster_or_fight");
                 return;
+            }
 
             int monsterId = FrigostBossMechanics.ResolveForcedSummonMonsterId(Caster, (int)Effect.DiceNum);
 
@@ -32,6 +36,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                 mTemplate == null || mGrades == null || mGrades.Count == 0)
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot summon monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}.");
+                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "monster_template_missing");
                 if (Caster is CharacterFighter errorCaster && errorCaster.Character != null)
                     errorCaster.Character.SendServerMessage("No se puede invocar esta entidad: plantilla no encontrada.", System.Drawing.Color.Red);
                 return;
@@ -47,6 +52,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             catch (System.Exception ex)
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot instantiate summoned monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}: {ex}");
+                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "monster_instantiate_error");
                 if (Caster is CharacterFighter summonCaster && summonCaster.Character != null)
                     summonCaster.Character.SendServerMessage("No se puede invocar esta entidad: error en la plantilla del monstruo.", System.Drawing.Color.Red);
                 return;
@@ -60,6 +66,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
 
                 if (bombCount >= BombFighter.BombLimit)
                 {
+                    FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "bomb_limit_reached");
                     if (Caster is CharacterFighter characterCaster && characterCaster.Character != null)
                         characterCaster.Character.SendServerMessage("No puedes colocar más de 3 bombas.", System.Drawing.Color.Red);
 
@@ -77,6 +84,8 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             bool needsSummonSlot = Effect.Id != EffectsEnum.Effect_SummonBomb && (monster.Record?.UseSummonSlot ?? true);
             if (needsSummonSlot && !Caster.CanSummon())
             {
+                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId,
+                    $"max_summons count={Caster.SummonedCount} limit={Caster.Stats[StatsEnum.SummonLimit].Total}");
                 if (Caster is CharacterFighter maxSummonCaster && maxSummonCaster.Character != null)
                     maxSummonCaster.Character.SendServerMessage("Has alcanzado el número máximo de invocaciones.", System.Drawing.Color.Red);
                 return;
@@ -136,6 +145,10 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             ContextHandler.SendGameFightUpdateTeamMessage(Fight.Clients, Caster.Team);
             ContextHandler.SendGameFightTurnListMessage(Fight.Clients, Fight);
             ActionsHandler.SendGameActionFightSummonMessage(Fight.Clients, (ISummoned)summonedActor);
+
+            bool usesSummonSlot = summonedActor is SummonedMonster summonSlotMonster && summonSlotMonster.Monster.Record.UseSummonSlot;
+            FightCombatLogger.LogSummonCreate(Fight, Caster, summonedActor, monsterId, summonCell,
+                usesSummonSlot, Caster.SummonedCount, Caster.Stats[StatsEnum.SummonLimit].Total);
 
             if (applySlaveStates && summonedActor is SlaveFighter slave)
             {

@@ -1,5 +1,6 @@
 ﻿using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Spells;
+using Sunshine.BaseServer.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,8 @@ namespace Sunshine.WorldServer.Game.Fights.History
                         return true;
                     else
                     {
-                        if (spell.Template.MaxCastPerTurn > 0u && (long)array.Length >= (long)((ulong)spell.Template.MaxCastPerTurn))
+                        var maxCastPerTurn = ServerRatesProvider.Instance.Current.ResolveMaxSpellUsesPerTurn((uint)spell.Template.MaxCastPerTurn);
+                        if (maxCastPerTurn > 0u && (long)array.Length >= (long)maxCastPerTurn)
                             return false;
                         else
                         {
