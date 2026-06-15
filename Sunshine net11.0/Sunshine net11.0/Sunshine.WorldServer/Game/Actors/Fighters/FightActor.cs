@@ -225,7 +225,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             return pvpResist;
         }
-        public GameFightMinimalStatsPreparation GetGameFightMinimalStatsPreparation(WorldClient client = null)
+        public virtual GameFightMinimalStatsPreparation GetGameFightMinimalStatsPreparation(WorldClient client = null)
         {
             return new GameFightMinimalStatsPreparation(
                 Stats.Health.Total,
@@ -235,7 +235,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Shield].TotalMax,
                 (short)Stats.AP.Total,
                 (short)Stats.MP.Total,
-                Stats[StatsEnum.SummonLimit].TotalMax,
+                0,
                 GetDisplayedResistPercent(StatsEnum.NeutralResistPercent),
                 GetDisplayedResistPercent(StatsEnum.EarthResistPercent),
                 GetDisplayedResistPercent(StatsEnum.WaterResistPercent),
@@ -249,7 +249,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Initiative].TotalMax);
         }
 
-        public GameFightMinimalStats GetGameFightMinimalStats(WorldClient client = null)
+        public virtual GameFightMinimalStats GetGameFightMinimalStats(WorldClient client = null)
         {
             return new GameFightMinimalStats(
                 Stats.Health.Total,
@@ -259,7 +259,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 Stats[StatsEnum.Shield].TotalMax,
                 (short)Stats.AP.Total,
                 (short)Stats.MP.Total,
-                Stats[StatsEnum.SummonLimit].TotalMax,
+                0,
                 GetDisplayedResistPercent(StatsEnum.NeutralResistPercent),
                 GetDisplayedResistPercent(StatsEnum.EarthResistPercent),
                 GetDisplayedResistPercent(StatsEnum.WaterResistPercent),
@@ -318,6 +318,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             CombatTelemetry.LogTurnEvent("NextTurnStarted", Fight, this);
             CombatTelemetry.LogTurnEvent("TurnStarted", Fight, this);
+            FightCombatLogger.LogTurnStart(Fight, this, Fight.GetCompletedRounds());
 
             Fight.Timer?.Dispose();
             Fight.Timer = null;
@@ -1172,7 +1173,10 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             int realHeal = Math.Max(0, Stats.Health.Total - lifeBefore);
             if (realHeal > 0)
+            {
+                FightCombatLogger.LogHeal(Fight, source, this, realHeal);
                 Fight.OnLifePointsChanged(realHeal, source, this);
+            }
         }
 
         public void ExchangePositions(FightActor with)
