@@ -141,6 +141,7 @@ namespace Sunshine.BaseServer.Configuration
                 && value >= 0d)
             {
                 assign(value);
+                warning = null;
                 return true;
             }
 
@@ -154,6 +155,7 @@ namespace Sunshine.BaseServer.Configuration
             if (int.TryParse(rawValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value) && value >= 0)
             {
                 assign(value);
+                warning = null;
                 return true;
             }
 

@@ -143,6 +143,22 @@ namespace Sunshine.WorldServer.Game.Fights.Diagnostics
             Write(fight.Id, $"event=TURN_SKIP actor={FighterId(actor)} type={TypeName(actor)} reason={reason}");
         }
 
+        public static void LogTurnStart(Fight fight, FightActor actor, int completedRounds)
+        {
+            if (!Enabled || fight == null)
+                return;
+
+            Write(fight.Id, $"event=TURN_START actor={FighterId(actor)} type={TypeName(actor)} round={completedRounds}");
+        }
+
+        public static void LogHeal(Fight fight, FightActor source, FightActor target, int amount)
+        {
+            if (!Enabled || fight == null)
+                return;
+
+            Write(fight.Id, $"event=HEAL src={FighterId(source)} tgt={FighterId(target)} amount={amount}");
+        }
+
         public static void LogBuffAdd(Fight fight, FightActor target, Buff buff)
         {
             if (!Enabled || fight == null || buff == null)
