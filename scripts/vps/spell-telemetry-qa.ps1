@@ -23,10 +23,11 @@ if (-not $LocalCollectDir) {
 $sshTarget = "${SshUser}@${VpsHost}"
 $sshArgs = @("-i", $SshKey, "-o", "StrictHostKeyChecking=accept-new", "-o", "BatchMode=yes", $sshTarget)
 
-function Invoke-Ssh {
-    param([Parameter(Mandatory = $true)][string]$Command)
-    & ssh @sshArgs $Command
-    if ($LASTEXITCODE -ne 0) { throw "SSH failed: $Command" }
+function Invoke-RemoteBash {
+    param([Parameter(Mandatory = $true)][string]$Script)
+    $normalized = ($Script -replace "`r`n", "`n").TrimEnd() + "`n"
+    $normalized | & ssh @sshArgs "bash -s"
+    if ($LASTEXITCODE -ne 0) { throw "Remote bash script failed ($Action)." }
 }
 
 function Invoke-ScpFrom {
@@ -39,21 +40,19 @@ function Invoke-ScpFrom {
     if ($LASTEXITCODE -ne 0) { throw "SCP failed: $RemoteSource" }
 }
 
-$qaEnvBlock = @"
-# --- spell telemetry QA window (temporary) ---
-SPELL_EFFECT_TELEMETRY_ENABLED=true
-COMBAT_HEALTH_LAB=1
-FIGHT_TELEMETRY_LOG_DIRECTORY=/app/logs/combat
-FIGHT_TELEMETRY_ENABLED=false
-# Mirror humano OFF durante QA (JSONL es fuente principal)
-FIGHT_COMBAT_LOG_ENABLED=false
-"@
+$qaEnvLines = @(
+    "SPELL_EFFECT_TELEMETRY_ENABLED=true"
+    "COMBAT_HEALTH_LAB=1"
+    "FIGHT_TELEMETRY_LOG_DIRECTORY=/app/logs/combat"
+    "FIGHT_TELEMETRY_ENABLED=false"
+    "FIGHT_COMBAT_LOG_ENABLED=false"
+)
 
 switch ($Action) {
     "status" {
-        Invoke-Ssh @"
+        Invoke-RemoteBash @"
 set -eu
-echo '=== git/deploy hint ==='
+echo '=== deploy commit ==='
 test -f $RemotePath/.deploy-commit && cat $RemotePath/.deploy-commit || echo 'no .deploy-commit file'
 echo '=== telemetry env in .env ==='
 grep -E 'SPELL_EFFECT|COMBAT_HEALTH|FIGHT_TELEMETRY|FIGHT_COMBAT' $RemotePath/.env 2>/dev/null || echo '(none)'
@@ -68,7 +67,7 @@ docker exec sunshine-server sh -c 'grep -aq SpellEffectTelemetry /app/Sunshine.d
     }
     "backup" {
         $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
-        Invoke-Ssh @"
+        Invoke-RemoteBash @"
 set -eu
 mkdir -p $RemotePath/backups/spell-telemetry-$stamp
 cp -a $RemotePath/.env $RemotePath/backups/spell-telemetry-$stamp/.env
@@ -77,31 +76,32 @@ echo backup=$RemotePath/backups/spell-telemetry-$stamp
 "@
     }
     "activate" {
-        Invoke-Ssh @"
+        $appendBlock = ($qaEnvLines -join "`n")
+        Invoke-RemoteBash @"
 set -eu
 ENV_FILE=$RemotePath/.env
-touch `"`$ENV_FILE`"
-grep -v -E '^(SPELL_EFFECT_TELEMETRY_ENABLED|COMBAT_HEALTH_LAB|FIGHT_TELEMETRY_LOG_DIRECTORY|FIGHT_TELEMETRY_ENABLED|FIGHT_COMBAT_LOG_ENABLED)=' `"`$ENV_FILE`" > `"`$ENV_FILE.tmp`" || true
-cat >> `"`$ENV_FILE.tmp`" <<'EOF'
-$qaEnvBlock
+touch "`$ENV_FILE"
+grep -v -E '^(SPELL_EFFECT_TELEMETRY_ENABLED|COMBAT_HEALTH_LAB|FIGHT_TELEMETRY_LOG_DIRECTORY|FIGHT_TELEMETRY_ENABLED|FIGHT_COMBAT_LOG_ENABLED)=' "`$ENV_FILE" > "`$ENV_FILE.tmp" || true
+cat >> "`$ENV_FILE.tmp" <<'EOF'
+$appendBlock
 EOF
-mv `"`$ENV_FILE.tmp`" `"`$ENV_FILE`"
+mv "`$ENV_FILE.tmp" "`$ENV_FILE"
 mkdir -p $RemotePath/logs/combat/spell-casts
 cd $RemotePath/docker
 docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.vps.yml up -d sunshine
-docker exec sunshine-server ls -la /app/logs/combat/spell-casts/
+docker exec sunshine-server printenv SPELL_EFFECT_TELEMETRY_ENABLED COMBAT_HEALTH_LAB FIGHT_TELEMETRY_LOG_DIRECTORY FIGHT_COMBAT_LOG_ENABLED
 echo 'QA window activated. Run combats, then: spell-telemetry-qa.ps1 -Action collect'
 "@
     }
     "deactivate" {
-        Invoke-Ssh @"
+        Invoke-RemoteBash @"
 set -eu
 ENV_FILE=$RemotePath/.env
-grep -v -E '^(SPELL_EFFECT_TELEMETRY_ENABLED|COMBAT_HEALTH_LAB|FIGHT_TELEMETRY_LOG_DIRECTORY|FIGHT_TELEMETRY_ENABLED)=' `"`$ENV_FILE`" > `"`$ENV_FILE.tmp`" || true
-mv `"`$ENV_FILE.tmp`" `"`$ENV_FILE`"
+grep -v -E '^(SPELL_EFFECT_TELEMETRY_ENABLED|COMBAT_HEALTH_LAB|FIGHT_TELEMETRY_LOG_DIRECTORY|FIGHT_TELEMETRY_ENABLED)=' "`$ENV_FILE" > "`$ENV_FILE.tmp" || true
+mv "`$ENV_FILE.tmp" "`$ENV_FILE"
 cd $RemotePath/docker
 docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.vps.yml up -d sunshine
-echo 'Spell telemetry QA vars removed. FIGHT_COMBAT_LOG_* unchanged — set manually if needed.'
+echo 'Spell telemetry QA vars removed.'
 "@
     }
     "collect" {
@@ -110,7 +110,7 @@ echo 'Spell telemetry QA vars removed. FIGHT_COMBAT_LOG_* unchanged — set manu
         Get-ChildItem -Path $LocalCollectDir -Recurse -Filter "*.jsonl" | Select-Object FullName, Length, LastWriteTime
     }
     "verify" {
-        Invoke-Ssh @"
+        Invoke-RemoteBash @"
 docker exec sunshine-server sh -c 'grep -aq SpellEffectTelemetry /app/Sunshine.dll && echo OK_DLL || echo FAIL_DLL'
 docker exec sunshine-server printenv SPELL_EFFECT_TELEMETRY_ENABLED COMBAT_HEALTH_LAB FIGHT_TELEMETRY_LOG_DIRECTORY FIGHT_COMBAT_LOG_ENABLED 2>/dev/null || true
 "@

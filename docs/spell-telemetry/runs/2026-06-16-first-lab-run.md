@@ -1,10 +1,23 @@
 # First lab run — spell/effect telemetry (VPS QA)
 
-**Estado:** `EN PROGRESO` — ventana QA abierta; combates pendientes de ejecución in-game  
+**Estado:** `VENTANA QA ABIERTA` — deploy + telemetría activa; **combates in-game pendientes (operador)**  
 **Fecha ventana:** 2026-06-16  
-**Operador:** _pendiente_  
+**Operador combates:** _asignar — requiere cliente conectado a VPS `174.138.35.107`_  
 **Commit desplegado:** `4394b10` — Merge pull request #50 from dagemov/devp (`main`)  
 **Commit telemetría:** `b6cc7f4` — Merge pull request #49 (spell/effect layered diagnostics)
+
+### Checklist infra (2026-06-16)
+
+- [x] `main` @ `4394b10` — telemetría incluida
+- [x] `devp` @ `b6cc7f4` — módulo telemetría mergeado (#49); `main` adelantado vía #50
+- [x] VPS rebuild sunshine — `DLL_HAS_SpellEffectTelemetry`
+- [x] `/opt/dofus-2.0.0/.deploy-commit` = `4394b10`
+- [x] Backup `.env` → `/opt/dofus-2.0.0/backups/spell-telemetry-20260616-manual/`
+- [x] Variables QA activas en contenedor (ver §1)
+- [x] Volumen host `/opt/dofus-2.0.0/logs/combat` montado
+- [ ] Combates Bloque 1–5 ejecutados
+- [ ] JSONL recolectados + analyzer sobre logs reales
+- [ ] Desactivar ventana QA post-reporte
 
 ---
 
@@ -16,9 +29,18 @@
 | `COMBAT_HEALTH_LAB` | `1` | Lab mode |
 | `FIGHT_TELEMETRY_LOG_DIRECTORY` | `/app/logs/combat` | Host: `/opt/dofus-2.0.0/logs/combat` |
 | `FIGHT_TELEMETRY_ENABLED` | `false` | Turn-flow no requerido para spell layers |
-| `FIGHT_COMBAT_LOG_ENABLED` | `false` | **Mirror OFF** — demasiado ruido; JSONL suficiente |
+| `FIGHT_COMBAT_LOG_ENABLED` | `false` | **Mirror OFF** (estaba `true` pre-QA — demasiado ruido) |
 
-Backup previo: `/opt/dofus-2.0.0/backups/spell-telemetry-*`
+Backup previo: `/opt/dofus-2.0.0/backups/spell-telemetry-20260616-manual/`
+
+Verificación contenedor (2026-06-16):
+
+```text
+SPELL_EFFECT_TELEMETRY_ENABLED=true
+COMBAT_HEALTH_LAB=1
+FIGHT_TELEMETRY_LOG_DIRECTORY=/app/logs/combat
+FIGHT_COMBAT_LOG_ENABLED=false
+```
 
 ---
 
