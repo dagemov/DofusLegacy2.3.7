@@ -9,12 +9,14 @@ using System.Threading;
 using Sunshine.BaseServer.Configuration;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Actors.Monsters;
+using Sunshine.WorldServer.Game.Spells;
 
 namespace Sunshine.WorldServer.Game.Fights.Telemetry
 {
     internal static class CombatTelemetry
     {
         public const string SchemaVersion = "combat-telemetry-phase2-jsonl-1";
+        public const string SpellEffectSchemaVersion = SpellEffectTelemetry.SchemaVersion;
 
         private static readonly object SyncRoot = new object();
         private static StreamWriter _turnFlowWriter;
@@ -26,7 +28,9 @@ namespace Sunshine.WorldServer.Game.Fights.Telemetry
 
         public static bool Enabled => ResolveEnabled();
         public static bool WriteTurnFlow => Enabled && ResolveBool("CombatTelemetryWriteTurnFlow", true);
-        public static bool WriteSpellCasts => Enabled && ResolveBool("CombatTelemetryWriteSpellCasts", true);
+        public static bool WriteSpellCasts => ShouldInitializeSpellChannel()
+            && (Enabled && ResolveBool("CombatTelemetryWriteSpellCasts", true) || ResolveSpellEffectEnabled());
+        public static bool WriteSpellEffects => ShouldInitializeSpellChannel() && ResolveSpellEffectEnabled();
 
         public static void LogTurnEvent(
             string eventName,
@@ -123,6 +127,39 @@ namespace Sunshine.WorldServer.Game.Fights.Telemetry
                 payload["targetIds"] = FormatIdList(targetIds);
             if (effectIds != null)
                 payload["effectIds"] = FormatIdList(effectIds);
+
+            WriteJsonLine(_spellCastWriter, payload);
+        }
+
+        public static void LogSpellEffectEvent(
+            string eventName,
+            Fight fight,
+            FightActor caster,
+            Spell spell,
+            long? durationMs,
+            IDictionary<string, object> fields)
+        {
+            if (!WriteSpellEffects || fight == null)
+                return;
+
+            EnsureInitialized();
+            if (_spellCastWriter == null)
+                return;
+
+            var payload = BuildBasePayload(eventName, fight, caster, durationMs, null, fields);
+            payload["schemaVersion"] = SpellEffectSchemaVersion;
+            payload["casterId"] = caster?.Id ?? 0;
+            payload["casterName"] = ResolveActorName(caster);
+            payload["casterType"] = ResolveActorType(caster);
+
+            if (spell != null)
+            {
+                payload["spellId"] = spell.Id;
+                payload["spellLevel"] = spell.Level;
+            }
+
+            if (caster != null && payload.TryGetValue("correlationId", out var corr) && corr != null)
+                payload["turnId"] = ResolveTurnId(fight, caster);
 
             WriteJsonLine(_spellCastWriter, payload);
         }
@@ -273,6 +310,26 @@ namespace Sunshine.WorldServer.Game.Fights.Telemetry
                 return Path.GetFullPath(fromConfig);
 
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "combat");
+        }
+
+        private static bool ShouldInitializeSpellChannel()
+        {
+            if (ResolveEnabled())
+                return true;
+
+            return ResolveSpellEffectEnabled();
+        }
+
+        private static bool ResolveSpellEffectEnabled()
+        {
+            var env = Environment.GetEnvironmentVariable("SPELL_EFFECT_TELEMETRY_ENABLED");
+            if (!string.IsNullOrWhiteSpace(env) && TryParseBool(env, out var envEnabled))
+                return envEnabled;
+
+            if (string.Equals(Environment.GetEnvironmentVariable("COMBAT_HEALTH_LAB"), "1", StringComparison.Ordinal))
+                return ResolveBool("SpellEffectTelemetryEnabled", true);
+
+            return ResolveBool("SpellEffectTelemetryEnabled", false);
         }
 
         private static bool ResolveEnabled()

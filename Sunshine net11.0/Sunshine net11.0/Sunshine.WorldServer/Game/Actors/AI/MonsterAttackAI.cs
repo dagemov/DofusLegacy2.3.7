@@ -119,32 +119,19 @@ namespace Sunshine.WorldServer.Game.Actors.AI
                     var target = enemies.First();
                     var targetCell = target.Position.Cell;
 
-                    if (fighter.CanCastSpell(spell, targetCell) == SpellCastResult.OK)
+                    if (TryAiCastSpell(fighter, spell, targetCell, target))
                     {
-                        int apBefore = fighter.Stats.AP.Total;
-                        fighter.CastSpell(spell, targetCell);
-                        if (fighter.Stats.AP.Total < apBefore)
-                        {
-                            await PauseAfterActionAsync(fighter, spell);
-                            // MoveNearTo despues de castear
-                            if (fighter.IsAlive && fighter.IsFighterTurn() && fighter.Stats.MP.Total > 0)
-                                await TryMoveCloserToEnemyAsync(fighter);
-                        }
-                    }
-                    else
-                    {
-                        // MoveNearTo primero, luego castear si es posible
-                        if (fighter.Stats.MP.Total > 0)
+                        await PauseAfterActionAsync(fighter, spell);
+                        if (fighter.IsAlive && fighter.IsFighterTurn() && fighter.Stats.MP.Total > 0)
                             await TryMoveCloserToEnemyAsync(fighter);
-
-                        if (fighter.IsAlive && fighter.IsFighterTurn() && fighter.CanCastSpell(spell, targetCell) == SpellCastResult.OK)
-                        {
-                            int apBefore = fighter.Stats.AP.Total;
-                            fighter.CastSpell(spell, targetCell);
-                            if (fighter.Stats.AP.Total < apBefore)
-                                await PauseAfterActionAsync(fighter, spell);
-                        }
+                        continue;
                     }
+
+                    if (fighter.Stats.MP.Total > 0)
+                        await TryMoveCloserToEnemyAsync(fighter);
+
+                    if (fighter.IsAlive && fighter.IsFighterTurn())
+                        TryAiCastSpell(fighter, spell, targetCell, target);
                 }
             }
 
@@ -202,15 +189,7 @@ namespace Sunshine.WorldServer.Game.Actors.AI
             {
                 foreach (var spell in spells)
                 {
-                    if (!CanUseSpell(fighter, spell))
-                        continue;
-
-                    if (fighter.CanCastSpell(spell, target.Position.Cell) != SpellCastResult.OK)
-                        continue;
-
-                    int apBefore = fighter.Stats.AP.Total;
-                    fighter.CastSpell(spell, target.Position.Cell);
-                    if (fighter.Stats.AP.Total < apBefore)
+                    if (TryAiCastSpell(fighter, spell, target.Position.Cell, target))
                     {
                         CombatTelemetry.LogTurnEvent(
                             "AiActionSelected",
@@ -233,28 +212,15 @@ namespace Sunshine.WorldServer.Game.Actors.AI
 
             foreach (var spell in spells)
             {
-                if (!CanUseSpell(fighter, spell))
-                    continue;
-
-                if (fighter.CanCastSpell(spell, fighter.Position.Cell) == SpellCastResult.OK)
+                if (TryAiCastSpell(fighter, spell, fighter.Position.Cell, fighter))
                 {
-                    int apBefore = fighter.Stats.AP.Total;
-                    fighter.CastSpell(spell, fighter.Position.Cell);
-                    if (fighter.Stats.AP.Total < apBefore)
-                    {
-                        await PauseAfterActionAsync(fighter, spell);
-                        return true;
-                    }
+                    await PauseAfterActionAsync(fighter, spell);
+                    return true;
                 }
 
                 foreach (var ally in GetAllies(fighter))
                 {
-                    if (fighter.CanCastSpell(spell, ally.Position.Cell) != SpellCastResult.OK)
-                        continue;
-
-                    int apBefore = fighter.Stats.AP.Total;
-                    fighter.CastSpell(spell, ally.Position.Cell);
-                    if (fighter.Stats.AP.Total < apBefore)
+                    if (TryAiCastSpell(fighter, spell, ally.Position.Cell, ally))
                     {
                         await PauseAfterActionAsync(fighter, spell);
                         return true;
@@ -332,15 +298,10 @@ namespace Sunshine.WorldServer.Game.Actors.AI
 
             if (bestSpell != null && bestTarget != null)
             {
-                if (fighter.CanCastSpell(bestSpell, bestTarget.Position.Cell) == SpellCastResult.OK)
+                if (TryAiCastSpell(fighter, bestSpell, bestTarget.Position.Cell, bestTarget))
                 {
-                    int apBefore = fighter.Stats.AP.Total;
-                    fighter.CastSpell(bestSpell, bestTarget.Position.Cell);
-                    if (fighter.Stats.AP.Total < apBefore)
-                    {
-                        await PauseAfterActionAsync(fighter, bestSpell);
-                        return true;
-                    }
+                    await PauseAfterActionAsync(fighter, bestSpell);
+                    return true;
                 }
             }
 
@@ -708,6 +669,41 @@ namespace Sunshine.WorldServer.Game.Actors.AI
                 x.Id == EffectsEnum.Effect_SummonBomb ||
                 x.Id == EffectsEnum.Effect_SummonOsa ||
                 x.Id == EffectsEnum.Effect_SummonSlave);
+        }
+
+        private static bool TryAiCastSpell(FightActor fighter, Spell spell, short targetCell, FightActor target = null)
+        {
+            if (fighter == null || spell == null || fighter.Fight == null)
+                return false;
+
+            if (!CanUseSpell(fighter, spell))
+            {
+                SpellEffectTelemetry.AiSpellRejected(
+                    fighter.Fight, fighter, spell, targetCell, "CanUseSpell", SpellEffectLayer.Ai, target?.Id);
+                return false;
+            }
+
+            SpellEffectTelemetry.AiSpellCandidate(fighter.Fight, fighter, spell, targetCell, target?.Id);
+
+            var validation = fighter.CanCastSpell(spell, targetCell);
+            if (validation != SpellCastResult.OK)
+            {
+                SpellEffectTelemetry.AiSpellRejected(
+                    fighter.Fight, fighter, spell, targetCell, validation.ToString(), SpellEffectLayer.Validation, target?.Id);
+                return false;
+            }
+
+            int apBefore = fighter.Stats.AP.Total;
+            fighter.CastSpell(spell, targetCell);
+            if (fighter.Stats.AP.Total < apBefore)
+            {
+                SpellEffectTelemetry.AiSpellSelected(fighter.Fight, fighter, spell, targetCell, target?.Id);
+                return true;
+            }
+
+            SpellEffectTelemetry.AiSpellRejected(
+                fighter.Fight, fighter, spell, targetCell, "AP_NOT_CONSUMED", SpellEffectLayer.Handler, target?.Id);
+            return false;
         }
     }
 }

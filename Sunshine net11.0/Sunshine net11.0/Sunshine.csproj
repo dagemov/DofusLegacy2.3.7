@@ -1576,6 +1576,10 @@
 		<Compile Include="Sunshine.WorldServer\Game\Fights\CombatReadyCheckerSettings.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\ReadyChecker.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\CombatTelemetry.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\EffectTargetTelemetryHelper.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\SpellCastTelemetryScope.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\SpellEffectLayer.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Fights\Telemetry\SpellEffectTelemetry.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Mechanics\FrigostBossMechanics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Types\FightPvM.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Fights\Teams\FightTeam.cs" />

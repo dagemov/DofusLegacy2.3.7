@@ -752,90 +752,117 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                 return;
 
             var castStopwatch = Stopwatch.StartNew();
-            var castResult = this.CanCastSpell(spell, cell);
-            if (castResult != SpellCastResult.OK)
-            {
-                if (HasReachedBombPlacementLimit(spell))
-                    NotifyBombPlacementLimit();
+            var apBeforeCast = Stats.AP.Total;
 
-                if (spell != null && spell.Id == SlaveFighter.RoublabotSpellId && this is CharacterFighter roublard && roublard.Character != null)
-                    roublard.Character.SendServerMessage($"Roublabot : lancement refusé ({castResult}).", System.Drawing.Color.Red);
+            using (SpellCastTelemetryScope.Begin(Fight, this, spell, cell, apBeforeCast))
+            {
+                SpellEffectTelemetry.SpellCastAttempt(Fight, this, spell, cell, apBeforeCast,
+                    this is MonsterFighter ? "AI" : "Player");
+
+                var castResult = this.CanCastSpell(spell, cell);
+                if (castResult != SpellCastResult.OK)
+                {
+                    if (HasReachedBombPlacementLimit(spell))
+                        NotifyBombPlacementLimit();
+
+                    if (spell != null && spell.Id == SlaveFighter.RoublabotSpellId && this is CharacterFighter roublard && roublard.Character != null)
+                        roublard.Character.SendServerMessage($"Roublabot : lancement refusé ({castResult}).", System.Drawing.Color.Red);
+
+                    CombatTelemetry.LogSpellEvent(
+                        "SpellCastFailed",
+                        Fight,
+                        this,
+                        spell?.Id,
+                        spell?.Level,
+                        result: castResult.ToString(),
+                        durationMs: castStopwatch.ElapsedMilliseconds);
+                    FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
+                    return;
+                }
+
+                var currentFight = Fight;
+                if (currentFight == null || currentFight.State != FightStateEnum.Fighting)
+                    return;
 
                 CombatTelemetry.LogSpellEvent(
-                    "SpellCastFailed",
-                    Fight,
+                    "SpellCastStarted",
+                    currentFight,
                     this,
-                    spell?.Id,
-                    spell?.Level,
-                    result: castResult.ToString(),
-                    durationMs: castStopwatch.ElapsedMilliseconds);
-                FightCombatLogger.LogSpellCastFailed(Fight, this, spell, castResult.ToString());
-                return;
-            }
+                    spell.Id,
+                    spell.Level,
+                    targetIds: new[] { cell });
 
-            var currentFight = Fight;
-            if (currentFight == null || currentFight.State != FightStateEnum.Fighting)
-                return;
+                currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_SPELL);
 
-            CombatTelemetry.LogSpellEvent(
-                "SpellCastStarted",
-                currentFight,
-                this,
-                spell.Id,
-                spell.Level,
-                targetIds: new[] { cell });
+                bool isBambooMilk = IsBambooMilkSpell(spell);
+                bool isPandawaAlcohol = !isBambooMilk && IsPandawaAlcoholActivationSpell(spell);
+                if (isBambooMilk)
+                    ApplyBambooMilkPandawaReset();
 
-            currentFight.StartSequence(SequenceTypeEnum.SEQUENCE_SPELL);
+                FightSpellCastCriticalEnum spellCastCritical = RollCriticalDice(spell);
+                bool isCriticalEffectSet = spellCastCritical != FightSpellCastCriticalEnum.NORMAL;
+                SpellCastTelemetryScope.Current?.SetCritical(spellCastCritical, isCriticalEffectSet);
 
-            bool isBambooMilk = IsBambooMilkSpell(spell);
-            bool isPandawaAlcohol = !isBambooMilk && IsPandawaAlcoholActivationSpell(spell);
-            if (isBambooMilk)
-                ApplyBambooMilkPandawaReset();
+                List<Effect> effects = spellCastCritical == FightSpellCastCriticalEnum.NORMAL
+                    ? (spell.Effects ?? new List<Effect>())
+                    : (spell.CriticalEffects ?? new List<Effect>());
 
-            FightSpellCastCriticalEnum spellCastCritical = RollCriticalDice(spell);
-            List<Effect> effects = spellCastCritical == FightSpellCastCriticalEnum.NORMAL
-                ? (spell.Effects ?? new List<Effect>())
-                : (spell.CriticalEffects ?? new List<Effect>());
-
-            IEnumerable<SpellEffectHandler> spellEffectsHandler = effects.Select(x =>
-                EffectManager.Instance.SpellEffects.ContainsKey(x.Id)
-                    ? EffectManager.Instance.SpellEffects[x.Id]()
-                    : null);
-
-            var customCastHandler = Game.Spells.Casts.SpellCastManager.Instance.CreateHandler(
-                this,
-                spell,
-                cell,
-                spellCastCritical == FightSpellCastCriticalEnum.CRITICAL_HIT,
-                effects);
-
-            bool silentCast = customCastHandler != null
-                ? customCastHandler.SilentCast
-                : spellEffectsHandler.Any(x => x != null && x.RequireSilentCast());
-
-            short displayedCell = customCastHandler != null ? customCastHandler.TargetedCell : cell;
-
-            if (Visibility == GameActionFightInvisibilityStateEnum.INVISIBLE && !IsInvisibleSpellCast(effects))
-                SetInvisibilityState(GameActionFightInvisibilityStateEnum.DETECTED, this);
-
-            int handlerCount = customCastHandler?.Handlers?.Length
-                ?? (effects != null ? effects.Count : 0);
-            currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast, handlerCount);
-            this.UseAP((short)spell.Template.ApCost);
-
-            if (spellCastCritical != FightSpellCastCriticalEnum.CRITICAL_FAIL)
-            {
-
-                if (customCastHandler != null)
+                foreach (var effect in effects)
                 {
-                    try
-                    {
-                        customCastHandler.Execute();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logs.Logger.WriteError($"Custom spell cast failed for spell {spell.Id}: {ex.Message}");
+                    if (effect != null)
+                        SpellEffectTelemetry.SpellEffectPlanned(currentFight, this, spell, effect, cell, isCriticalEffectSet);
+                }
 
+                IEnumerable<SpellEffectHandler> spellEffectsHandler = effects.Select(x =>
+                    EffectManager.Instance.SpellEffects.ContainsKey(x.Id)
+                        ? EffectManager.Instance.SpellEffects[x.Id]()
+                        : null);
+
+                var customCastHandler = Game.Spells.Casts.SpellCastManager.Instance.CreateHandler(
+                    this,
+                    spell,
+                    cell,
+                    spellCastCritical == FightSpellCastCriticalEnum.CRITICAL_HIT,
+                    effects);
+
+                bool silentCast = customCastHandler != null
+                    ? customCastHandler.SilentCast
+                    : spellEffectsHandler.Any(x => x != null && x.RequireSilentCast());
+
+                short displayedCell = customCastHandler != null ? customCastHandler.TargetedCell : cell;
+
+                if (Visibility == GameActionFightInvisibilityStateEnum.INVISIBLE && !IsInvisibleSpellCast(effects))
+                    SetInvisibilityState(GameActionFightInvisibilityStateEnum.DETECTED, this);
+
+                int handlerCount = customCastHandler?.Handlers?.Length
+                    ?? (effects != null ? effects.Count : 0);
+                currentFight.OnSpellCasted(this, spell, displayedCell, spellCastCritical, silentCast, handlerCount);
+                this.UseAP((short)spell.Template.ApCost);
+
+                if (spellCastCritical != FightSpellCastCriticalEnum.CRITICAL_FAIL)
+                {
+
+                    if (customCastHandler != null)
+                    {
+                        try
+                        {
+                            customCastHandler.Execute();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logs.Logger.WriteError($"Custom spell cast failed for spell {spell.Id}: {ex.Message}");
+
+                            foreach (var effect in effects)
+                            {
+                                EffectDispatcher.Dispatch(this, spell, effect, cell);
+
+                                if (Fight != currentFight || currentFight.State == FightStateEnum.Ended)
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
                         foreach (var effect in effects)
                         {
                             EffectDispatcher.Dispatch(this, spell, effect, cell);
@@ -844,86 +871,96 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
                                 break;
                         }
                     }
+
+                    if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && isBambooMilk)
+                        ApplyBambooMilkPandawaReset();
+
+                    if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && isPandawaAlcohol)
+                        EnsurePandawaAlcoholClientState(spell);
+
+                    if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && SpellHistory != null)
+                        SpellHistory.RegisterCastedSpell(spell, currentFight.GetOneFighter(displayedCell));
                 }
-                else
-                {
-                    foreach (var effect in effects)
-                    {
-                        EffectDispatcher.Dispatch(this, spell, effect, cell);
 
-                        if (Fight != currentFight || currentFight.State == FightStateEnum.Ended)
-                            break;
-                    }
-                }
+                if (Fight != currentFight || currentFight.State != FightStateEnum.Fighting)
+                    return;
 
-                if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && isBambooMilk)
-                    ApplyBambooMilkPandawaReset();
+                currentFight.EndSequence(SequenceTypeEnum.SEQUENCE_SPELL, ActionsEnum.ACTION_FIGHT_CAST_SPELL);
+                RefreshControllingClientFightState();
+                currentFight.CheckFightEnd();
 
-                if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && isPandawaAlcohol)
-                    EnsurePandawaAlcoholClientState(spell);
+                castStopwatch.Stop();
+                var apAfterCast = Stats.AP.Total;
+                SpellEffectTelemetry.SpellCastResolved(
+                    currentFight,
+                    this,
+                    spell,
+                    cell,
+                    apBeforeCast,
+                    apAfterCast,
+                    spellCastCritical,
+                    handlerCount,
+                    customCastHandler != null ? "Custom" : "Generic",
+                    customCastHandler?.GetType().Name,
+                    castStopwatch.ElapsedMilliseconds);
 
-                if (Fight == currentFight && currentFight.State == FightStateEnum.Fighting && SpellHistory != null)
-                    SpellHistory.RegisterCastedSpell(spell, currentFight.GetOneFighter(displayedCell));
+                CombatTelemetry.LogSpellEvent(
+                    "SpellCastResolved",
+                    currentFight,
+                    this,
+                    spell.Id,
+                    spell.Level,
+                    targetIds: new[] { cell },
+                    result: "OK",
+                    durationMs: castStopwatch.ElapsedMilliseconds);
             }
-
-            if (Fight != currentFight || currentFight.State != FightStateEnum.Fighting)
-                return;
-
-            currentFight.EndSequence(SequenceTypeEnum.SEQUENCE_SPELL, ActionsEnum.ACTION_FIGHT_CAST_SPELL);
-            RefreshControllingClientFightState();
-            currentFight.CheckFightEnd();
-
-            castStopwatch.Stop();
-            CombatTelemetry.LogSpellEvent(
-                "SpellCastResolved",
-                currentFight,
-                this,
-                spell.Id,
-                spell.Level,
-                targetIds: new[] { cell },
-                result: "OK",
-                durationMs: castStopwatch.ElapsedMilliseconds);
         }
 
         public virtual SpellCastResult CanCastSpell(Spell spell, short cell)
         {
             if (spell == null)
-                return SpellCastResult.HAS_NOT_SPELL;
+                return LogValidation(spell, cell, SpellCastResult.HAS_NOT_SPELL);
 
             if (spell.Id == 0 && this is CharacterFighter characterCaster)
                 return characterCaster.CanCastCloseCombat(cell);
 
             if (!IsFighterTurn() || IsDead())
-                return SpellCastResult.CANNOT_PLAY;
+                return LogValidation(spell, cell, SpellCastResult.CANNOT_PLAY);
 
             if (!HasSpell((short)spell.Id))
-                return SpellCastResult.HAS_NOT_SPELL;
+                return LogValidation(spell, cell, SpellCastResult.HAS_NOT_SPELL);
 
             if ((long)Stats.AP.Total < (long)((ulong)spell.Template.ApCost))
-                return SpellCastResult.NOT_ENOUGH_AP;
+                return LogValidation(spell, cell, SpellCastResult.NOT_ENOUGH_AP);
 
             if (HasReachedBombPlacementLimit(spell))
-                return SpellCastResult.UNKNOWN;
+                return LogValidation(spell, cell, SpellCastResult.UNKNOWN);
 
             bool cellIsFree = Fight.IsCellFree(cell);
             bool ignoreNeedFreeCell = !cellIsFree && IsBombSummonSpell(spell);
             if (((spell.Template.NeedFreeCell && !cellIsFree) && !ignoreNeedFreeCell) || (spell.Template.NeedTakenCell && cellIsFree))
-                return SpellCastResult.CELL_NOT_FREE;
+                return LogValidation(spell, cell, SpellCastResult.CELL_NOT_FREE);
 
             if (spell.StatesForbidden.Any(x => HasState((SpellStatesEnum)x)))
-                return SpellCastResult.STATE_FORBIDDEN;
+                return LogValidation(spell, cell, SpellCastResult.STATE_FORBIDDEN);
 
             if (spell.StatesRequired.Any(x => !HasState((SpellStatesEnum)x)))
-                return SpellCastResult.STATE_REQUIRED;
+                return LogValidation(spell, cell, SpellCastResult.STATE_REQUIRED);
 
             short[] castZone = GetCastZone(spell.Template);
             if (!castZone.Contains(cell))
-                return SpellCastResult.NOT_IN_ZONE;
+                return LogValidation(spell, cell, SpellCastResult.NOT_IN_ZONE);
 
             if (!SpellHistory.CanCastSpell(spell, cell))
-                return SpellCastResult.HISTORY_ERROR;
+                return LogValidation(spell, cell, SpellCastResult.HISTORY_ERROR);
 
-            return SpellCastResult.OK;
+            return LogValidation(spell, cell, SpellCastResult.OK);
+        }
+
+        private SpellCastResult LogValidation(Spell spell, short cell, SpellCastResult result)
+        {
+            SpellEffectTelemetry.SpellValidationResult(Fight, this, spell, cell, result);
+            return result;
         }
 
         public bool IsInvisibleSpellCast(List<Effect> effects)
@@ -1043,17 +1080,25 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             NormalizeFightHealth(false);
 
+            int hpBeforeDamageTelemetry = Math.Max(0, this.Stats.Health.Total);
+
             damage.GenerateDamages();
+            int rolledAmount = damage.Amount;
             damage.Amount += damage.FixedBonus;
 
             if (damage.Source != null && damage.Spell != null)
                 damage.Amount += damage.Source.GetSpellBoost(damage.Spell);
 
+            int afterSpellBoost = damage.Amount;
+            SpellEffectTelemetry.DamageComputed(Fight, damage.Source, this, damage.Spell, null, damage, rolledAmount, afterSpellBoost, damage.TelemetryFormulaNotes);
+
             damage.Amount = this.CalculateDamage(damage.Source, damage.Amount, damage.EffectSchool);
 
             double armorReduction = this.CalculateArmorReduction(damage.EffectSchool, this, isPoisoned);
 
+            int beforeResistAmount = damage.Amount;
             damage.Amount = this.CalculateDamageResistance(damage.Source, damage.Amount, damage.EffectSchool, Fight.Type == FightTypeEnum.FIGHT_TYPE_AGRESSION, armorReduction, isPoisoned);
+            int afterResistAmount = damage.Amount;
 
             if (this.HasReflectBuff && !isPoisoned)
             {
@@ -1127,6 +1172,18 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
 
             FightCombatLogger.LogDamage(Fight, damage.Source, this, damage);
 
+            SpellEffectTelemetry.DamageApplied(
+                Fight,
+                damage.Source,
+                this,
+                damage.Spell,
+                null,
+                hpBeforeDamageTelemetry,
+                lifeAfterDamage,
+                realLifeLost > 0 ? realLifeLost : damage.Amount,
+                afterResistAmount,
+                isPoisoned);
+
             // Si le coup met la cible à 0 PV, on traite la mort tout de suite.
             // Les buffs déclenchés "après avoir subi des dommages" ne doivent pas ajouter de vitalité/PV
             // sur une cible déjà morte, sinon le client affiche 0 PV puis un +PV fantôme.
@@ -1175,6 +1232,7 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (realHeal > 0)
             {
                 FightCombatLogger.LogHeal(Fight, source, this, realHeal);
+                SpellEffectTelemetry.HealApplied(Fight, source, this, null, null, lifeBefore, Stats.Health.Total, realHeal);
                 Fight.OnLifePointsChanged(realHeal, source, this);
             }
         }
@@ -2173,6 +2231,34 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             if (buff is Fights.Buffs.Spells.DamageOverTimeBuff || buff is Fights.Buffs.Spells.HealOverTimeBuff)
                 FightCombatLogger.LogBuffAdd(Fight, this, buff);
 
+            if (buff is Fights.Buffs.Spells.DamageOverTimeBuff dotBuff)
+            {
+                SpellEffectTelemetry.BuffApplied(Fight, this, buff, "DOT");
+                SpellEffectTelemetry.DelayedEffectScheduled(
+                    Fight, buff.Caster, this, buff.Spell, buff.Effect, "DOT", "TURN_TICK",
+                    dotBuff.Duration,
+                    Math.Min((int)dotBuff.DiceNum, (int)dotBuff.DiceFace),
+                    Math.Max((int)dotBuff.DiceNum, (int)dotBuff.DiceFace));
+            }
+            else if (buff is Fights.Buffs.Spells.HealOverTimeBuff hotBuff)
+            {
+                SpellEffectTelemetry.BuffApplied(Fight, this, buff, "HOT");
+                SpellEffectTelemetry.DelayedEffectScheduled(
+                    Fight, buff.Caster, this, buff.Spell, buff.Effect, "HOT", "TURN_TICK",
+                    hotBuff.Duration, hotBuff.Value, hotBuff.Value);
+            }
+            else if (buff is TriggerBuff triggerBuff)
+            {
+                SpellEffectTelemetry.BuffApplied(Fight, this, buff, "TriggerBuff");
+                SpellEffectTelemetry.DelayedEffectScheduled(
+                    Fight, buff.Caster, this, buff.Spell, buff.Effect, "TriggerBuff",
+                    triggerBuff.TriggerType.ToString(), buff.Duration);
+            }
+            else if (buff is Fights.Buffs.Spells.PunishmentBuff)
+            {
+                SpellEffectTelemetry.BuffApplied(Fight, this, buff, "PunishmentBuff");
+            }
+
             if (apply)
                 buff.Apply();
 
@@ -2187,6 +2273,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             foreach (var buff in GetBuffs(x => x is TriggerBuff).Cast<TriggerBuff>().ToArray())
             {
                 FightCombatLogger.LogTrigger(Fight, this, trigger, buff);
+                if (buff.TriggersOn(trigger))
+                {
+                    SpellEffectTelemetry.DelayedEffectTick(
+                        Fight, this, buff.Spell, buff.Effect, "TriggerBuff", 0, buff.Duration, true);
+                }
+
                 buff.TryTrigger(trigger, token);
             }
         }
@@ -2242,6 +2334,12 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
             {
                 if (buffs2[i] is Fights.Buffs.Spells.DamageOverTimeBuff || buffs2[i] is Fights.Buffs.Spells.HealOverTimeBuff)
                     FightCombatLogger.LogBuffExpire(Fight, this, buffs2[i], "duration");
+                    if (buffs2[i] is DamageOverTimeBuff || buffs2[i] is HealOverTimeBuff || buffs2[i] is TriggerBuff)
+                    {
+                        SpellEffectTelemetry.DelayedEffectExpired(
+                            Fight, this, buffs2[i].Spell, buffs2[i].Effect,
+                            BuffKindForTelemetry(buffs2[i]), false, "duration");
+                    }
                 this.RemoveBuff(buffs2[i]);
             }
         }
@@ -2452,6 +2550,19 @@ namespace Sunshine.WorldServer.Game.Actors.Fighters
         {
             double num = System.Math.Floor((baseRate - (double)this.Stats[StatsEnum.CriticalHit].TotalMax) * 2.99011001130495 / System.Math.Log((double)(this.Stats[StatsEnum.Agility].TotalMax + 12), 2.7182818284590451));
             return (num > 2.0) ? num : 2.0;
+        }
+
+        private static string BuffKindForTelemetry(Buff buff)
+        {
+            if (buff is DamageOverTimeBuff)
+                return "DOT";
+            if (buff is HealOverTimeBuff)
+                return "HOT";
+            if (buff is TriggerBuff)
+                return "TriggerBuff";
+            if (buff is PunishmentBuff)
+                return "PunishmentBuff";
+            return buff?.GetType().Name ?? "Buff";
         }
 
         public FightActor Clone()

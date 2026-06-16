@@ -2,6 +2,7 @@
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Actors.Fighters;
 using Sunshine.WorldServer.Game.Spells;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
 using Sunshine.WorldServer.Handlers.Actions;
 using Sunshine.WorldServer.Handlers.Context;
 using System;
@@ -142,6 +143,15 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
 
             if (Target is CharacterFighter fighter)
                 fighter.Character?.RefreshStats();
+
+            SpellEffectTelemetry.EmitBuffTriggered(
+                Target.Fight,
+                Target,
+                this,
+                BoostedStat.ToString(),
+                bonus,
+                Target.Stats[BoostedStat].Total,
+                true);
 
             if (Target.Fight != null && !Target.Fight.IsVisualSequenceActive)
                 ContextHandler.SendGameFightSynchronizeMessage(Target.Fight.Clients, Target);

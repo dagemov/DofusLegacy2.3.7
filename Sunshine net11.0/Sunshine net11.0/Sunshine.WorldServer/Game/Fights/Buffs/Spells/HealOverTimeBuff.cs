@@ -39,6 +39,8 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
 
             Target.Heal(Value, Caster, true);
             FightCombatLogger.LogBuffTick(Target.Fight, Target, this, "HOT", Value, Duration);
+            Game.Fights.Telemetry.SpellEffectTelemetry.DelayedEffectTick(
+                Target.Fight, Target, Spell, Effect, "HOT", Value, Duration, true);
         }
 
         public override AbstractFightDispellableEffect GetAbstractFightDispellableEffect()
