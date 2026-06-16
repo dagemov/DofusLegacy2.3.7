@@ -1,5 +1,4 @@
 ﻿using Sunshine.MySql.Database.Managers;
-using Sunshine.Protocol.Messages;
 using Sunshine.WorldServer.Game.Actors.Characters.Jobs;
 using Sunshine.WorldServer.Handlers.Characters.Jobs;
 using Sunshine.Logs;
@@ -12,13 +11,16 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
     {
         public override bool Execute()
         {
-            sbyte job = sbyte.Parse(Parameters[0] as string);
+            string jobParam = Parameters != null && Parameters.Count > 0 ? Parameters[0] as string ?? string.Empty : string.Empty;
+            Logger.WriteInfo($"[JobLearn] Enter charId={Client.Character.Id} npcId={Npc?.Record?.Id} jobParam={jobParam}");
+
+            sbyte job = sbyte.Parse(jobParam);
             bool alreadyKnown = Client.Character.Jobs.HasJob(job);
 
             if (alreadyKnown)
             {
-                Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=already_known");
-                Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=true saved=false notified=false");
+                NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "already_known");
+                Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=true saved=false notified=false infoMessage=false");
                 return false;
             }
 
@@ -28,17 +30,16 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
 
             if (!added)
             {
-                Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=rejected_max_jobs");
+                NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "rejected_max_jobs");
                 Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=false notified=false baseCountBefore={baseCountBefore}");
                 return false;
             }
 
             CharacterManager.Instance.Save(Client.Character);
-            JobHandler.SendVisibleJobDataMessage(Client);
-            Client.Send(new JobListedUpdateMessage(true, job));
+            JobHandler.NotifyJobLearned(Client, job);
 
-            Logger.WriteInfo($"[NpcAction] type=LearnJob jobId={job} result=success");
-            Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=true notified=true baseCountBefore={baseCountBefore}");
+            NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "success");
+            Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=true notified=true infoMessage=true baseCountBefore={baseCountBefore}");
             return true;
         }
     }

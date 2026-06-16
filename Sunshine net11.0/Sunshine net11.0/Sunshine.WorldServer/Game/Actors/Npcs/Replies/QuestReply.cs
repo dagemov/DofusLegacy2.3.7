@@ -21,13 +21,13 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             if (!Client.Character.Quests.HasQuest(quest))
             {
                 Client.Character.Quests.AddQuest(Npc.Id, quest);
+                NpcReplyActionDiagnostics.LogQuest(Npc, 0, quest, "started");
                 return true;
             }
-            else
-            {
-                Client.Character.SendServerMessage("Tu as déjà eu cette quête.");
-                return false;
-            }
+
+            Client.Character.SendServerMessage("Tu as déjà eu cette quête.");
+            NpcReplyActionDiagnostics.LogQuest(Npc, 0, quest, "already_active");
+            return false;
         }
     }
 }

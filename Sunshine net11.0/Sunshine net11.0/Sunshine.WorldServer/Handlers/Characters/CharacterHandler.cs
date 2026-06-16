@@ -730,6 +730,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
                 InventoryHandler.SendSpellListMessage(client, true);
                 InventoryHandler.SendInventoryWeightMessage(client);
                 CharacterHandler.SendCharacterStatsListMessage(client);
+                JobHandler.SyncJobsOnLogin(client);
                 if (client.Character.GuildMember != null)
                     GuildHandler.SendGuildMembershipMessage(client, client.Character.GuildMember);
                 if (client.Character.EquippedMount != null)
@@ -783,6 +784,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
                 InventoryHandler.SendSpellListMessage(client, true);
                 InventoryHandler.SendInventoryWeightMessage(client);
                 CharacterHandler.SendCharacterStatsListMessage(client);
+                JobHandler.SyncJobsOnLogin(client);
                 if (client.Character.GuildMember != null)
                     GuildHandler.SendGuildMembershipMessage(client, client.Character.GuildMember);
                 if (client.Character.EquippedMount != null)

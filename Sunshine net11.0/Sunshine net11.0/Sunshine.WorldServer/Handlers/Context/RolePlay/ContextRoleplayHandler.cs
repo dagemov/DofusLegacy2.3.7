@@ -189,8 +189,14 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
         [WorldHandler(5616)]
         public static void HandleNpcDialogReplyMessage(WorldClient client, NpcDialogReplyMessage message)
         {
-            if (client.Character.IsInDialog() && client.Character.Dialog is NpcTalkAction)
-                ((NpcTalkAction)client.Character.Dialog).ChangeMessage(message.replyId);
+            if (!client.Character.IsInDialog() || !(client.Character.Dialog is NpcTalkAction talk))
+            {
+                Logger.WriteWarning($"[NpcReplyRaw] charId={client.Character?.Id} clientReplyId={message.replyId} dialogId=? result=NoDialog");
+                return;
+            }
+
+            Logger.WriteInfo($"[NpcReplyRaw] charId={client.Character.Id} npcId={talk.Npc?.Record?.Id} dialogId={talk.CurrentMessageId} clientReplyId={message.replyId} packet=5616 result=Received");
+            talk.ChangeMessage(message.replyId);
         }
 
         public static void SendNpcDialogCreationMessage(WorldClient client, Npc npc)
