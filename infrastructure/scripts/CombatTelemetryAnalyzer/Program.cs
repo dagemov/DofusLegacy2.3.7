@@ -198,8 +198,12 @@ internal sealed class CombatTelemetryAnalyzer
             var turnTransitionOutputFile = Path.Combine(outputDirectory, "combat-turn-transition-phase2-report.md");
             File.WriteAllText(turnLatencyOutputFile, turnLatencyReport, new UTF8Encoding(false));
             File.WriteAllText(turnTransitionOutputFile, BuildTurnTransitionPhase2Report(_options.InputDirectory, turnAnalysis), new UTF8Encoding(false));
+            var spellEffectLayerReport = BuildSpellEffectLayerReport(spellEvents);
+            var spellEffectLayerOutputFile = Path.Combine(outputDirectory, "spell-effect-layer-report.md");
+            File.WriteAllText(spellEffectLayerOutputFile, spellEffectLayerReport, new UTF8Encoding(false));
             Console.WriteLine($"Turn latency report written to {turnLatencyOutputFile}");
             Console.WriteLine($"Turn transition report written to {turnTransitionOutputFile}");
+            Console.WriteLine($"Spell effect layer report written to {spellEffectLayerOutputFile}");
         }
 
         Console.WriteLine($"Analyzed {events.Count} FIGHT-PERF, {turnEvents.Count} turn event(s), {spellEvents.Count} spell event(s) from {logFiles.Length} file(s).");
@@ -310,6 +314,9 @@ internal sealed class CombatTelemetryAnalyzer
                 Result: TryReadString(root, "result"),
                 Error: TryReadString(root, "error"),
                 DurationMs: TryReadLong(root, "durationMs"),
+                Layer: TryReadString(root, "layer"),
+                ReasonCode: TryReadString(root, "reasonCode"),
+                CorrelationId: TryReadString(root, "correlationId"),
                 RawLine: line);
 
             return true;
@@ -341,7 +348,26 @@ internal sealed class CombatTelemetryAnalyzer
             or "SpellCastResolved"
             or "SpellCastFailed"
             or "EffectResolved"
-            or "EffectFailed";
+            or "EffectFailed"
+            or "SpellCastAttempt"
+            or "SpellValidationResult"
+            or "SpellEffectPlanned"
+            or "EffectTargetsResolved"
+            or "EffectHandlerResult"
+            or "DamageComputed"
+            or "DamageApplied"
+            or "HealApplied"
+            or "BuffApplied"
+            or "DelayedEffectScheduled"
+            or "DelayedEffectTick"
+            or "DelayedEffectExpired"
+            or "SummonAttempt"
+            or "SummonResult"
+            or "SummonFailedReason"
+            or "AiSpellCandidate"
+            or "AiSpellRejected"
+            or "AiSpellSelected"
+            or "BuffTriggered";
 
     private static string MapJsonlTurnEventName(string eventName) =>
         eventName switch
@@ -2001,6 +2027,9 @@ internal sealed class CombatTelemetryAnalyzer
 
     private static string NormalizePath(string path, string baseDirectory) =>
         Path.GetRelativePath(baseDirectory, path).Replace('\\', '/');
+
+    private static string BuildSpellEffectLayerReport(IReadOnlyList<SpellCastTelemetryEvent> spellEvents) =>
+        SpellEffectLayerReportBuilder.Build(spellEvents);
 }
 
 internal sealed record TelemetryEvent(
@@ -2323,4 +2352,71 @@ internal sealed record SpellCastTelemetryEvent(
     string? Result,
     string? Error,
     long? DurationMs,
+    string? Layer,
+    string? ReasonCode,
+    string? CorrelationId,
     string RawLine);
+
+internal static class SpellEffectLayerReportBuilder
+{
+    public static string Build(IReadOnlyList<SpellCastTelemetryEvent> spellEvents)
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine("# Spell effect layer report");
+        builder.AppendLine();
+
+        var layered = spellEvents.Where(x => !string.IsNullOrWhiteSpace(x.Layer)).ToList();
+        if (layered.Count == 0)
+        {
+            builder.AppendLine("No spell-effect telemetry events with `layer` found.");
+            builder.AppendLine("Enable `SpellEffectTelemetryEnabled=true` and rerun combat tests.");
+            return builder.ToString();
+        }
+
+        builder.AppendLine($"Total layered events: **{layered.Count}**");
+        builder.AppendLine();
+
+        builder.AppendLine("## Events by layer");
+        foreach (var group in layered.GroupBy(x => x.Layer!).OrderBy(x => x.Key, StringComparer.Ordinal))
+        {
+            builder.AppendLine($"### Layer `{group.Key}` ({group.Count()} events)");
+            foreach (var eventGroup in group.GroupBy(x => x.EventName).OrderByDescending(x => x.Count()))
+                builder.AppendLine($"- `{eventGroup.Key}`: {eventGroup.Count()}");
+            builder.AppendLine();
+        }
+
+        builder.AppendLine("## Validation rejections (layer V)");
+        foreach (var rejection in layered
+                     .Where(x => x.Layer == "V" && x.EventName is "SpellValidationResult" or "AiSpellRejected")
+                     .GroupBy(x => x.ReasonCode ?? "unknown")
+                     .OrderByDescending(x => x.Count())
+                     .Take(20))
+        {
+            builder.AppendLine($"- `{rejection.Key}`: {rejection.Count()}");
+        }
+        builder.AppendLine();
+
+        builder.AppendLine("## AI spell rejections (layer A/V)");
+        foreach (var rejection in layered
+                     .Where(x => x.EventName == "AiSpellRejected")
+                     .GroupBy(x => x.ReasonCode ?? "unknown")
+                     .OrderByDescending(x => x.Count())
+                     .Take(20))
+        {
+            builder.AppendLine($"- `{rejection.Key}`: {rejection.Count()}");
+        }
+        builder.AppendLine();
+
+        builder.AppendLine("## Summon failures");
+        foreach (var failure in layered
+                     .Where(x => x.EventName is "SummonFailedReason" or "SummonResult" && x.Result == "Failed")
+                     .GroupBy(x => x.ReasonCode ?? x.Result ?? "unknown")
+                     .OrderByDescending(x => x.Count())
+                     .Take(20))
+        {
+            builder.AppendLine($"- `{failure.Key}`: {failure.Count()}");
+        }
+
+        return builder.ToString();
+    }
+}
