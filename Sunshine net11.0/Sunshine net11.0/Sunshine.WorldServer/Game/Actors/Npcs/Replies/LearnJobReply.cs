@@ -12,7 +12,10 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
     {
         public override bool Execute()
         {
-            sbyte job = sbyte.Parse(Parameters[0] as string);
+            string jobParam = Parameters != null && Parameters.Count > 0 ? Parameters[0] as string ?? string.Empty : string.Empty;
+            Logger.WriteInfo($"[JobLearn] Enter charId={Client.Character.Id} npcId={Npc?.Record?.Id} jobParam={jobParam}");
+
+            sbyte job = sbyte.Parse(jobParam);
             bool alreadyKnown = Client.Character.Jobs.HasJob(job);
 
             if (alreadyKnown)

@@ -13,6 +13,15 @@ using Sunshine.WorldServer.Game.Maps.Pathfinding;
 
 namespace Sunshine.WorldServer.Game.Actors.Npcs
 {
+    public class NpcReplyResolution
+    {
+        public int Type { get; set; }
+        public string Args { get; set; } = string.Empty;
+        public string Source { get; set; } = "None";
+        public short ResolvedMessageId { get; set; }
+        public bool Ambiguous { get; set; }
+    }
+
     public class Npc : RolePlayActor
     {
         private class DialogCsvEntry
@@ -193,7 +202,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs
                 if (currentMessage <= 0)
                     continue;
 
-                if (HasTypedReply(currentMessage, entry.ParameterId))
+                if (ShouldSkipCsvReply(currentMessage, entry.ParameterId))
                     continue;
 
                 EnsureDialogMessage(currentMessage);
@@ -201,9 +210,15 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs
             }
         }
 
-        private bool HasTypedReply(short messageId, short replyId)
+        private bool ShouldSkipCsvReply(short messageId, short replyId)
         {
-            return Replies != null && Replies.Any(x => x.MessageId == messageId && x.ReplieId == replyId);
+            if (Replies == null)
+                return false;
+
+            if (Replies.Any(x => x.ReplieId == replyId && x.Type != 1))
+                return true;
+
+            return Replies.Any(x => x.MessageId == messageId && x.ReplieId == replyId);
         }
 
         private List<DialogCsvEntry> ParseDialogCsv(string csv, bool allowEmptyMessageKey = false)
@@ -330,19 +345,112 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs
 
         public bool TryGetReplyIndex(short messageId, short replyId, out int index)
         {
-            index = -1;
+            NpcReplyResolution resolution;
+            if (!TryResolveReply(messageId, replyId, out resolution))
+            {
+                index = -1;
+                return false;
+            }
 
             for (int i = 0; i < GetDialogRepliesId.Count && i < GetDialogMessagesId.Count; i++)
             {
-                if (GetDialogMessagesId[i] == messageId && GetDialogRepliesId[i] == replyId)
+                if (GetDialogMessagesId[i] == resolution.ResolvedMessageId &&
+                    GetDialogRepliesId[i] == replyId &&
+                    GetNpcTypes[i] == resolution.Type)
                 {
                     index = i;
                     return true;
                 }
             }
 
-            index = GetDialogRepliesId.IndexOf(replyId);
-            return index >= 0;
+            index = -1;
+            return true;
+        }
+
+        public bool TryResolveReply(short messageId, short replyId, out NpcReplyResolution resolution)
+        {
+            resolution = new NpcReplyResolution();
+
+            var dbExactMatches = Replies?
+                .Where(x => x.MessageId == messageId && x.ReplieId == replyId)
+                .OrderByDescending(x => x.Type != 1 ? 1 : 0)
+                .ToList() ?? new List<NpcReplie>();
+
+            if (dbExactMatches.Count > 0)
+            {
+                var dbExact = dbExactMatches[0];
+                resolution.Type = dbExact.Type;
+                resolution.Args = dbExact.ParametersCSV ?? string.Empty;
+                resolution.Source = "DB";
+                resolution.ResolvedMessageId = messageId;
+                resolution.Ambiguous = dbExactMatches.Count > 1;
+                return true;
+            }
+
+            var dbTypedMatches = Replies?
+                .Where(x => x.ReplieId == replyId && x.Type != 1)
+                .OrderByDescending(x => x.MessageId == messageId ? 1 : 0)
+                .ToList() ?? new List<NpcReplie>();
+
+            if (dbTypedMatches.Count > 0)
+            {
+                var dbTyped = dbTypedMatches[0];
+                resolution.Type = dbTyped.Type;
+                resolution.Args = dbTyped.ParametersCSV ?? string.Empty;
+                resolution.Source = "DB";
+                resolution.ResolvedMessageId = dbTyped.MessageId;
+                resolution.Ambiguous = dbTypedMatches.Count > 1;
+                return true;
+            }
+
+            var memoryExact = new List<int>();
+            for (int i = 0; i < GetDialogRepliesId.Count && i < GetDialogMessagesId.Count; i++)
+            {
+                if (GetDialogMessagesId[i] == messageId && GetDialogRepliesId[i] == replyId)
+                    memoryExact.Add(i);
+            }
+
+            if (memoryExact.Count > 0)
+            {
+                int best = memoryExact.OrderByDescending(i => GetNpcTypes[i] != 1 ? 1 : 0).First();
+                resolution.Type = GetNpcTypes[best];
+                resolution.Args = GetParameters.Count > best ? GetParameters[best] ?? string.Empty : string.Empty;
+                resolution.Source = "CSV";
+                resolution.ResolvedMessageId = messageId;
+                resolution.Ambiguous = memoryExact.Count > 1;
+                return true;
+            }
+
+            var memoryFallback = new List<int>();
+            for (int i = 0; i < GetDialogRepliesId.Count; i++)
+            {
+                if (GetDialogRepliesId[i] == replyId)
+                    memoryFallback.Add(i);
+            }
+
+            if (memoryFallback.Count > 0)
+            {
+                int best = memoryFallback
+                    .OrderByDescending(i => GetNpcTypes[i] != 1 ? 1 : 0)
+                    .ThenByDescending(i => GetDialogMessagesId[i] == messageId ? 1 : 0)
+                    .First();
+                resolution.Type = GetNpcTypes[best];
+                resolution.Args = GetParameters.Count > best ? GetParameters[best] ?? string.Empty : string.Empty;
+                resolution.Source = "Fallback";
+                resolution.ResolvedMessageId = GetDialogMessagesId[best];
+                resolution.Ambiguous = memoryFallback.Count > 1;
+                return true;
+            }
+
+            return false;
+        }
+
+        public string FormatDbRepliesForLog()
+        {
+            if (Replies == null)
+                return "[]";
+
+            return "[" + string.Join(",", Replies.Select(x => $"{x.ReplieId}:m{x.MessageId}:t{x.Type}:a{x.ParametersCSV}")) + "]";
         }
 
         private void EnsureDialogMessage(short messageId)

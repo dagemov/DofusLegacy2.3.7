@@ -44,6 +44,15 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             return JobNames.TryGetValue(jobId, out var name) ? name : $"Job#{jobId}";
         }
 
+        public static void LogReplyRaw(WorldClient client, Npc npc, short dialogId, short clientReplyId, short resolvedMessageId, string knownReplies, string dbReplies, string source, bool ambiguous, string result)
+        {
+            if (client?.Character == null || npc == null)
+                return;
+
+            Logger.WriteInfo(
+                $"[NpcReplyRaw] charId={client.Character.Id} npcId={npc.Record.Id} npcName={npc.Record.Name} mapId={client.Character.Map.Id} dialogId={dialogId} clientReplyId={clientReplyId} knownReplies={knownReplies} dbReplies={dbReplies} resolvedReplyId={clientReplyId} resolvedMessageId={resolvedMessageId} source={source} ambiguous={ambiguous} result={result}");
+        }
+
         public static void LogReplySelection(WorldClient client, Npc npc, short dialogId, short replyId, int actionType, string actionArgs, string result)
         {
             if (client?.Character == null || npc == null)

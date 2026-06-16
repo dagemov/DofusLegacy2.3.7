@@ -16,11 +16,31 @@
 | 6 | Fix código: LearnJob cierra diálogo (no avanza a 3598) | **OK** (`NpcTalkAction` terminal types) |
 | 7 | Logs activos: `[NpcReply]`, `[NpcAction]`, `[JobLearn]` | **OK** |
 
-## Causa raíz del “sigue igual” (pre-fix)
+## Causa raíz del “click no hace nada” (fix `784a621+`)
 
-1. **Staging sin patch SQL** — Ikul seguía con un solo LearnJob (job 2) al final de la cadena nav.
-2. **CSV del template duplicaba replies** — `BuildDialogsFromTemplateCsv` registraba 3184–3187 como type 1 en mensaje 3596, sombreando el lookup por `IndexOf(replyId)`.
-3. **Diálogo no terminaba tras LearnJob** — tras aprender, `NpcTalkAction` avanzaba automáticamente a mensaje 3598 (confirmación legacy leñador).
+1. **CSV registraba 3184–3187 como type 1 en mensaje 3596** — `HasTypedReply` solo miraba mismo `messageId`, no detectaba DB type 8 en 3597.
+2. **Resolución por índice/fallback** — `IndexOf(replyId)` podía devolver la entrada CSV (type 1) antes que la DB (type 8).
+3. **`LearnJobReply` fallaba en silencio** — `already_known` / `max_jobs` → `Dispatch` false → `return` sin cerrar diálogo → “no hace nada”.
+4. **SQL staging OK** — verificado 2026-06-16: type 8 en 3597, sin duplicados, sin legacy nav en 3184–3187.
+
+### Fix aplicado
+
+- `[NpcReplyRaw]` en packet 5616 + resolución en `ChangeMessage`
+- `TryResolveReply`: DB exact → DB typed por replyId → CSV → Fallback (prefiere type != 1)
+- `ShouldSkipCsvReply`: omite CSV si DB tiene reply tipada (cualquier messageId)
+- Fallo LearnJob cierra diálogo (no silent return)
+
+### SQL staging (2026-06-16)
+
+```txt
+3184 @ 3597 type 8 args 28
+3185 @ 3597 type 8 args 2
+3186 @ 3597 type 8 args 41
+3187 @ 3597 type 8 args 36
+Duplicados: 0
+Legacy nav 3184-3187: 0 rows
+Map spawn: 21759491
+```
 
 ## Checklist
 
