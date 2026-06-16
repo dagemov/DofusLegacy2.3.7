@@ -28,6 +28,20 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             { 24, "Mineur" }, { 25, "Boulanger" }, { 26, "Alchimiste" },
         };
 
+        private static readonly HashSet<int> VerboseCharacterIds = new HashSet<int>();
+
+        public static bool IsVerboseFor(int characterId)
+        {
+            return VerboseCharacterIds.Contains(characterId);
+        }
+
+        public static bool SetVerboseFor(int characterId, bool enabled)
+        {
+            if (enabled)
+                return VerboseCharacterIds.Add(characterId);
+            return VerboseCharacterIds.Remove(characterId);
+        }
+
         public static string GetHandlerName(int actionType)
         {
             if (HandlerNames.TryGetValue(actionType, out var name))

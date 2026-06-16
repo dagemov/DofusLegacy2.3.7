@@ -188,6 +188,24 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
             NormalizeJobs();
         }
 
+        public bool RemoveJob(sbyte jobId)
+        {
+            int removed = _jobs.RemoveAll(x => x.Job == jobId);
+            if (removed <= 0)
+                return false;
+
+            NormalizeJobs();
+            return true;
+        }
+
+        public int ClearAllJobs()
+        {
+            int count = _jobs.Count;
+            _jobs.Clear();
+            NormalizeJobs();
+            return count;
+        }
+
         public void AddExperience(sbyte job, long amount)
         {
             amount = GameRates.ApplyJobXp(amount);

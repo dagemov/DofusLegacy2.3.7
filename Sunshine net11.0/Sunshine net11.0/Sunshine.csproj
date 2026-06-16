@@ -359,6 +359,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LevelCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\LookCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\TeleportCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Moderator\QaModeratorCommands.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\CommandAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\WorldCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\FightActor.cs" />
