@@ -5,6 +5,7 @@ using Sunshine.WorldServer.Game.Actors.Monsters;
 using Sunshine.WorldServer.Game.Fights.Bombs;
 using Sunshine.WorldServer.Game.Fights.Diagnostics;
 using Sunshine.WorldServer.Game.Fights.Mechanics;
+using Sunshine.WorldServer.Game.Fights.Telemetry;
 using Sunshine.WorldServer.Game.Maps;
 using Sunshine.WorldServer.Game.Spells;
 using Sunshine.WorldServer.Game.Fights.Buffs.Spells;
@@ -26,10 +27,15 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             if (Caster == null || !Caster.IsAlive || Fight == null)
             {
                 FightCombatLogger.LogSummonFail(Fight, Caster, Spell, (int)Effect.DiceNum, "invalid_caster_or_fight");
+                SpellEffectTelemetry.SummonResult(Fight, Caster, Spell, Effect, false, null, (int)Effect.DiceNum, TargetedCell, "invalid_caster_or_fight");
                 return;
             }
 
             int monsterId = FrigostBossMechanics.ResolveForcedSummonMonsterId(Caster, (int)Effect.DiceNum);
+            bool needsSummonSlot = Effect.Id != EffectsEnum.Effect_SummonBomb && (MonsterManager.Instance.Monsters.TryGetValue(monsterId, out var previewTemplate) && (previewTemplate?.UseSummonSlot ?? true));
+            SpellEffectTelemetry.SummonAttempt(
+                Fight, Caster, Spell, Effect, monsterId, TargetedCell,
+                Caster.SummonedCount, Caster.Stats[StatsEnum.SummonLimit].Total, needsSummonSlot);
 
             if (!MonsterManager.Instance.Monsters.TryGetValue(monsterId, out var mTemplate) ||
                 !MonsterManager.Instance.MonstersGrade.TryGetValue(monsterId, out var mGrades) ||
@@ -37,6 +43,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot summon monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}.");
                 FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "monster_template_missing");
+                SpellEffectTelemetry.SummonResult(Fight, Caster, Spell, Effect, false, null, monsterId, TargetedCell, "monster_template_missing");
                 if (Caster is CharacterFighter errorCaster && errorCaster.Character != null)
                     errorCaster.Character.SendServerMessage("No se puede invocar esta entidad: plantilla no encontrada.", System.Drawing.Color.Red);
                 return;
@@ -53,6 +60,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             {
                 global::Sunshine.Logs.Logger.WriteError($"Cannot instantiate summoned monster {monsterId} grade {Effect.DiceFace} for spell {(Spell != null ? Spell.Id : 0)}: {ex}");
                 FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "monster_instantiate_error");
+                SpellEffectTelemetry.SummonResult(Fight, Caster, Spell, Effect, false, null, monsterId, TargetedCell, "monster_instantiate_error");
                 if (Caster is CharacterFighter summonCaster && summonCaster.Character != null)
                     summonCaster.Character.SendServerMessage("No se puede invocar esta entidad: error en la plantilla del monstruo.", System.Drawing.Color.Red);
                 return;
@@ -67,6 +75,7 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                 if (bombCount >= BombFighter.BombLimit)
                 {
                     FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, "bomb_limit_reached");
+                    SpellEffectTelemetry.SummonResult(Fight, Caster, Spell, Effect, false, null, monsterId, TargetedCell, "bomb_limit_reached");
                     if (Caster is CharacterFighter characterCaster && characterCaster.Character != null)
                         characterCaster.Character.SendServerMessage("No puedes colocar más de 3 bombas.", System.Drawing.Color.Red);
 
@@ -81,11 +90,12 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
                 }
             }
 
-            bool needsSummonSlot = Effect.Id != EffectsEnum.Effect_SummonBomb && (monster.Record?.UseSummonSlot ?? true);
-            if (needsSummonSlot && !Caster.CanSummon())
+            bool needsSummonSlotResolved = Effect.Id != EffectsEnum.Effect_SummonBomb && (monster.Record?.UseSummonSlot ?? true);
+            if (needsSummonSlotResolved && !Caster.CanSummon())
             {
-                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId,
-                    $"max_summons count={Caster.SummonedCount} limit={Caster.Stats[StatsEnum.SummonLimit].Total}");
+                var failReason = $"max_summons count={Caster.SummonedCount} limit={Caster.Stats[StatsEnum.SummonLimit].Total}";
+                FightCombatLogger.LogSummonFail(Fight, Caster, Spell, monsterId, failReason);
+                SpellEffectTelemetry.SummonResult(Fight, Caster, Spell, Effect, false, null, monsterId, TargetedCell, failReason);
                 if (Caster is CharacterFighter maxSummonCaster && maxSummonCaster.Character != null)
                     maxSummonCaster.Character.SendServerMessage("Has alcanzado el número máximo de invocaciones.", System.Drawing.Color.Red);
                 return;
@@ -149,6 +159,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Summon
             bool usesSummonSlot = summonedActor is SummonedMonster summonSlotMonster && summonSlotMonster.Monster.Record.UseSummonSlot;
             FightCombatLogger.LogSummonCreate(Fight, Caster, summonedActor, monsterId, summonCell,
                 usesSummonSlot, Caster.SummonedCount, Caster.Stats[StatsEnum.SummonLimit].Total);
+            SpellEffectTelemetry.SummonResult(
+                Fight, Caster, Spell, Effect, true, summonedActor.Id, monsterId, summonCell,
+                aiType: summonedActor.GetType().Name);
 
             if (applySlaveStates && summonedActor is SlaveFighter slave)
             {

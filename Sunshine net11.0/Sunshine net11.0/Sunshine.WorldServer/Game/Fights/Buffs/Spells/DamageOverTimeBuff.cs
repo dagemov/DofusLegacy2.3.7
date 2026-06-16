@@ -54,6 +54,8 @@ namespace Sunshine.WorldServer.Game.Fights.Buffs.Spells
             };
             Target.InflictDamage(damage, true);
             FightCombatLogger.LogBuffTick(Target.Fight, Target, this, "DOT", damage.Amount, Duration);
+            Game.Fights.Telemetry.SpellEffectTelemetry.DelayedEffectTick(
+                Target.Fight, Target, Spell, Effect, "DOT", damage.Amount, Duration, true);
         }
 
         public override AbstractFightDispellableEffect GetAbstractFightDispellableEffect()
