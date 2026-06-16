@@ -2,6 +2,7 @@
 using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Handlers.Context.Roleplay;
 using Sunshine.WorldServer.Handlers.Dialogs;
+using Sunshine.Logs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,8 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
         private readonly Character _character;
         private readonly Npc _npc;
         private short _currentMessageId;
+
+        public Npc Npc => _npc;
 
         public NpcTalkAction(Npc npc, Character character)
         {
@@ -60,6 +63,9 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
                 replyIndex >= 0 && replyIndex < _npc.GetNpcTypes.Count)
             {
                 int type = _npc.GetNpcTypes[replyIndex];
+                var args = _npc.GetParameters.Count > replyIndex ? _npc.GetParameters[replyIndex] : string.Empty;
+                Logger.WriteInfo($"[NpcReply] charId={_character.Id} npcId={_npc.Record.Id} replyId={reply} actionType={type} args={args}");
+
                 if (type != 1)
                 {
                     if (!ReplyDispatcher.Dispatch(_character.Client, _npc, new List<object>

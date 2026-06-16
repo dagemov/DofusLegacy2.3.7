@@ -4,6 +4,7 @@ using Sunshine.MySql.Database.World.Characters;
 using Sunshine.Protocol.Messages;
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Characters;
+using Sunshine.Logs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -199,6 +200,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
                 return;
 
             var jobLevel = ExperienceManager.Instance.GetJobLevelExperienceFloor(jobRecord.Experience);
+            var oldXp = jobRecord.Experience;
             var jobNextExp = ExperienceManager.Instance.GetNextExperienceLevelFloor(jobLevel);
 
             if (jobLevel >= 100)
@@ -206,6 +208,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
 
             jobRecord.Experience += amount;
             var nextLevel = ExperienceManager.Instance.GetNextJobLevelExperienceFloor(jobRecord.Experience);
+            Logger.WriteInfo($"[JobXp] charId={_character.Id} jobId={job} oldXp={oldXp} newXp={jobRecord.Experience} oldLevel={jobLevel} newLevel={nextLevel}");
             if (jobLevel < nextLevel)
             {
                 var jobExpTotal = ExperienceManager.Instance.GetJobExperienceLevelFloor(nextLevel);

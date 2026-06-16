@@ -8,6 +8,7 @@ using Sunshine.WorldServer.Game.Dialogs;
 using Sunshine.WorldServer.Handlers.Characters.Inventory;
 using Sunshine.WorldServer.Handlers.Characters.Jobs;
 using Sunshine.WorldServer.Handlers.Interactives;
+using Sunshine.Logs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,7 +96,9 @@ namespace Sunshine.WorldServer.Game.Maps.Interactives.Skills
 
                 Client.Character.Inventory.AddItem(ressource, quantity);
                 JobHandler.SendObjectFoundWhileRecoltingMessage(Client, ressource.Template.Id, quantity);
-                Client.Character.Jobs.AddExperience(Job.Job, JobManager.Instance.GetExperience(ressource));
+                var xpGain = JobManager.Instance.GetExperience(ressource);
+                Logger.WriteInfo($"[Harvest] charId={Client.Character.Id} skillId={Id} resourceId={ressource.Template.Id} jobId={Job.Job} xp={xpGain}");
+                Client.Character.Jobs.AddExperience(Job.Job, xpGain);
             }
         }
 
