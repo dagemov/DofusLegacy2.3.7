@@ -193,9 +193,17 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs
                 if (currentMessage <= 0)
                     continue;
 
+                if (HasTypedReply(currentMessage, entry.ParameterId))
+                    continue;
+
                 EnsureDialogMessage(currentMessage);
                 RegisterDialogEntry(1, currentMessage, entry.ParameterId, string.Empty, string.Empty);
             }
+        }
+
+        private bool HasTypedReply(short messageId, short replyId)
+        {
+            return Replies != null && Replies.Any(x => x.MessageId == messageId && x.ReplieId == replyId);
         }
 
         private List<DialogCsvEntry> ParseDialogCsv(string csv, bool allowEmptyMessageKey = false)

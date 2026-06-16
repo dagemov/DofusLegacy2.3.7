@@ -34,6 +34,15 @@ El menú en mensaje **3597** tiene 4 opciones (3184-3187) pero todas eran **type
 
 Aprendizaje **directo** en 3597 — compatible con Sunshine que no ramifica por reply.
 
+## Fix código adicional (P1, post-validación)
+
+Además del patch SQL, el servidor necesitaba dos correcciones para que Ikul deje de comportarse como “todo leñador”:
+
+1. **`Npc.BuildDialogsFromTemplateCsv`** — no registrar en CSV replies que ya existen tipadas en `npcs_replies` (`HasTypedReply`). El CSV del template ponía 3184–3187 como type 1 en mensaje 3596 y podía ganar en `TryGetReplyIndex` fallback.
+2. **`NpcTalkAction`** — cerrar diálogo tras acciones terminales (type 8 LearnJob, 0 close, 2 teleport, 5 quest) en lugar de avanzar siempre al siguiente mensaje (3598 legacy).
+
+Sin estos fixes, aun con SQL correcto el cliente podía seguir viendo el flujo antiguo.
+
 ## SQL
 
 - Patch: `docs/npc-actions-audit/sql/patch_npc_849_ikul_jobs.sql`

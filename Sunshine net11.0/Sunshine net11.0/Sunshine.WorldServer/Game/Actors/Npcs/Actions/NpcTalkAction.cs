@@ -77,6 +77,12 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
                 {
                     return;
                 }
+                else if (IsTerminalReplyType(type))
+                {
+                    _character.Dialog = null;
+                    DialogHandler.SendLeaveDialogMessage(_character.Client);
+                    return;
+                }
 
                 if (_character.Dialog == null || _character.Dialog != this)
                     return;
@@ -94,6 +100,11 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
             var visibleReplies = _npc.GetDialogReplies(nextMessage);
             var dialogParams = _npc.GetDialogParameters(_character, nextMessage) ?? new string[0];
             ContextRoleplayHandler.SendNpcDialogQuestionMessage(_character.Client, nextMessage, dialogParams, visibleReplies);
+        }
+
+        private static bool IsTerminalReplyType(int type)
+        {
+            return type == 0 || type == 2 || type == 5 || type == 8;
         }
     }
 }
