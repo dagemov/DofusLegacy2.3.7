@@ -1,5 +1,4 @@
 ﻿using Sunshine.MySql.Database.Managers;
-using Sunshine.Protocol.Messages;
 using Sunshine.WorldServer.Game.Actors.Characters.Jobs;
 using Sunshine.WorldServer.Handlers.Characters.Jobs;
 using Sunshine.Logs;
@@ -21,7 +20,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             if (alreadyKnown)
             {
                 NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "already_known");
-                Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=true saved=false notified=false");
+                Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=true saved=false notified=false infoMessage=false");
                 return false;
             }
 
@@ -37,11 +36,10 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Replies
             }
 
             CharacterManager.Instance.Save(Client.Character);
-            JobHandler.SendVisibleJobDataMessage(Client);
-            Client.Send(new JobListedUpdateMessage(true, job));
+            JobHandler.NotifyJobLearned(Client, job);
 
             NpcReplyActionDiagnostics.LogLearnJob(Npc, 0, job, "success");
-            Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=true notified=true baseCountBefore={baseCountBefore}");
+            Logger.WriteInfo($"[JobLearn] charId={Client.Character.Id} jobId={job} alreadyKnown=false saved=true notified=true infoMessage=true baseCountBefore={baseCountBefore}");
             return true;
         }
     }

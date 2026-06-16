@@ -132,9 +132,10 @@ namespace Sunshine.WorldServer.Commands.Moderator
 
             if (arg == "all")
             {
+                var existing = jobs.GetJobs().Select(x => x.Job).ToList();
                 int removed = jobs.ClearAllJobs();
                 CharacterManager.Instance.Save(Client.Character);
-                RefreshJobData();
+                JobHandler.NotifyJobsCleared(Client);
                 Client.Character.SendServerMessage($"Removed {removed} job(s).", Color.Green);
                 return;
             }
@@ -152,14 +153,12 @@ namespace Sunshine.WorldServer.Commands.Moderator
             }
 
             CharacterManager.Instance.Save(Client.Character);
-            RefreshJobData();
+            JobHandler.NotifyJobRemoved(Client, jobId);
             Client.Character.SendServerMessage($"Removed job {jobId}.", Color.Green);
         }
 
         private void RefreshJobData()
         {
-            JobHandler.SendJobDescriptionMessage(Client);
-            JobHandler.SendJobExperienceUpdateMessage(Client);
             JobHandler.SendVisibleJobDataMessage(Client);
         }
     }

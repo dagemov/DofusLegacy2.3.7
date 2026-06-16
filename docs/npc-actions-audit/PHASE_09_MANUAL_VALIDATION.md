@@ -14,7 +14,7 @@
 | 4 | Binario P1 desplegado en staging | **OK** (`Sunshine.dll` + restart `sunshine-server`) |
 | 5 | Fix código: CSV no pisa `npcs_replies` tipadas | **OK** (`Npc.cs` `HasTypedReply`) |
 | 6 | Fix código: LearnJob cierra diálogo (no avanza a 3598) | **OK** (`NpcTalkAction` terminal types) |
-| 7 | Logs activos: `[NpcReply]`, `[NpcAction]`, `[JobLearn]` | **OK** |
+| 7 | Logs activos: `[NpcReply]`, `[NpcAction]`, `[JobLearn]`, `[JobSync]`, `[JobUi]` | **OK** |
 
 ## Causa raíz del “click no hace nada” (fix `784a621+`)
 
@@ -58,7 +58,27 @@ Map spawn: 21759491
 | Hub mazmorra clasificado | 1248 | — | Logs muestran Navigate only | **PENDIENTE** |
 | Unhandled no bloquea | cualquier | — | `result=Unhandled` + LeaveDialog | **PENDIENTE** |
 
-## Evidencia a capturar
+## Bug UI/mensaje (fix 2026-06-16)
+
+| Bug | Causa | Fix |
+|-----|-------|-----|
+| Sin mensaje "aprendiste oficio" | `LearnJobReply` no enviaba `TextInformationMessage` | `JobHandler.NotifyJobLearned` → msg 112 + chat |
+| Panel `(J)` gris | Login no enviaba job packets (`5655/5809/5652/6016`) | `JobHandler.SyncJobsOnLogin` en selección personaje |
+| XP sin sync parcial | Solo `JobExperienceUpdate` en level-up | `NotifyJobExperienceChanged` en cada harvest XP |
+
+### Logs esperados tras aprender Leñador (3185)
+
+```txt
+[JobSync] phase=learn charId=... jobIds=2 packets=5655+5809+5652+5654+6016+Text112
+[JobUi] charId=... jobId=2 panelExpected=true messageSent=true
+[JobLearn] ... saved=true notified=true infoMessage=true
+```
+
+### Logs esperados en login con oficio
+
+```txt
+[JobSync] phase=login charId=... jobsCount=1 jobIds=2 packets=5655+5809+5652+6016x1
+```
 
 ### Ikul — por cada reply 3184–3187
 
