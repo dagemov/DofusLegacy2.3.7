@@ -25,6 +25,9 @@ namespace Sunshine.WorldServer.Game.Effects
                 return;
 
             var effectStopwatch = Stopwatch.StartNew();
+            EffectTargetTelemetryHelper.Resolve(caster, effect, cell, out var included, out var filtered);
+            SpellEffectTelemetry.EffectTargetsResolved(caster.Fight, caster, spell, effect, cell, included, filtered);
+
             try
             {
                 if (EffectManager.Instance.SpellEffects.ContainsKey(effect.Id))
@@ -35,6 +38,8 @@ namespace Sunshine.WorldServer.Game.Effects
                     spellEffect.Initialize(new List<object> { effect.Id, effect.DiceNum, effect.DiceFace, effect.Value,
                                                               effect.Delay, effect.Duration, effect.Target, cell,
                                                               affectedActors, caster, spell, effect, trapCell, firstPosition, countPushed});
+                    var handlerType = spellEffect.GetType().Name;
+                    spellEffect.Apply();
                     CombatTelemetry.LogSpellEvent(
                         "EffectResolved",
                         caster.Fight,
@@ -43,6 +48,14 @@ namespace Sunshine.WorldServer.Game.Effects
                         spell?.Level,
                         effectIds: new[] { effect.Id },
                         result: "OK",
+                        durationMs: effectStopwatch.ElapsedMilliseconds);
+                    SpellEffectTelemetry.EffectHandlerResult(
+                        caster.Fight,
+                        caster,
+                        spell,
+                        effect,
+                        handlerType,
+                        "Applied",
                         durationMs: effectStopwatch.ElapsedMilliseconds);
                 }
                 else
@@ -56,6 +69,14 @@ namespace Sunshine.WorldServer.Game.Effects
                         spell?.Level,
                         effectIds: new[] { effect.Id },
                         result: "HandlerMissing",
+                        durationMs: effectStopwatch.ElapsedMilliseconds);
+                    SpellEffectTelemetry.EffectHandlerResult(
+                        caster.Fight,
+                        caster,
+                        spell,
+                        effect,
+                        null,
+                        "HandlerMissing",
                         durationMs: effectStopwatch.ElapsedMilliseconds);
                 }
             }
@@ -72,6 +93,15 @@ namespace Sunshine.WorldServer.Game.Effects
                     result: "Exception",
                     error: ex.Message,
                     durationMs: effectStopwatch.ElapsedMilliseconds);
+                SpellEffectTelemetry.EffectHandlerResult(
+                    caster.Fight,
+                    caster,
+                    spell,
+                    effect,
+                    null,
+                    "Exception",
+                    ex.Message,
+                    effectStopwatch.ElapsedMilliseconds);
             }
         }
     }

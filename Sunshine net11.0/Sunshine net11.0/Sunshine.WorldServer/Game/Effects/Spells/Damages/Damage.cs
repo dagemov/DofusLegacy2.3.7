@@ -65,6 +65,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
         public int FixedBonus { get; set; }
 
         public EffectGenerationEnum EffectGenerationType { get; set; }
+
+        /// <summary>Observational only — consumed by spell effect telemetry.</summary>
+        public string TelemetryFormulaNotes { get; set; }
        
     }
 }

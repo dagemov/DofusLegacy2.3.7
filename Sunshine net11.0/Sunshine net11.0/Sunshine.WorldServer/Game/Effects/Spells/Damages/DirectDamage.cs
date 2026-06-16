@@ -40,25 +40,35 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
                 // Iop's Wrath (Yopuka) logic
                 if (Spell.Id == 159) // Colère de Iop
                 {
+                    string formulaNotes = "IopWrath:first_cast_state51";
                     // Check if it's the second cast (charge)
                     // We can use a state or spell history.
                     if (Caster.HasState(SpellStatesEnum.State_51)) // Let's use State 51 as "Charged"
                     {
                         baseDiceNum += 80; // Massive boost for charge
                         Caster.RemoveState(SpellStatesEnum.State_51);
+                        formulaNotes = "IopWrath:charged_cast_diceNum+80";
                     }
                     else
                     {
                         Caster.AddState(SpellStatesEnum.State_51); // Add charge state for next time
                         // In 2.x, the state usually lasts 3 turns
                     }
+
+                    Damage damage = new Damage(effectSchool, baseDiceNum, resolvedDiceFace, Spell, Caster)
+                    {
+                        FixedBonus = fixedBonus,
+                        TelemetryFormulaNotes = formulaNotes
+                    };
+                    actor.InflictDamage(damage);
+                    continue;
                 }
 
-                Damage damage = new Damage(effectSchool, baseDiceNum, resolvedDiceFace, Spell, Caster)
+                Damage damageDefault = new Damage(effectSchool, baseDiceNum, resolvedDiceFace, Spell, Caster)
                 {
                     FixedBonus = fixedBonus
                 };
-                actor.InflictDamage(damage);
+                actor.InflictDamage(damageDefault);
             }
         }
 
