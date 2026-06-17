@@ -236,6 +236,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Player\VipCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\JobCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\DebugMapCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\MapPositionCommands.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\HelpCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\ParchotageCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\RestatCommand.cs" />
