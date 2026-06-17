@@ -35,6 +35,8 @@ RateJobXp=${RATE_JOB_XP:-5}
 RateMountXp=${RATE_MOUNT_XP:-1}
 RateKamas=${RATE_KAMAS:-2}
 
+Start_Kamas=${START_KAMAS:-75000000}
+
 FightKamasLevel1Min=${FIGHT_KAMAS_LEVEL1_MIN:-250000}
 FightKamasLevel1Max=${FIGHT_KAMAS_LEVEL1_MAX:-500000}
 FightKamasLevel50Min=${FIGHT_KAMAS_LEVEL50_MIN:-500000}

@@ -73,6 +73,8 @@ RateJobXp=$(Get-EnvValue -Values $envValues -Key "RATE_JOB_XP" -DefaultValue "5"
 RateMountXp=$(Get-EnvValue -Values $envValues -Key "RATE_MOUNT_XP" -DefaultValue "1")
 RateKamas=$(Get-EnvValue -Values $envValues -Key "RATE_KAMAS" -DefaultValue "2")
 
+Start_Kamas=$(Get-EnvValue -Values $envValues -Key "START_KAMAS" -DefaultValue "75000000")
+
 AutoSaveInterval=$(Get-EnvValue -Values $envValues -Key "AUTO_SAVE_INTERVAL" -DefaultValue "5")
 "@ | Set-Content -Path $configPath -Encoding ASCII
 

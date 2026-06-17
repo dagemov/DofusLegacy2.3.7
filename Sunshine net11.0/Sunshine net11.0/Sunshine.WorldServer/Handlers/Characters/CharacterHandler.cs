@@ -29,6 +29,7 @@ using Sunshine.WorldServer.Handlers.Characters.Jobs;
 using Sunshine.WorldServer.Handlers.Guilds;
 using Sunshine.WorldServer.Handlers.Mounts;
 using Sunshine.WorldServer.Game.Actors.Look;
+using Sunshine.BaseServer.Configuration;
 
 namespace Sunshine.WorldServer.Handlers.Characters
 {
@@ -78,7 +79,8 @@ namespace Sunshine.WorldServer.Handlers.Characters
                     MapId = BreedManager.Instance.GetStartMap(message.breed),
                     CellId = BreedManager.Instance.GetStartCell(message.breed),
                     Direction = BreedManager.Instance.GetStartDirection(message.breed),
-                    SpellsPoints = 1
+                    SpellsPoints = 1,
+                    Kamas = Math.Max(0, GameConfig.GetInt("Start_Kamas", 75000000))
                 };
 
                 CharacterManager.Instance.CreateCharacter(client.Account.Id, _character);
