@@ -39,7 +39,6 @@ namespace Sunshine.WorldServer.Game.Effects
                                                               effect.Delay, effect.Duration, effect.Target, cell,
                                                               affectedActors, caster, spell, effect, trapCell, firstPosition, countPushed});
                     var handlerType = spellEffect.GetType().Name;
-                    spellEffect.Apply();
                     CombatTelemetry.LogSpellEvent(
                         "EffectResolved",
                         caster.Fight,
