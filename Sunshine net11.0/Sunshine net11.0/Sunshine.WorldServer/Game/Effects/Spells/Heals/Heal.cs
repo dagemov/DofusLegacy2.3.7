@@ -46,6 +46,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Heals
 
         public override void Apply()
         {
+            // Shadow metadata read (Phase 1): logged for parity only, does NOT drive behavior.
+            Metadata.MetadataObserver.LogEnemyHealing(Spell, Id, AllowsEnemyHealing(Spell));
+
             foreach (var actor in GetHealTargets())
             {
                 Effect.GenerateEffect();
