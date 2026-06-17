@@ -85,6 +85,8 @@
 		<Compile Include="Sunshine.BaseServer\Loaders\World\Npcs\NpcsLoader.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\World\Quests\QuestsLoader.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\World\Spells\SpellsLoader.cs" />
+		<Compile Include="Sunshine.BaseServer\Loaders\World\Spells\MetadataLoader.cs" />
+		<Compile Include="Sunshine.BaseServer\Loaders\World\Spells\MetadataSeeder.cs" />
 		<Compile Include="Sunshine.BaseServer\Loaders\World\Stats\BreedsLoader.cs" />
 		<Compile Include="Sunshine.BaseServer\ServersManager.cs" />
 		<Compile Include="Sunshine.BaseServer\IClient\IBaseClient.cs" />
@@ -122,6 +124,8 @@
 		<Compile Include="Sunshine.MySql\Database\World\Characters\Quests\CharacterQuestStepRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Dungeons\DungeonSpawn.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Maps\Houses\HouseDbBootstrap.cs" />
+		<Compile Include="Sunshine.MySql\Database\World\Spells\EffectMetadataRecord.cs" />
+		<Compile Include="Sunshine.MySql\Database\World\Spells\EffectMetadataBootstrap.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Maps\Houses\WorldMapHouseRecord.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Monsters\MonsterSpawnFix.cs" />
 		<Compile Include="Sunshine.MySql\Database\World\Guilds\GuildMemberRecord.cs" />
@@ -1592,6 +1596,10 @@
 		<Compile Include="Sunshine.WorldServer\Game\Parties\DungeonPartyFinderManager.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Spells\Spell.cs" />
 		<Compile Include="Sunshine.MySql\Database\Managers\SpellManager.cs" />
+		<Compile Include="Sunshine.MySql\Database\Managers\MetadataRepository.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Metadata\MetadataDefaults.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Metadata\MetadataCache.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Effects\Metadata\MetadataObserver.cs" />
 		<Compile Include="Sunshine.WorldServer\Handlers\Actions\ActionsHandler.cs" />
 		<Compile Include="Sunshine.WorldServer\Handlers\Admins\AdminHandler.cs" />
 		<Compile Include="Sunshine.WorldServer\Handlers\Approach\ApproachHandler.cs" />

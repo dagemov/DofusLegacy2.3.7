@@ -77,7 +77,7 @@ namespace Sunshine.Servers
             _authServer = new AuthServer.AuthServer();
             _worldServer = new WorldServer.WorldServer();
 
-            const int totalSteps = 24;
+            const int totalSteps = 25;
             int step = 0;
 
             Step(++step, totalSteps, "Connexion MySQL", () => DatabaseManager.Initilize(), "Ouverture de la connexion MySQL...");
@@ -89,6 +89,11 @@ namespace Sunshine.Servers
             }, "Préparation de l'auth avant l'ouverture finale des serveurs...");
             Step(++step, totalSteps, "Effets", () => EffectsLoader.Initialize(), "Chargement des effets...");
             Step(++step, totalSteps, "Sorts", () => SpellsLoader.Initialize(), "Chargement des sorts...");
+            Step(++step, totalSteps, "Métadonnées sorts", () =>
+            {
+                MetadataLoader.Initialize();
+                MetadataSeeder.Initialize();
+            }, "Chargement de la métadonnée des sorts (effect_metadata, shadow)...");
             Step(++step, totalSteps, "Items", () => ItemsLoader.Initialize(), "Chargement des objets...");
             Step(++step, totalSteps, "Commandes", () => CommandsLoader.Initialize(), "Chargement des commandes...");
             Step(++step, totalSteps, "Expériences", () => ExperienceManager.Instance.LoadAllExperiences(), "Chargement des courbes d'expérience...");

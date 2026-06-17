@@ -1,4 +1,5 @@
 using Sunshine.Protocol.Enums;
+using Sunshine.WorldServer.Game.Effects.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
                     string formulaNotes = "IopWrath:first_cast_state51";
                     // Check if it's the second cast (charge)
                     // We can use a state or spell history.
-                    if (Caster.HasState(SpellStatesEnum.State_51)) // Let's use State 51 as "Charged"
+                    bool charged = Caster.HasState(SpellStatesEnum.State_51);
+                    if (charged) // Let's use State 51 as "Charged"
                     {
                         baseDiceNum += 80; // Massive boost for charge
                         Caster.RemoveState(SpellStatesEnum.State_51);
@@ -54,6 +56,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Damages
                         Caster.AddState(SpellStatesEnum.State_51); // Add charge state for next time
                         // In 2.x, the state usually lasts 3 turns
                     }
+
+                    // Shadow metadata read (Phase 1): logged for parity only, does NOT drive behavior.
+                    MetadataObserver.LogChargeBonus(Spell, Id, charged);
 
                     Damage damage = new Damage(effectSchool, baseDiceNum, resolvedDiceFace, Spell, Caster)
                     {

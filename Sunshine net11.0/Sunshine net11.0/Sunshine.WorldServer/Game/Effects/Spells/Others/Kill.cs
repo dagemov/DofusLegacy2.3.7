@@ -16,6 +16,9 @@ namespace Sunshine.WorldServer.Game.Effects.Spells.Others
 
         public override void Apply()
         {
+            // Shadow metadata read (Phase 1): logged for parity only, does NOT drive behavior.
+            Metadata.MetadataObserver.LogKillTarget(Spell, Id, IsSacrificialDollSuicide(Spell?.Id));
+
             if (IsSacrificialDollSuicide(Spell?.Id))
             {
                 if (Caster is SummonedMonster summoned && summoned.IsAlive && !Caster.DeathHandled)
