@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquitectura de Hechizos - Auditoria de Madurez</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2a2f3a;
+    --txt:#e6e9ef; --mut:#9aa3b2; --accent:#5b9bff; --good:#4cc38a;
+    --warn:#e0b341; --bad:#e5688a; --chip:#232834;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;font-size:16px}
+  header{padding:48px 24px 32px;background:linear-gradient(160deg,#1b2030,#0f1115);
+    border-bottom:1px solid var(--line)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  h1{margin:0 0 8px;font-size:30px}
+  h2{margin:48px 0 16px;font-size:23px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  h3{margin:28px 0 10px;font-size:18px;color:#cfd6e4}
+  p{color:var(--txt)} .mut{color:var(--mut)}
+  .lead{font-size:18px;color:var(--mut);max-width:760px}
+  .grid{display:grid;gap:16px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:24px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card .n{font-size:30px;font-weight:700}
+  .card .l{color:var(--mut);font-size:13px;margin-top:4px}
+  .accent{color:var(--accent)} .good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cfd6e4;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  code{background:var(--chip);padding:2px 6px;border-radius:5px;font-size:13px;
+    font-family:"SF Mono",Consolas,Monaco,monospace;color:#d6deea}
+  pre{background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow:auto;font-size:13px;line-height:1.5;color:#cdd6e6}
+  .gauge{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;margin-top:24px}
+  .gauge .num{font-size:54px;font-weight:800;line-height:1}
+  .bar{height:14px;background:#0c0e13;border-radius:8px;margin:14px 0 6px;overflow:hidden;border:1px solid var(--line)}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,#e5688a,#e0b341,#4cc38a)}
+  .levels{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:6px}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600}
+  .pill.si{background:rgba(229,104,138,.16);color:#e5688a}
+  .pill.no{background:rgba(76,195,138,.16);color:#4cc38a}
+  .pill.q{background:rgba(224,179,65,.16);color:#e0b341}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.two{grid-template-columns:1fr}}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+  .flow span{background:var(--chip);border:1px solid var(--line);padding:6px 11px;border-radius:8px;font-size:13px}
+  .flow .arr{background:none;border:none;color:var(--mut);padding:0}
+  .dim{display:grid;grid-template-columns:120px 1fr 56px;gap:12px;align-items:center;margin:10px 0}
+  .dim .mini{height:9px;background:#0c0e13;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .dim .mini > i{display:block;height:100%}
+  footer{color:var(--mut);font-size:13px;padding:40px 24px;border-top:1px solid var(--line);margin-top:48px}
+  .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="tag">Auditoria de madurez arquitectonica</div>
+    <h1>Sistema de Hechizos &mdash; ¿Que tan cerca estamos de crear hechizos solo con datos?</h1>
+    <p class="lead">Este informe no analiza bugs ni commits. Analiza la <strong>forma</strong> del
+    motor: como se ejecuta un hechizo, cuanto depende de <code>EffectId</code> (generico, reutilizable)
+    frente a <code>SpellId</code> (logica hardcodeada), y cuanto trabajo real falta para que un hechizo
+    nuevo se cree solo con datos (Spell + Effects + Targets + Cooldown + Range).</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="gauge">
+    <div class="tag">Veredicto</div>
+    <div><span class="num accent">2.8</span> <span class="mut" style="font-size:24px">/ 6</span></div>
+    <div class="bar"><i style="width:46.6%"></i></div>
+    <div class="levels">
+      <span>N1 Hardcoded</span><span>N2 Mezcla</span><span>N3 Mayoria EffectId</span>
+      <span>N4 100% EffectId</span><span>N5 + Formula</span><span>N6 Data-Driven</span>
+    </div>
+    <p style="margin-top:16px">El motor esta en una <strong>mezcla madura SpellId + EffectId, tirando
+    hacia "mayoria EffectId"</strong>. La columna vertebral data-driven existe y es solida para
+    hechizos normales (daño, curas, buffs, debuffs). Lo que frena el ascenso no es el routing, sino
+    tres cosas: <span class="bad">metadata incompleta</span>, <span class="bad">sin motor de
+    formula</span> y <span class="bad">sin tests sobre el motor real</span>.</p>
+  </div>
+
+  <div class="grid cards">
+    <div class="card"><div class="n accent">2588</div><div class="l">Hechizos en BD</div></div>
+    <div class="card"><div class="n accent">507</div><div class="l">Efectos (EffectId)</div></div>
+    <div class="card"><div class="n good">~170</div><div class="l">Handlers por EffectId (genericos)</div></div>
+    <div class="card"><div class="n warn">22</div><div class="l">Casts custom por SpellId</div></div>
+    <div class="card"><div class="n bad">0</div><div class="l">Tests sobre el motor real</div></div>
+  </div>
+
+  <h2>1. El modelo mental real: un motor de dos caminos</h2>
+  <p>Todo hechizo entra por <code>FightActor.CastSpell</code>. Ahi se decide cual de los dos caminos
+  se toma. El primero es el modelo que queremos; el segundo es un "atajo" reservado para casos
+  especiales.</p>
+
+  <div class="two">
+    <div class="box">
+      <h3 class="good">Camino estandar (data-driven) &mdash; ~99% de los hechizos</h3>
+      <div class="flow">
+        <span>Player</span><span class="arr">&rarr;</span>
+        <span>Spell</span><span class="arr">&rarr;</span>
+        <span>EffectId</span><span class="arr">&rarr;</span>
+        <span>Handler generico</span><span class="arr">&rarr;</span>
+        <span>Target</span><span class="arr">&rarr;</span>
+        <span>Resultado</span>
+      </div>
+      <p class="mut" style="font-size:14px">Cada efecto se resuelve por su <code>EffectId</code> via
+      <code>EffectDispatcher</code> &rarr; <code>EffectManager</code>. Agregar un hechizo "normal"
+      <strong>no requiere tocar codigo</strong>: basta con datos.</p>
+    </div>
+    <div class="box">
+      <h3 class="warn">Camino custom (hardcoded) &mdash; 22 hechizos</h3>
+      <div class="flow">
+        <span>Player</span><span class="arr">&rarr;</span>
+        <span>Spell</span><span class="arr">&rarr;</span>
+        <span>Custom Cast (SpellId)</span><span class="arr">&rarr;</span>
+        <span>Logica propia</span><span class="arr">&rarr;</span>
+        <span>Resultado</span>
+      </div>
+      <p class="mut" style="font-size:14px"><code>SpellCastManager</code> tiene un registro por
+      <code>SpellId</code>. Si el hechizo esta ahi, ejecuta una clase propia. Es el "escape hatch":
+      potente, pero cada hechizo que entra aqui deja de ser generico.</p>
+    </div>
+  </div>
+
+  <h2>2. Las preguntas que importan</h2>
+
+  <h3>Q1 &mdash; ¿Cuantos hechizos siguen el flujo estandar?</h3>
+  <p><strong>~2566 de 2588 (~99,1%).</strong> El routing del motor ya es data-driven. Matiz importante:
+  "seguir el flujo estandar" no significa estar 100% parametrizado &mdash; algunos handlers genericos
+  esconden ramas <code>spell.Id</code> (ver Q4).</p>
+
+  <h3>Q2 &mdash; ¿Cuantos hechizos se salen del flujo?</h3>
+  <p><strong>22 hechizos</strong> (0,85%) con cast custom: Sadida (1), Zobal (1), Roublard (9),
+  Pandawa (5), Osamodas (1), Iop (1), Feca (1), Enutrof (1), Ecaflip (1), Cra (1).</p>
+
+  <h3>Q3 &mdash; ¿Que porcentaje de cada sistema esta centralizado?</h3>
+  <table>
+    <tr><th>Sistema</th><th>Centralizacion</th><th>Clase canonica</th><th>Desvio principal</th></tr>
+    <tr><td>Daño</td><td><span class="good">90%</span></td><td><code>DirectDamage</code> + <code>EffectDamageResolver</code></td><td><code>if (Spell.Id == 159)</code> (Colere)</td></tr>
+    <tr><td>Curas</td><td><span class="good">85%</span></td><td><code>Heal</code></td><td><code>switch(spell.Id)</code> case 192</td></tr>
+    <tr><td>Buffs</td><td><span class="good">95%</span></td><td><code>StatsBoost</code> &rarr; <code>StatsBuff</code></td><td>minima</td></tr>
+    <tr><td>Debuffs</td><td><span class="good">95%</span></td><td><code>SubStatsBoost</code></td><td>minima</td></tr>
+    <tr><td>Invocaciones</td><td><span class="warn">80%</span></td><td><code>Summon</code></td><td>Roublabot; muerte de invo (233)</td></tr>
+    <tr><td>Estados</td><td><span class="good">90%</span></td><td><code>AddState</code>/<code>RemoveState</code></td><td>estados de alcohol Pandawa por listas en C#</td></tr>
+    <tr><td>Trampas</td><td><span class="good">85%</span></td><td><code>TrapSpawn</code> + <code>Trap</code></td><td>menor</td></tr>
+    <tr><td>Glifos</td><td><span class="warn">80%</span></td><td><code>GlyphSpawn</code> + <code>Glyph</code></td><td>lista <code>SPELLS_GLYPH_END_TURN</code> por id</td></tr>
+  </table>
+  <p class="mut">Promedio de centralizacion: <strong>~87%</strong>. Buffs y debuffs son casi
+  perfectos; invocaciones y glifos son los mas frágiles.</p>
+
+  <h3>Q4 &mdash; ¿Que depende de <code>SpellId</code>? (donde el motor deja de ser generico)</h3>
+  <table>
+    <tr><th>Ubicacion</th><th>Patron</th><th>Tipo</th></tr>
+    <tr><td><code>DirectDamage.cs:41</code></td><td><code>if (Spell.Id == 159)</code></td><td><span class="pill si">hardcoded</span></td></tr>
+    <tr><td><code>Heal.cs:29</code></td><td><code>switch (spell.Id)</code> (192)</td><td><span class="pill si">hardcoded</span></td></tr>
+    <tr><td><code>Kill.cs</code></td><td><code>spellId == 233</code></td><td><span class="pill si">hardcoded</span></td></tr>
+    <tr><td><code>Summon.cs:114,129</code></td><td><code>Spell.Id == RoublabotSpellId</code></td><td><span class="pill si">hardcoded</span></td></tr>
+    <tr><td><code>DamageReduction.cs:18</code></td><td><code>GetAssociatedCaracteristics(Spell.Id)</code></td><td><span class="pill q">mapeo</span></td></tr>
+    <tr><td><code>Glyph.cs:46</code></td><td><code>SPELLS_GLYPH_END_TURN.Contains(...)</code></td><td><span class="pill si">lista</span></td></tr>
+    <tr><td><code>FightActor.cs:745</code></td><td><code>spell.Id == 0</code> (arma)</td><td><span class="pill no">legitimo</span></td></tr>
+    <tr><td><code>FightActor.cs:1401/1434</code></td><td>listas BambooMilk / Alcohol Pandawa</td><td><span class="pill si">listas</span></td></tr>
+  </table>
+  <p class="mut">Algunos usos de <code>spell.Id</code> son <span class="good">legitimos</span> (cooldown,
+  dispel por id, boost de hechizo): ahi el id es una <em>clave de dato</em>, no logica especial.</p>
+
+  <h3>Q5 &mdash; ¿Que depende de <code>EffectId</code>? (lo que queremos)</h3>
+  <p><strong>~170 handlers</strong> sobre ~63 clases cubren el grueso de los 507 efectos. Un mismo
+  <code>EffectId</code> lo reutilizan cientos de hechizos: <code>StatsBoost</code> mapea
+  <strong>38</strong> efectos, <code>SubStatsBoost</code> <strong>31</strong>, <code>DirectDamage</code>
+  <strong>10</strong>. Esta es la parte madura y sana del motor.</p>
+
+  <h3>Q6 &mdash; Custom Cast Classification: ¿Necesario o Eliminable?</h3>
+  <p>El dato mas revelador: "22 casts custom" no es un numero homogeneo. Al clasificarlos por
+  <em>por que existen</em>, resulta que solo 8 son inevitables.</p>
+  <div class="grid cards">
+    <div class="card"><div class="n bad">4</div><div class="l">Eliminables hoy (redundantes / solo cambian target)</div></div>
+    <div class="card"><div class="n warn">10</div><div class="l">Reducibles con features modestas del motor</div></div>
+    <div class="card"><div class="n good">8</div><div class="l">Inevitables (mecanicas reales)</div></div>
+  </div>
+  <table>
+    <tr><th>Spell</th><th>Clase</th><th>Motivo</th><th>Eliminable</th><th>Se reduciria a</th></tr>
+    <tr><td>2843</td><td>Plastron (Zobal)</td><td>Solo cambia mascara de target</td><td><span class="pill si">Si</span></td><td>mascara en BD</td></tr>
+    <tr><td>2815</td><td>Kaboom (Roublard)</td><td>Solo cambia mascara de target</td><td><span class="pill si">Si</span></td><td>mascara en BD</td></tr>
+    <tr><td>1999</td><td>Craque (Osamodas)</td><td>Aplica 2 efectos (ya lo hace el dispatcher)</td><td><span class="pill si">Si</span></td><td>nada: redundante</td></tr>
+    <tr><td>143</td><td>Colere (Iop)</td><td>Fallback a si mismo sin target</td><td><span class="pill si">Si</span></td><td>regla self-target</td></tr>
+    <tr><td>16</td><td>Fraction (Feca)</td><td>Target + adyacencia</td><td><span class="pill q">Quizas</span></td><td>mascara + condicion</td></tr>
+    <tr><td>171</td><td>Punitive (Cra)</td><td>Duplica buff si ya activo</td><td><span class="pill q">Quizas</span></td><td>regla de stack</td></tr>
+    <tr><td>42</td><td>Chance (Enutrof)</td><td>Buff que dispara otro al terminar</td><td><span class="pill q">Quizas</span></td><td>efecto trigger-buff</td></tr>
+    <tr><td>2006</td><td>Sacrifice (Sadida)</td><td>Auto-suicidio + quita efecto</td><td><span class="pill q">Quizas</span></td><td>Effect_Kill sobre self</td></tr>
+    <tr><td>2803</td><td>Entourloupe (Roublard)</td><td>Solo bomba aliada</td><td><span class="pill q">Quizas</span></td><td>mascara "solo bombas"</td></tr>
+    <tr><td>2795/3177</td><td>Botte (Roublard)</td><td>Push sin dano + bombas</td><td><span class="pill q">Quizas</span></td><td>flags de push</td></tr>
+    <tr><td>699/705/BambooMilk</td><td>Lait de Bambou (Pandawa)</td><td>Reemplaza efectos de BD por reset</td><td><span class="pill q">Quizas</span></td><td>metadata fiable</td></tr>
+    <tr><td>Karcham</td><td>Karcham (Pandawa)</td><td>Cargar aliado/enemigo</td><td><span class="pill no">No</span></td><td>mecanica de carga</td></tr>
+    <tr><td>Chamrak</td><td>Chamrak (Pandawa)</td><td>Lanzar al cargado</td><td><span class="pill no">No</span></td><td>mecanica de carga</td></tr>
+    <tr><td>101</td><td>Roulette (Ecaflip)</td><td>Elige 1 efecto al azar</td><td><span class="pill no">No</span></td><td>meta-efecto random</td></tr>
+    <tr><td>2805</td><td>Poudre (Roublard)</td><td>Estado a bombas</td><td><span class="pill no">No</span></td><td>mecanica de bombas</td></tr>
+    <tr><td>2811</td><td>Rebours (Roublard)</td><td>Combo + explosion diferida</td><td><span class="pill no">No</span></td><td>mecanica de bombas</td></tr>
+    <tr><td>2809</td><td>Remission (Roublard)</td><td>Contraataque (trigger) / teleport bomba</td><td><span class="pill no">No</span></td><td>efecto trigger + bombas</td></tr>
+    <tr><td>2810</td><td>Dernier Souffle (Roublard)</td><td>Distribuye combo por aliado</td><td><span class="pill no">No</span></td><td>mecanica de bombas</td></tr>
+    <tr><td>2820</td><td>Roublabot (Roublard)</td><td>Detonacion de invocacion</td><td><span class="pill no">No</span></td><td>mecanica de invocacion</td></tr>
+  </table>
+
+  <h2>3. El termometro de madurez (D1&ndash;D6)</h2>
+  <p>El nivel 2.8 sale de promediar seis dimensiones medibles, no de una opinion.</p>
+
+  <div class="box">
+    <div class="dim"><div>D1 Routing</div><div class="mini"><i style="width:67%;background:#4cc38a"></i></div><div class="good">4.0</div></div>
+    <div class="dim"><div>D2 Fugas SpellId</div><div class="mini"><i style="width:42%;background:#e0b341"></i></div><div class="warn">2.5</div></div>
+    <div class="dim"><div>D3 Centralizacion</div><div class="mini"><i style="width:67%;background:#4cc38a"></i></div><div class="good">4.0</div></div>
+    <div class="dim"><div>D4 Formula Engine</div><div class="mini"><i style="width:33%;background:#e5688a"></i></div><div class="bad">2.0</div></div>
+    <div class="dim"><div>D5 Tests reales</div><div class="mini"><i style="width:25%;background:#e5688a"></i></div><div class="bad">1.5</div></div>
+    <div class="dim"><div>D6 Metadata</div><div class="mini"><i style="width:50%;background:#e0b341"></i></div><div class="warn">3.0</div></div>
+  </div>
+  <table>
+    <tr><th>Dim</th><th>Que mide</th><th>Hallazgo</th></tr>
+    <tr><td><strong>D1</strong></td><td>% que se resuelve por EffectId</td><td>~99% via dispatcher; solo 22 casts custom</td></tr>
+    <tr><td><strong>D2</strong></td><td>ramas <code>spell.Id</code> en codigo generico</td><td>~6 en handlers + ~4 en orquestacion, en rutas criticas (daño/cura/kill)</td></tr>
+    <tr><td><strong>D3</strong></td><td>un punto de entrada por sistema</td><td>~87% (buffs/debuffs casi perfectos)</td></tr>
+    <tr><td><strong>D4</strong></td><td>calculo central y configurable</td><td><code>EffectDamageResolver</code> solo normaliza dados; la formula real esta dispersa</td></tr>
+    <tr><td><strong>D5</strong></td><td>red de seguridad sobre el motor real</td><td><code>combat-sim-lab</code> prueba un motor <strong>separado</strong>, no los handlers de produccion</td></tr>
+    <tr><td><strong>D6</strong></td><td>% ejecutable solo con datos de BD</td><td>el bulk OK, pero ~15-25 hechizos necesitan reglas inventadas en C#</td></tr>
+  </table>
+
+  <h2>4. ¿Estamos construyendo un motor mantenible o acumulando parches?</h2>
+  <p>Las dos cosas a la vez. La <span class="good">base es mantenible</span>: el routing por
+  <code>EffectId</code> y la centralizacion de buffs/debuffs son de buena calidad y permiten crear
+  hechizos normales solo con datos. Pero hay <span class="bad">deuda estructural</span> que genera
+  las regresiones que has sufrido:</p>
+  <ul>
+    <li><strong>Metadata reemplazada por codigo.</strong> <code>LaitDeBambouHandler</code> ignora los
+    efectos de la BD y ejecuta logica en C# porque la data no era fiable. <code>KarchamHandler</code>
+    referencia constantes de contenido (<code>BonesID 842</code>, <code>monstruo 2877</code>).</li>
+    <li><strong>Casts custom redundantes.</strong> <code>Craque</code> replica lo que el dispatcher ya
+    hace; <code>Plastron</code>/<code>Kaboom</code> solo cambian la mascara de target.</li>
+    <li><strong>Sin motor de formula.</strong> No existe un componente unico que calcule el resultado
+    (resistencias, crit, %); vive disperso en <code>Damage.cs</code> y handlers.</li>
+    <li><strong>Sin tests sobre el motor real.</strong> Un cambio en <code>Heal.cs</code> o
+    <code>Kill.cs</code> no rompe ningun test &rarr; las regresiones (cura a enemigos, kill instantaneo
+    de la Sacrificada) llegan a produccion. <em>Esta es la causa raiz estructural.</em></li>
+  </ul>
+
+  <h2>5. El mapa: Road to N4 / N5 / N6</h2>
+  <p>No es solo una nota; es una ruta de evolucion con esfuerzo (S &lt;2d, M 2-5d, L &gt;1sem) y
+  obstaculos.</p>
+
+  <div class="two">
+    <div class="box">
+      <h3 class="accent">Road to N4 &mdash; "100% EffectId"</h3>
+      <p class="mut" style="font-size:14px">Matar el escape hatch evitable.</p>
+      <ul style="font-size:14.5px">
+        <li>Eliminar los 4 casts borrables (Plastron, Kaboom, Craque, Colere). <strong>[M]</strong></li>
+        <li>Mover las fugas <code>spell.Id</code> (159, 233, Roublabot, glifos) a datos del efecto. <strong>[M]</strong></li>
+        <li>Reducir los 10 "Quizas" con 3 meta-efectos: trigger-buff, target-filter por tipo, stack/refresh. <strong>[L]</strong></li>
+      </ul>
+      <p class="mut" style="font-size:13px">Obstaculo: efectos que el motor aun no modela como datos
+      (triggers, filtros por tipo de actor). Resultado: de 22 casts a ~8-10.</p>
+    </div>
+    <div class="box">
+      <h3 class="accent">Road to N5 &mdash; "+ Formula Engine"</h3>
+      <ul style="font-size:14.5px">
+        <li>Extraer un <code>FormulaEngine</code> unico (efecto, caster, target, crit, escuela, buffs &rarr; valor). <strong>[L]</strong></li>
+        <li>Que daño, curas, escudos y robos consuman la misma formula. <strong>[M]</strong></li>
+      </ul>
+      <p class="mut" style="font-size:13px">Obstaculo: dispersion actual del calculo; riesgo de balance
+      (mitigado por los tests de N6).</p>
+    </div>
+  </div>
+  <div class="box" style="margin-top:16px">
+    <h3 class="accent">Road to N6 &mdash; "Fully Data-Driven"</h3>
+    <ul style="font-size:14.5px">
+      <li>Extender la metadata de BD para cubrir las reglas hoy inventadas (target de kill, alcohol
+      Pandawa, elegibilidad de carga, reset sobrio). <strong>[L]</strong></li>
+      <li>Añadir tests de regresion <strong>sobre los handlers reales</strong> (golden tests por
+      EffectId y por los hechizos historicamente fragiles: 192, 233, limite de invocaciones). <strong>[M]</strong></li>
+    </ul>
+    <p class="mut" style="font-size:13px">Obstaculo: cambios de esquema en BD y cobertura inicial.</p>
+  </div>
+
+  <h2>6. Respuestas directas</h2>
+  <table>
+    <tr><th>Pregunta</th><th>Respuesta</th></tr>
+    <tr><td>¿Estamos en N2 o N3?</td><td><strong>N2.8</strong>: data-driven en routing y centralizacion, frenado por formula/tests/metadata.</td></tr>
+    <tr><td>¿El problema principal es SpellId?</td><td><strong>No.</strong> El routing ya es ~99% EffectId. El problema real es metadata incompleta (D6) + sin tests reales (D5) + sin formula central (D4).</td></tr>
+    <tr><td>¿<code>EffectManager</code> es el cuello de botella?</td><td><strong>No.</strong> Es la parte sana. El cuello esta en <code>FightActor.CastSpell</code> (orquestacion acoplada) y la falta de motor de formula.</td></tr>
+    <tr><td>¿Cuanto para que Sadida sea 100% data-driven?</td><td>Ya invoca por flujo estandar (<code>Effect_Summon</code>); falta parametrizar el suicidio/explosion (233) y la muerte de invocacion. <strong>Esfuerzo M</strong> (dentro de Road to N4) + tests en N6.</td></tr>
+    <tr><td>¿Vale la pena seguir refactorizando?</td><td><strong>Si para D4/D5/D6</strong> (cortan regresiones). <strong>No</strong> perseguir "0 casts": 8 son mecanicas legitimas (bombas, carga, random).</td></tr>
+  </table>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    Auditoria de madurez arquitectonica del sistema de hechizos &mdash; motor de produccion
+    <code>Sunshine.WorldServer</code>. Documento tecnico complementario:
+    <code>docs/arquitectura-hechizos-madurez.agent.md</code>. Metricas verificadas por conteo directo
+    de codigo (read-only): 2588 hechizos, 507 efectos, ~170 handlers por EffectId, 22 casts custom.
+  </div>
+</footer>
+</body>
+</html>
