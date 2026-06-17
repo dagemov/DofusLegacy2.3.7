@@ -714,7 +714,8 @@ namespace Sunshine.WorldServer.Handlers.Characters
             if (client.Character != null)
             {
                 SyncAccountTokens(client, client.Character);
-                EnsureAutoLearnJobs(client.Character);
+                // EnsureAutoLearnJobs disabled for P0 — blocks NPC profession learning validation. See P1 config flag.
+                // EnsureAutoLearnJobs(client.Character);
                 int receivedTokens = client.Character.Inventory != null ? client.Character.Inventory.MergePendingTokens(false) : 0;
                 client.Send(new CharacterSelectedSuccessMessage(client.Character.GetCharacterBaseInformations()));
                 InventoryHandler.SendInventoryContentMessage(client);
@@ -729,6 +730,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
                 InventoryHandler.SendSpellListMessage(client, true);
                 InventoryHandler.SendInventoryWeightMessage(client);
                 CharacterHandler.SendCharacterStatsListMessage(client);
+                JobHandler.SyncJobsOnLogin(client);
                 if (client.Character.GuildMember != null)
                     GuildHandler.SendGuildMembershipMessage(client, client.Character.GuildMember);
                 if (client.Character.EquippedMount != null)
@@ -766,7 +768,8 @@ namespace Sunshine.WorldServer.Handlers.Characters
             if (client.Character != null)
             {
                 SyncAccountTokens(client, client.Character);
-                EnsureAutoLearnJobs(client.Character);
+                // EnsureAutoLearnJobs disabled for P0 — blocks NPC profession learning validation. See P1 config flag.
+                // EnsureAutoLearnJobs(client.Character);
                 int receivedTokens = client.Character.Inventory != null ? client.Character.Inventory.MergePendingTokens(false) : 0;
                 client.Send(new CharacterSelectedSuccessMessage(client.Character.GetCharacterBaseInformations()));
                 InventoryHandler.SendInventoryContentMessage(client);
@@ -781,6 +784,7 @@ namespace Sunshine.WorldServer.Handlers.Characters
                 InventoryHandler.SendSpellListMessage(client, true);
                 InventoryHandler.SendInventoryWeightMessage(client);
                 CharacterHandler.SendCharacterStatsListMessage(client);
+                JobHandler.SyncJobsOnLogin(client);
                 if (client.Character.GuildMember != null)
                     GuildHandler.SendGuildMembershipMessage(client, client.Character.GuildMember);
                 if (client.Character.EquippedMount != null)

@@ -4,6 +4,8 @@ using Sunshine.MySql.Database.World.Characters;
 using Sunshine.Protocol.Messages;
 using Sunshine.Protocol.Types;
 using Sunshine.WorldServer.Game.Characters;
+using Sunshine.WorldServer.Handlers.Characters.Jobs;
+using Sunshine.Logs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -187,6 +189,24 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
             NormalizeJobs();
         }
 
+        public bool RemoveJob(sbyte jobId)
+        {
+            int removed = _jobs.RemoveAll(x => x.Job == jobId);
+            if (removed <= 0)
+                return false;
+
+            NormalizeJobs();
+            return true;
+        }
+
+        public int ClearAllJobs()
+        {
+            int count = _jobs.Count;
+            _jobs.Clear();
+            NormalizeJobs();
+            return count;
+        }
+
         public void AddExperience(sbyte job, long amount)
         {
             amount = GameRates.ApplyJobXp(amount);
@@ -199,6 +219,7 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
                 return;
 
             var jobLevel = ExperienceManager.Instance.GetJobLevelExperienceFloor(jobRecord.Experience);
+            var oldXp = jobRecord.Experience;
             var jobNextExp = ExperienceManager.Instance.GetNextExperienceLevelFloor(jobLevel);
 
             if (jobLevel >= 100)
@@ -206,6 +227,8 @@ namespace Sunshine.WorldServer.Game.Actors.Characters.Jobs
 
             jobRecord.Experience += amount;
             var nextLevel = ExperienceManager.Instance.GetNextJobLevelExperienceFloor(jobRecord.Experience);
+            Logger.WriteInfo($"[JobXp] charId={_character.Id} jobId={job} oldXp={oldXp} newXp={jobRecord.Experience} oldLevel={jobLevel} newLevel={nextLevel}");
+            JobHandler.NotifyJobExperienceChanged(_character.Client, job, oldXp, jobRecord.Experience);
             if (jobLevel < nextLevel)
             {
                 var jobExpTotal = ExperienceManager.Instance.GetJobExperienceLevelFloor(nextLevel);

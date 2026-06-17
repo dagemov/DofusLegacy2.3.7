@@ -155,9 +155,8 @@ namespace Sunshine.WorldServer.Commands.Player
             }
 
             jobs.AddJob(jobId);
-            RefreshJobData();
-            string name = GetJobName(jobId);
-            Client.Character.SendServerMessage($"¡Has aprendido el oficio {name} [{jobId}]!", Color.Green);
+            CharacterManager.Instance.Save(Client.Character);
+            JobHandler.NotifyJobLearned(Client, jobId);
         }
 
         private void SpecializeJob(string jobStr)
@@ -212,16 +211,13 @@ namespace Sunshine.WorldServer.Commands.Player
             }
 
             jobs.AddJob(specId);
-            RefreshJobData();
-            string specName = GetJobName(specId);
-            Client.Character.SendServerMessage($"¡Te has especializado como {specName} [{specId}]!", Color.Green);
+            CharacterManager.Instance.Save(Client.Character);
+            JobHandler.NotifyJobLearned(Client, specId);
         }
 
         private void RefreshJobData()
         {
-            JobHandler.SendJobDescriptionMessage(Client);
-            JobHandler.SendJobExperienceUpdateMessage(Client);
-            JobHandler.SendJobCrafterDirectorySettingsMessage(Client);
+            JobHandler.SendVisibleJobDataMessage(Client);
         }
 
         private static string GetJobName(sbyte jobId)

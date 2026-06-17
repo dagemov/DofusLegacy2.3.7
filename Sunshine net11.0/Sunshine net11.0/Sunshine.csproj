@@ -309,6 +309,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\Reply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\ReplyAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\ReplyDispatcher.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\NpcReplyActionDiagnostics.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\SellItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\TeleportReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\UpdateObjectiveReply.cs" />
@@ -362,6 +363,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Administrator\LevelCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\LookCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Moderator\TeleportCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Moderator\QaModeratorCommands.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\CommandAttribute.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\WorldCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Fighters\FightActor.cs" />
