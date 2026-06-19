@@ -8,13 +8,6 @@
 
 
 
-
-
-
-
-
-
-
 // Generated on 10/13/2017 02:19:02
 using System;
 using System.Collections.Generic;
@@ -70,8 +63,6 @@ writer.WriteInt(npcSellerId);
             writer.WriteUShort((ushort)objectsInfos_count);
             writer.Seek((int)objectsInfos_after);
 
-            
-
 }
 
 public override void Deserialize(IDataReader reader)
@@ -97,4 +88,4 @@ npcSellerId = reader.ReadInt();
 }
 
 
-}
+}

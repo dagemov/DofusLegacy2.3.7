@@ -243,6 +243,7 @@
 		<Compile Include="Sunshine.WorldServer\Commands\Player\TpPanelCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\DjPanelCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Commands\Player\XpPanelCommand.cs" />
+		<Compile Include="Sunshine.WorldServer\Commands\Player\TiendasCommand.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Dialogs\Teleports\CustomTeleportDialog.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Breeds\Rogue\Detonate.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Effects\Spells\Buffs\Sacrifice.cs" />
@@ -300,6 +301,7 @@
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Actions\NpcTalkAction.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Actions\NpcTradeAction.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Npc.cs" />
+		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\VirtualShopRegistry.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\AddItemReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\CinematicReply.cs" />
 		<Compile Include="Sunshine.WorldServer\Game\Actors\Npcs\Replies\DopeulReply.cs" />

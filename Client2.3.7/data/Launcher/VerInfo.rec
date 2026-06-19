@@ -1,7 +1,7 @@
 /config.meta,c8131ec3cfa134928135039a9f7c30fc,127
 /config.xml,21aadd99d7156c410a4f9a527987cb74,10574
 /Dofus.exe,81f1bc48e8725876426a18ae75cb4941,95232
-/DofusInvoker.swf,370e208ad67f39b8c3f9535ae5bd501f,2152412
+/DofusInvoker.swf,DFFED0C8B264280F78F052976CF292B7,2153054
 /DofusMod.exe,9af68f9e660e6c104b42b88f24d4917b,95232
 /mimetype,60649e4365437442732ee45233b18f0c,59
 /SharedDefinitions.metas,7973daf57232786b5670c693091971fd,313
@@ -4144,9 +4144,10 @@ ui\Ankama_Tooltips\chunks\world\house/house.txt,58b3cb8171e12ffdf510aef2fefb5dfc
 ui\Ankama_Tooltips\chunks\world\house/houseGuild.txt,2228e5612fccfae5fda41539e8e2b14d,1369
 ui\Ankama_Tooltips\chunks\world\house/housePrice.txt,19c1a6563cf56a970a07cb762c8c6ec9,887
 ui\Ankama_Tooltips\chunks\world\house/housePriceLocked.txt,baef623081c432c5760c125a4d904993,891
-ui\Ankama_TradeCenter/Ankama_TradeCenter.dm,87cd4c9be450e38b8b6cdc574050a72d,2210
-ui\Ankama_TradeCenter/TradeCenter.swf,84b9b72e9745692050513c8059a7696b,55127
+ui\Ankama_TradeCenter/Ankama_TradeCenter.dm,fa3285375cd519fcc1effb5a0c1c5301,2158
+ui\Ankama_TradeCenter/TradeCenter.swf,ed78d38d9a0caae4a6045f813477338b,57307
 ui\Ankama_TradeCenter\xml/basicItemCard.xml,f39d8a32d03d387ee2a1b79d22071246,6026
+ui\Ankama_TradeCenter\xml/stockNpc.xml,045ea32a87098c982c255ce7cc9e931c,12092
 ui\Ankama_TradeCenter\xml/bidHousebuy.xml,9edf6dfdd1c58b9f539ac941ecb40108,5842
 ui\Ankama_TradeCenter\xml/bidHousesell.xml,fcf503149376c84f2e4516b1d9096fbe,7782
 ui\Ankama_TradeCenter\xml/estateAgency.xml,25657ca7d37818ed2d752b2445ba8857,12072
