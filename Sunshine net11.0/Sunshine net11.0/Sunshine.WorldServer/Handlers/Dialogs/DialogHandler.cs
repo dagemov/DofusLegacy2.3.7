@@ -1,6 +1,8 @@
 ﻿using Sunshine.Protocol.Enums;
 using Sunshine.Protocol.Messages;
 using Sunshine.WorldServer.Client;
+using Sunshine.WorldServer.Game.Actors.Npcs.Actions;
+using Sunshine.WorldServer.Handlers.Characters.Inventory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,13 @@ namespace Sunshine.WorldServer.Handlers.Dialogs
                 else
                     client.Character.Trade.Close();
 
+                client.Character.Dialog = null;
+                return;
+            }
+
+            if (client.Character.Dialog is NpcBuySellAction)
+            {
+                InventoryHandler.SendExchangeLeaveMessage(client, true);
                 client.Character.Dialog = null;
                 return;
             }

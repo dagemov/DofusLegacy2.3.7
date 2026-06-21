@@ -112,7 +112,11 @@ namespace Sunshine.Servers
                 MerchantManager.Instance.Initialize();
                 WorldServer.Game.Parties.DungeonPartyFinderManager.Instance.Initialize();
             }, "Création des tables amis / ennemis / banque / marchands / recherche de groupe...");
-            Step(++step, totalSteps, "PNJ", () => NpcsLoader.Initialize(), "Chargement des PNJ...");
+            Step(++step, totalSteps, "PNJ", () =>
+            {
+                NpcsLoader.Initialize();
+                WorldServer.Game.Actors.Npcs.VirtualShopRegistry.Instance.Initialize();
+            }, "Chargement des PNJ...");
             Step(++step, totalSteps, "Quêtes / classes", () =>
             {
                 QuestsLoader.Initialize();
