@@ -8,7 +8,6 @@ package ui
    import d2components.ButtonContainer;
    import d2components.Label;
    import d2components.Texture;
-   import d2hooks.AddMapFlag;
    import d2hooks.ChatFocus;
    
    public class EstateForm
@@ -170,7 +169,6 @@ package ui
                this.uiApi.unloadUi(this.uiApi.me().name);
                break;
             case this.btn_loc:
-               this.sysApi.dispatchHook(AddMapFlag,"teleportPoint",this.lbl_locCoord.text,this._data.worldX,this._data.worldY,true);
                break;
             case this.btn_mp:
                this.sysApi.dispatchHook(ChatFocus,"*" + this._data.ownerName);

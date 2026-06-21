@@ -1156,9 +1156,8 @@ namespace Sunshine.WorldServer.Handlers.Characters.Inventory
                 var sellerId = npc.Id;
                 var isVirtualShop = npc?.Record != null && VirtualShopRegistry.Instance.TryGetShop(npc.Record.Id, out _);
 
-                // Tiendas virtuales (.tiendas): el cliente no tiene el actor en mapa, usa template id.
                 if (isVirtualShop)
-                    sellerId = npc.Record.Id;
+                    sellerId = VirtualShopRegistry.Instance.ResolveVirtualSellerId(client.Character, npc);
 
                 var items = npc.GetObjectItemToSellInNpcShops;
                 var itemCount = items?.Count() ?? 0;

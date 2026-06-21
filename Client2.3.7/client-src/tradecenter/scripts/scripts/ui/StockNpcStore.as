@@ -7,6 +7,7 @@ package ui
    import d2actions.CloseInventory;
    import d2actions.ExchangeShopStockMouvmentRemove;
    import d2actions.LeaveDialogRequest;
+   import d2actions.NpcGenericActionRequest;
    import d2api.ContextMenuApi;
    import d2api.DataApi;
    import d2api.SoundApi;
@@ -50,6 +51,12 @@ package ui
       
       private static const SORT_ON_DEFAULT:String = "objectUID";
       
+      private static const VIRTUAL_SHOP_MIN_ID:int = 9000;
+      
+      private static const VIRTUAL_SHOP_MAX_ID:int = 9042;
+      
+      private static const ACTION_BUY_SELL:int = 1;
+      
       public var sysApi:SystemApi;
       
       public var uiApi:UiApi;
@@ -73,6 +80,8 @@ package ui
       public var lbl_title:Label;
       
       public var cbFilter:ComboBox;
+      
+      public var cbNpc:ComboBox;
       
       public var btnEquipable:ButtonContainer;
       
@@ -112,6 +121,12 @@ package ui
       
       private var _slotList:Dictionary = new Dictionary(true);
       
+      private var _currentNpcId:int;
+      
+      private var _virtualShopMode:Boolean;
+      
+      private var _suppressNpcSelect:Boolean;
+      
       public function StockNpcStore()
       {
          super();
@@ -142,10 +157,86 @@ package ui
          this._filterAssoc[this.btnRessources.name] = RESSOURCES_CATEGORY;
          this._filterAssoc[this.btnAll.name] = ALL_CATEGORY;
          this.lbl_title.text = this.uiApi.getText("ui.common.shop");
+         this._currentNpcId = int(param1.NPCSellerId);
+         this._virtualShopMode = this._currentNpcId >= VIRTUAL_SHOP_MIN_ID;
+         if(this.cbNpc)
+         {
+            this.cbNpc.visible = this._virtualShopMode;
+            if(this._virtualShopMode)
+            {
+               this.populateNpcCombo(this._currentNpcId);
+            }
+         }
          this._shopStock = param1.Objects;
          this._category = new Array();
          this.merchantLook.look = param1.Look;
          this.updateStockInventory();
+      }
+      
+      public function refreshShop(param1:int, param2:Object, param3:Object) : void
+      {
+         this._currentNpcId = param1;
+         this._shopStock = param2;
+         this.merchantLook.look = param3;
+         this._searchCriteria = null;
+         this._currentFilterBtn = this.btnAll;
+         this.btnAll.selected = true;
+         this.btnEquipable.selected = false;
+         this.btnConsumables.selected = false;
+         this.btnRessources.selected = false;
+         if(this.searchCtr.visible)
+         {
+            this.searchCtr.visible = false;
+            this.cbFilter.visible = true;
+            this.searchInput.text = "";
+         }
+         if(this._virtualShopMode && this.cbNpc)
+         {
+            this.populateNpcCombo(param1);
+         }
+         this.updateStockInventory();
+         if(this.gd_shop.dataProvider.length > 0)
+         {
+            this.gd_shop.selectedIndex = -1;
+         }
+      }
+      
+      protected function populateNpcCombo(param1:int) : void
+      {
+         var _loc2_:Array = new Array();
+         var _loc3_:Object = null;
+         var _loc4_:int = 0;
+         var _loc5_:Object = null;
+         var _loc6_:Object = null;
+         for(_loc4_ = VIRTUAL_SHOP_MIN_ID + 1; _loc4_ <= VIRTUAL_SHOP_MAX_ID; _loc4_++)
+         {
+            _loc5_ = this.dataApi.getNpc(uint(_loc4_));
+            if(!_loc5_ || !_loc5_.name)
+            {
+               continue;
+            }
+            _loc6_ = {
+               "label":_loc5_.name,
+               "npcId":_loc4_
+            };
+            _loc2_.push(_loc6_);
+            if(_loc4_ == param1)
+            {
+               _loc3_ = _loc6_;
+            }
+         }
+         _loc2_.sortOn("label",Array.CASEINSENSITIVE);
+         this._suppressNpcSelect = true;
+         this.cbNpc.dataProvider = _loc2_;
+         if(_loc3_)
+         {
+            this.cbNpc.value = _loc3_;
+         }
+         else if(_loc2_.length > 0)
+         {
+            this.cbNpc.value = _loc2_[0];
+         }
+         this._suppressNpcSelect = false;
       }
       
       public function updateItemLine(param1:*, param2:*, param3:Boolean) : void
@@ -439,6 +530,18 @@ package ui
                   this._subFilterIndex[this._currentFilterBtn.name] = param1.value.filterType;
                   this.updateStockInventory();
                }
+               break;
+            case this.cbNpc:
+               if(this._suppressNpcSelect || !param3 || param2 == 2)
+               {
+                  break;
+               }
+               _loc5_ = param1.value;
+               if(!_loc5_ || _loc5_.npcId == this._currentNpcId)
+               {
+                  break;
+               }
+               this.sysApi.sendAction(new NpcGenericActionRequest(int(_loc5_.npcId),ACTION_BUY_SELL));
          }
       }
       

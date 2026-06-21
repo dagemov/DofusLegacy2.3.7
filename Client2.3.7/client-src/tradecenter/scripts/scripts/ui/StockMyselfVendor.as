@@ -7,7 +7,6 @@ package ui
    import d2actions.CloseInventory;
    import d2actions.ExchangeShopStockModifyObject;
    import d2actions.ExchangeShopStockMouvmentRemove;
-   import d2actions.ExchangeShowVendorTax;
    import d2actions.LeaveDialogRequest;
    import d2api.ContextMenuApi;
    import d2api.DataApi;
@@ -478,7 +477,7 @@ package ui
                this.sysApi.dispatchHook(CloseHumanVendor);
                break;
             case this.btn_center:
-               this.sysApi.sendAction(new ExchangeShowVendorTax());
+               break;
          }
       }
       

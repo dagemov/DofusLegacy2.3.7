@@ -1,6 +1,7 @@
-package com.ankamagames.dofus.logic.game.common.frames
+﻿package com.ankamagames.dofus.logic.game.common.frames
 {
    import com.ankamagames.berilia.managers.KernelEventsManager;
+   import com.ankamagames.dofus.datacenter.items.Item;
    import com.ankamagames.dofus.datacenter.npcs.Npc;
    import com.ankamagames.dofus.internalDatacenter.items.ItemWrapper;
    import com.ankamagames.dofus.kernel.Kernel;
@@ -64,6 +65,7 @@ package com.ankamagames.dofus.logic.game.common.frames
    import com.ankamagames.jerakine.network.IServerConnection;
    import com.ankamagames.jerakine.types.enums.Priority;
    import com.ankamagames.tiphon.types.look.TiphonEntityLook;
+   import flash.utils.Dictionary;
    import flash.utils.getQualifiedClassName;
    
    public class ExchangeManagementFrame implements Frame
@@ -80,6 +82,8 @@ package com.ankamagames.dofus.logic.game.common.frames
       private var _youReady:Boolean = false;
       
       private var _exchangeInventory:Array;
+      
+      private var _npcShopPriceRestore:Dictionary;
       
       public function ExchangeManagementFrame()
       {
@@ -210,6 +214,7 @@ package com.ankamagames.dofus.logic.game.common.frames
          var _loc52_:ObjectItemMinimalInformation = null;
          var _loc53_:ItemWrapper = null;
          var _loc54_:Npc = null;
+         var _loc55_:Item = null;
          switch(true)
          {
             case param1 is ExchangeStartedWithStorageMessage:
@@ -408,8 +413,19 @@ package com.ankamagames.dofus.logic.game.common.frames
                   }
                }
                _loc35_ = new Array();
+               this.restoreNpcShopTemplatePrices();
+               this._npcShopPriceRestore = new Dictionary();
                for each(_loc52_ in _loc32_.objectsInfos)
                {
+                  _loc55_ = Item.getItemById(_loc52_.objectGID);
+                  if(_loc55_)
+                  {
+                     if(this._npcShopPriceRestore[_loc52_.objectGID] === undefined)
+                     {
+                        this._npcShopPriceRestore[_loc52_.objectGID] = _loc55_.price;
+                     }
+                     _loc55_.price = _loc52_.objectPrice;
+                  }
                   _loc53_ = ItemWrapper.create(63,0,_loc52_.objectGID,0,_loc52_.effects,false);
                   _loc53_.price = _loc52_.objectPrice;
                   _loc53_.criteria = _loc52_.buyCriterion;
@@ -422,10 +438,13 @@ package com.ankamagames.dofus.logic.game.common.frames
                ConnectionsHandler.getConnection().send(new LeaveDialogRequestMessage());
                return true;
             case param1 is LeaveDialogMessage:
+               this.restoreNpcShopTemplatePrices();
                Kernel.getWorker().removeFrame(this);
                return true;
             case param1 is ExchangeLeaveMessage:
+               this.restoreNpcShopTemplatePrices();
                this._kernelEventsManager.processCallback(HookList.LeaveDialog);
+               return true;
          }
          return false;
       }
@@ -441,8 +460,28 @@ package com.ankamagames.dofus.logic.game.common.frames
       
       public function pulled() : Boolean
       {
+         this.restoreNpcShopTemplatePrices();
          this._exchangeInventory = null;
          return true;
+      }
+      
+      private function restoreNpcShopTemplatePrices() : void
+      {
+         var _loc1_:uint = 0;
+         var _loc2_:Item = null;
+         if(!this._npcShopPriceRestore)
+         {
+            return;
+         }
+         for(_loc1_ in this._npcShopPriceRestore)
+         {
+            _loc2_ = Item.getItemById(_loc1_);
+            if(_loc2_)
+            {
+               _loc2_.price = uint(this._npcShopPriceRestore[_loc1_]);
+            }
+         }
+         this._npcShopPriceRestore = null;
       }
       
       private function get _kernelEventsManager() : KernelEventsManager

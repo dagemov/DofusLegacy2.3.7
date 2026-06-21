@@ -86,7 +86,7 @@ package ui
          ctr_inputPrice.visible = false;
          btn_lbl_btn_valid.text = uiApi.getText("ui.common.buy");
          var _loc2_:Object = dataApi.getItem(param1.objectGID);
-         _currentPrice = _loc2_.price;
+         _currentPrice = (param1.price > 0) ? param1.price : _loc2_.price;
          lbl_price.text = utilApi.kamasToString(_currentPrice);
          input_quantity.text = "1";
          input_quantity.focus();

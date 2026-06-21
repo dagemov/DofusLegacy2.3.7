@@ -2,6 +2,7 @@ package
 {
    import com.ankamagames.dofusModuleLibrary.enum.interfaces.UIEnum;
    import d2actions.ExchangeStartAsVendorRequest;
+   import d2actions.LeaveDialogRequest;
    import d2actions.LeaveShopStock;
    import d2actions.OpenInventory;
    import d2api.ExchangeApi;
@@ -19,6 +20,7 @@ package
    import d2hooks.ExchangeStartOkNpcShop;
    import d2hooks.ExchangeStartedBidBuyer;
    import d2hooks.ExchangeStartedBidSeller;
+   import d2hooks.NpcDialogQuestion;
    import flash.display.Sprite;
    import flash.utils.Dictionary;
    import ui.EstateAgency;
@@ -28,6 +30,7 @@ package
    import ui.ItemHumanVendor;
    import ui.ItemMyselfVendor;
    import ui.ItemNpcStore;
+   import ui.ShopDirectory;
    import ui.StockBidHouse;
    import ui.StockHumanVendor;
    import ui.StockMyselfVendor;
@@ -48,6 +51,10 @@ package
       public static var SALES_QUANTITIES:Dictionary = new Dictionary();
       
       public static const SELLING_RATIO:uint = 10;
+      
+      public static const SHOP_DIRECTORY_UI:String = "shopDirectory";
+      
+      private static const VIRTUAL_SHOP_DIRECTORY_MSG:int = 9900;
       
       public var uiApi:UiApi;
       
@@ -71,6 +78,8 @@ package
       private var include_EstateAgency:EstateAgency = null;
       
       private var include_EstateForm:EstateForm = null;
+      
+      private var include_ShopDirectory:ShopDirectory = null;
       
       private var include_StockMyselfVendor:StockMyselfVendor = null;
       
@@ -114,7 +123,37 @@ package
          this.sysApi.addHook(ExchangeLeave,this.onExchangeLeave);
          this.sysApi.addHook(ExchangeStartOkNpcShop,this.onExchangeStartOkNpcShop);
          this.sysApi.addHook(CloseStore,this.onCloseStore);
+         this.sysApi.addHook(NpcDialogQuestion,this.onNpcDialogQuestion);
          this._uiToOpen = new Array();
+      }
+      
+      private function onNpcDialogQuestion(param1:Object, param2:Object, param3:Object) : void
+      {
+         if(int(param1) != VIRTUAL_SHOP_DIRECTORY_MSG)
+         {
+            return;
+         }
+         var names:Array = param2 as Array;
+         var ids:Array = param3 as Array;
+         if(!names || !ids)
+         {
+            return;
+         }
+         var shops:Array = [];
+         var i:int = 0;
+         while(i < names.length && i < ids.length)
+         {
+            shops.push({
+               "shopId":int(ids[i]),
+               "name":String(names[i])
+            });
+            i++;
+         }
+         this.sysApi.sendAction(new LeaveDialogRequest());
+         if(this.uiApi.getUi(SHOP_DIRECTORY_UI) == null)
+         {
+            this.uiApi.loadUi(SHOP_DIRECTORY_UI,SHOP_DIRECTORY_UI,{"shops":shops});
+         }
       }
       
       private function onExchangeStartedBidSeller(param1:Object, param2:Object) : void
@@ -190,6 +229,7 @@ package
       
       public function onExchangeStartOkNpcShop(param1:int, param2:Object, param3:Object) : void
       {
+         this.uiApi.unloadUi(SHOP_DIRECTORY_UI);
          this.uiApi.loadUi(UIEnum.NPC_STOCK,UIEnum.NPC_STOCK,{
             "NPCSellerId":param1,
             "Objects":param2,
@@ -201,6 +241,7 @@ package
       private function onCloseStore() : void
       {
          this.uiApi.unloadUi(UIEnum.NPC_STOCK);
+         this.uiApi.unloadUi(SHOP_DIRECTORY_UI);
       }
       
       private function onExchangeLeave(param1:Boolean) : void
@@ -316,4 +357,3 @@ package
       }
    }
 }
-

@@ -1,0 +1,30 @@
+{
+  "layer": "L0",
+  "description": "Baseline tienda NPC + .tiendas; fix precio via DofusInvoker (TradeCenter vanilla)",
+  "files": [
+    {
+      "path": "DofusInvoker.swf",
+      "md5": "C6F6AE0EC99C72D1ED439156876A60F1",
+      "size": 2153256
+    },
+    {
+      "path": "ui/Ankama_TradeCenter/TradeCenter.swf",
+      "md5": "84B9B72E9745692050513C8059A7696B",
+      "size": 55127
+    },
+    {
+      "path": "ui/Ankama_TradeCenter/Ankama_TradeCenter.dm",
+      "md5": "B96C91FD12BCC2C7AE85BED5C7A94935",
+      "size": 4426
+    },
+    {
+      "path": "ui/Ankama_TradeCenter/xml/stock.xml",
+      "md5": "D243A0A389919A1DD7DFA44C7D2D7C32",
+      "size": 11196
+    }
+  ],
+  "dmMustNotContain": ["stockNpcVirtual"],
+  "tradeCenterChecks": {
+    "requireClasses": ["TradeCenter", "ui.StockNpcStore", "ui.EstateForm"]
+  }
+}
