@@ -1,0 +1,116 @@
+{
+  "phase": "RUNTIME_SYNC_F24",
+  "timestamp": "2026-06-22T07:48:16.719Z",
+  "read_only": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "preflight": {
+    "passed": true,
+    "f21_edges": 112635,
+    "f22_plans": 8,
+    "f23_executed_events": {
+      "count": 2,
+      "run_ids": [
+        "20260622T061552Z",
+        "20260622T061633Z"
+      ]
+    }
+  },
+  "inputs": {
+    "f21_causal_graph": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\world-causal\\causal_graph.jsonl",
+    "f22_plans": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+    "f23_events_collected": 2
+  },
+  "outputs": {
+    "world_diff_report": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\runtime-sync\\world-diff-report.json",
+    "graph_consistency_report": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\runtime-sync\\graph-consistency-report.json",
+    "preflight_report": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\runtime-sync\\preflight-report.json"
+  },
+  "highlights": {
+    "item_519_real": [
+      {
+        "run_id": "20260622T061552Z",
+        "graph_requires_update": false,
+        "causal_recompute_required": false,
+        "consistency": "CONSISTENT_TOPOLOGY"
+      },
+      {
+        "run_id": "20260622T061633Z",
+        "graph_requires_update": false,
+        "causal_recompute_required": false,
+        "consistency": "CONSISTENT_TOPOLOGY"
+      }
+    ],
+    "item_519_net": {
+      "entity": "item:519",
+      "columns": [
+        "Name"
+      ],
+      "net_changed": false,
+      "runtime_before": {
+        "Name": "Poudre de Perlinpainpain"
+      },
+      "runtime_after": {
+        "Name": "Poudre de Perlinpainpain"
+      }
+    },
+    "npc_462_benchmark": {
+      "mode": "simulated",
+      "write_executed": false,
+      "predicted_recovery_phases": [
+        "Phase20",
+        "Phase21"
+      ],
+      "predicted_affected_edges": [
+        "INVOLVES_NPC",
+        "SELLS",
+        "SPAWNED_IN",
+        "STARTS_QUEST"
+      ]
+    }
+  },
+  "tests": [
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "No writes outside runtime-sync output (graph layer mtimes unchanged this run)"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "No mutation of world-causal / world-relations / world-semantic artifacts"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "Preflight OK — F21 112635 edges, F22 8 plans, F23 2 executed events"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "Detected real runtime change on item:519 (2 F23 event(s))"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "item:519 classified metadata-only; npc:462 benchmark structural/high-impact"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "item:519 recovery_required []; npc:462 benchmark requires Phase20+Phase21"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "Deterministic report hash 3e4474ead10f0e6a"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "all_tests_passed = true"
+    }
+  ],
+  "all_tests_passed": true,
+  "f21_edge_count_verified": 112635
+}

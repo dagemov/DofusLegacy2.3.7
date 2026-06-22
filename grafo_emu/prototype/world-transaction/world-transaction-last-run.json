@@ -1,0 +1,214 @@
+{
+  "phase": "WORLD_TRANSACTION_F25",
+  "timestamp": "2026-06-22T08:17:44.134Z",
+  "read_only": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "preflight": {
+    "passed": true,
+    "evidence": {
+      "f22_plan_count": 8,
+      "f23_executed_runs": [
+        "20260622T061552Z",
+        "20260622T061633Z"
+      ],
+      "f24_all_tests_passed": true
+    }
+  },
+  "outputs": {
+    "world_transactions": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\world-transaction\\world-transactions.json",
+    "preflight_report": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\world-transaction\\preflight-report.json"
+  },
+  "case_summary": [
+    {
+      "case_id": "CASE_A",
+      "transaction_id": "txn-item519-commit",
+      "current_state": "ROLLBACK_AVAILABLE",
+      "states_reached": [
+        "VALIDATED",
+        "READY_TO_COMMIT",
+        "COMMITTED",
+        "ROLLBACK_AVAILABLE"
+      ],
+      "validation_verdict": "APPROVE",
+      "consistency_verdict": "CONSISTENT_TOPOLOGY",
+      "execution_executed": true,
+      "reingest_phases": []
+    },
+    {
+      "case_id": "CASE_B",
+      "transaction_id": "txn-npc462-blocked",
+      "current_state": "BLOCKED",
+      "states_reached": [
+        "VALIDATED",
+        "BLOCKED"
+      ],
+      "validation_verdict": "BLOCK",
+      "execution_executed": null,
+      "reingest_phases": []
+    },
+    {
+      "case_id": "CASE_C",
+      "transaction_id": "txn-item519-rollback",
+      "current_state": "ROLLED_BACK",
+      "states_reached": [
+        "PLANNED",
+        "VALIDATED",
+        "READY_TO_COMMIT",
+        "COMMITTED",
+        "ROLLED_BACK"
+      ],
+      "validation_verdict": "APPROVE",
+      "consistency_verdict": "CONSISTENT_TOPOLOGY",
+      "execution_executed": true,
+      "reingest_phases": []
+    },
+    {
+      "case_id": "CASE_D",
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "current_state": "BLOCKED",
+      "states_reached": [
+        "VALIDATED",
+        "BLOCKED"
+      ],
+      "validation_verdict": "BLOCK",
+      "consistency_verdict": "TOPOLOGY_STALE",
+      "execution_executed": null,
+      "reingest_phases": [
+        "Phase20",
+        "Phase21"
+      ]
+    }
+  ],
+  "mandatory_cases": {
+    "CASE_A": {
+      "expected": [
+        "COMMITTED",
+        "ROLLBACK_AVAILABLE",
+        "CONSISTENT_TOPOLOGY"
+      ],
+      "actual": {
+        "case_id": "CASE_A",
+        "transaction_id": "txn-item519-commit",
+        "current_state": "ROLLBACK_AVAILABLE",
+        "states_reached": [
+          "VALIDATED",
+          "READY_TO_COMMIT",
+          "COMMITTED",
+          "ROLLBACK_AVAILABLE"
+        ],
+        "validation_verdict": "APPROVE",
+        "consistency_verdict": "CONSISTENT_TOPOLOGY",
+        "execution_executed": true,
+        "reingest_phases": []
+      }
+    },
+    "CASE_B": {
+      "expected": [
+        "BLOCKED",
+        "blast_radius=48",
+        "no execution"
+      ],
+      "actual": {
+        "case_id": "CASE_B",
+        "transaction_id": "txn-npc462-blocked",
+        "current_state": "BLOCKED",
+        "states_reached": [
+          "VALIDATED",
+          "BLOCKED"
+        ],
+        "validation_verdict": "BLOCK",
+        "execution_executed": null,
+        "reingest_phases": []
+      }
+    },
+    "CASE_C": {
+      "expected": [
+        "ROLLED_BACK",
+        "net unchanged"
+      ],
+      "actual": {
+        "case_id": "CASE_C",
+        "transaction_id": "txn-item519-rollback",
+        "current_state": "ROLLED_BACK",
+        "states_reached": [
+          "PLANNED",
+          "VALIDATED",
+          "READY_TO_COMMIT",
+          "COMMITTED",
+          "ROLLED_BACK"
+        ],
+        "validation_verdict": "APPROVE",
+        "consistency_verdict": "CONSISTENT_TOPOLOGY",
+        "execution_executed": true,
+        "reingest_phases": []
+      }
+    },
+    "CASE_D": {
+      "expected": [
+        "reingest Phase20+Phase21",
+        "no fake F23"
+      ],
+      "actual": {
+        "case_id": "CASE_D",
+        "transaction_id": "txn-npc462-reingest-proposal",
+        "current_state": "BLOCKED",
+        "states_reached": [
+          "VALIDATED",
+          "BLOCKED"
+        ],
+        "validation_verdict": "BLOCK",
+        "consistency_verdict": "TOPOLOGY_STALE",
+        "execution_executed": null,
+        "reingest_phases": [
+          "Phase20",
+          "Phase21"
+        ]
+      }
+    }
+  },
+  "tests": [
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "Outputs written only under world-transaction/"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "Graph layer mtimes unchanged (causal=1782103524295.6453, rel=1782102243509.8306)"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "Preflight OK — F22 8 plans, F23 runs 2, F24 passed"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "CASE A: COMMITTED + ROLLBACK_AVAILABLE + CONSISTENT_TOPOLOGY"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "CASE B: BLOCKED blast_radius=48 no execution"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "CASE C: ROLLED_BACK net runtime unchanged"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "CASE D: reingest proposal Phase20+Phase21 no fake F23 execution"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "Deterministic hash 2768a3e6325ea3f6; all_tests_passed pending"
+    }
+  ],
+  "all_tests_passed": true,
+  "determinism_hash": "2768a3e6325ea3f6"
+}

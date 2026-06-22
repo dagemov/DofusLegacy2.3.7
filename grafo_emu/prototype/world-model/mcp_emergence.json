@@ -1,0 +1,149 @@
+{
+  "phase": "G_MCP_EMERGENCE",
+  "mcp_count": 3,
+  "emergent_mcps": [
+    {
+      "mcp_name": "mcp_emergent_sys_worlds",
+      "emerged_from": "sys_worlds",
+      "system_label": "sys_worlds",
+      "systems_covered": [
+        "sys_worlds"
+      ],
+      "tables_covered": [
+        "worlds_interactives",
+        "worlds_maps_positions",
+        "worlds_maps",
+        "worlds_triggers",
+        "worlds_npcs",
+        "worlds_monsters",
+        "worlds_characters",
+        "worlds_zaapis",
+        "worlds_monsters_fix",
+        "worlds",
+        "worlds_taxcollectors"
+      ],
+      "operations_covered": [
+        "create_entity via CharacterManager.CreateCharacter",
+        "create_entity via CharacterManager.CreateCharacterJobs",
+        "create_entity via CharacterManager.CreateCharacterStats",
+        "create_entity via CharacterManager.CreateCharacterAlign",
+        "create_entity via CharacterManager.CreateCharacterSpells",
+        "create_entity via CharacterManager.CreateCharacterShortcutSpells",
+        "read_entity via CharacterManager.GetAllCharacters",
+        "read_entity via CharacterManager.GetCharacterStats",
+        "coordinate_flow via CharacterManager.BuildDefaultCharacterStats",
+        "read_entity via CharacterManager.GetCharacterAlign"
+      ],
+      "operation_count": 111,
+      "operation_types": [
+        "create_entity",
+        "read_entity",
+        "coordinate_flow",
+        "modify_entity",
+        "delete_entity",
+        "link_entity"
+      ],
+      "questions_supported": [
+        "What entities participate in sys_worlds?",
+        "What is worlds_interactives related to?",
+        "What changes would modifying worlds_interactives produce?"
+      ],
+      "question_count": 3,
+      "automation_level": "PARTIALLY_AUTOMATABLE",
+      "admin_power_level": "read + simulate",
+      "cohesion": 0.909,
+      "evidence_strength": 5,
+      "emergent": true,
+      "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+    },
+    {
+      "mcp_name": "mcp_emergent_sys_quests",
+      "emerged_from": "sys_quests",
+      "system_label": "sys_quests",
+      "systems_covered": [
+        "sys_quests"
+      ],
+      "tables_covered": [
+        "quests_objectives",
+        "quests_steps",
+        "quests",
+        "quests_objectives_types"
+      ],
+      "operations_covered": [
+        "read_entity via QuestManager.GetQuest",
+        "read_entity via QuestManager.GetQuestStep",
+        "read_entity via QuestManager.GetQuestObjective",
+        "read_entity via QuestManager.GetAllQuestObjectivesByStepId",
+        "read_entity via QuestManager.GetAllStepsByQuestId",
+        "read_entity via QuestManager.GetAllQuests",
+        "read_entity via QuestManager.GetAllQuestSteps",
+        "read_entity via QuestManager.GetAllQuestObjectives",
+        "read_entity via QuestManager.GetAllQuestStepsByQuestId",
+        "coordinate_flow via QuestManager.ParseCriteria"
+      ],
+      "operation_count": 12,
+      "operation_types": [
+        "read_entity",
+        "coordinate_flow",
+        "link_entity"
+      ],
+      "questions_supported": [
+        "What entities participate in sys_quests?",
+        "What is quests_objectives related to?",
+        "What is quests_steps related to?",
+        "What rewards are defined in quests_steps?",
+        "What changes would modifying quests_objectives produce?"
+      ],
+      "question_count": 5,
+      "automation_level": "SIMULATABLE",
+      "admin_power_level": "read + simulate",
+      "cohesion": 1,
+      "evidence_strength": 2,
+      "emergent": true,
+      "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+    },
+    {
+      "mcp_name": "mcp_emergent_sys_npcs",
+      "emerged_from": "sys_npcs",
+      "system_label": "sys_npcs",
+      "systems_covered": [
+        "sys_npcs"
+      ],
+      "tables_covered": [
+        "npcs_messages",
+        "npcs_items",
+        "npcs",
+        "npcs_replies",
+        "npcs_actions"
+      ],
+      "operations_covered": [
+        "read_entity via NpcManager.GetAllNpcs",
+        "read_entity via NpcManager.GetNpc",
+        "read_entity via NpcManager.GetNpcMessage",
+        "read_entity via NpcManager.GetNpcReplies",
+        "read_entity via NpcManager.GetNpcSpawns",
+        "read_entity via NpcManager.GetNpcShops",
+        "link_tables_in_sys_npcs"
+      ],
+      "operation_count": 7,
+      "operation_types": [
+        "read_entity",
+        "link_entity"
+      ],
+      "questions_supported": [
+        "What entities participate in sys_npcs?",
+        "What is npcs_items related to?",
+        "What changes would modifying npcs_messages produce?"
+      ],
+      "question_count": 3,
+      "automation_level": "SIMULATABLE",
+      "admin_power_level": "read + simulate",
+      "cohesion": 0.8,
+      "evidence_strength": 2,
+      "emergent": true,
+      "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+    }
+  ],
+  "methodology": "one MCP candidate per high-cohesion discovered system with ops+queries",
+  "not_reused_from_doc_16_17": true
+}

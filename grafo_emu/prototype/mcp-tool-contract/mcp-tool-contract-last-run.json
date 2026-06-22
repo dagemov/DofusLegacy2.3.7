@@ -1,0 +1,222 @@
+{
+  "phase": "MCP_TOOL_CONTRACT_F26",
+  "timestamp": "2026-06-22T08:48:26.675Z",
+  "read_only": true,
+  "no_mcp_server": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "preflight": {
+    "passed": true,
+    "evidence": {
+      "f21_edges": 112635,
+      "f22_plans": 8,
+      "f23_runs": [
+        "20260622T061552Z",
+        "20260622T061633Z"
+      ],
+      "f25_cases": [
+        "CASE_A",
+        "CASE_B",
+        "CASE_C",
+        "CASE_D"
+      ]
+    }
+  },
+  "tool_surface": [
+    "beginTransaction",
+    "explainImpact",
+    "getTransaction",
+    "listTransactions",
+    "commitTransaction",
+    "rollbackTransaction",
+    "getReingestProposal",
+    "getTransactionConsistency"
+  ],
+  "error_codes": [
+    "BLOCKED_BY_BLAST_RADIUS",
+    "BLOCKED_BY_MODIFICATION_RISK",
+    "REQUIRES_HUMAN_CONFIRMATION",
+    "VALIDATION_REVIEW_REQUIRED",
+    "TRANSACTION_NOT_FOUND",
+    "INVALID_STATE_TRANSITION",
+    "ROLLBACK_NOT_AVAILABLE",
+    "REINGEST_REQUIRED"
+  ],
+  "outputs": {
+    "tool_contract": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-tool-contract\\tool-contract.json",
+    "case_representation": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-tool-contract\\case-representation-report.json",
+    "preflight_report": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-tool-contract\\preflight-report.json"
+  },
+  "case_summary": {
+    "CASE_A": {
+      "transaction_id": "txn-item519-commit",
+      "representable": true,
+      "tools_used": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction",
+        "getTransactionConsistency",
+        "getTransaction"
+      ]
+    },
+    "CASE_B": {
+      "transaction_id": "txn-npc462-blocked",
+      "representable": true,
+      "tools_used": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction",
+        "getTransaction"
+      ]
+    },
+    "CASE_C": {
+      "transaction_id": "txn-item519-rollback",
+      "representable": true,
+      "tools_used": [
+        "getTransaction",
+        "rollbackTransaction",
+        "getTransaction",
+        "listTransactions"
+      ]
+    },
+    "CASE_D": {
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "representable": true,
+      "tools_used": [
+        "beginTransaction",
+        "explainImpact",
+        "getReingestProposal",
+        "commitTransaction",
+        "explainImpact"
+      ]
+    }
+  },
+  "state_tool_matrix": {
+    "PLANNED": {
+      "observable_via": [
+        "beginTransaction",
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": [
+        "beginTransaction"
+      ]
+    },
+    "VALIDATED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact"
+      ],
+      "transition_via": [
+        "commitTransaction",
+        "explainImpact"
+      ]
+    },
+    "BLOCKED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact",
+        "getReingestProposal"
+      ],
+      "transition_via": []
+    },
+    "READY_TO_COMMIT": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact"
+      ],
+      "transition_via": [
+        "commitTransaction"
+      ]
+    },
+    "COMMITTED": {
+      "observable_via": [
+        "getTransaction",
+        "getTransactionConsistency",
+        "listTransactions"
+      ],
+      "transition_via": []
+    },
+    "ROLLBACK_AVAILABLE": {
+      "observable_via": [
+        "getTransaction",
+        "getTransactionConsistency",
+        "listTransactions"
+      ],
+      "transition_via": [
+        "rollbackTransaction"
+      ]
+    },
+    "ROLLED_BACK": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": []
+    },
+    "FAILED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": []
+    }
+  },
+  "tests": [
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "Preflight F21-F25 OK — edges=112635, plans=8, cases=CASE_A,CASE_B,CASE_C,CASE_D"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "CASE A: COMMITTED + ROLLBACK_AVAILABLE + CONSISTENT_TOPOLOGY"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "CASE B: BLOCKED blast_radius=48 no execution exposed"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "CASE C: ROLLED_BACK parent linked net unchanged"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "CASE D: reingest Phase20+Phase21 no fake F23"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "All 8 F25 states mapped to tools"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "8 normalized error codes defined"
+    },
+    {
+      "id": "T1b",
+      "status": "PASS",
+      "detail": "No graph mutation (mtimes stable this run causal=1782103524295.6453)"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "all_tests_passed=true determinism_hash=43db0c8a04a37f10"
+    }
+  ],
+  "all_tests_passed": true,
+  "determinism_hash": "43db0c8a04a37f10",
+  "f27_readiness": {
+    "contract_stable": true,
+    "gateway_can_wrap_without_f26_changes": true,
+    "agent_can_use_tools_only": true
+  }
+}

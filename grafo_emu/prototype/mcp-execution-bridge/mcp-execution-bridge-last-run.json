@@ -1,0 +1,78 @@
+{
+  "phase": "EXECUTION_BRIDGE_F23",
+  "bridge": "IRuntimeExecutor v1",
+  "timestamp": "2026-06-22T06:16:59.050Z",
+  "cli": {
+    "intent": "modify_item",
+    "target": "item:519",
+    "fields": {
+      "Name": "MEK-F23-dry-run-marker"
+    },
+    "confirm": false,
+    "runTests": true
+  },
+  "f22_plan_source": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+  "f23_gates": {
+    "allowed_intents": [
+      "modify_item",
+      "modify_npc"
+    ],
+    "max_blast_radius": 10,
+    "block_risks": [
+      "HIGH"
+    ]
+  },
+  "execution_result": {
+    "success": true,
+    "executed": false,
+    "blocked": false,
+    "block_reason": null,
+    "dry_run": true,
+    "rollback_available": false,
+    "trace_path": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\cli-dry-run\\execution_trace.json"
+  },
+  "tests": [
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "No mtime change on world-causal / world-relations / world-semantic artifacts"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "Dry-run path emits zero SSH commands (no local mariadb in production path)"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "confirm=false → executed:false with patch preview"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "F23 blocks HIGH risk even with confirm=true"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "modify_quest / modify_dungeon / modify_map blocked at F23 gate"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "Rollback SQL generated with before values"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "execution_trace.json schema valid"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "Deterministic patch hash 61268db541f3e173"
+    }
+  ],
+  "all_tests_passed": true,
+  "no_graph_mutation": true
+}

@@ -1,0 +1,1262 @@
+{
+  "phase": "EDGE_CAUSALITY_REPORT",
+  "edge_count": 112635,
+  "node_count": 37316,
+  "role_distribution": {
+    "STRUCTURAL": 82156,
+    "FUNCTIONAL": 5055,
+    "ECONOMIC": 11044,
+    "BEHAVIORAL": 4478,
+    "NARRATIVE": 6880,
+    "DERIVATIVE": 3022
+  },
+  "role_distribution_pct": {
+    "STRUCTURAL": 72.94,
+    "FUNCTIONAL": 4.49,
+    "ECONOMIC": 9.81,
+    "BEHAVIORAL": 3.98,
+    "NARRATIVE": 6.11,
+    "DERIVATIVE": 2.68
+  },
+  "causal_weight_histogram": {
+    "0.0": 17729,
+    "0.3": 44706,
+    "0.6": 44122,
+    "0.9": 6078,
+    "1.0": 0
+  },
+  "gameplay_impact_distribution": {
+    "HIGH": 43348,
+    "MEDIUM": 10765,
+    "LOW": 40793,
+    "NEGLIGIBLE": 17729
+  },
+  "modification_risk_distribution": {
+    "MEDIUM": 44866,
+    "HIGH": 30201,
+    "LOW": 37568
+  },
+  "top_50_highest_impact_edges": [
+    {
+      "id": "r68315",
+      "src": "quest:3",
+      "rel": "HAS_STEP",
+      "dst": "queststep:2",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68316",
+      "src": "quest:3",
+      "rel": "HAS_STEP",
+      "dst": "queststep:3",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68317",
+      "src": "quest:3",
+      "rel": "HAS_STEP",
+      "dst": "queststep:4",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68318",
+      "src": "quest:3",
+      "rel": "HAS_STEP",
+      "dst": "queststep:5",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68319",
+      "src": "quest:3",
+      "rel": "HAS_STEP",
+      "dst": "queststep:32",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68320",
+      "src": "quest:4",
+      "rel": "HAS_STEP",
+      "dst": "queststep:6",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68321",
+      "src": "quest:4",
+      "rel": "HAS_STEP",
+      "dst": "queststep:7",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68322",
+      "src": "quest:4",
+      "rel": "HAS_STEP",
+      "dst": "queststep:8",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68323",
+      "src": "quest:4",
+      "rel": "HAS_STEP",
+      "dst": "queststep:9",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68324",
+      "src": "quest:5",
+      "rel": "HAS_STEP",
+      "dst": "queststep:10",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68325",
+      "src": "quest:5",
+      "rel": "HAS_STEP",
+      "dst": "queststep:11",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68326",
+      "src": "quest:5",
+      "rel": "HAS_STEP",
+      "dst": "queststep:12",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68327",
+      "src": "quest:5",
+      "rel": "HAS_STEP",
+      "dst": "queststep:13",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68328",
+      "src": "quest:6",
+      "rel": "HAS_STEP",
+      "dst": "queststep:14",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68329",
+      "src": "quest:6",
+      "rel": "HAS_STEP",
+      "dst": "queststep:15",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68330",
+      "src": "quest:6",
+      "rel": "HAS_STEP",
+      "dst": "queststep:16",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68331",
+      "src": "quest:6",
+      "rel": "HAS_STEP",
+      "dst": "queststep:17",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68332",
+      "src": "quest:7",
+      "rel": "HAS_STEP",
+      "dst": "queststep:20",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68333",
+      "src": "quest:7",
+      "rel": "HAS_STEP",
+      "dst": "queststep:22",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68334",
+      "src": "quest:7",
+      "rel": "HAS_STEP",
+      "dst": "queststep:24",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68335",
+      "src": "quest:8",
+      "rel": "HAS_STEP",
+      "dst": "queststep:21",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68336",
+      "src": "quest:8",
+      "rel": "HAS_STEP",
+      "dst": "queststep:25",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68337",
+      "src": "quest:8",
+      "rel": "HAS_STEP",
+      "dst": "queststep:41",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68338",
+      "src": "quest:9",
+      "rel": "HAS_STEP",
+      "dst": "queststep:23",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68339",
+      "src": "quest:9",
+      "rel": "HAS_STEP",
+      "dst": "queststep:27",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68340",
+      "src": "quest:10",
+      "rel": "HAS_STEP",
+      "dst": "queststep:26",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68341",
+      "src": "quest:10",
+      "rel": "HAS_STEP",
+      "dst": "queststep:28",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68342",
+      "src": "quest:10",
+      "rel": "HAS_STEP",
+      "dst": "queststep:29",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68343",
+      "src": "quest:10",
+      "rel": "HAS_STEP",
+      "dst": "queststep:30",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68344",
+      "src": "quest:11",
+      "rel": "HAS_STEP",
+      "dst": "queststep:31",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68345",
+      "src": "quest:11",
+      "rel": "HAS_STEP",
+      "dst": "queststep:33",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68346",
+      "src": "quest:11",
+      "rel": "HAS_STEP",
+      "dst": "queststep:103",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68347",
+      "src": "quest:12",
+      "rel": "HAS_STEP",
+      "dst": "queststep:38",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68348",
+      "src": "quest:12",
+      "rel": "HAS_STEP",
+      "dst": "queststep:39",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68349",
+      "src": "quest:12",
+      "rel": "HAS_STEP",
+      "dst": "queststep:40",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68350",
+      "src": "quest:13",
+      "rel": "HAS_STEP",
+      "dst": "queststep:34",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68351",
+      "src": "quest:13",
+      "rel": "HAS_STEP",
+      "dst": "queststep:35",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68352",
+      "src": "quest:13",
+      "rel": "HAS_STEP",
+      "dst": "queststep:36",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68353",
+      "src": "quest:13",
+      "rel": "HAS_STEP",
+      "dst": "queststep:37",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68354",
+      "src": "quest:14",
+      "rel": "HAS_STEP",
+      "dst": "queststep:52",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68355",
+      "src": "quest:14",
+      "rel": "HAS_STEP",
+      "dst": "queststep:53",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68356",
+      "src": "quest:14",
+      "rel": "HAS_STEP",
+      "dst": "queststep:54",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68357",
+      "src": "quest:15",
+      "rel": "HAS_STEP",
+      "dst": "queststep:45",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68358",
+      "src": "quest:15",
+      "rel": "HAS_STEP",
+      "dst": "queststep:49",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68359",
+      "src": "quest:15",
+      "rel": "HAS_STEP",
+      "dst": "queststep:51",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68360",
+      "src": "quest:16",
+      "rel": "HAS_STEP",
+      "dst": "queststep:44",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68361",
+      "src": "quest:16",
+      "rel": "HAS_STEP",
+      "dst": "queststep:46",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68362",
+      "src": "quest:16",
+      "rel": "HAS_STEP",
+      "dst": "queststep:47",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68363",
+      "src": "quest:18",
+      "rel": "HAS_STEP",
+      "dst": "queststep:55",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    },
+    {
+      "id": "r68364",
+      "src": "quest:18",
+      "rel": "HAS_STEP",
+      "dst": "queststep:57",
+      "semantic_role": "NARRATIVE",
+      "causal_weight": 0.9,
+      "gameplay_impact": "HIGH",
+      "propagation_depth": 3
+    }
+  ],
+  "top_50_noise_edges": [
+    {
+      "id": "r5520",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10020",
+      "dst": "map:10021",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5521",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10020",
+      "dst": "map:10019",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5522",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10020",
+      "dst": "map:9508",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5523",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10020",
+      "dst": "map:10532",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5525",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10223620",
+      "dst": "map:10223619",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5526",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10223620",
+      "dst": "map:10223621",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5527",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10223620",
+      "dst": "map:10355204",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5528",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10223620",
+      "dst": "map:10224132",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5530",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10227970",
+      "dst": "map:10227971",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5531",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10227970",
+      "dst": "map:10227969",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5532",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10227970",
+      "dst": "map:10227458",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5533",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10227970",
+      "dst": "map:10228482",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5535",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10230790",
+      "dst": "map:10230789",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5536",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10230790",
+      "dst": "map:10230791",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5537",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10230790",
+      "dst": "map:10230278",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5538",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10230790",
+      "dst": "map:10231302",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5540",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10520",
+      "dst": "map:10521",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5541",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10520",
+      "dst": "map:10519",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5542",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10520",
+      "dst": "map:10008",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5543",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10520",
+      "dst": "map:11032",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5545",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10530",
+      "dst": "map:10531",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5546",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10530",
+      "dst": "map:10529",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5547",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10530",
+      "dst": "map:10018",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5548",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10530",
+      "dst": "map:11042",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5550",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10748930",
+      "dst": "map:10748929",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5551",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10748930",
+      "dst": "map:10748931",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5552",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10748930",
+      "dst": "map:10748418",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5553",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10748930",
+      "dst": "map:10749442",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5555",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10752000",
+      "dst": "map:10752257",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5556",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10752000",
+      "dst": "map:10752001",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5557",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10752000",
+      "dst": "map:10751488",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5558",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10752000",
+      "dst": "map:10752512",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5560",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10754050",
+      "dst": "map:10754049",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5561",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10754050",
+      "dst": "map:10754051",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5562",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10754050",
+      "dst": "map:10753538",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5563",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:10754050",
+      "dst": "map:10754562",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5565",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11010050",
+      "dst": "map:11010049",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5566",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11010050",
+      "dst": "map:11010051",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5567",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11010050",
+      "dst": "map:11141634",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5568",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11010050",
+      "dst": "map:11010562",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5570",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11012100",
+      "dst": "map:11012099",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5571",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11012100",
+      "dst": "map:11012101",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5572",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11012100",
+      "dst": "map:11011588",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5573",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11012100",
+      "dst": "map:11012612",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5575",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11013120",
+      "dst": "map:11013377",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5576",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11013120",
+      "dst": "map:11013121",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5577",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11013120",
+      "dst": "map:11012608",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5578",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11013120",
+      "dst": "map:11013632",
+      "causal_weight": 0.15,
+      "noise_score": 0.2872,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5580",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11020",
+      "dst": "map:11021",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    },
+    {
+      "id": "r5581",
+      "rel": "NEIGHBOR_OF",
+      "src": "map:11020",
+      "dst": "map:11019",
+      "causal_weight": 0.3,
+      "noise_score": 0.2365,
+      "reason": "NEIGHBOR_OF dominates graph (33.8%) with low causal weight"
+    }
+  ],
+  "dominance": {
+    "SPAWNED_IN": {
+      "count": 33603,
+      "share": 0.2983,
+      "avg_causal_weight": 0.86,
+      "base_weight": 0.9,
+      "propagation_depth": 2,
+      "semantic_role": "STRUCTURAL",
+      "dominant": true,
+      "low_semantic_value": false
+    },
+    "LOCATED_AT": {
+      "count": 429,
+      "share": 0.0038,
+      "avg_causal_weight": 0.9,
+      "base_weight": 0.9,
+      "propagation_depth": 2,
+      "semantic_role": "STRUCTURAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "CONTAINS_MONSTER": {
+      "count": 2569,
+      "share": 0.0228,
+      "avg_causal_weight": 0.86,
+      "base_weight": 0.9,
+      "propagation_depth": 1,
+      "semantic_role": "FUNCTIONAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "EXITS_TO": {
+      "count": 429,
+      "share": 0.0038,
+      "avg_causal_weight": 0.53,
+      "base_weight": 0.6,
+      "propagation_depth": 2,
+      "semantic_role": "STRUCTURAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "SPAWNS_MONSTER": {
+      "count": 836,
+      "share": 0.0074,
+      "avg_causal_weight": 0.86,
+      "base_weight": 0.9,
+      "propagation_depth": 1,
+      "semantic_role": "FUNCTIONAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "IN_SUBAREA": {
+      "count": 9517,
+      "share": 0.0845,
+      "avg_causal_weight": 0.3,
+      "base_weight": 0.3,
+      "propagation_depth": 1,
+      "semantic_role": "STRUCTURAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "NEIGHBOR_OF": {
+      "count": 38064,
+      "share": 0.3379,
+      "avg_causal_weight": 0.25,
+      "base_weight": 0.3,
+      "propagation_depth": 0,
+      "semantic_role": "STRUCTURAL",
+      "dominant": true,
+      "low_semantic_value": true
+    },
+    "SELLS": {
+      "count": 6722,
+      "share": 0.0597,
+      "avg_causal_weight": 0.4,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "ECONOMIC",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "OFFERS_ACTION": {
+      "count": 1,
+      "share": 0,
+      "avg_causal_weight": 0.6,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "FUNCTIONAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "DROPS_ITEM": {
+      "count": 4014,
+      "share": 0.0356,
+      "avg_causal_weight": 0.6,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "ECONOMIC",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "USES_SPELL": {
+      "count": 4478,
+      "share": 0.0398,
+      "avg_causal_weight": 0.29,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "BEHAVIORAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "HAS_STEP": {
+      "count": 1009,
+      "share": 0.009,
+      "avg_causal_weight": 0.9,
+      "base_weight": 0.9,
+      "propagation_depth": 3,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "HAS_OBJECTIVE": {
+      "count": 3385,
+      "share": 0.0301,
+      "avg_causal_weight": 0.9,
+      "base_weight": 0.9,
+      "propagation_depth": 2,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "DISCOVER_MAP": {
+      "count": 250,
+      "share": 0.0022,
+      "avg_causal_weight": 0.25,
+      "base_weight": 0.6,
+      "propagation_depth": 2,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "INVOLVES_NPC": {
+      "count": 2235,
+      "share": 0.0198,
+      "avg_causal_weight": 0.76,
+      "base_weight": 0.9,
+      "propagation_depth": 3,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "REQUIRES_ITEM": {
+      "count": 716,
+      "share": 0.0064,
+      "avg_causal_weight": 0.51,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "FUNCTIONAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "DEFEAT_MONSTER": {
+      "count": 933,
+      "share": 0.0083,
+      "avg_causal_weight": 0.49,
+      "base_weight": 0.6,
+      "propagation_depth": 1,
+      "semantic_role": "FUNCTIONAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "DISCOVER_AREA": {
+      "count": 1,
+      "share": 0,
+      "avg_causal_weight": 0.48,
+      "base_weight": 0.6,
+      "propagation_depth": 1,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "REWARDS_ITEM": {
+      "count": 305,
+      "share": 0.0027,
+      "avg_causal_weight": 0.46,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "ECONOMIC",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "REWARDS_SPELL": {
+      "count": 3,
+      "share": 0,
+      "avg_causal_weight": 0.25,
+      "base_weight": 0.6,
+      "propagation_depth": 0,
+      "semantic_role": "ECONOMIC",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "TELEPORT_FROM": {
+      "count": 114,
+      "share": 0.001,
+      "avg_causal_weight": 0.22,
+      "base_weight": 0.3,
+      "propagation_depth": 0,
+      "semantic_role": "STRUCTURAL",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "STARTS_QUEST": {
+      "count": 466,
+      "share": 0.0041,
+      "avg_causal_weight": 0.48,
+      "base_weight": 0.6,
+      "propagation_depth": 4,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    },
+    "PARTICIPATES_IN_MAP": {
+      "count": 2556,
+      "share": 0.0227,
+      "avg_causal_weight": 0.5,
+      "base_weight": 0.6,
+      "propagation_depth": 2,
+      "semantic_role": "NARRATIVE",
+      "dominant": false,
+      "low_semantic_value": false
+    }
+  },
+  "dominant_relationship_types": [
+    {
+      "rel": "SPAWNED_IN",
+      "count": 33603,
+      "share": 0.2983,
+      "avg_causal_weight": 0.86,
+      "base_weight": 0.9,
+      "propagation_depth": 2,
+      "semantic_role": "STRUCTURAL",
+      "dominant": true,
+      "low_semantic_value": false
+    },
+    {
+      "rel": "NEIGHBOR_OF",
+      "count": 38064,
+      "share": 0.3379,
+      "avg_causal_weight": 0.25,
+      "base_weight": 0.3,
+      "propagation_depth": 0,
+      "semantic_role": "STRUCTURAL",
+      "dominant": true,
+      "low_semantic_value": true
+    }
+  ],
+  "low_value_relationship_types": [
+    {
+      "rel": "NEIGHBOR_OF",
+      "count": 38064,
+      "share": 0.3379,
+      "avg_causal_weight": 0.25,
+      "base_weight": 0.3,
+      "propagation_depth": 0,
+      "semantic_role": "STRUCTURAL",
+      "dominant": true,
+      "low_semantic_value": true
+    }
+  ]
+}

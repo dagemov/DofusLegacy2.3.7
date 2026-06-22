@@ -1,0 +1,13 @@
+{
+  "phase": "PREFLIGHT_F28",
+  "timestamp": "2026-06-22T09:57:18.370Z",
+  "passed": true,
+  "checks": [
+    {
+      "id": "F27_gateway",
+      "status": "PASS",
+      "detail": "F27 all_tests_passed true",
+      "evidence": {}
+    }
+  ]
+}

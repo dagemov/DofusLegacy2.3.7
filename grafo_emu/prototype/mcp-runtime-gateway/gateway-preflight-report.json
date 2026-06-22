@@ -1,0 +1,32 @@
+{
+  "phase": "PREFLIGHT_F27",
+  "timestamp": "2026-06-22T09:23:42.741Z",
+  "passed": true,
+  "checks": [
+    {
+      "id": "F26_lib",
+      "status": "PASS",
+      "detail": "F26 contract lib and tool-contract.json present",
+      "evidence": {}
+    },
+    {
+      "id": "F26_tests",
+      "status": "PASS",
+      "detail": "F26 all_tests_passed true",
+      "evidence": {}
+    },
+    {
+      "id": "F25_bundle",
+      "status": "PASS",
+      "detail": "world-transactions.json has 4 cases",
+      "evidence": {
+        "cases": [
+          "CASE_A",
+          "CASE_B",
+          "CASE_C",
+          "CASE_D"
+        ]
+      }
+    }
+  ]
+}

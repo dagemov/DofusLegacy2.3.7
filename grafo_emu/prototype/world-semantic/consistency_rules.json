@@ -1,0 +1,219 @@
+{
+  "phase": "E_WORLD_CONSISTENCY_RULES",
+  "rule_count": 11,
+  "total_violations": 4749,
+  "rules": [
+    {
+      "rule_id": "npc_without_spawn",
+      "rule": "Every npc template should have at least one worlds_npcs spawn row",
+      "evidence": [
+        "npcs.Id",
+        "worlds_npcs.Npc",
+        "NpcManager.GetNpcSpawns()"
+      ],
+      "confidence": 0.85,
+      "violation_count": 196,
+      "total_checked": 1210,
+      "violations_sample": [
+        {
+          "npc_id": "1",
+          "name": "Percepteur"
+        },
+        {
+          "npc_id": "128",
+          "name": "Maître Roublard"
+        },
+        {
+          "npc_id": "139",
+          "name": "Logel le Lenald"
+        },
+        {
+          "npc_id": "154",
+          "name": "Kib Roche"
+        },
+        {
+          "npc_id": "168",
+          "name": "Boff Chalon"
+        }
+      ],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "spawn_orphan_npc",
+      "rule": "worlds_npcs.Npc must reference existing npcs.Id",
+      "evidence": [
+        "worlds_npcs.Npc -> npcs.Id"
+      ],
+      "confidence": 0.95,
+      "violation_count": 0,
+      "total_checked": 1255,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "quest_empty_steps_csv",
+      "rule": "quests.StepIdsCSV should list at least one quests_steps.Id",
+      "evidence": [
+        "quests.StepIdsCSV",
+        "quests_steps.Id"
+      ],
+      "confidence": 0.9,
+      "violation_count": 0,
+      "total_checked": 619,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "quest_step_csv_orphan",
+      "rule": "quests.StepIdsCSV ids must exist in quests_steps",
+      "evidence": [
+        "quests.StepIdsCSV -> quests_steps.Id"
+      ],
+      "confidence": 0.9,
+      "violation_count": 0,
+      "total_checked": 619,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "quest_step_without_objectives",
+      "rule": "quests_steps should have at least one quests_objectives row (Step = step Id)",
+      "evidence": [
+        "quests_objectives.Step -> quests_steps.Id"
+      ],
+      "confidence": 0.75,
+      "violation_count": 0,
+      "total_checked": 1009,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "quest_reward_item_orphan",
+      "rule": "quests_steps.ItemsRewardCSV item ids must exist in items",
+      "evidence": [
+        "quests_steps.ItemsRewardCSV",
+        "items.Id"
+      ],
+      "confidence": 0.9,
+      "violation_count": 51,
+      "total_checked": 1009,
+      "violations_sample": [
+        {
+          "step_id": "24",
+          "item_id": 6784,
+          "qty": 1
+        },
+        {
+          "step_id": "51",
+          "item_id": 6786,
+          "qty": 1
+        },
+        {
+          "step_id": "47",
+          "item_id": 6781,
+          "qty": 1
+        },
+        {
+          "step_id": "69",
+          "item_id": 6780,
+          "qty": 1
+        },
+        {
+          "step_id": "75",
+          "item_id": 6783,
+          "qty": 1
+        }
+      ],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "dungeon_monster_orphan",
+      "rule": "dungeons.MonstersCSV ids must exist in monsters",
+      "evidence": [
+        "dungeons.MonstersCSV",
+        "monsters.Id"
+      ],
+      "confidence": 0.9,
+      "violation_count": 0,
+      "total_checked": 429,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "world_monster_group_orphan",
+      "rule": "worlds_monsters.MonstersCSV ids must exist in monsters",
+      "evidence": [
+        "worlds_monsters.MonstersCSV",
+        "monsters.Id"
+      ],
+      "confidence": 0.9,
+      "violation_count": 0,
+      "total_checked": 135,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "npc_shop_item_orphan",
+      "rule": "npcs_items.Item must reference items.Id",
+      "evidence": [
+        "npcs_items.Item -> items.Id"
+      ],
+      "confidence": 0.95,
+      "violation_count": 4502,
+      "total_checked": 6721,
+      "violations_sample": [
+        {
+          "npc_id": "462",
+          "item": "491",
+          "price": null
+        },
+        {
+          "npc_id": "463",
+          "item": "492",
+          "price": null
+        },
+        {
+          "npc_id": "577",
+          "item": "1946",
+          "price": null
+        },
+        {
+          "npc_id": "594",
+          "item": "596",
+          "price": null
+        },
+        {
+          "npc_id": "594",
+          "item": "1860",
+          "price": null
+        }
+      ],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "npc_action_shop_item_orphan",
+      "rule": "npcs_actions Type=Shop Parameters must reference valid item id",
+      "evidence": [
+        "npcs_actions.Type=Shop",
+        "npcs_actions.Parameters -> items.Id"
+      ],
+      "confidence": 0.85,
+      "violation_count": 0,
+      "total_checked": 1,
+      "violations_sample": [],
+      "hypothesis": false
+    },
+    {
+      "rule_id": "quest_step_orphan_quest",
+      "rule": "quests_steps.Quest must reference quests.Id",
+      "evidence": [
+        "quests_steps.Quest -> quests.Id"
+      ],
+      "confidence": 0.95,
+      "violation_count": 0,
+      "total_checked": 1009,
+      "violations_sample": [],
+      "hypothesis": false
+    }
+  ]
+}

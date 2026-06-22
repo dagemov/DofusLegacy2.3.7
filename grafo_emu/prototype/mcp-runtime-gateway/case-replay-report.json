@@ -1,0 +1,491 @@
+{
+  "phase": "GATEWAY_CASE_REPLAY",
+  "timestamp": "2026-06-22T09:23:42.750Z",
+  "all_cases_replayed": true,
+  "cases": {
+    "CASE_A": {
+      "case_id": "CASE_A",
+      "transaction_id": "txn-item519-commit",
+      "steps": [
+        {
+          "request": {
+            "request_id": "req-A-1",
+            "tool_name": "beginTransaction",
+            "arguments": {
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "fields": {
+                "Name": "MEK-F23-bridge-test"
+              }
+            },
+            "caller_role": "planner",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-A-1",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-commit",
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "state": "ROLLBACK_AVAILABLE",
+              "states_reached": [
+                "VALIDATED",
+                "READY_TO_COMMIT",
+                "COMMITTED",
+                "ROLLBACK_AVAILABLE"
+              ],
+              "validation": {
+                "verdict": "APPROVE",
+                "blast_radius": 0,
+                "modification_risk": "LOW"
+              },
+              "consistency": {
+                "verdict": "CONSISTENT_TOPOLOGY",
+                "graph_requires_update": false,
+                "recovery_required": []
+              },
+              "rollback_available": true,
+              "reingest_required": false,
+              "parent_transaction_id": null,
+              "mode": "real",
+              "execution_executed": true
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-A-2",
+            "tool_name": "explainImpact",
+            "arguments": {
+              "transaction_id": "txn-item519-commit"
+            },
+            "caller_role": "reader",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-A-2",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-commit",
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "blast_radius": 0,
+              "modification_risk": "LOW",
+              "validation_verdict": "APPROVE",
+              "consistency_verdict": "CONSISTENT_TOPOLOGY",
+              "predicted_affected_edges": [],
+              "recovery_required": [],
+              "reingest_required": false
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-A-3",
+            "tool_name": "commitTransaction",
+            "arguments": {
+              "transaction_id": "txn-item519-commit",
+              "confirm": true
+            },
+            "caller_role": "operator",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-A-3",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-commit",
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "state": "ROLLBACK_AVAILABLE",
+              "states_reached": [
+                "VALIDATED",
+                "READY_TO_COMMIT",
+                "COMMITTED",
+                "ROLLBACK_AVAILABLE"
+              ],
+              "validation": {
+                "verdict": "APPROVE",
+                "blast_radius": 0,
+                "modification_risk": "LOW"
+              },
+              "consistency": {
+                "verdict": "CONSISTENT_TOPOLOGY",
+                "graph_requires_update": false,
+                "recovery_required": []
+              },
+              "rollback_available": true,
+              "reingest_required": false,
+              "parent_transaction_id": null,
+              "mode": "real",
+              "execution_executed": true
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-A-4",
+            "tool_name": "getTransactionConsistency",
+            "arguments": {
+              "transaction_id": "txn-item519-commit"
+            },
+            "caller_role": "reader",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-A-4",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-commit",
+              "verdict": "CONSISTENT_TOPOLOGY",
+              "graph_requires_update": false,
+              "causal_recompute_required": false,
+              "recovery_required": [],
+              "edges_checked": 28
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-A-5",
+            "tool_name": "getTransaction",
+            "arguments": {
+              "transaction_id": "txn-item519-commit"
+            },
+            "caller_role": "reader",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-A-5",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-commit",
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "state": "ROLLBACK_AVAILABLE",
+              "states_reached": [
+                "VALIDATED",
+                "READY_TO_COMMIT",
+                "COMMITTED",
+                "ROLLBACK_AVAILABLE"
+              ],
+              "validation": {
+                "verdict": "APPROVE",
+                "blast_radius": 0,
+                "modification_risk": "LOW"
+              },
+              "consistency": {
+                "verdict": "CONSISTENT_TOPOLOGY",
+                "graph_requires_update": false,
+                "recovery_required": []
+              },
+              "rollback_available": true,
+              "reingest_required": false,
+              "parent_transaction_id": null,
+              "mode": "real",
+              "execution_executed": true
+            },
+            "error": null
+          }
+        }
+      ],
+      "actual": {
+        "state": "ROLLBACK_AVAILABLE",
+        "states_reached": [
+          "VALIDATED",
+          "READY_TO_COMMIT",
+          "COMMITTED",
+          "ROLLBACK_AVAILABLE"
+        ],
+        "rollback_available": true,
+        "consistency_verdict": "CONSISTENT_TOPOLOGY"
+      },
+      "expected": {
+        "states_include": [
+          "COMMITTED",
+          "ROLLBACK_AVAILABLE"
+        ],
+        "rollback_available": true,
+        "consistency_verdict": "CONSISTENT_TOPOLOGY"
+      }
+    },
+    "CASE_B": {
+      "case_id": "CASE_B",
+      "transaction_id": "txn-npc462-blocked",
+      "steps": [
+        {
+          "request": {
+            "request_id": "req-B-1",
+            "tool_name": "beginTransaction",
+            "arguments": {
+              "intent_id": "modify_npc",
+              "target_node": "npc:462"
+            },
+            "caller_role": "planner",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-B-1",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-npc462-blocked",
+              "intent_id": "modify_npc",
+              "target_node": "npc:462",
+              "state": "BLOCKED",
+              "states_reached": [
+                "VALIDATED",
+                "BLOCKED"
+              ],
+              "validation": {
+                "verdict": "BLOCK",
+                "blast_radius": 48,
+                "modification_risk": "HIGH"
+              },
+              "consistency": null,
+              "rollback_available": false,
+              "reingest_required": false,
+              "parent_transaction_id": null,
+              "mode": "real",
+              "execution_executed": null
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-B-2",
+            "tool_name": "commitTransaction",
+            "arguments": {
+              "transaction_id": "txn-npc462-blocked",
+              "confirm": true
+            },
+            "caller_role": "operator",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-B-2",
+            "success": false,
+            "result": null,
+            "error": {
+              "error_code": "BLOCKED_BY_BLAST_RADIUS",
+              "message": "Cannot commit transaction in state BLOCKED",
+              "transaction_id": "txn-npc462-blocked"
+            }
+          }
+        }
+      ],
+      "actual": {
+        "begin_state": "BLOCKED",
+        "blast_radius": 48,
+        "commit_success": false,
+        "commit_error_code": "BLOCKED_BY_BLAST_RADIUS",
+        "execution_executed": null
+      },
+      "expected": {
+        "state": "BLOCKED",
+        "blast_radius": 48,
+        "commit_error_code": "BLOCKED_BY_BLAST_RADIUS",
+        "execution_exposed": false
+      }
+    },
+    "CASE_C": {
+      "case_id": "CASE_C",
+      "transaction_id": "txn-item519-rollback",
+      "steps": [
+        {
+          "request": {
+            "request_id": "req-C-1",
+            "tool_name": "rollbackTransaction",
+            "arguments": {
+              "transaction_id": "txn-item519-commit"
+            },
+            "caller_role": "rollback_operator",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-C-1",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-item519-rollback",
+              "intent_id": "modify_item",
+              "target_node": "item:519",
+              "state": "ROLLED_BACK",
+              "states_reached": [
+                "PLANNED",
+                "VALIDATED",
+                "READY_TO_COMMIT",
+                "COMMITTED",
+                "ROLLED_BACK"
+              ],
+              "validation": {
+                "verdict": "APPROVE",
+                "blast_radius": 0,
+                "modification_risk": "LOW"
+              },
+              "consistency": {
+                "verdict": "CONSISTENT_TOPOLOGY",
+                "graph_requires_update": false,
+                "recovery_required": []
+              },
+              "rollback_available": false,
+              "reingest_required": false,
+              "parent_transaction_id": "txn-item519-commit",
+              "mode": "real",
+              "execution_executed": true
+            },
+            "error": null
+          }
+        }
+      ],
+      "actual": {
+        "state": "ROLLED_BACK",
+        "parent_transaction_id": "txn-item519-commit",
+        "success": true
+      },
+      "expected": {
+        "state": "ROLLED_BACK",
+        "parent_transaction_id": "txn-item519-commit"
+      }
+    },
+    "CASE_D": {
+      "case_id": "CASE_D",
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "steps": [
+        {
+          "request": {
+            "request_id": "req-D-1",
+            "tool_name": "explainImpact",
+            "arguments": {
+              "transaction_id": "txn-npc462-reingest-proposal"
+            },
+            "caller_role": "reader",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-D-1",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-npc462-reingest-proposal",
+              "intent_id": "modify_npc",
+              "target_node": "npc:462",
+              "blast_radius": 48,
+              "modification_risk": "HIGH",
+              "validation_verdict": "BLOCK",
+              "consistency_verdict": "TOPOLOGY_STALE",
+              "predicted_affected_edges": [
+                "INVOLVES_NPC",
+                "SELLS",
+                "SPAWNED_IN",
+                "STARTS_QUEST"
+              ],
+              "recovery_required": [
+                "Phase20",
+                "Phase21"
+              ],
+              "reingest_required": true
+            },
+            "error": null
+          }
+        },
+        {
+          "request": {
+            "request_id": "req-D-2",
+            "tool_name": "getReingestProposal",
+            "arguments": {
+              "transaction_id": "txn-npc462-reingest-proposal"
+            },
+            "caller_role": "reader",
+            "timestamp": "2026-06-22T08:00:00.000Z"
+          },
+          "response": {
+            "request_id": "req-D-2",
+            "success": true,
+            "result": {
+              "transaction_id": "txn-npc462-reingest-proposal",
+              "recovery_required": [
+                "Phase20",
+                "Phase21"
+              ],
+              "invalidated_artifacts": [
+                {
+                  "path": "world-relations/recovered_edges.jsonl",
+                  "rerun": "node run-relations.mjs",
+                  "reason": "Phase20 re-ingest required"
+                },
+                {
+                  "path": "world-relations/relationship_graph.json",
+                  "rerun": "node run-relations.mjs",
+                  "reason": "Phase20 re-ingest required"
+                },
+                {
+                  "path": "world-relations/relationship_benchmark.json",
+                  "rerun": "node run-relations.mjs",
+                  "reason": "Phase20 re-ingest required"
+                },
+                {
+                  "path": "world-causal/causal_graph.jsonl",
+                  "rerun": "node run-causal.mjs",
+                  "reason": "Phase21 re-ingest required"
+                },
+                {
+                  "path": "world-causal/propagation_models.json",
+                  "rerun": "node run-causal.mjs",
+                  "reason": "Phase21 re-ingest required"
+                },
+                {
+                  "path": "world-causal/causal_benchmark.json",
+                  "rerun": "node run-causal.mjs",
+                  "reason": "Phase21 re-ingest required"
+                }
+              ],
+              "rerun_commands": [
+                {
+                  "phase": "Phase20",
+                  "command": "node run-relations.mjs",
+                  "cwd": "grafo_emu/prototype/world-relations"
+                },
+                {
+                  "phase": "Phase21",
+                  "command": "node run-causal.mjs",
+                  "cwd": "grafo_emu/prototype/world-causal"
+                }
+              ]
+            },
+            "error": null
+          }
+        }
+      ],
+      "actual": {
+        "consistency_verdict": "TOPOLOGY_STALE",
+        "recovery_required": [
+          "Phase20",
+          "Phase21"
+        ],
+        "execution_executed": null
+      },
+      "expected": {
+        "consistency_verdict": "TOPOLOGY_STALE",
+        "reingest_phases": [
+          "Phase20",
+          "Phase21"
+        ],
+        "no_f23_execution": true
+      }
+    }
+  },
+  "error_codes_used": [
+    "BLOCKED_BY_BLAST_RADIUS",
+    "BLOCKED_BY_MODIFICATION_RISK",
+    "REQUIRES_HUMAN_CONFIRMATION",
+    "VALIDATION_REVIEW_REQUIRED",
+    "TRANSACTION_NOT_FOUND",
+    "INVALID_STATE_TRANSITION",
+    "ROLLBACK_NOT_AVAILABLE",
+    "REINGEST_REQUIRED"
+  ]
+}

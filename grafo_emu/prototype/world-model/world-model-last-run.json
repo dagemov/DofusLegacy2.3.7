@@ -1,0 +1,664 @@
+{
+  "generated_at": "2026-06-22T03:04:38.443Z",
+  "pipeline": "System Discovery & World Operating Model",
+  "phase_a": {
+    "sql": {
+      "table_count": 84,
+      "inferred_fk_edge_count": 19
+    },
+    "code": {
+      "role_files_scanned": 93,
+      "total_cs_files": 1609
+    },
+    "graph": {
+      "node_count": 37,
+      "cluster_count": 3
+    }
+  },
+  "phase_b": {
+    "system_count": 23,
+    "top_systems": [
+      {
+        "system_id": "sys_worlds",
+        "label": "sys_worlds",
+        "tables_involved": [
+          "worlds_interactives",
+          "worlds_maps_positions",
+          "worlds_maps",
+          "worlds_triggers",
+          "worlds_npcs",
+          "worlds_monsters",
+          "worlds_characters",
+          "worlds_zaapis",
+          "worlds_monsters_fix",
+          "worlds",
+          "worlds_taxcollectors"
+        ],
+        "table_count": 11,
+        "classes_involved": [
+          "CharacterManager",
+          "MonsterManager",
+          "MapManager",
+          "NpcManager",
+          "GuildManager",
+          "InteractiveSkillBinding",
+          "AccountManager",
+          "TaxCollectorManager",
+          "WorldServerManager",
+          "InteractiveManager"
+        ],
+        "class_count": 10,
+        "graph_seeds": [],
+        "cohesion": 0.909,
+        "external_coupling": 0,
+        "relations_observed": 5,
+        "evidence": [
+          {
+            "type": "sql_fk",
+            "from": "worlds_interactives",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_triggers",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_npcs",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_monsters_fix",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_taxcollectors",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          }
+        ],
+        "why_these_entities_form_a_system": "tables share prefix 'worlds_' + 5 high-confidence inferred FK edges + 10 code managers reference them",
+        "hypothesis": false,
+        "rank": 1
+      },
+      {
+        "system_id": "sys_quests",
+        "label": "sys_quests",
+        "tables_involved": [
+          "quests_objectives",
+          "quests_steps",
+          "quests",
+          "quests_objectives_types"
+        ],
+        "table_count": 4,
+        "classes_involved": [
+          "QuestManager"
+        ],
+        "class_count": 1,
+        "graph_seeds": [],
+        "cohesion": 1,
+        "external_coupling": 0,
+        "relations_observed": 2,
+        "evidence": [
+          {
+            "type": "sql_fk",
+            "from": "quests_objectives",
+            "to": "quests_steps",
+            "confidence": 0.9
+          },
+          {
+            "type": "sql_fk",
+            "from": "quests_steps",
+            "to": "quests",
+            "confidence": 0.95
+          }
+        ],
+        "why_these_entities_form_a_system": "tables share prefix 'quests' + 2 high-confidence inferred FK edges + 1 code managers reference them",
+        "hypothesis": false,
+        "rank": 2
+      },
+      {
+        "system_id": "sys_characters",
+        "label": "sys_characters",
+        "tables_involved": [
+          "characters",
+          "characters_alignments",
+          "characters_items",
+          "characters_items_merchant",
+          "characters_items_presets",
+          "characters_jobs",
+          "characters_quests",
+          "characters_quests_objectives",
+          "characters_quests_steps",
+          "characters_shortcuts_items",
+          "characters_shortcuts_items_presets",
+          "characters_shortcuts_spells",
+          "characters_spells",
+          "characters_stats"
+        ],
+        "table_count": 14,
+        "classes_involved": [
+          "CharacterManager",
+          "AccountManager",
+          "MerchantManager",
+          "QuestManager",
+          "JobManager"
+        ],
+        "class_count": 5,
+        "graph_seeds": [],
+        "cohesion": 0,
+        "external_coupling": 0,
+        "relations_observed": 0,
+        "evidence": [],
+        "why_these_entities_form_a_system": "tables share prefix 'characters' + 0 high-confidence inferred FK edges + 5 code managers reference them",
+        "hypothesis": true,
+        "rank": 3
+      },
+      {
+        "system_id": "sys_npcs",
+        "label": "sys_npcs",
+        "tables_involved": [
+          "npcs_messages",
+          "npcs_items",
+          "npcs",
+          "npcs_replies",
+          "npcs_actions"
+        ],
+        "table_count": 5,
+        "classes_involved": [
+          "NpcManager"
+        ],
+        "class_count": 1,
+        "graph_seeds": [],
+        "cohesion": 0.8,
+        "external_coupling": 0,
+        "relations_observed": 2,
+        "evidence": [
+          {
+            "type": "sql_fk",
+            "from": "npcs_replies",
+            "to": "npcs",
+            "confidence": 0.9
+          },
+          {
+            "type": "sql_fk",
+            "from": "npcs_actions",
+            "to": "npcs",
+            "confidence": 0.95
+          }
+        ],
+        "why_these_entities_form_a_system": "tables share prefix 'npcs' + 2 high-confidence inferred FK edges + 1 code managers reference them",
+        "hypothesis": false,
+        "rank": 4
+      },
+      {
+        "system_id": "sys_world_maps",
+        "label": "sys_world_maps",
+        "tables_involved": [
+          "world_maps_house",
+          "world_maps_paddock",
+          "world_maps_paddock_instance",
+          "world_maps_merchant",
+          "world_maps_prism"
+        ],
+        "table_count": 5,
+        "classes_involved": [
+          "CharacterManager",
+          "InteractiveSkillBinding",
+          "MerchantManager",
+          "PrismManager",
+          "HouseManager",
+          "PaddockInstanceManager",
+          "PaddockManager"
+        ],
+        "class_count": 7,
+        "graph_seeds": [],
+        "cohesion": 0,
+        "external_coupling": 0,
+        "relations_observed": 0,
+        "evidence": [],
+        "why_these_entities_form_a_system": "tables share prefix 'world_maps' + 0 high-confidence inferred FK edges + 7 code managers reference them",
+        "hypothesis": true,
+        "rank": 5
+      },
+      {
+        "system_id": "sys_graph_cluster_1",
+        "label": "sys_graph_combat_runtime_spell",
+        "tables_involved": [],
+        "table_count": 0,
+        "classes_involved": [],
+        "class_count": 0,
+        "graph_seeds": [
+          "spell:189",
+          "spell:196"
+        ],
+        "cohesion": 0.125,
+        "external_coupling": 0,
+        "relations_observed": 34,
+        "evidence": [
+          {
+            "type": "graph_cluster",
+            "cluster": "cluster:1",
+            "rel_signature": {
+              "HAS_LEVEL": 2,
+              "PARSED_EFFECT": 2,
+              "USES_EFFECT": 3,
+              "CONTRADICTS": 2,
+              "HANDLED_BY": 1,
+              "CAST_HANDLED_BY": 1,
+              "OBSERVED_IN": 2,
+              "GENERATED": 2,
+              "MATCHES": 2,
+              "EVIDENCES": 2,
+              "SIGNALS": 2,
+              "ASSOCIATED_WITH": 2,
+              "EXPLAINS": 2,
+              "SUPPORTED_BY": 1,
+              "DERIVED_FROM": 1,
+              "VIOLATES": 1,
+              "VALIDATED_BY": 2,
+              "TARGETS": 2,
+              "GUARDED_BY": 2
+            }
+          }
+        ],
+        "why_these_entities_form_a_system": "graph connected component with rel signature {\"HAS_LEVEL\":2,\"PARSED_EFFECT\":2,\"USES_EFFECT\":3,\"CONTRADICTS\":2,\"HANDLED_BY\":1,\"CAST_HANDLED_BY\":1,\"OBSERVED_IN\":2,\"GENERATED\":2,\"MATCHES\":2,\"EVIDENCES\":2,\"SIGNALS\":2,\"ASSOCIATED_WITH\":2,\"EXPLAINS\":2,\"SUPPORTED_BY\":1,\"DERIVED_FROM\":1,\"VIOLATES\":1,\"VALIDATED_BY\":2,\"TARGETS\":2,\"GUARDED_BY\":2}",
+        "hypothesis": true,
+        "rank": 6
+      },
+      {
+        "system_id": "sys_graph_cluster_3",
+        "label": "sys_graph_quest_progression",
+        "tables_involved": [],
+        "table_count": 0,
+        "classes_involved": [],
+        "class_count": 0,
+        "graph_seeds": [
+          "item:288",
+          "quest:3",
+          "npc:488",
+          "npc:449"
+        ],
+        "cohesion": 0.681,
+        "external_coupling": 0,
+        "relations_observed": 8,
+        "evidence": [
+          {
+            "type": "graph_cluster",
+            "cluster": "cluster:3",
+            "rel_signature": {
+              "HAS_STEP": 5,
+              "REWARDS": 1,
+              "INVOLVES_NPC": 2
+            }
+          }
+        ],
+        "why_these_entities_form_a_system": "graph connected component with rel signature {\"HAS_STEP\":5,\"REWARDS\":1,\"INVOLVES_NPC\":2}",
+        "hypothesis": false,
+        "rank": 7
+      },
+      {
+        "system_id": "sys_graph_cluster_2",
+        "label": "sys_graph_economy_catalog",
+        "tables_involved": [],
+        "table_count": 0,
+        "classes_involved": [],
+        "class_count": 0,
+        "graph_seeds": [
+          "item:12116",
+          "npc:1053"
+        ],
+        "cohesion": 0.575,
+        "external_coupling": 0,
+        "relations_observed": 2,
+        "evidence": [
+          {
+            "type": "graph_cluster",
+            "cluster": "cluster:2",
+            "rel_signature": {
+              "SELLS": 1,
+              "HAS_TYPE": 1
+            }
+          }
+        ],
+        "why_these_entities_form_a_system": "graph connected component with rel signature {\"SELLS\":1,\"HAS_TYPE\":1}",
+        "hypothesis": false,
+        "rank": 8
+      }
+    ]
+  },
+  "phase_c": {
+    "operation_count": 649,
+    "by_type": {
+      "create_entity": 46,
+      "read_entity": 328,
+      "coordinate_flow": 174,
+      "modify_entity": 50,
+      "delete_entity": 21,
+      "link_entity": 26,
+      "place_entity": 4
+    }
+  },
+  "phase_d": {
+    "workflow_count": 649
+  },
+  "phase_e": {
+    "query_count": 51,
+    "answerable_count": 36
+  },
+  "phase_f": {
+    "automation_distribution": {
+      "PARTIALLY_AUTOMATABLE": 77,
+      "READ_ONLY": 502,
+      "SIMULATABLE": 70
+    },
+    "achievable_level": "SIMULATE_ONLY"
+  },
+  "phase_g": {
+    "mcp_count": 3,
+    "emergent_mcps": [
+      {
+        "mcp_name": "mcp_emergent_sys_worlds",
+        "emerged_from": "sys_worlds",
+        "system_label": "sys_worlds",
+        "systems_covered": [
+          "sys_worlds"
+        ],
+        "tables_covered": [
+          "worlds_interactives",
+          "worlds_maps_positions",
+          "worlds_maps",
+          "worlds_triggers",
+          "worlds_npcs",
+          "worlds_monsters",
+          "worlds_characters",
+          "worlds_zaapis",
+          "worlds_monsters_fix",
+          "worlds",
+          "worlds_taxcollectors"
+        ],
+        "operations_covered": [
+          "create_entity via CharacterManager.CreateCharacter",
+          "create_entity via CharacterManager.CreateCharacterJobs",
+          "create_entity via CharacterManager.CreateCharacterStats",
+          "create_entity via CharacterManager.CreateCharacterAlign",
+          "create_entity via CharacterManager.CreateCharacterSpells",
+          "create_entity via CharacterManager.CreateCharacterShortcutSpells",
+          "read_entity via CharacterManager.GetAllCharacters",
+          "read_entity via CharacterManager.GetCharacterStats",
+          "coordinate_flow via CharacterManager.BuildDefaultCharacterStats",
+          "read_entity via CharacterManager.GetCharacterAlign"
+        ],
+        "operation_count": 111,
+        "operation_types": [
+          "create_entity",
+          "read_entity",
+          "coordinate_flow",
+          "modify_entity",
+          "delete_entity",
+          "link_entity"
+        ],
+        "questions_supported": [
+          "What entities participate in sys_worlds?",
+          "What is worlds_interactives related to?",
+          "What changes would modifying worlds_interactives produce?"
+        ],
+        "question_count": 3,
+        "automation_level": "PARTIALLY_AUTOMATABLE",
+        "admin_power_level": "read + simulate",
+        "cohesion": 0.909,
+        "evidence_strength": 5,
+        "emergent": true,
+        "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+      },
+      {
+        "mcp_name": "mcp_emergent_sys_quests",
+        "emerged_from": "sys_quests",
+        "system_label": "sys_quests",
+        "systems_covered": [
+          "sys_quests"
+        ],
+        "tables_covered": [
+          "quests_objectives",
+          "quests_steps",
+          "quests",
+          "quests_objectives_types"
+        ],
+        "operations_covered": [
+          "read_entity via QuestManager.GetQuest",
+          "read_entity via QuestManager.GetQuestStep",
+          "read_entity via QuestManager.GetQuestObjective",
+          "read_entity via QuestManager.GetAllQuestObjectivesByStepId",
+          "read_entity via QuestManager.GetAllStepsByQuestId",
+          "read_entity via QuestManager.GetAllQuests",
+          "read_entity via QuestManager.GetAllQuestSteps",
+          "read_entity via QuestManager.GetAllQuestObjectives",
+          "read_entity via QuestManager.GetAllQuestStepsByQuestId",
+          "coordinate_flow via QuestManager.ParseCriteria"
+        ],
+        "operation_count": 12,
+        "operation_types": [
+          "read_entity",
+          "coordinate_flow",
+          "link_entity"
+        ],
+        "questions_supported": [
+          "What entities participate in sys_quests?",
+          "What is quests_objectives related to?",
+          "What is quests_steps related to?",
+          "What rewards are defined in quests_steps?",
+          "What changes would modifying quests_objectives produce?"
+        ],
+        "question_count": 5,
+        "automation_level": "SIMULATABLE",
+        "admin_power_level": "read + simulate",
+        "cohesion": 1,
+        "evidence_strength": 2,
+        "emergent": true,
+        "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+      },
+      {
+        "mcp_name": "mcp_emergent_sys_npcs",
+        "emerged_from": "sys_npcs",
+        "system_label": "sys_npcs",
+        "systems_covered": [
+          "sys_npcs"
+        ],
+        "tables_covered": [
+          "npcs_messages",
+          "npcs_items",
+          "npcs",
+          "npcs_replies",
+          "npcs_actions"
+        ],
+        "operations_covered": [
+          "read_entity via NpcManager.GetAllNpcs",
+          "read_entity via NpcManager.GetNpc",
+          "read_entity via NpcManager.GetNpcMessage",
+          "read_entity via NpcManager.GetNpcReplies",
+          "read_entity via NpcManager.GetNpcSpawns",
+          "read_entity via NpcManager.GetNpcShops",
+          "link_tables_in_sys_npcs"
+        ],
+        "operation_count": 7,
+        "operation_types": [
+          "read_entity",
+          "link_entity"
+        ],
+        "questions_supported": [
+          "What entities participate in sys_npcs?",
+          "What is npcs_items related to?",
+          "What changes would modifying npcs_messages produce?"
+        ],
+        "question_count": 3,
+        "automation_level": "SIMULATABLE",
+        "admin_power_level": "read + simulate",
+        "cohesion": 0.8,
+        "evidence_strength": 2,
+        "emergent": true,
+        "note": "Derived from Phase B system — not copied from docs 16/17 MCP names"
+      }
+    ]
+  },
+  "tests": {
+    "test_1_sql_coverage": {
+      "test": "TEST_1_SQL_COVERAGE",
+      "tables_in_dump": 84,
+      "tables_analyzed": 84,
+      "coverage_ratio": 1,
+      "inferred_fk_edges": 19,
+      "passed": true
+    },
+    "test_2_code_coverage": {
+      "test": "TEST_2_CODE_COVERAGE",
+      "total_cs_files": 1609,
+      "role_files_scanned": 93,
+      "coverage_ratio": 0.058,
+      "by_role": {
+        "handler": 3,
+        "game_manager": 23,
+        "data_manager": 18,
+        "repository": 1,
+        "effect_handler": 22,
+        "service": 1,
+        "protocol_handler": 25
+      },
+      "passed": true
+    },
+    "test_3_graph_coverage": {
+      "test": "TEST_3_GRAPH_COVERAGE",
+      "nodes_total": 37,
+      "edges_total": 44,
+      "clusters_used": 3,
+      "relations_catalogued": 24,
+      "coverage_note": "full prototype graph consumed; world domain underrepresented vs SQL",
+      "passed": true
+    },
+    "test_4_systems_discovered": {
+      "test": "TEST_4_SYSTEMS_DISCOVERED",
+      "system_count": 23,
+      "top_systems": [
+        {
+          "id": "sys_worlds",
+          "label": "sys_worlds",
+          "cohesion": 0.909
+        },
+        {
+          "id": "sys_quests",
+          "label": "sys_quests",
+          "cohesion": 1
+        },
+        {
+          "id": "sys_characters",
+          "label": "sys_characters",
+          "cohesion": 0
+        },
+        {
+          "id": "sys_npcs",
+          "label": "sys_npcs",
+          "cohesion": 0.8
+        },
+        {
+          "id": "sys_world_maps",
+          "label": "sys_world_maps",
+          "cohesion": 0
+        }
+      ],
+      "passed": true
+    },
+    "test_5_operations_discovered": {
+      "test": "TEST_5_OPERATIONS_DISCOVERED",
+      "operation_count": 649,
+      "by_type": {
+        "create_entity": 46,
+        "read_entity": 328,
+        "coordinate_flow": 174,
+        "modify_entity": 50,
+        "delete_entity": 21,
+        "link_entity": 26,
+        "place_entity": 4
+      },
+      "passed": true
+    },
+    "test_6_workflows_reconstructed": {
+      "test": "TEST_6_WORKFLOWS_RECONSTRUCTED",
+      "workflow_count": 649,
+      "passed": true
+    },
+    "test_7_queries_supported": {
+      "test": "TEST_7_QUERIES_SUPPORTED",
+      "query_count": 51,
+      "answerable_count": 36,
+      "passed": true
+    },
+    "test_8_automation_level": {
+      "test": "TEST_8_AUTOMATION_LEVEL",
+      "distribution": {
+        "PARTIALLY_AUTOMATABLE": 77,
+        "READ_ONLY": 502,
+        "SIMULATABLE": 70
+      },
+      "achievable_level": "SIMULATE_ONLY",
+      "fully_automatable_count": 0,
+      "passed": true
+    }
+  },
+  "all_tests_passed": true,
+  "final_verdict": {
+    "distance_to_autonomous_admin": "FAR",
+    "autonomous_admin_via_mcp_today": false,
+    "current_capabilities": [
+      "full SQL schema inventory (~84 tables) with inferred FK graph",
+      "C# manager/handler scan with table access and CRUD verb extraction",
+      "emergent system grouping without preset domain names",
+      "operations + workflows derived from observable patterns",
+      "evidence-backed query catalog",
+      "dry-run/simulate classification for static catalog mutations",
+      "3 emergent MCP candidates from discovered systems"
+    ],
+    "missing_capabilities": [
+      "MCP write path to MariaDB",
+      "transactional admin API with rollback",
+      "F1 graph ingestion for maps/spawns/monsters (world coverage)",
+      "GTL materialization for quest/npc/item domains",
+      "CSV column mutation helpers",
+      "live runtime validation against connected world server"
+    ],
+    "real_blockers": [
+      "no MCP write path to MariaDB",
+      "no transaction/rollback layer exposed to admin tools",
+      "MyISAM schema — 0 declared FKs; integrity app-enforced only",
+      "CSV columns (StepIdsCSV, ItemsRewardCSV) require parse+reserialize round-trip",
+      "graph world coverage severely low (37 nodes vs thousands of DB entities)",
+      "mutations do not propagate to prototype JSONL graph automatically"
+    ],
+    "recommended_implementation_order": [
+      "1. F1 ingest world tables (worlds_*, npcs, quests) into graph",
+      "2. Materialize GTL truth_state for world domains",
+      "3. MCP read tools wired to SQL + graph (no write)",
+      "4. Dry-run mutation planner (extend action-simulate)",
+      "5. MCP write path v2 with transaction + audit log",
+      "6. Re-run world-model pipeline — expect SIMULATABLE→PARTIAL automation shift"
+    ],
+    "mcp_emergence_count": 3,
+    "honesty_note": "Results not optimized for success — graph covers <0.1% of DB entities; admin autonomy blocked by write path and coverage"
+  },
+  "artifacts": [
+    "system_inventory.json",
+    "code_flow_inventory.json",
+    "graph_system_inventory.json",
+    "discovered_systems.json",
+    "operations_catalog.json",
+    "workflow_catalog.json",
+    "query_capabilities.json",
+    "automation_eval.json",
+    "mcp_emergence.json"
+  ]
+}

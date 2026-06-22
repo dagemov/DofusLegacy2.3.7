@@ -1,0 +1,65 @@
+{
+  "phase": "PREFLIGHT",
+  "timestamp": "2026-06-22T07:48:08.077Z",
+  "passed": true,
+  "checks": [
+    {
+      "id": "F21_causal_graph",
+      "status": "PASS",
+      "detail": "causal_graph.jsonl line count matches expected",
+      "evidence": {
+        "lines": 112635,
+        "bytes": 46209671
+      }
+    },
+    {
+      "id": "F22_plans",
+      "status": "PASS",
+      "detail": "8 execution plans present",
+      "evidence": {
+        "plan_count": 8
+      }
+    },
+    {
+      "id": "F22_validations",
+      "status": "PASS",
+      "detail": "8 blast validations present",
+      "evidence": {
+        "validation_count": 8
+      }
+    },
+    {
+      "id": "F23_bridge",
+      "status": "PASS",
+      "detail": "mcp-execution-bridge-last-run.json present",
+      "evidence": {
+        "exists": true,
+        "bytes": 1941,
+        "mtime_ms": 1782109019052.854
+      }
+    },
+    {
+      "id": "F23_runtime_events",
+      "status": "PASS",
+      "detail": "2 executed runtime_change_event(s) found",
+      "evidence": {
+        "count": 2,
+        "run_ids": [
+          "20260622T061552Z",
+          "20260622T061633Z"
+        ]
+      }
+    }
+  ],
+  "evidence": {
+    "f21_causal_edges": 112635,
+    "f22_plan_count": 8,
+    "f23_executed_events": {
+      "count": 2,
+      "run_ids": [
+        "20260622T061552Z",
+        "20260622T061633Z"
+      ]
+    }
+  }
+}

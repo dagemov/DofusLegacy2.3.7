@@ -1,0 +1,48 @@
+{
+  "phase": "PREFLIGHT_F25",
+  "timestamp": "2026-06-22T08:17:44.106Z",
+  "passed": true,
+  "checks": [
+    {
+      "id": "F22",
+      "status": "PASS",
+      "detail": "8 plans and 8 validations",
+      "evidence": {
+        "plan_count": 8
+      }
+    },
+    {
+      "id": "F23",
+      "status": "PASS",
+      "detail": "2 executed runs including commit and rollback",
+      "evidence": {
+        "run_ids": [
+          "20260622T061552Z",
+          "20260622T061633Z"
+        ]
+      }
+    },
+    {
+      "id": "F23_bridge",
+      "status": "PASS",
+      "detail": "mcp-execution-bridge-last-run.json present",
+      "evidence": {}
+    },
+    {
+      "id": "F24",
+      "status": "PASS",
+      "detail": "runtime-sync all_tests_passed true",
+      "evidence": {
+        "f23_events": 2
+      }
+    }
+  ],
+  "evidence": {
+    "f22_plan_count": 8,
+    "f23_executed_runs": [
+      "20260622T061552Z",
+      "20260622T061633Z"
+    ],
+    "f24_all_tests_passed": true
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "generated_at": "2026-06-22T05:10:47.429Z",
+  "pipeline": "Phase 22 — MCP Execution Kernel v1 (simulation)",
+  "kernel_version": "MEK-v1",
+  "mode": "deterministic_read_only_causal_simulation",
+  "measurements": {
+    "intents_simulated": 8,
+    "plans_generated": 8,
+    "validations_run": 8,
+    "verdict_distribution": {
+      "BLOCK": 3,
+      "APPROVE": 4,
+      "REVIEW": 1
+    },
+    "edges_consumed": 112635,
+    "no_writes": true,
+    "no_graph_mutation": true
+  },
+  "executions": [
+    {
+      "intent_id": "modify_npc",
+      "plan_summary": [
+        "UPDATE npcs",
+        "UPDATE worlds_npcs",
+        "UPDATE npcs_items",
+        "UPDATE npcs_actions",
+        "UPDATE npcs_messages",
+        "UPDATE npcs_replies"
+      ],
+      "validation_verdict": "BLOCK",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE npcs",
+          "UPDATE worlds_npcs",
+          "UPDATE npcs_items",
+          "UPDATE npcs_actions",
+          "UPDATE npcs_messages",
+          "UPDATE npcs_replies"
+        ],
+        "write_path": "sql_patch_or_gm_spawn",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync npc:462 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "BLOCK"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "modify_quest",
+      "plan_summary": [
+        "UPDATE quests",
+        "UPDATE quests_steps",
+        "UPDATE quests_objectives"
+      ],
+      "validation_verdict": "BLOCK",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE quests",
+          "UPDATE quests_steps",
+          "UPDATE quests_objectives"
+        ],
+        "write_path": "sql_patch",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync quest:3 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "BLOCK"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "modify_monster",
+      "plan_summary": [
+        "UPDATE monsters",
+        "UPDATE monsters_grades",
+        "UPDATE monsters_spells",
+        "UPDATE monsters_drops"
+      ],
+      "validation_verdict": "APPROVE",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE monsters",
+          "UPDATE monsters_grades",
+          "UPDATE monsters_spells",
+          "UPDATE monsters_drops"
+        ],
+        "write_path": "sql_patch",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync monster:31 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "APPROVE"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "modify_dungeon",
+      "plan_summary": [
+        "UPDATE dungeons"
+      ],
+      "validation_verdict": "REVIEW",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE dungeons"
+        ],
+        "write_path": "sql_patch",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync dungeon:1 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "REVIEW"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "modify_map",
+      "plan_summary": [
+        "UPDATE worlds_maps",
+        "UPDATE worlds_maps_positions",
+        "UPDATE worlds_npcs",
+        "UPDATE worlds_monsters",
+        "UPDATE worlds_interactives"
+      ],
+      "validation_verdict": "BLOCK",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE worlds_maps",
+          "UPDATE worlds_maps_positions",
+          "UPDATE worlds_npcs",
+          "UPDATE worlds_monsters",
+          "UPDATE worlds_interactives"
+        ],
+        "write_path": "sql_patch",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync map:10020 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "BLOCK"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "modify_item",
+      "plan_summary": [
+        "UPDATE items",
+        "UPDATE npcs_items",
+        "UPDATE monsters_drops"
+      ],
+      "validation_verdict": "APPROVE",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "UPDATE items",
+          "UPDATE npcs_items",
+          "UPDATE monsters_drops"
+        ],
+        "write_path": "admin_api_items_only",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync item:519 after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "APPROVE"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "create_quest",
+      "plan_summary": [
+        "INSERT quests",
+        "INSERT quests_steps",
+        "INSERT quests_objectives"
+      ],
+      "validation_verdict": "APPROVE",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "INSERT quests",
+          "INSERT quests_steps",
+          "INSERT quests_objectives"
+        ],
+        "write_path": "sql_patch",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync quest:DRY_RUN_PLACEHOLDER after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "APPROVE"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    },
+    {
+      "intent_id": "create_merchant",
+      "plan_summary": [
+        "INSERT npcs",
+        "INSERT worlds_npcs",
+        "INSERT npcs_items",
+        "INSERT npcs_actions",
+        "INSERT npcs_messages",
+        "INSERT npcs_replies"
+      ],
+      "validation_verdict": "APPROVE",
+      "runtime_executor": {
+        "interface": "IRuntimeExecutor",
+        "status": "stub_v1",
+        "would_apply": [
+          "INSERT npcs",
+          "INSERT worlds_npcs",
+          "INSERT npcs_items",
+          "INSERT npcs_actions",
+          "INSERT npcs_messages",
+          "INSERT npcs_replies"
+        ],
+        "write_path": "sql_patch_or_gm_spawn",
+        "executed": false,
+        "reason": "MEK v1 simulation — no write path to MariaDB"
+      },
+      "sync_adapter": {
+        "interface": "ISyncAdapter",
+        "status": "proposal_only",
+        "graph_to_runtime": {
+          "proposed": false,
+          "diff": "Would sync npc:DRY_RUN_PLACEHOLDER after apply"
+        },
+        "runtime_to_graph": {
+          "proposed": true,
+          "action": "re-ingest Phase 20 edges post-apply (future)"
+        },
+        "applied": false,
+        "blast_verdict": "APPROVE"
+      },
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true
+    }
+  ],
+  "final_question_answer": {
+    "question": "If I modify X, what breaks, how far, and why?",
+    "example": {
+      "modify": "npc:462",
+      "what_breaks": [
+        "objective:42 --INVOLVES_NPC--> npc:462",
+        "objective:43 --INVOLVES_NPC--> npc:462",
+        "objective:44 --INVOLVES_NPC--> npc:462",
+        "objective:160 --INVOLVES_NPC--> npc:462",
+        "queststep:10 --HAS_OBJECTIVE--> npc:462"
+      ],
+      "how_far": 5,
+      "blast_radius_total": 48,
+      "why": "HIGH modification risk with blast radius > 20",
+      "detecting_system": "NpcManager",
+      "verdict": "BLOCK"
+    },
+    "causal_depth": true,
+    "execution_performed": false
+  },
+  "interfaces": {
+    "IGraphMutationPlanner": "simulated (intent-plan.mjs)",
+    "ICausalValidator": "simulated (causal-validate.mjs)",
+    "IRuntimeExecutor": "stubbed (executed:false)",
+    "ISyncAdapter": "stubbed (applied:false)"
+  },
+  "tests": {
+    "test_1_allowlisted_node_types": {
+      "test": "TEST_1_NODE_TYPES",
+      "types_used": [
+        "npc",
+        "quest",
+        "monster",
+        "dungeon",
+        "map",
+        "item"
+      ],
+      "invalid": [],
+      "passed": true
+    },
+    "test_2_sql_tables_exist": {
+      "test": "TEST_2_SQL_TABLES",
+      "tables_checked": 19,
+      "missing": [],
+      "passed": true
+    },
+    "test_3_blast_uses_real_weights": {
+      "test": "TEST_3_CAUSAL_WEIGHTS",
+      "hops_with_weight": true,
+      "passed": true
+    },
+    "test_4_no_writes": {
+      "test": "TEST_4_NO_WRITES",
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "dry_run": true,
+      "passed": true
+    },
+    "test_5_existing_rel_types_only": {
+      "test": "TEST_5_REL_TYPES",
+      "rels_used": [
+        "SPAWNED_IN",
+        "SELLS",
+        "STARTS_QUEST",
+        "IN_SUBAREA",
+        "HAS_STEP",
+        "PARTICIPATES_IN_MAP",
+        "SPAWNS_MONSTER",
+        "HAS_OBJECTIVE",
+        "REWARDS_ITEM",
+        "DROPS_ITEM",
+        "USES_SPELL",
+        "INVOLVES_NPC",
+        "REQUIRES_ITEM",
+        "DEFEAT_MONSTER",
+        "DISCOVER_MAP",
+        "DISCOVER_AREA",
+        "LOCATED_AT",
+        "CONTAINS_MONSTER",
+        "TELEPORT_FROM"
+      ],
+      "outside_phase20": [],
+      "passed": true
+    },
+    "test_6_causal_consistency": {
+      "test": "TEST_6_CAUSAL_CONSISTENCY",
+      "neighbor_excluded": true,
+      "plans_integrity_valid": true,
+      "passed": true
+    },
+    "test_7_determinism": {
+      "test": "TEST_7_DETERMINISM",
+      "plan_count": 8,
+      "validation_count": 8,
+      "passed": true
+    },
+    "test_8_safety_verdict": {
+      "test": "TEST_8_SAFETY",
+      "verdict_distribution": {
+        "BLOCK": 3,
+        "APPROVE": 4,
+        "REVIEW": 1
+      },
+      "has_review_or_block": true,
+      "limitation_count": 7,
+      "passed": true
+    }
+  },
+  "all_tests_passed": true,
+  "limitations": [
+    "MEK v1 is simulation-only — IRuntimeExecutor and ISyncAdapter are stubs",
+    "No MCP write path to MariaDB (Phase 16 readiness 0.352)",
+    "Blast radius thresholds are heuristic — not calibrated from live MCP-2 logs",
+    "C# manager cache reload not simulated — requires server restart in production",
+    "Create intents use placeholder targets — blast radius 0 until real IDs assigned",
+    "NEIGHBOR_OF excluded from propagation (Phase 21 dominance finding)",
+    "MyISAM — no transaction rollback at DB level"
+  ],
+  "artifacts": [
+    "execution_plans.json",
+    "blast_radius_report.json"
+  ]
+}

@@ -1,0 +1,364 @@
+{
+  "phase": "PROPAGATION_MODELS",
+  "model_count": 6,
+  "subgraph_excludes": [
+    "NEIGHBOR_OF"
+  ],
+  "models": {
+    "npc_modification": {
+      "entity_type": "npc",
+      "trigger": "npc:462",
+      "propagation_chain": [
+        {
+          "from": "npc:462",
+          "rel": "SPAWNED_IN",
+          "to": "map:38273033",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.9,
+          "propagation_depth": 2
+        },
+        {
+          "from": "map:38273033",
+          "rel": "IN_SUBAREA",
+          "to": "subarea:95",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.3,
+          "propagation_depth": 1
+        },
+        {
+          "from": "subarea:95",
+          "rel": "SPAWNS_MONSTER",
+          "to": "monster:236",
+          "semantic_role": "FUNCTIONAL",
+          "causal_weight": 0.86,
+          "propagation_depth": 1
+        },
+        {
+          "from": "monster:236",
+          "rel": "DROPS_ITEM",
+          "to": "item:6898",
+          "semantic_role": "ECONOMIC",
+          "causal_weight": 0.6,
+          "propagation_depth": 0
+        }
+      ],
+      "max_depth": 5,
+      "blast_radius": {
+        "1": 3,
+        "2": 6,
+        "3": 12,
+        "4": 14,
+        "5": 13
+      },
+      "blast_radius_total": 48,
+      "affected_roles": [
+        "STRUCTURAL",
+        "ECONOMIC",
+        "DERIVATIVE",
+        "NARRATIVE",
+        "FUNCTIONAL",
+        "BEHAVIORAL"
+      ],
+      "sample_chains": [
+        {
+          "target": "item:6898",
+          "depth": 4,
+          "path_summary": "SPAWNED_IN(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:287",
+          "depth": 4,
+          "path_summary": "SPAWNED_IN(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:2475",
+          "depth": 4,
+          "path_summary": "SPAWNED_IN(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "spell:626",
+          "depth": 4,
+          "path_summary": "SPAWNED_IN(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> USES_SPELL(BEHAVIORAL,w=0.29)"
+        },
+        {
+          "target": "item:6900",
+          "depth": 4,
+          "path_summary": "SPAWNED_IN(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        }
+      ],
+      "why": "Change propagates via STRUCTURAL, ECONOMIC, DERIVATIVE, NARRATIVE, FUNCTIONAL, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise"
+    },
+    "quest_modification": {
+      "entity_type": "quest",
+      "trigger": "quest:3",
+      "propagation_chain": [
+        {
+          "from": "quest:3",
+          "rel": "HAS_STEP",
+          "to": "queststep:2",
+          "semantic_role": "NARRATIVE",
+          "causal_weight": 0.9,
+          "propagation_depth": 3
+        },
+        {
+          "from": "queststep:2",
+          "rel": "HAS_OBJECTIVE",
+          "to": "objective:2",
+          "semantic_role": "NARRATIVE",
+          "causal_weight": 0.9,
+          "propagation_depth": 2
+        },
+        {
+          "from": "objective:2",
+          "rel": "DISCOVER_MAP",
+          "to": "map:51452",
+          "semantic_role": "NARRATIVE",
+          "causal_weight": 0.24,
+          "propagation_depth": 2
+        }
+      ],
+      "max_depth": 7,
+      "blast_radius": {
+        "1": 11,
+        "2": 18,
+        "3": 20,
+        "4": 71,
+        "5": 58,
+        "6": 6,
+        "7": 2
+      },
+      "blast_radius_total": 186,
+      "affected_roles": [
+        "NARRATIVE",
+        "DERIVATIVE",
+        "ECONOMIC",
+        "STRUCTURAL",
+        "FUNCTIONAL",
+        "BEHAVIORAL"
+      ],
+      "sample_chains": [
+        {
+          "target": "map:51452",
+          "depth": 3,
+          "path_summary": "HAS_STEP(NARRATIVE,w=0.9) -> HAS_OBJECTIVE(NARRATIVE,w=0.9) -> DISCOVER_MAP(NARRATIVE,w=0.24)"
+        },
+        {
+          "target": "objective:2",
+          "depth": 2,
+          "path_summary": "HAS_STEP(NARRATIVE,w=0.9) -> HAS_OBJECTIVE(NARRATIVE,w=0.9)"
+        },
+        {
+          "target": "objective:32",
+          "depth": 2,
+          "path_summary": "HAS_STEP(NARRATIVE,w=0.9) -> HAS_OBJECTIVE(NARRATIVE,w=0.9)"
+        },
+        {
+          "target": "objective:177",
+          "depth": 2,
+          "path_summary": "HAS_STEP(NARRATIVE,w=0.9) -> HAS_OBJECTIVE(NARRATIVE,w=0.9)"
+        },
+        {
+          "target": "objective:3",
+          "depth": 2,
+          "path_summary": "HAS_STEP(NARRATIVE,w=0.9) -> HAS_OBJECTIVE(NARRATIVE,w=0.9)"
+        }
+      ],
+      "why": "Change propagates via NARRATIVE, DERIVATIVE, ECONOMIC, STRUCTURAL, FUNCTIONAL, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise"
+    },
+    "monster_modification": {
+      "entity_type": "monster",
+      "trigger": "monster:31",
+      "propagation_chain": [
+        {
+          "from": "monster:31",
+          "rel": "DROPS_ITEM",
+          "to": "item:519",
+          "semantic_role": "ECONOMIC",
+          "causal_weight": 0.6,
+          "propagation_depth": 0
+        }
+      ],
+      "max_depth": 1,
+      "blast_radius": {
+        "1": 8
+      },
+      "blast_radius_total": 8,
+      "affected_roles": [
+        "ECONOMIC",
+        "BEHAVIORAL"
+      ],
+      "sample_chains": [
+        {
+          "target": "item:519",
+          "depth": 1,
+          "path_summary": "DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:362",
+          "depth": 1,
+          "path_summary": "DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:7423",
+          "depth": 1,
+          "path_summary": "DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:2474",
+          "depth": 1,
+          "path_summary": "DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:643",
+          "depth": 1,
+          "path_summary": "DROPS_ITEM(ECONOMIC,w=0.6)"
+        }
+      ],
+      "why": "Change propagates via ECONOMIC, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise"
+    },
+    "dungeon_modification": {
+      "entity_type": "dungeon",
+      "trigger": "dungeon:1",
+      "propagation_chain": [
+        {
+          "from": "dungeon:1",
+          "rel": "LOCATED_AT",
+          "to": "map:23857152",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.9,
+          "propagation_depth": 2
+        },
+        {
+          "from": "map:23857152",
+          "rel": "IN_SUBAREA",
+          "to": "subarea:447",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.3,
+          "propagation_depth": 1
+        }
+      ],
+      "max_depth": 2,
+      "blast_radius": {
+        "1": 7,
+        "2": 42
+      },
+      "blast_radius_total": 49,
+      "affected_roles": [
+        "STRUCTURAL",
+        "FUNCTIONAL",
+        "ECONOMIC",
+        "BEHAVIORAL"
+      ],
+      "sample_chains": [
+        {
+          "target": "subarea:447",
+          "depth": 2,
+          "path_summary": "LOCATED_AT(STRUCTURAL,w=0.9) -> IN_SUBAREA(STRUCTURAL,w=0.3)"
+        },
+        {
+          "target": "map:23857152",
+          "depth": 2,
+          "path_summary": "LOCATED_AT(STRUCTURAL,w=0.9) -> TELEPORT_FROM(STRUCTURAL,w=0.24)"
+        },
+        {
+          "target": "item:8545",
+          "depth": 2,
+          "path_summary": "LOCATED_AT(STRUCTURAL,w=0.9) -> REQUIRES_ITEM(FUNCTIONAL,w=0.5)"
+        },
+        {
+          "target": "item:367",
+          "depth": 2,
+          "path_summary": "CONTAINS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:301",
+          "depth": 2,
+          "path_summary": "CONTAINS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        }
+      ],
+      "why": "Change propagates via STRUCTURAL, FUNCTIONAL, ECONOMIC, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise"
+    },
+    "map_modification": {
+      "entity_type": "map",
+      "trigger": "map:10020",
+      "propagation_chain": [
+        {
+          "from": "map:10020",
+          "rel": "IN_SUBAREA",
+          "to": "subarea:108",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.3,
+          "propagation_depth": 1
+        },
+        {
+          "from": "subarea:108",
+          "rel": "SPAWNS_MONSTER",
+          "to": "monster:517",
+          "semantic_role": "FUNCTIONAL",
+          "causal_weight": 0.86,
+          "propagation_depth": 1
+        },
+        {
+          "from": "monster:517",
+          "rel": "DROPS_ITEM",
+          "to": "item:350",
+          "semantic_role": "ECONOMIC",
+          "causal_weight": 0.6,
+          "propagation_depth": 0
+        }
+      ],
+      "max_depth": 3,
+      "blast_radius": {
+        "1": 1,
+        "2": 4,
+        "3": 44
+      },
+      "blast_radius_total": 49,
+      "affected_roles": [
+        "STRUCTURAL",
+        "FUNCTIONAL",
+        "ECONOMIC",
+        "BEHAVIORAL"
+      ],
+      "sample_chains": [
+        {
+          "target": "item:350",
+          "depth": 3,
+          "path_summary": "IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:2287",
+          "depth": 3,
+          "path_summary": "IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:7017",
+          "depth": 3,
+          "path_summary": "IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:6923",
+          "depth": 3,
+          "path_summary": "IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        },
+        {
+          "target": "item:7227",
+          "depth": 3,
+          "path_summary": "IN_SUBAREA(STRUCTURAL,w=0.3) -> SPAWNS_MONSTER(FUNCTIONAL,w=0.86) -> DROPS_ITEM(ECONOMIC,w=0.6)"
+        }
+      ],
+      "why": "Change propagates via STRUCTURAL, FUNCTIONAL, ECONOMIC, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise"
+    },
+    "item_modification": {
+      "entity_type": "item",
+      "trigger": "item:519",
+      "propagation_chain": [],
+      "max_depth": 0,
+      "blast_radius": {},
+      "blast_radius_total": 0,
+      "affected_roles": [],
+      "sample_chains": [],
+      "why": "No downstream causal edges from trigger (isolated node in causal subgraph)"
+    }
+  }
+}

@@ -1,0 +1,536 @@
+{
+  "generated_at": "2026-06-22T03:30:42.656Z",
+  "pipeline": "Phase 19 — World Semantic Discovery",
+  "phase_a": {
+    "concept_count": 15,
+    "concepts": [
+      {
+        "concept_id": "creature_template",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "monsters",
+          "monsters_grades",
+          "monsters_spells",
+          "monsters_drops"
+        ],
+        "classes": [
+          "MonsterManager"
+        ]
+      },
+      {
+        "concept_id": "monster_group",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "worlds_monsters",
+          "dungeons",
+          "monsters"
+        ],
+        "classes": [
+          "MonsterManager",
+          "DungeonManager",
+          "MapManager"
+        ]
+      },
+      {
+        "concept_id": "dungeon",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "dungeons",
+          "worlds_maps",
+          "monsters"
+        ],
+        "classes": [
+          "DungeonManager",
+          "MapManager"
+        ]
+      },
+      {
+        "concept_id": "place_instance",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "worlds_maps",
+          "worlds_maps_positions",
+          "worlds_npcs",
+          "worlds_monsters",
+          "worlds_interactives"
+        ],
+        "classes": [
+          "MapManager",
+          "NpcManager",
+          "MonsterManager",
+          "InteractiveManager"
+        ]
+      },
+      {
+        "concept_id": "npc_identity",
+        "confidence": 0.95,
+        "hypothesis": false,
+        "tables": [
+          "npcs"
+        ],
+        "classes": [
+          "NpcManager"
+        ]
+      },
+      {
+        "concept_id": "npc_dialogue",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "npcs_messages",
+          "npcs_replies",
+          "npcs"
+        ],
+        "classes": [
+          "NpcManager"
+        ]
+      },
+      {
+        "concept_id": "merchant",
+        "confidence": 0.95,
+        "hypothesis": false,
+        "tables": [
+          "npcs_actions",
+          "npcs_items",
+          "npcs",
+          "items"
+        ],
+        "classes": [
+          "NpcManager",
+          "InventoryHandler"
+        ]
+      },
+      {
+        "concept_id": "quest_chain",
+        "confidence": 0.95,
+        "hypothesis": false,
+        "tables": [
+          "quests",
+          "quests_steps",
+          "quests_objectives",
+          "quests_objectives_types"
+        ],
+        "classes": [
+          "QuestManager"
+        ]
+      },
+      {
+        "concept_id": "quest_giver",
+        "confidence": 0.8,
+        "hypothesis": true,
+        "tables": [
+          "quests_objectives",
+          "npcs",
+          "quests_steps"
+        ],
+        "classes": [
+          "QuestManager",
+          "NpcManager"
+        ]
+      },
+      {
+        "concept_id": "interactive_object",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "interactives",
+          "interactives_skills",
+          "worlds_interactives",
+          "jobs_harvest"
+        ],
+        "classes": [
+          "InteractiveManager",
+          "SkillManager",
+          "JobManager"
+        ]
+      },
+      {
+        "concept_id": "teleporter",
+        "confidence": 0.6,
+        "hypothesis": true,
+        "tables": [
+          "teleports_maps",
+          "teleports_zones_maps",
+          "teleports_donjons_maps",
+          "worlds_zaapis"
+        ],
+        "classes": [
+          "CustomTeleportService",
+          "MapManager"
+        ]
+      },
+      {
+        "concept_id": "local_economy",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "npcs_items",
+          "quests_steps",
+          "items",
+          "bids_house_items"
+        ],
+        "classes": [
+          "NpcManager",
+          "BidHouseManager",
+          "MerchantManager"
+        ]
+      },
+      {
+        "concept_id": "player_progress",
+        "confidence": 0.8,
+        "hypothesis": false,
+        "tables": [
+          "characters_quests",
+          "characters_quests_steps",
+          "characters_quests_objectives",
+          "characters"
+        ],
+        "classes": [
+          "QuestManager",
+          "CharacterManager"
+        ]
+      },
+      {
+        "concept_id": "sub_area",
+        "confidence": 0.6,
+        "hypothesis": true,
+        "tables": [
+          "worlds_monsters",
+          "worlds_maps"
+        ],
+        "classes": [
+          "MapManager",
+          "MonsterManager"
+        ]
+      },
+      {
+        "concept_id": "combat_runtime",
+        "confidence": 0.6,
+        "hypothesis": false,
+        "tables": [
+          "spells",
+          "spells_levels"
+        ],
+        "classes": [
+          "FightManager",
+          "EffectManager",
+          "SpellManager"
+        ]
+      }
+    ]
+  },
+  "phase_e": {
+    "rule_count": 11,
+    "total_violations": 4749,
+    "top_violations": [
+      {
+        "rule": "npcs_items.Item must reference items.Id",
+        "violation_count": 4502
+      },
+      {
+        "rule": "Every npc template should have at least one worlds_npcs spawn row",
+        "violation_count": 196
+      },
+      {
+        "rule": "quests_steps.ItemsRewardCSV item ids must exist in items",
+        "violation_count": 51
+      },
+      {
+        "rule": "worlds_npcs.Npc must reference existing npcs.Id",
+        "violation_count": 0
+      },
+      {
+        "rule": "quests.StepIdsCSV should list at least one quests_steps.Id",
+        "violation_count": 0
+      }
+    ]
+  },
+  "phase_f": {
+    "distribution": {
+      "partially_answerable": 10
+    },
+    "questions": [
+      {
+        "question": "What defines a dungeon?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "dungeons",
+          "worlds_maps",
+          "monsters"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What NPC starts this quest?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "quests_objectives",
+          "npcs",
+          "quests_steps"
+        ],
+        "evidence_graph": [
+          {
+            "type": "rel",
+            "rel": "INVOLVES_NPC"
+          }
+        ],
+        "blockers": [
+          "quest giver role inferred from objective ParametersCSV — not a dedicated column",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What maps participate in this quest?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "quests_objectives",
+          "worlds_maps",
+          "worlds_npcs"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "map participation only explicit when objective type references map or NPC spawn map",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What monsters appear in this zone?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "worlds_monsters",
+          "monsters",
+          "worlds_maps"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "zone = SubArea via worlds_monsters — not per-map in open world",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What content depends on this NPC?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "npcs",
+          "npcs_items",
+          "quests_objectives",
+          "worlds_npcs"
+        ],
+        "evidence_graph": [
+          {
+            "type": "rel",
+            "rel": "SELLS"
+          }
+        ],
+        "blockers": [
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What must I modify to create a new quest?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "quests",
+          "quests_steps",
+          "quests_objectives"
+        ],
+        "evidence_graph": [
+          {
+            "type": "rel",
+            "rel": "HAS_STEP"
+          }
+        ],
+        "blockers": [
+          "no MCP write path to MariaDB",
+          "no transaction/rollback layer exposed to admin tools",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What must I modify to create a new dungeon?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "dungeons",
+          "monsters",
+          "worlds_maps"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "dungeon row + monster CSV + exit Parameters",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What must I modify to create a new merchant?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "npcs",
+          "npcs_items",
+          "npcs_actions",
+          "worlds_npcs"
+        ],
+        "evidence_graph": [
+          {
+            "type": "rel",
+            "rel": "SELLS"
+          }
+        ],
+        "blockers": [
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What must I modify to create a new boss?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "monsters",
+          "monsters_grades",
+          "monsters_spells",
+          "dungeons",
+          "worlds_monsters"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "boss = monster template + grade + placement in dungeon or sub-area group",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      },
+      {
+        "question": "What must I modify to create a new zone?",
+        "answerability": "partially_answerable",
+        "evidence_tables": [
+          "worlds_maps",
+          "worlds_maps_positions",
+          "worlds_monsters",
+          "worlds_npcs"
+        ],
+        "evidence_graph": [],
+        "blockers": [
+          "sub-area and map topology — continent names not in server DB (hypothesis: client D2O)",
+          "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+        ],
+        "sql_priority": true
+      }
+    ]
+  },
+  "phase_g": {
+    "world_autonomy_gap": {
+      "explore_world": {
+        "level": "partial",
+        "evidence": "15 concepts discovered",
+        "blocker": "graph world coverage minimal"
+      },
+      "understand_world": {
+        "level": "low",
+        "evidence": "0/10 questions fully answerable",
+        "blocker": "semantic links (quest->map) incomplete without objective type parsing"
+      },
+      "simulate_changes": {
+        "level": "partial",
+        "evidence": "SIMULATE_ONLY",
+        "blocker": "no MCP write path to MariaDB"
+      },
+      "create_content": {
+        "level": "blocked",
+        "evidence": "Phase 18: 0 FULLY_AUTOMATABLE workflows",
+        "blocker": "no MCP write path to MariaDB"
+      },
+      "edit_content": {
+        "level": "blocked",
+        "evidence": "4749 consistency violations show data is mutable but unguarded",
+        "blocker": "no transaction/rollback layer"
+      },
+      "revert_changes": {
+        "level": "blocked",
+        "evidence": "MyISAM + no admin audit log",
+        "blocker": "no revert infrastructure"
+      }
+    },
+    "distance_to_semantic_admin": "FAR",
+    "semantic_admin_today": false
+  },
+  "tests": {
+    "test_1_all_claims_have_evidence": {
+      "test": "TEST_1_EVIDENCE",
+      "concepts_with_evidence": 15,
+      "concept_count": 15,
+      "passed": true
+    },
+    "test_2_hypotheses_marked": {
+      "test": "TEST_2_HYPOTHESES",
+      "hypothesis_count": 3,
+      "rules_hypothesis": 0,
+      "passed": true
+    },
+    "test_3_no_manual_categories": {
+      "test": "TEST_3_NO_MANUAL_CATEGORIES",
+      "methodology": "emergent from SQL composites, CSV grouping, manager caches, graph clusters — no preset NPC/Quest/Map labels",
+      "passed": true
+    },
+    "test_4_no_mcps": {
+      "test": "TEST_4_NO_MCPS",
+      "mcp_tokens_in_output": false,
+      "passed": true
+    },
+    "test_5_no_future_architecture": {
+      "test": "TEST_5_NO_FUTURE_ARCH",
+      "note": "report and JSON contain no proposed APIs or ideal schemas",
+      "passed": true
+    },
+    "test_6_traceability": {
+      "test": "TEST_6_TRACEABILITY",
+      "concepts_with_sql": 15,
+      "concepts_with_classes": 15,
+      "concepts_with_graph": 6,
+      "passed": true
+    },
+    "test_7_semantic_questions_evaluated": {
+      "test": "TEST_7_SEMANTIC_QUESTIONS",
+      "evaluated": 10,
+      "with_evidence": 10,
+      "passed": true
+    },
+    "test_8_limitations_included": {
+      "test": "TEST_8_LIMITATIONS",
+      "limitation_count": 8,
+      "passed": true
+    }
+  },
+  "all_tests_passed": true,
+  "limitations": [
+    "Graph prototype has 37 nodes — world semantics answered primarily from SQL",
+    "Continent/zone names not in sunshine.sql (client D2O — hypothesis)",
+    "Quest giver role inferred from objective ParametersCSV, not dedicated schema",
+    "C# method bodies not extracted — validation chains incomplete for coordinate_flow",
+    "0 declared FKs — consistency rules are heuristic scans, not DB-enforced",
+    "4749 consistency violations found in real data",
+    "No MCP write path — create/edit/revert measured as blocked",
+    "sub_area concept hypothesis — SubAreaId on maps links to worlds_monsters but area names absent"
+  ],
+  "world_semantic_model_status": "DRAFT_VERIFIABLE",
+  "phase_18_reference": {
+    "systems": 23,
+    "sql_tables": 84
+  },
+  "artifacts": [
+    "world_concepts.json",
+    "consistency_rules.json",
+    "semantic_benchmark.json"
+  ]
+}

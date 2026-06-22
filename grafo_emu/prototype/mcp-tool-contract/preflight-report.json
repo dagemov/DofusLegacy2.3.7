@@ -1,0 +1,71 @@
+{
+  "phase": "PREFLIGHT_F26",
+  "timestamp": "2026-06-22T08:48:26.521Z",
+  "passed": true,
+  "checks": [
+    {
+      "id": "F21",
+      "status": "PASS",
+      "detail": "causal_graph.jsonl 112635 edges",
+      "evidence": {
+        "lines": 112635
+      }
+    },
+    {
+      "id": "F22",
+      "status": "PASS",
+      "detail": "8 plans and 8 validations",
+      "evidence": {}
+    },
+    {
+      "id": "F23",
+      "status": "PASS",
+      "detail": "2 executed runs",
+      "evidence": {
+        "run_ids": [
+          "20260622T061552Z",
+          "20260622T061633Z"
+        ]
+      }
+    },
+    {
+      "id": "F23_bridge",
+      "status": "PASS",
+      "detail": "bridge last-run present",
+      "evidence": {}
+    },
+    {
+      "id": "F24",
+      "status": "PASS",
+      "detail": "all_tests_passed true",
+      "evidence": {}
+    },
+    {
+      "id": "F25",
+      "status": "PASS",
+      "detail": "4 cases A-D, all_tests_passed true",
+      "evidence": {
+        "cases": [
+          "CASE_A",
+          "CASE_B",
+          "CASE_C",
+          "CASE_D"
+        ]
+      }
+    }
+  ],
+  "evidence": {
+    "f21_edges": 112635,
+    "f22_plans": 8,
+    "f23_runs": [
+      "20260622T061552Z",
+      "20260622T061633Z"
+    ],
+    "f25_cases": [
+      "CASE_A",
+      "CASE_B",
+      "CASE_C",
+      "CASE_D"
+    ]
+  }
+}

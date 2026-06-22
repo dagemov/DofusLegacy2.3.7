@@ -1,0 +1,248 @@
+{
+  "phase": "RELATIONSHIP_BENCHMARK_RERUN",
+  "question_count": 10,
+  "benchmark_before": {
+    "fully_answerable": 0,
+    "partially_answerable": 10,
+    "not_answerable": 0
+  },
+  "benchmark_after": {
+    "fully_answerable": 5,
+    "partially_answerable": 5,
+    "not_answerable": 0
+  },
+  "questions_upgraded_to_fully_answerable": 5,
+  "distribution": {
+    "fully_answerable": 5,
+    "partially_answerable": 5
+  },
+  "questions": [
+    {
+      "question": "What defines a dungeon?",
+      "answerability": "fully_answerable",
+      "required_rels": [
+        "LOCATED_AT",
+        "CONTAINS_MONSTER",
+        "EXITS_TO"
+      ],
+      "evidence_edges": [
+        "LOCATED_AT",
+        "CONTAINS_MONSTER",
+        "EXITS_TO"
+      ],
+      "rel_instances": {
+        "LOCATED_AT": 429,
+        "CONTAINS_MONSTER": 2569,
+        "EXITS_TO": 429
+      },
+      "blockers": []
+    },
+    {
+      "question": "What NPC starts this quest?",
+      "answerability": "fully_answerable",
+      "required_rels": [
+        "STARTS_QUEST",
+        "INVOLVES_NPC",
+        "HAS_STEP"
+      ],
+      "evidence_edges": [
+        "STARTS_QUEST",
+        "INVOLVES_NPC",
+        "HAS_STEP"
+      ],
+      "rel_instances": {
+        "STARTS_QUEST": 466,
+        "INVOLVES_NPC": 2235,
+        "HAS_STEP": 1009
+      },
+      "blockers": []
+    },
+    {
+      "question": "What maps participate in this quest?",
+      "answerability": "fully_answerable",
+      "required_rels": [
+        "PARTICIPATES_IN_MAP",
+        "HAS_STEP",
+        "HAS_OBJECTIVE"
+      ],
+      "evidence_edges": [
+        "PARTICIPATES_IN_MAP",
+        "HAS_STEP",
+        "HAS_OBJECTIVE"
+      ],
+      "rel_instances": {
+        "PARTICIPATES_IN_MAP": 2556,
+        "HAS_STEP": 1009,
+        "HAS_OBJECTIVE": 3385
+      },
+      "blockers": []
+    },
+    {
+      "question": "What monsters appear in this zone?",
+      "answerability": "fully_answerable",
+      "required_rels": [
+        "IN_SUBAREA",
+        "SPAWNS_MONSTER"
+      ],
+      "evidence_edges": [
+        "IN_SUBAREA",
+        "SPAWNS_MONSTER"
+      ],
+      "rel_instances": {
+        "IN_SUBAREA": 9517,
+        "SPAWNS_MONSTER": 836
+      },
+      "blockers": [
+        "zone = subarea granularity via IN_SUBAREA -> SPAWNS_MONSTER"
+      ]
+    },
+    {
+      "question": "What content depends on this NPC?",
+      "answerability": "fully_answerable",
+      "required_rels": [
+        "SELLS",
+        "SPAWNED_IN",
+        "INVOLVES_NPC",
+        "STARTS_QUEST"
+      ],
+      "evidence_edges": [
+        "SELLS",
+        "SPAWNED_IN",
+        "INVOLVES_NPC",
+        "STARTS_QUEST"
+      ],
+      "rel_instances": {
+        "SELLS": 6722,
+        "SPAWNED_IN": 33603,
+        "INVOLVES_NPC": 2235,
+        "STARTS_QUEST": 466
+      },
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new quest?",
+      "answerability": "partially_answerable",
+      "required_rels": [
+        "HAS_STEP",
+        "HAS_OBJECTIVE",
+        "INVOLVES_NPC"
+      ],
+      "evidence_tables": [
+        "quests",
+        "quests_steps",
+        "quests_objectives"
+      ],
+      "evidence_edges": [
+        "HAS_STEP",
+        "HAS_OBJECTIVE",
+        "INVOLVES_NPC"
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "create/edit requires write path — relationships recovered for read-only traversal only"
+      ]
+    },
+    {
+      "question": "What must I modify to create a new dungeon?",
+      "answerability": "partially_answerable",
+      "required_rels": [
+        "LOCATED_AT",
+        "CONTAINS_MONSTER",
+        "EXITS_TO"
+      ],
+      "evidence_tables": [
+        "dungeons",
+        "monsters",
+        "worlds_maps"
+      ],
+      "evidence_edges": [
+        "LOCATED_AT",
+        "CONTAINS_MONSTER",
+        "EXITS_TO"
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "create/edit requires write path — relationships recovered for read-only traversal only"
+      ]
+    },
+    {
+      "question": "What must I modify to create a new merchant?",
+      "answerability": "partially_answerable",
+      "required_rels": [
+        "SELLS",
+        "SPAWNED_IN",
+        "OFFERS_ACTION"
+      ],
+      "evidence_tables": [
+        "npcs",
+        "npcs_items",
+        "npcs_actions",
+        "worlds_npcs"
+      ],
+      "evidence_edges": [
+        "SELLS",
+        "SPAWNED_IN",
+        "OFFERS_ACTION"
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "create/edit requires write path — relationships recovered for read-only traversal only"
+      ]
+    },
+    {
+      "question": "What must I modify to create a new boss?",
+      "answerability": "partially_answerable",
+      "required_rels": [
+        "CONTAINS_MONSTER",
+        "USES_SPELL",
+        "DROPS_ITEM",
+        "SPAWNS_MONSTER"
+      ],
+      "evidence_tables": [
+        "monsters",
+        "monsters_grades",
+        "monsters_spells",
+        "dungeons",
+        "worlds_monsters"
+      ],
+      "evidence_edges": [
+        "CONTAINS_MONSTER",
+        "USES_SPELL",
+        "DROPS_ITEM",
+        "SPAWNS_MONSTER"
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "create/edit requires write path — relationships recovered for read-only traversal only"
+      ]
+    },
+    {
+      "question": "What must I modify to create a new zone?",
+      "answerability": "partially_answerable",
+      "required_rels": [
+        "IN_SUBAREA",
+        "SPAWNS_MONSTER",
+        "NEIGHBOR_OF",
+        "SPAWNED_IN"
+      ],
+      "evidence_tables": [
+        "worlds_maps",
+        "worlds_maps_positions",
+        "worlds_monsters",
+        "worlds_npcs"
+      ],
+      "evidence_edges": [
+        "IN_SUBAREA",
+        "SPAWNS_MONSTER",
+        "NEIGHBOR_OF",
+        "SPAWNED_IN"
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "create/edit requires write path — relationships recovered for read-only traversal only"
+      ]
+    }
+  ],
+  "edges_used": 112635,
+  "relationship_types_available": 23
+}

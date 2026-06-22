@@ -1,0 +1,137 @@
+{
+  "phase": "MCP_WORLD_AGENT_F28",
+  "version": "v1",
+  "timestamp": "2026-06-22T09:57:18.410Z",
+  "read_only": true,
+  "no_mcp_server": true,
+  "no_json_rpc": true,
+  "no_http": true,
+  "no_llm": true,
+  "no_sql": true,
+  "no_ssh": true,
+  "no_docker": true,
+  "no_writes": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "gateway_only": true,
+  "no_f22_f23_f24_direct": true,
+  "preflight": {
+    "passed": true
+  },
+  "simulation_nl": {
+    "CASE_A": "Change item 519 name to MEK-F23-bridge-test",
+    "CASE_B": "Modify npc 462 shop inventory",
+    "CASE_C": "Rollback the change to item 519",
+    "CASE_D": "Explain impact of modifying npc 462"
+  },
+  "case_summary": {
+    "CASE_A": {
+      "natural_language": "Change item 519 name to MEK-F23-bridge-test",
+      "tools_called": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction"
+      ],
+      "terminal": {
+        "action": "DONE",
+        "reason": "COMMITTED",
+        "state": "ROLLBACK_AVAILABLE",
+        "rollback_available": true
+      }
+    },
+    "CASE_B": {
+      "natural_language": "Modify npc 462 shop inventory",
+      "tools_called": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction"
+      ],
+      "terminal": {
+        "action": "STOP",
+        "reason": "BLOCKED_BY_BLAST_RADIUS"
+      }
+    },
+    "CASE_C": {
+      "natural_language": "Rollback the change to item 519",
+      "tools_called": [
+        "rollbackTransaction"
+      ],
+      "terminal": {
+        "action": "DONE",
+        "reason": "ROLLED_BACK",
+        "state": "ROLLED_BACK",
+        "parent_transaction_id": "txn-item519-commit"
+      }
+    },
+    "CASE_D": {
+      "natural_language": "Explain impact of modifying npc 462",
+      "tools_called": [
+        "explainImpact"
+      ],
+      "terminal": {
+        "action": "STOP",
+        "reason": "explain_only",
+        "consistency_verdict": "TOPOLOGY_STALE",
+        "reingest_required": true,
+        "recovery_required": [
+          "Phase20",
+          "Phase21"
+        ]
+      }
+    }
+  },
+  "outputs": {
+    "agent_preflight": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-world-agent\\agent-preflight-report.json",
+    "agent_simulation": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-world-agent\\agent-simulation-report.json"
+  },
+  "tests": [
+    {
+      "id": "T1_preflight",
+      "status": "PASS",
+      "detail": "F27 gateway present"
+    },
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "Agent only uses F27 invokeGateway"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "All tool calls valid F26 tools; decision tools subset of 4"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "CASE A commit success"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "CASE B stops at BLOCKED_BY_BLAST_RADIUS"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "CASE C rollback correct"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "CASE D explain only no F23/F24 direct"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "No forbidden imports or exposure in agent trace"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "all_tests_passed=true determinism_hash=35e5e062c5d9df6e"
+    }
+  ],
+  "all_tests_passed": true,
+  "determinism_hash": "35e5e062c5d9df6e",
+  "public_surface": "User Intent -> Agent -> Gateway -> Tool Contract -> World Transaction"
+}

@@ -1,0 +1,228 @@
+{
+  "phase": "WORLD_DIFF",
+  "timestamp": "2026-06-22T07:48:11.907Z",
+  "events_processed": 2,
+  "real_events": [
+    {
+      "mode": "real",
+      "source": "f23_runtime_change_event",
+      "run_id": "20260622T061552Z",
+      "changed": true,
+      "entity": "item:519",
+      "intent_id": "modify_item",
+      "table": "items",
+      "columns_changed": [
+        "Name"
+      ],
+      "runtime_before": {
+        "Name": "Poudre de Perlinpainpain"
+      },
+      "runtime_after": {
+        "Name": "MEK-F23-bridge-test"
+      },
+      "impact_class": "metadata",
+      "graph_requires_update": false,
+      "causal_recompute_required": false,
+      "affected_edges": [],
+      "edges_in_graph": 28,
+      "edge_rel_types_in_graph": [
+        "DROPS_ITEM",
+        "REQUIRES_ITEM"
+      ],
+      "recovery_required": [],
+      "invalidated_artifacts": [],
+      "write_executed": true,
+      "timestamp": "2026-06-22T06:16:06.766Z",
+      "notes": [
+        "Name is metadata-only on items",
+        "2 rel types in graph remain valid by entity Id",
+        "Name is metadata-only; DROPS_ITEM edges remain valid by item Id"
+      ]
+    },
+    {
+      "mode": "real",
+      "source": "f23_runtime_change_event",
+      "run_id": "20260622T061633Z",
+      "changed": true,
+      "entity": "item:519",
+      "intent_id": "modify_item",
+      "table": "items",
+      "columns_changed": [
+        "Name"
+      ],
+      "runtime_before": {
+        "Name": "MEK-F23-bridge-test"
+      },
+      "runtime_after": {
+        "Name": "Poudre de Perlinpainpain"
+      },
+      "impact_class": "metadata",
+      "graph_requires_update": false,
+      "causal_recompute_required": false,
+      "affected_edges": [],
+      "edges_in_graph": 28,
+      "edge_rel_types_in_graph": [
+        "DROPS_ITEM",
+        "REQUIRES_ITEM"
+      ],
+      "recovery_required": [],
+      "invalidated_artifacts": [],
+      "write_executed": true,
+      "timestamp": "2026-06-22T06:16:45.359Z",
+      "notes": [
+        "Name is metadata-only on items",
+        "2 rel types in graph remain valid by entity Id",
+        "Name is metadata-only; DROPS_ITEM edges remain valid by item Id"
+      ]
+    }
+  ],
+  "net_changes": [
+    {
+      "entity": "item:519",
+      "columns": [
+        "Name"
+      ],
+      "net_changed": false,
+      "runtime_before": {
+        "Name": "Poudre de Perlinpainpain"
+      },
+      "runtime_after": {
+        "Name": "Poudre de Perlinpainpain"
+      }
+    }
+  ],
+  "summary": {
+    "real_changes": 2,
+    "topology_changes": 0,
+    "metadata_only_changes": 2,
+    "entities_touched": [
+      "item:519"
+    ]
+  },
+  "simulated_benchmarks": [
+    {
+      "mode": "simulated",
+      "write_executed": false,
+      "runtime_snapshot": null,
+      "entity": "npc:462",
+      "source": "f22_classification_benchmark",
+      "f22_plan": {
+        "intent_id": "modify_npc",
+        "target_node": "npc:462",
+        "cs_manager": "NpcManager"
+      },
+      "f22_blast_radius": 48,
+      "f22_verdict": "BLOCK",
+      "hypothetical_change": {
+        "table": "npcs_items",
+        "operation": "UPDATE",
+        "columns": [
+          "Item",
+          "Price"
+        ],
+        "note": "classification benchmark only — not executed"
+      },
+      "graph_requires_update": true,
+      "causal_recompute_required": true,
+      "predicted_affected_edges": [
+        "INVOLVES_NPC",
+        "SELLS",
+        "SPAWNED_IN",
+        "STARTS_QUEST"
+      ],
+      "predicted_recovery_phases": [
+        "Phase20",
+        "Phase21"
+      ],
+      "edges_in_current_graph": 7,
+      "current_rel_types": [
+        "SPAWNED_IN",
+        "SELLS",
+        "INVOLVES_NPC",
+        "STARTS_QUEST"
+      ],
+      "sample_edges": [
+        {
+          "rel": "SPAWNED_IN",
+          "src": "npc:462",
+          "dst": "map:38273033",
+          "ref": "worlds_npcs Id=221 Npc=462 Map=38273033"
+        },
+        {
+          "rel": "SELLS",
+          "src": "npc:462",
+          "dst": "item:491",
+          "ref": "npcs_items Id=1 NpcId=462 Item=491"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "src": "objective:42",
+          "dst": "npc:462",
+          "ref": "quests_objectives Id=42 Type=3 ParametersCSV='462,365,10'"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "src": "objective:43",
+          "dst": "npc:462",
+          "ref": "quests_objectives Id=43 Type=3 ParametersCSV='462,385,10'"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "src": "objective:44",
+          "dst": "npc:462",
+          "ref": "quests_objectives Id=44 Type=3 ParametersCSV='462,377,6'"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "src": "objective:160",
+          "dst": "npc:462",
+          "ref": "quests_objectives Id=160 Type=3 ParametersCSV='462,6824,1'"
+        },
+        {
+          "rel": "STARTS_QUEST",
+          "src": "npc:462",
+          "dst": "quest:5",
+          "ref": "derived: first INVOLVES_NPC on lowest queststep for quest 5"
+        }
+      ],
+      "invalidated_artifacts": [
+        {
+          "path": "world-relations/recovered_edges.jsonl",
+          "rerun": "node run-relations.mjs",
+          "reason": "Phase20 re-ingest required"
+        },
+        {
+          "path": "world-relations/relationship_graph.json",
+          "rerun": "node run-relations.mjs",
+          "reason": "Phase20 re-ingest required"
+        },
+        {
+          "path": "world-relations/relationship_benchmark.json",
+          "rerun": "node run-relations.mjs",
+          "reason": "Phase20 re-ingest required"
+        },
+        {
+          "path": "world-causal/causal_graph.jsonl",
+          "rerun": "node run-causal.mjs",
+          "reason": "Phase21 re-ingest required"
+        },
+        {
+          "path": "world-causal/propagation_models.json",
+          "rerun": "node run-causal.mjs",
+          "reason": "Phase21 re-ingest required"
+        },
+        {
+          "path": "world-causal/causal_benchmark.json",
+          "rerun": "node run-causal.mjs",
+          "reason": "Phase21 re-ingest required"
+        }
+      ],
+      "constraints": [
+        "NO writes",
+        "NO fake runtime_change_event",
+        "NO fake execution_trace",
+        "predictions only"
+      ]
+    }
+  ]
+}

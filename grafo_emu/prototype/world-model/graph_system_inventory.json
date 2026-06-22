@@ -1,0 +1,146 @@
+{
+  "phase": "A_GRAPH_INVENTORY",
+  "source": "grafo_emu/prototype/nodes.jsonl + edges.jsonl",
+  "node_count": 37,
+  "edge_count": 44,
+  "entities_by_type": {
+    "Spell": 2,
+    "SpellLevel": 2,
+    "Effect": 5,
+    "CSharpType": 2,
+    "Fight": 1,
+    "LogSequence": 2,
+    "Contract": 1,
+    "Hypothesis": 1,
+    "Finding": 2,
+    "BugSignature": 2,
+    "Bug": 2,
+    "TestCase": 2,
+    "Deployment": 1,
+    "Item": 2,
+    "ItemType": 1,
+    "Npc": 3,
+    "Quest": 1,
+    "QuestStep": 5
+  },
+  "layers": {
+    "L1": 21,
+    "L2": 2,
+    "L3": 3,
+    "L5": 10,
+    "L4": 1
+  },
+  "provenance_sources": {
+    "BD": 17,
+    "BD+CODE": 1,
+    "CODE": 5,
+    "LOG": 3,
+    "MCP2": 8,
+    "MCP2+CODE+LOG": 1,
+    "MCP2+LOG": 2
+  },
+  "relations": {
+    "HAS_LEVEL": 2,
+    "PARSED_EFFECT": 2,
+    "USES_EFFECT": 3,
+    "CONTRADICTS": 2,
+    "HANDLED_BY": 1,
+    "CAST_HANDLED_BY": 1,
+    "OBSERVED_IN": 2,
+    "GENERATED": 2,
+    "MATCHES": 2,
+    "EVIDENCES": 2,
+    "SIGNALS": 2,
+    "ASSOCIATED_WITH": 2,
+    "EXPLAINS": 2,
+    "SUPPORTED_BY": 1,
+    "DERIVED_FROM": 1,
+    "VIOLATES": 1,
+    "VALIDATED_BY": 2,
+    "TARGETS": 2,
+    "GUARDED_BY": 2,
+    "SELLS": 1,
+    "HAS_TYPE": 1,
+    "HAS_STEP": 5,
+    "REWARDS": 1,
+    "INVOLVES_NPC": 2
+  },
+  "clusters": [
+    {
+      "cluster_id": "cluster:1",
+      "label": "combat_runtime_spell",
+      "node_count": 25,
+      "edge_count": 34,
+      "rel_signature": {
+        "HAS_LEVEL": 2,
+        "PARSED_EFFECT": 2,
+        "USES_EFFECT": 3,
+        "CONTRADICTS": 2,
+        "HANDLED_BY": 1,
+        "CAST_HANDLED_BY": 1,
+        "OBSERVED_IN": 2,
+        "GENERATED": 2,
+        "MATCHES": 2,
+        "EVIDENCES": 2,
+        "SIGNALS": 2,
+        "ASSOCIATED_WITH": 2,
+        "EXPLAINS": 2,
+        "SUPPORTED_BY": 1,
+        "DERIVED_FROM": 1,
+        "VIOLATES": 1,
+        "VALIDATED_BY": 2,
+        "TARGETS": 2,
+        "GUARDED_BY": 2
+      },
+      "coherence_score": 0.125,
+      "seed_nodes": [
+        "spell:189",
+        "spell:196"
+      ]
+    },
+    {
+      "cluster_id": "cluster:2",
+      "label": "economy_catalog",
+      "node_count": 3,
+      "edge_count": 2,
+      "rel_signature": {
+        "SELLS": 1,
+        "HAS_TYPE": 1
+      },
+      "coherence_score": 0.575,
+      "seed_nodes": [
+        "item:12116",
+        "npc:1053"
+      ]
+    },
+    {
+      "cluster_id": "cluster:3",
+      "label": "quest_progression",
+      "node_count": 9,
+      "edge_count": 8,
+      "rel_signature": {
+        "HAS_STEP": 5,
+        "REWARDS": 1,
+        "INVOLVES_NPC": 2
+      },
+      "coherence_score": 0.681,
+      "seed_nodes": [
+        "item:288",
+        "quest:3",
+        "npc:488",
+        "npc:449"
+      ]
+    }
+  ],
+  "cluster_count": 3,
+  "global_coherence": 0.247,
+  "not_present_in_graph": [
+    "Map",
+    "Spawn",
+    "Monster",
+    "WorldMap",
+    "Character",
+    "Guild"
+  ],
+  "graph_coverage_note": "vertical slice L1-L5; world catalog severely under-represented vs SQL"
+}

@@ -1,0 +1,844 @@
+{
+  "phase": "E_QUERY_CAPABILITIES",
+  "query_count": 51,
+  "answerable_count": 36,
+  "queries": [
+    {
+      "query_id": "q_1",
+      "question_template": "What entities participate in sys_worlds?",
+      "question_example": "What entities participate in worlds_interactives?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_worlds",
+        "tables": [
+          "worlds_interactives",
+          "worlds_maps_positions",
+          "worlds_maps",
+          "worlds_triggers",
+          "worlds_npcs",
+          "worlds_monsters",
+          "worlds_characters",
+          "worlds_zaapis",
+          "worlds_monsters_fix",
+          "worlds",
+          "worlds_taxcollectors"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.909
+    },
+    {
+      "query_id": "q_2",
+      "question_template": "What is worlds_interactives related to?",
+      "question_example": "What NPCs are related to worlds_interactives rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "worlds_interactives",
+        "references": [
+          "worlds_maps.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_3",
+      "question_template": "What entities participate in sys_quests?",
+      "question_example": "What entities participate in quests_objectives?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_quests",
+        "tables": [
+          "quests_objectives",
+          "quests_steps",
+          "quests",
+          "quests_objectives_types"
+        ]
+      },
+      "answerable": true,
+      "confidence": 1
+    },
+    {
+      "query_id": "q_4",
+      "question_template": "What is quests_objectives related to?",
+      "question_example": "What NPCs are related to quests_objectives rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "quests_objectives",
+        "references": [
+          "quests_steps.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_5",
+      "question_template": "What is quests_steps related to?",
+      "question_example": "What NPCs are related to quests_steps rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "quests_steps",
+        "references": [
+          "quests.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_6",
+      "question_template": "What entities participate in sys_characters?",
+      "question_example": "What entities participate in characters?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_characters",
+        "tables": [
+          "characters",
+          "characters_alignments",
+          "characters_items",
+          "characters_items_merchant",
+          "characters_items_presets",
+          "characters_jobs",
+          "characters_quests",
+          "characters_quests_objectives",
+          "characters_quests_steps",
+          "characters_shortcuts_items",
+          "characters_shortcuts_items_presets",
+          "characters_shortcuts_spells",
+          "characters_spells",
+          "characters_stats"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_7",
+      "question_template": "What is characters_items related to?",
+      "question_example": "What NPCs are related to characters_items rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "characters_items",
+        "references": [
+          "items.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_8",
+      "question_template": "What entities participate in sys_npcs?",
+      "question_example": "What entities participate in npcs_messages?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_npcs",
+        "tables": [
+          "npcs_messages",
+          "npcs_items",
+          "npcs",
+          "npcs_replies",
+          "npcs_actions"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_9",
+      "question_template": "What is npcs_items related to?",
+      "question_example": "What NPCs are related to npcs_items rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "npcs_items",
+        "references": [
+          "items.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_10",
+      "question_template": "What entities participate in sys_world_maps?",
+      "question_example": "What entities participate in world_maps_house?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_world_maps",
+        "tables": [
+          "world_maps_house",
+          "world_maps_paddock",
+          "world_maps_paddock_instance",
+          "world_maps_merchant",
+          "world_maps_prism"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_11",
+      "question_template": "What is world_maps_house related to?",
+      "question_example": "What NPCs are related to world_maps_house rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "world_maps_house",
+        "references": [
+          "worlds_maps.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_12",
+      "question_template": "What is world_maps_paddock_instance related to?",
+      "question_example": "What NPCs are related to world_maps_paddock_instance rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "world_maps_paddock_instance",
+        "references": [
+          "worlds_maps.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_13",
+      "question_template": "What entities participate in sys_accounts?",
+      "question_example": "What entities participate in accounts?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_accounts",
+        "tables": [
+          "accounts",
+          "accounts_bank"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_14",
+      "question_template": "What entities participate in sys_breeds?",
+      "question_example": "What entities participate in breeds_spells?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_breeds",
+        "tables": [
+          "breeds_spells",
+          "breeds"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_15",
+      "question_template": "What entities participate in sys_interactives?",
+      "question_example": "What entities participate in interactives_skills?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_interactives",
+        "tables": [
+          "interactives_skills",
+          "interactives"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_16",
+      "question_template": "What entities participate in sys_monsters?",
+      "question_example": "What entities participate in monsters_grades?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_monsters",
+        "tables": [
+          "monsters_grades",
+          "monsters_drops",
+          "monsters",
+          "monsters_spells"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_17",
+      "question_template": "What entities participate in sys_items?",
+      "question_example": "What entities participate in items?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_items",
+        "tables": [
+          "items",
+          "items_weapons",
+          "items_sets",
+          "items_livingobjects"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_18",
+      "question_template": "What entities participate in sys_mounts?",
+      "question_example": "What entities participate in mounts_bonus?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_mounts",
+        "tables": [
+          "mounts_bonus",
+          "mounts_templates",
+          "mounts",
+          "mounts_items"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_19",
+      "question_template": "What entities participate in sys_dungeons?",
+      "question_example": "What entities participate in dungeons?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_dungeons",
+        "tables": [
+          "dungeons",
+          "dungeons_search",
+          "dungeons_symbioz"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_20",
+      "question_template": "What is dungeons related to?",
+      "question_example": "What NPCs are related to dungeons rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "dungeons",
+        "references": [
+          "worlds_maps.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_21",
+      "question_template": "What entities participate in sys_spells?",
+      "question_example": "What entities participate in spells_levels?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_spells",
+        "tables": [
+          "spells_levels",
+          "spells"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_22",
+      "question_template": "What entities participate in sys_guilds?",
+      "question_example": "What entities participate in guilds_members?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_guilds",
+        "tables": [
+          "guilds_members",
+          "guilds"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_23",
+      "question_template": "What entities participate in sys_jobs?",
+      "question_example": "What entities participate in jobs_harvest?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_jobs",
+        "tables": [
+          "jobs_harvest",
+          "jobs"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_24",
+      "question_template": "What is jobs_harvest related to?",
+      "question_example": "What NPCs are related to jobs_harvest rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "jobs_harvest",
+        "references": [
+          "items.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_25",
+      "question_template": "What entities participate in sys_bids_house?",
+      "question_example": "What entities participate in bids_house?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_bids_house",
+        "tables": [
+          "bids_house",
+          "bids_house_items"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_26",
+      "question_template": "What is bids_house_items related to?",
+      "question_example": "What NPCs are related to bids_house_items rows?",
+      "evidence_source": {
+        "type": "sql_fk",
+        "table": "bids_house_items",
+        "references": [
+          "items.Id"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.8
+    },
+    {
+      "query_id": "q_27",
+      "question_template": "What entities participate in sys_runes?",
+      "question_example": "What entities participate in runes_effects?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_runes",
+        "tables": [
+          "runes_effects",
+          "runes"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_28",
+      "question_template": "What entities participate in sys_teleports?",
+      "question_example": "What entities participate in teleports_zones_maps?",
+      "evidence_source": {
+        "type": "system",
+        "system_id": "sys_teleports",
+        "tables": [
+          "teleports_zones_maps",
+          "teleports_donjons_maps",
+          "teleports_maps"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0
+    },
+    {
+      "query_id": "q_29",
+      "question_template": "Which maps contain orphan or unreferenced world content?",
+      "question_example": "Which maps contain NPC spawns without matching npcs template?",
+      "evidence_source": {
+        "type": "sql_orphan_analysis",
+        "tables": [
+          "worlds_npcs",
+          "worlds_monsters",
+          "npcs",
+          "monsters"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.75,
+      "note": "requires cross-table join; no graph Map nodes in prototype"
+    },
+    {
+      "query_id": "q_30",
+      "question_template": "What rewards are defined in quests_steps?",
+      "question_example": "What quest rewards are potentially unbalanced by kamas total?",
+      "evidence_source": {
+        "type": "sql_column",
+        "table": "quests_steps",
+        "columns": [
+          "ExperienceReward",
+          "KamasReward",
+          "ItemsRewardCSV",
+          "EmotesRewardCSV",
+          "JobsRewardCSV",
+          "SpellsRewardCSV"
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.9
+    },
+    {
+      "query_id": "q_31",
+      "question_template": "What graph relationships exist in cluster combat_runtime_spell?",
+      "question_example": "What spells show static vs observed conflicts in combat_runtime_spell?",
+      "evidence_source": {
+        "type": "graph_cluster",
+        "cluster_id": "cluster:1",
+        "rel_signature": {
+          "HAS_LEVEL": 2,
+          "PARSED_EFFECT": 2,
+          "USES_EFFECT": 3,
+          "CONTRADICTS": 2,
+          "HANDLED_BY": 1,
+          "CAST_HANDLED_BY": 1,
+          "OBSERVED_IN": 2,
+          "GENERATED": 2,
+          "MATCHES": 2,
+          "EVIDENCES": 2,
+          "SIGNALS": 2,
+          "ASSOCIATED_WITH": 2,
+          "EXPLAINS": 2,
+          "SUPPORTED_BY": 1,
+          "DERIVED_FROM": 1,
+          "VIOLATES": 1,
+          "VALIDATED_BY": 2,
+          "TARGETS": 2,
+          "GUARDED_BY": 2
+        }
+      },
+      "answerable": true,
+      "confidence": 0.125
+    },
+    {
+      "query_id": "q_32",
+      "question_template": "What graph relationships exist in cluster economy_catalog?",
+      "question_example": "What spells show static vs observed conflicts in economy_catalog?",
+      "evidence_source": {
+        "type": "graph_cluster",
+        "cluster_id": "cluster:2",
+        "rel_signature": {
+          "SELLS": 1,
+          "HAS_TYPE": 1
+        }
+      },
+      "answerable": true,
+      "confidence": 0.575
+    },
+    {
+      "query_id": "q_33",
+      "question_template": "What graph relationships exist in cluster quest_progression?",
+      "question_example": "What spells show static vs observed conflicts in quest_progression?",
+      "evidence_source": {
+        "type": "graph_cluster",
+        "cluster_id": "cluster:3",
+        "rel_signature": {
+          "HAS_STEP": 5,
+          "REWARDS": 1,
+          "INVOLVES_NPC": 2
+        }
+      },
+      "answerable": true,
+      "confidence": 0.681
+    },
+    {
+      "query_id": "q_34",
+      "question_template": "What changes would modifying worlds_interactives produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_worlds",
+        "outbound_fks": [
+          {
+            "type": "sql_fk",
+            "from": "worlds_interactives",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_triggers",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_npcs",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_monsters_fix",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          },
+          {
+            "type": "sql_fk",
+            "from": "worlds_taxcollectors",
+            "to": "worlds_maps",
+            "confidence": 0.85
+          }
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_35",
+      "question_template": "What changes would modifying quests_objectives produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_quests",
+        "outbound_fks": [
+          {
+            "type": "sql_fk",
+            "from": "quests_objectives",
+            "to": "quests_steps",
+            "confidence": 0.9
+          },
+          {
+            "type": "sql_fk",
+            "from": "quests_steps",
+            "to": "quests",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_36",
+      "question_template": "What changes would modifying characters produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_characters",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_37",
+      "question_template": "What changes would modifying npcs_messages produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_npcs",
+        "outbound_fks": [
+          {
+            "type": "sql_fk",
+            "from": "npcs_replies",
+            "to": "npcs",
+            "confidence": 0.9
+          },
+          {
+            "type": "sql_fk",
+            "from": "npcs_actions",
+            "to": "npcs",
+            "confidence": 0.95
+          }
+        ]
+      },
+      "answerable": true,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_38",
+      "question_template": "What changes would modifying world_maps_house produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_world_maps",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_39",
+      "question_template": "What changes would modifying accounts produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_accounts",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_40",
+      "question_template": "What changes would modifying breeds_spells produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_breeds",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_41",
+      "question_template": "What changes would modifying interactives_skills produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_interactives",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_42",
+      "question_template": "What changes would modifying monsters_grades produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_monsters",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_43",
+      "question_template": "What changes would modifying items produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_items",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_44",
+      "question_template": "What changes would modifying mounts_bonus produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_mounts",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_45",
+      "question_template": "What changes would modifying dungeons produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_dungeons",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_46",
+      "question_template": "What changes would modifying spells_levels produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_spells",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_47",
+      "question_template": "What changes would modifying guilds_members produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_guilds",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_48",
+      "question_template": "What changes would modifying jobs_harvest produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_jobs",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_49",
+      "question_template": "What changes would modifying bids_house produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_bids_house",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_50",
+      "question_template": "What changes would modifying runes_effects produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_runes",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    },
+    {
+      "query_id": "q_51",
+      "question_template": "What changes would modifying teleports_zones_maps produce?",
+      "question_example": "What changes would modifying npcs_items prices produce?",
+      "evidence_source": {
+        "type": "system_cascade",
+        "system_id": "sys_teleports",
+        "outbound_fks": []
+      },
+      "answerable": false,
+      "confidence": 0.7,
+      "hypothesis": false
+    }
+  ]
+}

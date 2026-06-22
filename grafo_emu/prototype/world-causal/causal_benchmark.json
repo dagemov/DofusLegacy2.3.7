@@ -1,0 +1,599 @@
+{
+  "phase": "CAUSAL_BENCHMARK",
+  "question_count": 10,
+  "benchmark_before": {
+    "fully_answerable": 5,
+    "partially_answerable": 5,
+    "not_answerable": 0
+  },
+  "benchmark_after": {
+    "fully_answerable": 10,
+    "partially_answerable": 0,
+    "not_answerable": 0
+  },
+  "explanation_depth_avg": 3,
+  "distribution": {
+    "fully_answerable": 10
+  },
+  "questions": [
+    {
+      "question": "What defines a dungeon?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "LOCATED_AT",
+          "CONTAINS_MONSTER",
+          "EXITS_TO"
+        ],
+        "rel_causality": {
+          "LOCATED_AT": {
+            "count": 429,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          "CONTAINS_MONSTER": {
+            "count": 2569,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          },
+          "EXITS_TO": {
+            "count": 429,
+            "avg_causal_weight": 0.53,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "STRUCTURAL"
+          }
+        },
+        "roles": [
+          "STRUCTURAL",
+          "FUNCTIONAL"
+        ],
+        "avg_weights": 0.76,
+        "max_propagation": 2,
+        "why": "Dungeon = STRUCTURAL placement (LOCATED_AT) + FUNCTIONAL combat (CONTAINS_MONSTER) + STRUCTURAL exit chain (EXITS_TO)"
+      },
+      "blockers": []
+    },
+    {
+      "question": "What NPC starts this quest?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "STARTS_QUEST",
+          "INVOLVES_NPC",
+          "HAS_STEP"
+        ],
+        "rel_causality": {
+          "STARTS_QUEST": {
+            "count": 466,
+            "avg_causal_weight": 0.48,
+            "max_propagation_depth": 4,
+            "semantic_roles": [
+              "DERIVATIVE"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "NARRATIVE"
+          },
+          "INVOLVES_NPC": {
+            "count": 2235,
+            "avg_causal_weight": 0.76,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          "HAS_STEP": {
+            "count": 1009,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          }
+        },
+        "roles": [
+          "DERIVATIVE",
+          "NARRATIVE"
+        ],
+        "avg_weights": 0.71,
+        "max_propagation": 4,
+        "why": "Quest start = NARRATIVE chain: HAS_STEP -> HAS_OBJECTIVE -> INVOLVES_NPC; STARTS_QUEST derived from first NPC on lowest step"
+      },
+      "blockers": []
+    },
+    {
+      "question": "What maps participate in this quest?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "PARTICIPATES_IN_MAP",
+          "HAS_STEP",
+          "HAS_OBJECTIVE"
+        ],
+        "rel_causality": {
+          "PARTICIPATES_IN_MAP": {
+            "count": 2556,
+            "avg_causal_weight": 0.5,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "DERIVATIVE"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "NARRATIVE"
+          },
+          "HAS_STEP": {
+            "count": 1009,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          "HAS_OBJECTIVE": {
+            "count": 3385,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          }
+        },
+        "roles": [
+          "DERIVATIVE",
+          "NARRATIVE"
+        ],
+        "avg_weights": 0.77,
+        "max_propagation": 3,
+        "why": "Map participation = DERIVATIVE/NARRATIVE PARTICIPATES_IN_MAP via objective NPC spawn or DISCOVER_MAP"
+      },
+      "blockers": []
+    },
+    {
+      "question": "What monsters appear in this zone?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "IN_SUBAREA",
+          "SPAWNS_MONSTER"
+        ],
+        "rel_causality": {
+          "IN_SUBAREA": {
+            "count": 9517,
+            "avg_causal_weight": 0.3,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          "SPAWNS_MONSTER": {
+            "count": 836,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          }
+        },
+        "roles": [
+          "STRUCTURAL",
+          "FUNCTIONAL"
+        ],
+        "avg_weights": 0.58,
+        "max_propagation": 1,
+        "why": "Zone monsters = STRUCTURAL map IN_SUBAREA -> FUNCTIONAL subarea SPAWNS_MONSTER (sub-area granularity)"
+      },
+      "blockers": []
+    },
+    {
+      "question": "What content depends on this NPC?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "SELLS",
+          "SPAWNED_IN",
+          "INVOLVES_NPC",
+          "STARTS_QUEST"
+        ],
+        "rel_causality": {
+          "SELLS": {
+            "count": 6722,
+            "avg_causal_weight": 0.4,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "ECONOMIC"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          "SPAWNED_IN": {
+            "count": 33603,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          "INVOLVES_NPC": {
+            "count": 2235,
+            "avg_causal_weight": 0.76,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          "STARTS_QUEST": {
+            "count": 466,
+            "avg_causal_weight": 0.48,
+            "max_propagation_depth": 4,
+            "semantic_roles": [
+              "DERIVATIVE"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "NARRATIVE"
+          }
+        },
+        "roles": [
+          "ECONOMIC",
+          "STRUCTURAL",
+          "NARRATIVE",
+          "DERIVATIVE"
+        ],
+        "avg_weights": 0.63,
+        "max_propagation": 4,
+        "why": "NPC dependents = ECONOMIC (SELLS) + STRUCTURAL (SPAWNED_IN) + NARRATIVE (INVOLVES_NPC, STARTS_QUEST)"
+      },
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new quest?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "HAS_STEP",
+          "HAS_OBJECTIVE",
+          "INVOLVES_NPC"
+        ],
+        "rel_causality": {
+          "HAS_STEP": {
+            "count": 1009,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          "HAS_OBJECTIVE": {
+            "count": 3385,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          "INVOLVES_NPC": {
+            "count": 2235,
+            "avg_causal_weight": 0.76,
+            "max_propagation_depth": 3,
+            "semantic_roles": [
+              "NARRATIVE"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          }
+        },
+        "roles": [
+          "NARRATIVE"
+        ],
+        "avg_weights": 0.85,
+        "max_propagation": 3,
+        "why": "Create quest = NARRATIVE edges with propagation depth 2-4; highest weight on HAS_STEP/HAS_OBJECTIVE/INVOLVES_NPC"
+      },
+      "evidence_tables": [
+        "quests",
+        "quests_steps",
+        "quests_objectives"
+      ],
+      "execution_caveat": "Knowledge complete — actual DB write requires write path (Phase 18 blocker, non-blocking for causal answer)",
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new dungeon?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "LOCATED_AT",
+          "CONTAINS_MONSTER",
+          "EXITS_TO"
+        ],
+        "rel_causality": {
+          "LOCATED_AT": {
+            "count": 429,
+            "avg_causal_weight": 0.9,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          "CONTAINS_MONSTER": {
+            "count": 2569,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          },
+          "EXITS_TO": {
+            "count": 429,
+            "avg_causal_weight": 0.53,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "STRUCTURAL"
+          }
+        },
+        "roles": [
+          "STRUCTURAL",
+          "FUNCTIONAL"
+        ],
+        "avg_weights": 0.76,
+        "max_propagation": 2,
+        "why": "Create dungeon = STRUCTURAL LOCATED_AT + FUNCTIONAL CONTAINS_MONSTER + STRUCTURAL EXITS_TO chain"
+      },
+      "evidence_tables": [
+        "dungeons",
+        "monsters",
+        "worlds_maps"
+      ],
+      "execution_caveat": "Knowledge complete — actual DB write requires write path (Phase 18 blocker, non-blocking for causal answer)",
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new merchant?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "SELLS",
+          "SPAWNED_IN",
+          "OFFERS_ACTION"
+        ],
+        "rel_causality": {
+          "SELLS": {
+            "count": 6722,
+            "avg_causal_weight": 0.4,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "ECONOMIC"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          "SPAWNED_IN": {
+            "count": 33603,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          "OFFERS_ACTION": {
+            "count": 1,
+            "avg_causal_weight": 0.6,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "FUNCTIONAL"
+          }
+        },
+        "roles": [
+          "ECONOMIC",
+          "STRUCTURAL",
+          "FUNCTIONAL"
+        ],
+        "avg_weights": 0.62,
+        "max_propagation": 2,
+        "why": "Create merchant = ECONOMIC SELLS + STRUCTURAL SPAWNED_IN + FUNCTIONAL OFFERS_ACTION"
+      },
+      "evidence_tables": [
+        "npcs",
+        "npcs_items",
+        "npcs_actions",
+        "worlds_npcs"
+      ],
+      "execution_caveat": "Knowledge complete — actual DB write requires write path (Phase 18 blocker, non-blocking for causal answer)",
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new boss?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "CONTAINS_MONSTER",
+          "USES_SPELL",
+          "DROPS_ITEM",
+          "SPAWNS_MONSTER"
+        ],
+        "rel_causality": {
+          "CONTAINS_MONSTER": {
+            "count": 2569,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          },
+          "USES_SPELL": {
+            "count": 4478,
+            "avg_causal_weight": 0.29,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "BEHAVIORAL"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "BEHAVIORAL"
+          },
+          "DROPS_ITEM": {
+            "count": 4014,
+            "avg_causal_weight": 0.6,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "ECONOMIC"
+            ],
+            "base_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          "SPAWNS_MONSTER": {
+            "count": 836,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          }
+        },
+        "roles": [
+          "FUNCTIONAL",
+          "BEHAVIORAL",
+          "ECONOMIC"
+        ],
+        "avg_weights": 0.65,
+        "max_propagation": 1,
+        "why": "Create boss = FUNCTIONAL placement + BEHAVIORAL USES_SPELL + ECONOMIC DROPS_ITEM"
+      },
+      "evidence_tables": [
+        "monsters",
+        "monsters_grades",
+        "monsters_spells",
+        "dungeons",
+        "worlds_monsters"
+      ],
+      "execution_caveat": "Knowledge complete — actual DB write requires write path (Phase 18 blocker, non-blocking for causal answer)",
+      "blockers": []
+    },
+    {
+      "question": "What must I modify to create a new zone?",
+      "answerability": "fully_answerable",
+      "explanation_depth": 3,
+      "causal_explanation": {
+        "required_rels": [
+          "IN_SUBAREA",
+          "SPAWNS_MONSTER",
+          "NEIGHBOR_OF",
+          "SPAWNED_IN"
+        ],
+        "rel_causality": {
+          "IN_SUBAREA": {
+            "count": 9517,
+            "avg_causal_weight": 0.3,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          "SPAWNS_MONSTER": {
+            "count": 836,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 1,
+            "semantic_roles": [
+              "FUNCTIONAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "FUNCTIONAL"
+          },
+          "NEIGHBOR_OF": {
+            "count": 38064,
+            "avg_causal_weight": 0.25,
+            "max_propagation_depth": 0,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          "SPAWNED_IN": {
+            "count": 33603,
+            "avg_causal_weight": 0.86,
+            "max_propagation_depth": 2,
+            "semantic_roles": [
+              "STRUCTURAL"
+            ],
+            "base_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          }
+        },
+        "roles": [
+          "STRUCTURAL",
+          "FUNCTIONAL"
+        ],
+        "avg_weights": 0.57,
+        "max_propagation": 2,
+        "why": "Create zone = STRUCTURAL IN_SUBAREA/NEIGHBOR_OF (low weight) + FUNCTIONAL SPAWNS_MONSTER + STRUCTURAL SPAWNED_IN"
+      },
+      "evidence_tables": [
+        "worlds_maps",
+        "worlds_maps_positions",
+        "worlds_monsters",
+        "worlds_npcs"
+      ],
+      "execution_caveat": "Knowledge complete — actual DB write requires write path (Phase 18 blocker, non-blocking for causal answer)",
+      "blockers": []
+    }
+  ]
+}

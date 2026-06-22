@@ -1,0 +1,487 @@
+{
+  "phase": "A_WORLD_CONCEPT_DISCOVERY",
+  "concept_count": 15,
+  "methodology": "emergent from SQL composites, CSV grouping, manager caches, graph clusters — no preset NPC/Quest/Map labels",
+  "concepts": [
+    {
+      "concept_id": "creature_template",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "monsters + monsters_grades + monsters_spells + monsters_drops"
+        },
+        {
+          "class": "MonsterManager",
+          "file": "Sunshine.MySql/Database/Managers/MonsterManager.cs",
+          "cache_fields": [
+            "Monsters",
+            "MonstersGrade",
+            "MonsterSpells",
+            "MonsterDropsCache"
+          ],
+          "evidence": "in-memory Dictionary caches loaded at startup"
+        },
+        {
+          "type": "sql",
+          "ref": "monsters_grades.MonsterId -> monsters.Id"
+        }
+      ],
+      "tables": [
+        "monsters",
+        "monsters_grades",
+        "monsters_spells",
+        "monsters_drops"
+      ],
+      "classes": [
+        "MonsterManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Emulator loads creature as template (monsters) plus grade stats, spell list, and drop table — not a single row. MonsterManager holds separate Dictionary caches per layer.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "monster_group",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "worlds_monsters: MonstersCSV + SubArea (group per sub-area, not per map)"
+        },
+        {
+          "type": "sql",
+          "ref": "dungeons: MonstersCSV (wave composition per dungeon room)"
+        },
+        {
+          "type": "sql",
+          "sample": {
+            "MonstersCSV": "972,973,974,982",
+            "SubArea": "450"
+          }
+        }
+      ],
+      "tables": [
+        "worlds_monsters",
+        "dungeons",
+        "monsters"
+      ],
+      "classes": [
+        "MonsterManager",
+        "DungeonManager",
+        "MapManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Monster presence is defined as CSV lists of monster ids bound to SubArea (open world) or dungeon Map (instanced). Group is emergent from CSV column, not a dedicated table.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "dungeon",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "dungeons(Map, MonstersCSV, Parameters, Note)"
+        },
+        {
+          "type": "sql",
+          "sample": {
+            "Map": "23857152",
+            "MonstersCSV": "970,974,975,978,982"
+          }
+        },
+        {
+          "type": "code",
+          "ref": "DungeonManager.GetAllDungeons()"
+        }
+      ],
+      "tables": [
+        "dungeons",
+        "worlds_maps",
+        "monsters"
+      ],
+      "classes": [
+        "DungeonManager",
+        "MapManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Dungeon is a room chain: each row binds an entry map id, monster wave CSV, and Parameters (exit map, cell, direction). Not a separate dungeon entity table beyond dungeons.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "place_instance",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "worlds_maps (topology) + worlds_maps_positions (X/Y)"
+        },
+        {
+          "type": "sql",
+          "ref": "worlds_npcs, worlds_monsters, worlds_interactives spawn on Map"
+        },
+        {
+          "type": "code",
+          "ref": "MapManager loads maps and spawn tables"
+        }
+      ],
+      "tables": [
+        "worlds_maps",
+        "worlds_maps_positions",
+        "worlds_npcs",
+        "worlds_monsters",
+        "worlds_interactives"
+      ],
+      "classes": [
+        "MapManager",
+        "NpcManager",
+        "MonsterManager",
+        "InteractiveManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Playable place = map template plus runtime spawn rows (NPC, monster group, interactive). Map id is the join key across spawn tables.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "npc_identity",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "npcs(Id, Name, EntityLook, DialogMessagesIdCSV, ActionsIdCSV)"
+        },
+        {
+          "type": "code",
+          "ref": "NpcManager.GetAllNpcs / GetNpc"
+        },
+        {
+          "type": "graph",
+          "ref": [
+            "npc:1053",
+            "npc:449",
+            "npc:488"
+          ]
+        }
+      ],
+      "tables": [
+        "npcs"
+      ],
+      "classes": [
+        "NpcManager"
+      ],
+      "graph_nodes": [
+        "npc:1053",
+        "npc:449",
+        "npc:488"
+      ],
+      "why_it_exists": "NPC identity is the npcs template row (look, dialog CSV refs, action ids). Distinct from spawn (worlds_npcs) and behavior tables.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "npc_dialogue",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "npcs.DialogMessagesIdCSV references npcs_messages"
+        },
+        {
+          "type": "sql",
+          "ref": "npcs_replies(Npc, Map, MessageId)"
+        },
+        {
+          "type": "code",
+          "ref": "NpcManager.GetNpcMessage / GetNpcReplies"
+        }
+      ],
+      "tables": [
+        "npcs_messages",
+        "npcs_replies",
+        "npcs"
+      ],
+      "classes": [
+        "NpcManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Dialogue is split: message templates in npcs_messages, reply branching keyed by Npc + Map + MessageId in npcs_replies.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "merchant",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "npcs_actions.Type=Shop, Parameters=item id"
+        },
+        {
+          "type": "sql",
+          "ref": "npcs_items(NpcId, Item, Price)"
+        },
+        {
+          "type": "graph",
+          "ref": "edge e201 SELLS npc:1053 -> item:12116"
+        }
+      ],
+      "tables": [
+        "npcs_actions",
+        "npcs_items",
+        "npcs",
+        "items"
+      ],
+      "classes": [
+        "NpcManager",
+        "InventoryHandler"
+      ],
+      "graph_nodes": [
+        "npc:1053",
+        "item:12116"
+      ],
+      "why_it_exists": "Merchant emerges from typed npcs_actions (Shop) plus price rows in npcs_items. Graph SELLS edge confirms npc->item economic link in prototype.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "quest_chain",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "quests.StepIdsCSV -> quests_steps.Id"
+        },
+        {
+          "type": "sql",
+          "ref": "quests_objectives.Step -> quests_steps.Id"
+        },
+        {
+          "type": "graph",
+          "ref": "cluster quest_progression: HAS_STEP, INVOLVES_NPC, REWARDS"
+        }
+      ],
+      "tables": [
+        "quests",
+        "quests_steps",
+        "quests_objectives",
+        "quests_objectives_types"
+      ],
+      "classes": [
+        "QuestManager"
+      ],
+      "graph_nodes": [
+        "quest:3",
+        "queststep:2",
+        "queststep:3",
+        "queststep:4",
+        "queststep:5",
+        "queststep:32"
+      ],
+      "why_it_exists": "Quest is a chain: quest header with StepIdsCSV, steps with rewards, objectives linked by Step id. Objectives reference NPCs via ParametersCSV (Type 1/3).",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "quest_giver",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "quests_objectives Type=1/3 ParametersCSV contains npc id"
+        },
+        {
+          "type": "graph",
+          "ref": "INVOLVES_NPC queststep:3 -> npc:449"
+        },
+        {
+          "type": "sql",
+          "ref": "npcs.HasQuest column exists but quest link is via objectives"
+        }
+      ],
+      "tables": [
+        "quests_objectives",
+        "npcs",
+        "quests_steps"
+      ],
+      "classes": [
+        "QuestManager",
+        "NpcManager"
+      ],
+      "graph_nodes": [
+        "npc:449",
+        "npc:488"
+      ],
+      "why_it_exists": "Quest giver is not a separate table — role emerges when quests_objectives ParametersCSV references an npc id (go talk to / bring to NPC).",
+      "hypothesis": true
+    },
+    {
+      "concept_id": "interactive_object",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "interactives (template) + interactives_skills"
+        },
+        {
+          "type": "sql",
+          "ref": "worlds_interactives (Map, Cell, InteractiveId)"
+        },
+        {
+          "type": "code",
+          "ref": "InteractiveManager"
+        }
+      ],
+      "tables": [
+        "interactives",
+        "interactives_skills",
+        "worlds_interactives",
+        "jobs_harvest"
+      ],
+      "classes": [
+        "InteractiveManager",
+        "SkillManager",
+        "JobManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Harvestable/workshop interactives = template (interactives) + skill binding + map cell placement (worlds_interactives).",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "teleporter",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "teleports_maps, teleports_zones_maps, teleports_donjons_maps"
+        },
+        {
+          "type": "sql",
+          "ref": "worlds_zaapis"
+        }
+      ],
+      "tables": [
+        "teleports_maps",
+        "teleports_zones_maps",
+        "teleports_donjons_maps",
+        "worlds_zaapis"
+      ],
+      "classes": [
+        "CustomTeleportService",
+        "MapManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Teleport links are explicit rows mapping source/destination map ids — separate from NPC dialogue teleports (hypothesis: some via npcs_actions).",
+      "hypothesis": true
+    },
+    {
+      "concept_id": "local_economy",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "npcs_items: 6721 price rows"
+        },
+        {
+          "type": "sql",
+          "ref": "quests_steps.KamasReward / ItemsRewardCSV"
+        },
+        {
+          "type": "graph",
+          "ref": "SELLS price in edge e201 props"
+        }
+      ],
+      "tables": [
+        "npcs_items",
+        "quests_steps",
+        "items",
+        "bids_house_items"
+      ],
+      "classes": [
+        "NpcManager",
+        "BidHouseManager",
+        "MerchantManager"
+      ],
+      "graph_nodes": [
+        "npc:1053"
+      ],
+      "why_it_exists": "Local economy = priced item offers at NPC shops plus quest kamas/item rewards. No global economy table — prices live in npcs_items rows.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "player_progress",
+      "confidence": 0.8,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "characters_quests, characters_quests_steps, characters_quests_objectives"
+        },
+        {
+          "type": "code",
+          "ref": "QuestManager + CharacterManager"
+        }
+      ],
+      "tables": [
+        "characters_quests",
+        "characters_quests_steps",
+        "characters_quests_objectives",
+        "characters"
+      ],
+      "classes": [
+        "QuestManager",
+        "CharacterManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Player quest state is persisted separately from quest templates — template vs runtime progress split.",
+      "hypothesis": false
+    },
+    {
+      "concept_id": "sub_area",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "type": "sql",
+          "ref": "worlds_monsters.SubArea: 135 distinct sub-areas"
+        },
+        {
+          "type": "sql",
+          "ref": "worlds_maps.SubAreaId column links map to sub-area"
+        }
+      ],
+      "tables": [
+        "worlds_monsters",
+        "worlds_maps"
+      ],
+      "classes": [
+        "MapManager",
+        "MonsterManager"
+      ],
+      "graph_nodes": [],
+      "why_it_exists": "Sub-area is the granularity for open-world monster groups (MonstersCSV per SubArea). Continent/zone names not in server DB — client D2O hypothesis.",
+      "hypothesis": true
+    },
+    {
+      "concept_id": "combat_runtime",
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "type": "graph",
+          "ref": "cluster combat_runtime_spell: USES_EFFECT, OBSERVED_IN, CONTRADICTS"
+        },
+        {
+          "type": "code",
+          "ref": "FightManager, EffectManager, SpellCastManager"
+        }
+      ],
+      "tables": [
+        "spells",
+        "spells_levels"
+      ],
+      "classes": [
+        "FightManager",
+        "EffectManager",
+        "SpellManager"
+      ],
+      "graph_nodes": [
+        "spell:189",
+        "spell:196"
+      ],
+      "why_it_exists": "Combat behavior is LOG-observed in graph prototype; spell template in SQL. Runtime fight not persisted in sunshine.sql content tables.",
+      "hypothesis": false
+    }
+  ]
+}

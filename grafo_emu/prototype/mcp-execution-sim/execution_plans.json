@@ -1,0 +1,1676 @@
+{
+  "phase": "EXECUTION_PLANS",
+  "planner": "IGraphMutationPlanner (simulated)",
+  "plan_count": 8,
+  "plans": [
+    {
+      "intent_id": "modify_npc",
+      "intent_description": "Modify existing NPC template or spawn",
+      "action": "modify",
+      "target_node": "npc:462",
+      "target_type": "npc",
+      "target_id": "462",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [
+          {
+            "rel": "SPAWNED_IN",
+            "src": "npc:462",
+            "dst": "map:38273033",
+            "causal_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "SELLS",
+            "src": "npc:462",
+            "dst": "item:491",
+            "causal_weight": 0.3,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "STARTS_QUEST",
+            "src": "npc:462",
+            "dst": "quest:5",
+            "causal_weight": 0.48,
+            "semantic_role": "DERIVATIVE"
+          },
+          {
+            "rel": "IN_SUBAREA",
+            "src": "map:38273033",
+            "dst": "subarea:95",
+            "causal_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:5",
+            "dst": "queststep:10",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:5",
+            "dst": "queststep:11",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:5",
+            "dst": "queststep:12",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:5",
+            "dst": "queststep:13",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "PARTICIPATES_IN_MAP",
+            "src": "quest:5",
+            "dst": "map:38273033",
+            "causal_weight": 0.5,
+            "semantic_role": "DERIVATIVE"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:95",
+            "dst": "monster:236",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:95",
+            "dst": "monster:489",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:95",
+            "dst": "monster:490",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:95",
+            "dst": "monster:491",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:95",
+            "dst": "monster:492",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:10",
+            "dst": "objective:42",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REWARDS_ITEM",
+            "src": "queststep:10",
+            "dst": "item:6773",
+            "causal_weight": 0.5,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:11",
+            "dst": "objective:43",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:12",
+            "dst": "objective:44",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:13",
+            "dst": "objective:45",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REWARDS_ITEM",
+            "src": "queststep:13",
+            "dst": "item:6793",
+            "causal_weight": 0.5,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:236",
+            "dst": "item:6898",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:236",
+            "dst": "item:287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:236",
+            "dst": "item:2475",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:236",
+            "dst": "spell:626",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:489",
+            "dst": "item:6900",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:489",
+            "dst": "item:287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:489",
+            "dst": "item:2475",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:489",
+            "dst": "spell:626",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:490",
+            "dst": "item:287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:490",
+            "dst": "item:6899",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:490",
+            "dst": "item:2475",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:490",
+            "dst": "spell:626",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:491",
+            "dst": "item:287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:491",
+            "dst": "item:6897",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:491",
+            "dst": "item:2475",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:491",
+            "dst": "spell:626",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:492",
+            "dst": "item:287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:492",
+            "dst": "item:6903",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:492",
+            "dst": "item:2475",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:492",
+            "dst": "spell:626",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:42",
+            "dst": "npc:462",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "objective:42",
+            "dst": "item:365",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:43",
+            "dst": "npc:462",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "objective:43",
+            "dst": "item:385",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:44",
+            "dst": "npc:462",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "objective:44",
+            "dst": "item:377",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "DEFEAT_MONSTER",
+            "src": "objective:45",
+            "dst": "monster:47",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          }
+        ],
+        "rels_used": [
+          "SPAWNED_IN",
+          "SELLS",
+          "STARTS_QUEST",
+          "IN_SUBAREA",
+          "HAS_STEP",
+          "PARTICIPATES_IN_MAP",
+          "SPAWNS_MONSTER",
+          "HAS_OBJECTIVE",
+          "REWARDS_ITEM",
+          "DROPS_ITEM",
+          "USES_SPELL",
+          "INVOLVES_NPC",
+          "REQUIRES_ITEM",
+          "DEFEAT_MONSTER"
+        ]
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE npcs",
+          "UPDATE worlds_npcs",
+          "UPDATE npcs_items",
+          "UPDATE npcs_actions",
+          "UPDATE npcs_messages",
+          "UPDATE npcs_replies"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "npcs",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 2,
+            "table": "worlds_npcs",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 3,
+            "table": "npcs_items",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 4,
+            "table": "npcs_actions",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 5,
+            "table": "npcs_messages",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 6,
+            "table": "npcs_replies",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch_or_gm_spawn"
+          }
+        ],
+        "cs_manager": "NpcManager",
+        "write_path": "sql_patch_or_gm_spawn",
+        "rollback_sketch": "DELETE FROM npcs_replies WHERE Id=462; DELETE FROM npcs_messages WHERE Id=462; DELETE FROM npcs_actions WHERE Id=462; DELETE FROM npcs_items WHERE Id=462; DELETE FROM worlds_npcs WHERE Npc=462; DELETE FROM npcs WHERE Id=462;"
+      },
+      "schema_validation": [
+        {
+          "table": "npcs",
+          "exists": true
+        },
+        {
+          "table": "worlds_npcs",
+          "exists": true
+        },
+        {
+          "table": "npcs_items",
+          "exists": true
+        },
+        {
+          "table": "npcs_actions",
+          "exists": true
+        },
+        {
+          "table": "npcs_messages",
+          "exists": true
+        },
+        {
+          "table": "npcs_replies",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "modify_quest",
+      "intent_description": "Modify quest chain",
+      "action": "modify",
+      "target_node": "quest:3",
+      "target_type": "quest",
+      "target_id": "3",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:3",
+            "dst": "queststep:2",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:3",
+            "dst": "queststep:3",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:3",
+            "dst": "queststep:4",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:3",
+            "dst": "queststep:5",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_STEP",
+            "src": "quest:3",
+            "dst": "queststep:32",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:2",
+            "dst": "objective:2",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:2",
+            "dst": "objective:32",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:2",
+            "dst": "objective:177",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:3",
+            "dst": "objective:3",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:4",
+            "dst": "objective:286",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:4",
+            "dst": "objective:178",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:4",
+            "dst": "objective:287",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:4",
+            "dst": "objective:179",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:5",
+            "dst": "objective:26",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:5",
+            "dst": "objective:284",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:5",
+            "dst": "objective:288",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:32",
+            "dst": "objective:148",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:32",
+            "dst": "objective:315",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:32",
+            "dst": "objective:304",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "HAS_OBJECTIVE",
+            "src": "queststep:32",
+            "dst": "objective:314",
+            "causal_weight": 0.9,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REWARDS_ITEM",
+            "src": "queststep:32",
+            "dst": "item:288",
+            "causal_weight": 0.5,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DISCOVER_MAP",
+            "src": "objective:2",
+            "dst": "map:51452",
+            "causal_weight": 0.24,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:177",
+            "dst": "npc:449",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:3",
+            "dst": "npc:449",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "objective:3",
+            "dst": "item:306",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "DISCOVER_MAP",
+            "src": "objective:286",
+            "dst": "map:52018",
+            "causal_weight": 0.24,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "DISCOVER_MAP",
+            "src": "objective:178",
+            "dst": "map:50948",
+            "causal_weight": 0.24,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "DISCOVER_MAP",
+            "src": "objective:287",
+            "dst": "map:50942",
+            "causal_weight": 0.24,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:179",
+            "dst": "npc:449",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:26",
+            "dst": "npc:488",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "DISCOVER_AREA",
+            "src": "objective:284",
+            "dst": "subarea:3",
+            "causal_weight": 0.48,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:288",
+            "dst": "npc:449",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "objective:288",
+            "dst": "item:6864",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "DEFEAT_MONSTER",
+            "src": "objective:304",
+            "dst": "monster:482",
+            "causal_weight": 0.53,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "INVOLVES_NPC",
+            "src": "objective:314",
+            "dst": "npc:449",
+            "causal_weight": 0.79,
+            "semantic_role": "NARRATIVE"
+          },
+          {
+            "rel": "SPAWNED_IN",
+            "src": "npc:449",
+            "dst": "map:1810",
+            "causal_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "STARTS_QUEST",
+            "src": "npc:449",
+            "dst": "quest:3",
+            "causal_weight": 0.48,
+            "semantic_role": "DERIVATIVE"
+          },
+          {
+            "rel": "STARTS_QUEST",
+            "src": "npc:449",
+            "dst": "quest:12",
+            "causal_weight": 0.48,
+            "semantic_role": "DERIVATIVE"
+          },
+          {
+            "rel": "SPAWNED_IN",
+            "src": "npc:488",
+            "dst": "map:6667",
+            "causal_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:3",
+            "dst": "monster:48",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:3",
+            "dst": "monster:78",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:3",
+            "dst": "monster:79",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:3",
+            "dst": "monster:59",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:3",
+            "dst": "monster:98",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:482",
+            "dst": "spell:219",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:482",
+            "dst": "spell:220",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          }
+        ],
+        "rels_used": [
+          "HAS_STEP",
+          "HAS_OBJECTIVE",
+          "REWARDS_ITEM",
+          "DISCOVER_MAP",
+          "INVOLVES_NPC",
+          "REQUIRES_ITEM",
+          "DISCOVER_AREA",
+          "DEFEAT_MONSTER",
+          "SPAWNED_IN",
+          "STARTS_QUEST",
+          "SPAWNS_MONSTER",
+          "USES_SPELL"
+        ]
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE quests",
+          "UPDATE quests_steps",
+          "UPDATE quests_objectives"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "quests",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 2,
+            "table": "quests_steps",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 3,
+            "table": "quests_objectives",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          }
+        ],
+        "cs_manager": "QuestManager",
+        "write_path": "sql_patch",
+        "rollback_sketch": "DELETE FROM quests_objectives WHERE Id=3; DELETE FROM quests_steps WHERE Quest=3; DELETE FROM quests WHERE Id=3;"
+      },
+      "schema_validation": [
+        {
+          "table": "quests",
+          "exists": true
+        },
+        {
+          "table": "quests_steps",
+          "exists": true
+        },
+        {
+          "table": "quests_objectives",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "modify_monster",
+      "intent_description": "Modify monster template",
+      "action": "modify",
+      "target_node": "monster:31",
+      "target_type": "monster",
+      "target_id": "31",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:31",
+            "dst": "item:519",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:31",
+            "dst": "item:362",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:31",
+            "dst": "item:7423",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:31",
+            "dst": "item:2474",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:31",
+            "dst": "item:643",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          }
+        ],
+        "rels_used": [
+          "DROPS_ITEM"
+        ]
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE monsters",
+          "UPDATE monsters_grades",
+          "UPDATE monsters_spells",
+          "UPDATE monsters_drops"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "monsters",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 2,
+            "table": "monsters_grades",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 3,
+            "table": "monsters_spells",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 4,
+            "table": "monsters_drops",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          }
+        ],
+        "cs_manager": "MonsterManager",
+        "write_path": "sql_patch",
+        "rollback_sketch": "DELETE FROM monsters_drops WHERE Id=31; DELETE FROM monsters_spells WHERE Id=31; DELETE FROM monsters_grades WHERE Id=31; DELETE FROM monsters WHERE Id=31;"
+      },
+      "schema_validation": [
+        {
+          "table": "monsters",
+          "exists": true
+        },
+        {
+          "table": "monsters_grades",
+          "exists": true
+        },
+        {
+          "table": "monsters_spells",
+          "exists": true
+        },
+        {
+          "table": "monsters_drops",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "modify_dungeon",
+      "intent_description": "Balance or reconfigure dungeon",
+      "action": "modify",
+      "target_node": "dungeon:1",
+      "target_type": "dungeon",
+      "target_id": "1",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [
+          {
+            "rel": "LOCATED_AT",
+            "src": "dungeon:1",
+            "dst": "map:23857152",
+            "causal_weight": 0.9,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "CONTAINS_MONSTER",
+            "src": "dungeon:1",
+            "dst": "monster:970",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "CONTAINS_MONSTER",
+            "src": "dungeon:1",
+            "dst": "monster:974",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "CONTAINS_MONSTER",
+            "src": "dungeon:1",
+            "dst": "monster:975",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "CONTAINS_MONSTER",
+            "src": "dungeon:1",
+            "dst": "monster:978",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "IN_SUBAREA",
+            "src": "map:23857152",
+            "dst": "subarea:447",
+            "causal_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "TELEPORT_FROM",
+            "src": "map:23857152",
+            "dst": "map:23857152",
+            "causal_weight": 0.24,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "REQUIRES_ITEM",
+            "src": "map:23857152",
+            "dst": "item:8545",
+            "causal_weight": 0.5,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:970",
+            "dst": "item:367",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:970",
+            "dst": "item:301",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:970",
+            "dst": "item:366",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:970",
+            "dst": "item:8545",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:970",
+            "dst": "item:2476",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:974",
+            "dst": "item:307",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:974",
+            "dst": "item:519",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:974",
+            "dst": "item:371",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:974",
+            "dst": "item:8545",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:974",
+            "dst": "item:6917",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:975",
+            "dst": "item:519",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:975",
+            "dst": "item:362",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:975",
+            "dst": "item:7423",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:975",
+            "dst": "item:8545",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:975",
+            "dst": "item:2474",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:978",
+            "dst": "item:290",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:978",
+            "dst": "item:300",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:978",
+            "dst": "item:377",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:978",
+            "dst": "item:8545",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:978",
+            "dst": "item:6920",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          }
+        ],
+        "rels_used": [
+          "LOCATED_AT",
+          "CONTAINS_MONSTER",
+          "IN_SUBAREA",
+          "TELEPORT_FROM",
+          "REQUIRES_ITEM",
+          "DROPS_ITEM"
+        ]
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE dungeons"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "dungeons",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          }
+        ],
+        "cs_manager": "DungeonManager",
+        "write_path": "sql_patch",
+        "rollback_sketch": "DELETE FROM dungeons WHERE Id=1;"
+      },
+      "schema_validation": [
+        {
+          "table": "dungeons",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "modify_map",
+      "intent_description": "Modify map spawns or topology",
+      "action": "modify",
+      "target_node": "map:10020",
+      "target_type": "map",
+      "target_id": "10020",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [
+          {
+            "rel": "IN_SUBAREA",
+            "src": "map:10020",
+            "dst": "subarea:108",
+            "causal_weight": 0.3,
+            "semantic_role": "STRUCTURAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:108",
+            "dst": "monster:517",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:108",
+            "dst": "monster:566",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:108",
+            "dst": "monster:549",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "SPAWNS_MONSTER",
+            "src": "subarea:108",
+            "dst": "monster:537",
+            "causal_weight": 0.86,
+            "semantic_role": "FUNCTIONAL"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:517",
+            "dst": "item:350",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:517",
+            "dst": "item:2287",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:517",
+            "dst": "item:7017",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:517",
+            "dst": "item:6923",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:517",
+            "dst": "item:7227",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:566",
+            "dst": "item:7258",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:566",
+            "dst": "item:7260",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:566",
+            "dst": "item:7017",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:566",
+            "dst": "item:7259",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:566",
+            "dst": "item:7229",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:549",
+            "dst": "item:7297",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:549",
+            "dst": "item:7222",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:549",
+            "dst": "item:7303",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:549",
+            "dst": "item:7308",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:549",
+            "dst": "item:7247",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:537",
+            "dst": "item:7295",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:537",
+            "dst": "item:7261",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:537",
+            "dst": "item:7302",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "DROPS_ITEM",
+            "src": "monster:537",
+            "dst": "item:7307",
+            "causal_weight": 0.6,
+            "semantic_role": "ECONOMIC"
+          },
+          {
+            "rel": "USES_SPELL",
+            "src": "monster:537",
+            "dst": "spell:571",
+            "causal_weight": 0.29,
+            "semantic_role": "BEHAVIORAL"
+          }
+        ],
+        "rels_used": [
+          "IN_SUBAREA",
+          "SPAWNS_MONSTER",
+          "DROPS_ITEM",
+          "USES_SPELL"
+        ]
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE worlds_maps",
+          "UPDATE worlds_maps_positions",
+          "UPDATE worlds_npcs",
+          "UPDATE worlds_monsters",
+          "UPDATE worlds_interactives"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "worlds_maps",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 2,
+            "table": "worlds_maps_positions",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 3,
+            "table": "worlds_npcs",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 4,
+            "table": "worlds_monsters",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          },
+          {
+            "order": 5,
+            "table": "worlds_interactives",
+            "operation": "UPDATE",
+            "note": "Modify via sql_patch"
+          }
+        ],
+        "cs_manager": "MapManager",
+        "write_path": "sql_patch",
+        "rollback_sketch": "DELETE FROM worlds_interactives WHERE Id=10020; DELETE FROM worlds_monsters WHERE Id=10020; DELETE FROM worlds_npcs WHERE Id=10020; DELETE FROM worlds_maps_positions WHERE Id=10020; DELETE FROM worlds_maps WHERE Id=10020;"
+      },
+      "schema_validation": [
+        {
+          "table": "worlds_maps",
+          "exists": true
+        },
+        {
+          "table": "worlds_maps_positions",
+          "exists": true
+        },
+        {
+          "table": "worlds_npcs",
+          "exists": true
+        },
+        {
+          "table": "worlds_monsters",
+          "exists": true
+        },
+        {
+          "table": "worlds_interactives",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "modify_item",
+      "intent_description": "Modify item referenced in economy",
+      "action": "modify",
+      "target_node": "item:519",
+      "target_type": "item",
+      "target_id": "519",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [],
+        "rels_used": []
+      },
+      "mutation_plan": {
+        "order": [
+          "UPDATE items",
+          "UPDATE npcs_items",
+          "UPDATE monsters_drops"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "items",
+            "operation": "UPDATE",
+            "note": "Modify via admin_api_items_only"
+          },
+          {
+            "order": 2,
+            "table": "npcs_items",
+            "operation": "UPDATE",
+            "note": "Modify via admin_api_items_only"
+          },
+          {
+            "order": 3,
+            "table": "monsters_drops",
+            "operation": "UPDATE",
+            "note": "Modify via admin_api_items_only"
+          }
+        ],
+        "cs_manager": "InventoryHandler",
+        "write_path": "admin_api_items_only",
+        "rollback_sketch": "DELETE FROM monsters_drops WHERE Id=519; DELETE FROM npcs_items WHERE Id=519; DELETE FROM items WHERE Id=519;"
+      },
+      "schema_validation": [
+        {
+          "table": "items",
+          "exists": true
+        },
+        {
+          "table": "npcs_items",
+          "exists": true
+        },
+        {
+          "table": "monsters_drops",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "create_quest",
+      "intent_description": "Create new quest from template pattern",
+      "action": "create",
+      "target_node": "quest:DRY_RUN_PLACEHOLDER",
+      "target_type": "quest",
+      "target_id": "DRY_RUN_PLACEHOLDER",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [],
+        "rels_used": []
+      },
+      "mutation_plan": {
+        "order": [
+          "INSERT quests",
+          "INSERT quests_steps",
+          "INSERT quests_objectives"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "quests",
+            "operation": "INSERT",
+            "note": "Create via sql_patch"
+          },
+          {
+            "order": 2,
+            "table": "quests_steps",
+            "operation": "INSERT",
+            "note": "Create via sql_patch"
+          },
+          {
+            "order": 3,
+            "table": "quests_objectives",
+            "operation": "INSERT",
+            "note": "Create via sql_patch"
+          }
+        ],
+        "cs_manager": "QuestManager",
+        "write_path": "sql_patch",
+        "rollback_sketch": "DELETE FROM quests_objectives WHERE Id=NEW_ID; DELETE FROM quests_steps WHERE Quest=NEW_ID; DELETE FROM quests WHERE Id=NEW_ID;"
+      },
+      "schema_validation": [
+        {
+          "table": "quests",
+          "exists": true
+        },
+        {
+          "table": "quests_steps",
+          "exists": true
+        },
+        {
+          "table": "quests_objectives",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    },
+    {
+      "intent_id": "create_merchant",
+      "intent_description": "Create merchant NPC with shop",
+      "action": "create",
+      "target_node": "npc:DRY_RUN_PLACEHOLDER",
+      "target_type": "npc",
+      "target_id": "DRY_RUN_PLACEHOLDER",
+      "dry_run": true,
+      "db_writes_executed": false,
+      "graph_mutated": false,
+      "persisted": false,
+      "graph_traversal": {
+        "chain": [],
+        "rels_used": []
+      },
+      "mutation_plan": {
+        "order": [
+          "INSERT npcs",
+          "INSERT worlds_npcs",
+          "INSERT npcs_items",
+          "INSERT npcs_actions",
+          "INSERT npcs_messages",
+          "INSERT npcs_replies"
+        ],
+        "statements": [
+          {
+            "order": 1,
+            "table": "npcs",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 2,
+            "table": "worlds_npcs",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 3,
+            "table": "npcs_items",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 4,
+            "table": "npcs_actions",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 5,
+            "table": "npcs_messages",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          },
+          {
+            "order": 6,
+            "table": "npcs_replies",
+            "operation": "INSERT",
+            "note": "Create via sql_patch_or_gm_spawn"
+          }
+        ],
+        "cs_manager": "NpcManager",
+        "write_path": "sql_patch_or_gm_spawn",
+        "rollback_sketch": "DELETE FROM npcs_replies WHERE Id=NEW_ID; DELETE FROM npcs_messages WHERE Id=NEW_ID; DELETE FROM npcs_actions WHERE Id=NEW_ID; DELETE FROM npcs_items WHERE Id=NEW_ID; DELETE FROM worlds_npcs WHERE Npc=NEW_ID; DELETE FROM npcs WHERE Id=NEW_ID;"
+      },
+      "schema_validation": [
+        {
+          "table": "npcs",
+          "exists": true
+        },
+        {
+          "table": "worlds_npcs",
+          "exists": true
+        },
+        {
+          "table": "npcs_items",
+          "exists": true
+        },
+        {
+          "table": "npcs_actions",
+          "exists": true
+        },
+        {
+          "table": "npcs_messages",
+          "exists": true
+        },
+        {
+          "table": "npcs_replies",
+          "exists": true
+        }
+      ],
+      "integrity_valid": true
+    }
+  ]
+}

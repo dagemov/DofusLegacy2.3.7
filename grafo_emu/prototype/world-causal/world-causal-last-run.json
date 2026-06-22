@@ -1,0 +1,214 @@
+{
+  "generated_at": "2026-06-22T04:45:24.655Z",
+  "pipeline": "Phase 21 — Semantic Causality and Edge Weighting Layer",
+  "measurements": {
+    "edges_enriched": 112635,
+    "node_count": 37316,
+    "semantic_roles": 6,
+    "role_distribution": {
+      "STRUCTURAL": 82156,
+      "FUNCTIONAL": 5055,
+      "ECONOMIC": 11044,
+      "BEHAVIORAL": 4478,
+      "NARRATIVE": 6880,
+      "DERIVATIVE": 3022
+    },
+    "causal_weight_histogram": {
+      "0.0": 17729,
+      "0.3": 44706,
+      "0.6": 44122,
+      "0.9": 6078,
+      "1.0": 0
+    },
+    "gameplay_impact_distribution": {
+      "HIGH": 43348,
+      "MEDIUM": 10765,
+      "LOW": 40793,
+      "NEGLIGIBLE": 17729
+    },
+    "modification_risk_distribution": {
+      "MEDIUM": 44866,
+      "HIGH": 30201,
+      "LOW": 37568
+    },
+    "dominant_edges": [
+      {
+        "rel": "SPAWNED_IN",
+        "count": 33603,
+        "share": 0.2983,
+        "avg_causal_weight": 0.86,
+        "base_weight": 0.9,
+        "propagation_depth": 2,
+        "semantic_role": "STRUCTURAL",
+        "dominant": true,
+        "low_semantic_value": false
+      },
+      {
+        "rel": "NEIGHBOR_OF",
+        "count": 38064,
+        "share": 0.3379,
+        "avg_causal_weight": 0.25,
+        "base_weight": 0.3,
+        "propagation_depth": 0,
+        "semantic_role": "STRUCTURAL",
+        "dominant": true,
+        "low_semantic_value": true
+      }
+    ],
+    "noise_edges": [
+      {
+        "rel": "NEIGHBOR_OF",
+        "count": 38064,
+        "share": 0.3379,
+        "avg_causal_weight": 0.25,
+        "base_weight": 0.3,
+        "propagation_depth": 0,
+        "semantic_role": "STRUCTURAL",
+        "dominant": true,
+        "low_semantic_value": true
+      }
+    ],
+    "propagation_models": 6,
+    "benchmark_before": {
+      "fully_answerable": 5,
+      "partially_answerable": 5,
+      "not_answerable": 0
+    },
+    "benchmark_after": {
+      "fully_answerable": 10,
+      "partially_answerable": 0,
+      "not_answerable": 0
+    },
+    "explanation_depth_avg": 3,
+    "questions_upgraded_to_fully_answerable": 5
+  },
+  "final_question_answer": {
+    "question": "If I modify X, what breaks, how far, and why?",
+    "example": {
+      "modify": "npc:462",
+      "breaks": [
+        "item:6898",
+        "item:287",
+        "item:2475"
+      ],
+      "how_far": 5,
+      "blast_radius": {
+        "1": 3,
+        "2": 6,
+        "3": 12,
+        "4": 14,
+        "5": 13
+      },
+      "why": "Change propagates via STRUCTURAL, ECONOMIC, DERIVATIVE, NARRATIVE, FUNCTIONAL, BEHAVIORAL edges — excluded NEIGHBOR_OF topology noise",
+      "propagation_chain": [
+        {
+          "from": "npc:462",
+          "rel": "SPAWNED_IN",
+          "to": "map:38273033",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.9,
+          "propagation_depth": 2
+        },
+        {
+          "from": "map:38273033",
+          "rel": "IN_SUBAREA",
+          "to": "subarea:95",
+          "semantic_role": "STRUCTURAL",
+          "causal_weight": 0.3,
+          "propagation_depth": 1
+        },
+        {
+          "from": "subarea:95",
+          "rel": "SPAWNS_MONSTER",
+          "to": "monster:236",
+          "semantic_role": "FUNCTIONAL",
+          "causal_weight": 0.86,
+          "propagation_depth": 1
+        },
+        {
+          "from": "monster:236",
+          "rel": "DROPS_ITEM",
+          "to": "item:6898",
+          "semantic_role": "ECONOMIC",
+          "causal_weight": 0.6,
+          "propagation_depth": 0
+        }
+      ]
+    },
+    "causal_depth": true,
+    "connectivity_only": false
+  },
+  "tests": {
+    "test_1_all_edges_enriched": {
+      "test": "TEST_1_ENRICHMENT",
+      "edge_count": 112635,
+      "with_all_fields": 112635,
+      "passed": true
+    },
+    "test_2_counts_unchanged": {
+      "test": "TEST_2_NO_NEW_EDGES",
+      "phase_20_edges": 112635,
+      "phase_21_edges": 112635,
+      "phase_20_nodes": 37316,
+      "phase_21_nodes": 37316,
+      "passed": true
+    },
+    "test_3_rel_types_unchanged": {
+      "test": "TEST_3_REL_TYPES",
+      "phase_20": 23,
+      "phase_21": 23,
+      "passed": true
+    },
+    "test_4_no_mcps": {
+      "test": "TEST_4_NO_MCPS",
+      "passed": true
+    },
+    "test_5_no_future_architecture": {
+      "test": "TEST_5_NO_FUTURE_ARCH",
+      "passed": true
+    },
+    "test_6_semantic_roles_and_propagation": {
+      "test": "TEST_6_ROLES_PROPAGATION",
+      "roles": [
+        "STRUCTURAL",
+        "FUNCTIONAL",
+        "ECONOMIC",
+        "BEHAVIORAL",
+        "NARRATIVE",
+        "DERIVATIVE"
+      ],
+      "role_coverage": 112635,
+      "propagation_models": 6,
+      "passed": true
+    },
+    "test_7_benchmark_and_depth": {
+      "test": "TEST_7_BENCHMARK",
+      "fully_answerable": 10,
+      "explanation_depth_avg": 3,
+      "passed": true
+    },
+    "test_8_dominance_and_limitations": {
+      "test": "TEST_8_DOMINANCE",
+      "neighbor_low_value": true,
+      "limitation_count": 7,
+      "passed": true
+    }
+  },
+  "all_tests_passed": true,
+  "limitations": [
+    "Causal weights assigned by rel-type heuristics — not runtime-measured",
+    "NEIGHBOR_OF excluded from propagation BFS — topology noise (38k edges, weight 0.3)",
+    "DERIVATIVE edges (STARTS_QUEST, PARTICIPATES_IN_MAP) have reduced confidence",
+    "Create-questions fully answerable as KNOWLEDGE — execution still needs write path",
+    "Modification risk uses dst fan-in proxy — not live player session data",
+    "22236 ref-only edges have halved causal weight",
+    "BEHAVIORAL role only covers USES_SPELL — combat runtime not in SQL graph"
+  ],
+  "artifacts": [
+    "causal_graph.jsonl",
+    "causal_graph.json",
+    "edge_causality_report.json",
+    "propagation_models.json",
+    "causal_benchmark.json"
+  ]
+}

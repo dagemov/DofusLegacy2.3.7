@@ -1,0 +1,347 @@
+{
+  "generated_at": "2026-06-22T01:01:36.082Z",
+  "test_1": {
+    "test": "TEST_1_GRAPH_DISCOVERY",
+    "clusters_detected": [
+      {
+        "cluster_id": "cluster:1",
+        "label": "combat_runtime_spell",
+        "node_count": 25,
+        "edge_count": 34,
+        "rel_signature": {
+          "HAS_LEVEL": 2,
+          "PARSED_EFFECT": 2,
+          "USES_EFFECT": 3,
+          "CONTRADICTS": 2,
+          "HANDLED_BY": 1,
+          "CAST_HANDLED_BY": 1,
+          "OBSERVED_IN": 2,
+          "GENERATED": 2,
+          "MATCHES": 2,
+          "EVIDENCES": 2,
+          "SIGNALS": 2,
+          "ASSOCIATED_WITH": 2,
+          "EXPLAINS": 2,
+          "SUPPORTED_BY": 1,
+          "DERIVED_FROM": 1,
+          "VIOLATES": 1,
+          "VALIDATED_BY": 2,
+          "TARGETS": 2,
+          "GUARDED_BY": 2
+        },
+        "seed_nodes": [
+          "spell:189",
+          "spell:196"
+        ],
+        "coherence_score": 0.125,
+        "game_system": "combat runtime spell"
+      },
+      {
+        "cluster_id": "cluster:2",
+        "label": "economy_catalog",
+        "node_count": 3,
+        "edge_count": 2,
+        "rel_signature": {
+          "SELLS": 1,
+          "HAS_TYPE": 1
+        },
+        "seed_nodes": [
+          "item:12116",
+          "npc:1053"
+        ],
+        "coherence_score": 0.575,
+        "game_system": "economy catalog"
+      },
+      {
+        "cluster_id": "cluster:3",
+        "label": "quest_progression",
+        "node_count": 9,
+        "edge_count": 8,
+        "rel_signature": {
+          "HAS_STEP": 5,
+          "REWARDS": 1,
+          "INVOLVES_NPC": 2
+        },
+        "seed_nodes": [
+          "item:288",
+          "quest:3",
+          "npc:488",
+          "npc:449"
+        ],
+        "coherence_score": 0.681,
+        "game_system": "quest progression"
+      }
+    ],
+    "cluster_count": 3,
+    "global_coherence_score": 0.247,
+    "map_spawn_clusters": 0
+  },
+  "test_2": {
+    "test": "TEST_2_ECONOMY_INFERENCE",
+    "top_10_quests_by_kamas": [
+      {
+        "quest_id": 550,
+        "quest_name": "On recherche Fuji Givrefoux.",
+        "total_kamas_reward": 410000
+      },
+      {
+        "quest_id": 551,
+        "quest_name": "On recherche Dremoan.",
+        "total_kamas_reward": 410000
+      },
+      {
+        "quest_id": 552,
+        "quest_name": "On recherche Flasho.",
+        "total_kamas_reward": 410000
+      },
+      {
+        "quest_id": 553,
+        "quest_name": "On recherche Viti Glourson.",
+        "total_kamas_reward": 410000
+      },
+      {
+        "quest_id": 549,
+        "quest_name": "On recherche le YeCh Ti.",
+        "total_kamas_reward": 380000
+      },
+      {
+        "quest_id": 548,
+        "quest_name": "On recherche Vengeuse Masquée.",
+        "total_kamas_reward": 350000
+      },
+      {
+        "quest_id": 632,
+        "quest_name": "Convoi humanitaire.",
+        "total_kamas_reward": 325000
+      },
+      {
+        "quest_id": 547,
+        "quest_name": "On recherche Fantômayte.",
+        "total_kamas_reward": 320000
+      },
+      {
+        "quest_id": 546,
+        "quest_name": "On recherche Katigrou.",
+        "total_kamas_reward": 290000
+      },
+      {
+        "quest_id": 545,
+        "quest_name": "On recherche Monsieur Pingouin.",
+        "total_kamas_reward": 260000
+      }
+    ],
+    "graph_vs_db": {
+      "quests_in_graph": 1,
+      "quests_in_db": 619,
+      "coverage_ratio": 0.0016,
+      "quest_3_db_total_kamas": 4250,
+      "quest_3_graph_steps": [
+        {
+          "step": "queststep:2"
+        },
+        {
+          "step": "queststep:3"
+        },
+        {
+          "step": "queststep:4",
+          "kamas": 500,
+          "xp": 6500
+        },
+        {
+          "step": "queststep:5"
+        },
+        {
+          "step": "queststep:32",
+          "kamas": 3750,
+          "xp": 15000
+        }
+      ],
+      "note": "graph prototype stores kamas in QuestStep.props from manual ingest; DB uses KamasReward column"
+    },
+    "farm_loops_detected": [],
+    "farm_loop_note": "no SELLS/DROP cycle in prototype graph",
+    "npc_shop_in_graph": [
+      {
+        "edge_id": "e201",
+        "npc": "npc:1053",
+        "item": "item:12116",
+        "price": 9750000
+      }
+    ],
+    "npc_shop_in_db_count": 6721,
+    "economy_inference_consistent": true
+  },
+  "test_3": {
+    "test": "TEST_3_RELATION_COMPLETENESS",
+    "graph_anomalies": [
+      {
+        "type": "unresolved_node",
+        "id": "item:288",
+        "reason": "ref-only"
+      },
+      {
+        "type": "client_side_gap",
+        "id": "itemtype:16",
+        "reason": "data not in server BD"
+      },
+      {
+        "type": "quest_step_without_reward_or_npc",
+        "id": "queststep:2"
+      },
+      {
+        "type": "quest_step_without_reward_or_npc",
+        "id": "queststep:4"
+      }
+    ],
+    "graph_anomaly_count": 4,
+    "db_orphans": {
+      "npcs_without_world_spawn": 196,
+      "quest_steps_without_objectives": 0,
+      "total_npcs_db": 1210,
+      "total_quests_db": 619,
+      "total_items_db": 6652
+    },
+    "coverage_score": 0.0007,
+    "coverage_note": "graph prototype entities / DB catalog entities (quest+npc+item)"
+  },
+  "test_4": {
+    "test": "TEST_4_ACTION_SIMULATION",
+    "dry_run": true,
+    "db_writes_executed": false,
+    "schema_checks": [
+      {
+        "table": "npcs",
+        "columns_found": 9,
+        "missing_required": [],
+        "ok": true
+      },
+      {
+        "table": "worlds_npcs",
+        "columns_found": 6,
+        "missing_required": [],
+        "ok": true
+      },
+      {
+        "table": "npcs_items",
+        "columns_found": 7,
+        "missing_required": [],
+        "ok": true
+      },
+      {
+        "table": "quests",
+        "columns_found": 3,
+        "missing_required": [],
+        "ok": true
+      },
+      {
+        "table": "quests_steps",
+        "columns_found": 13,
+        "missing_required": [],
+        "ok": true
+      },
+      {
+        "table": "quests_objectives",
+        "columns_found": 5,
+        "missing_required": [],
+        "ok": true
+      }
+    ],
+    "mutation_plan": {
+      "order": [
+        "INSERT npcs",
+        "INSERT worlds_npcs",
+        "INSERT npcs_items",
+        "INSERT quests",
+        "INSERT quests_steps"
+      ],
+      "statements": [
+        {
+          "table": "npcs",
+          "row": {
+            "Id": 99999,
+            "Name": "MCP Test Vendor",
+            "EntityLook": "{1}",
+            "Gender": 0,
+            "HasQuest": 0,
+            "DialogMessagesIdCSV": "1,1",
+            "DialogRepliesIdCSV": "",
+            "ActionsIdCSV": "1",
+            "Token": null
+          }
+        },
+        {
+          "table": "worlds_npcs",
+          "row": {
+            "Npc": 99999,
+            "Map": 191105026,
+            "Cell": 300,
+            "Direction": 3,
+            "Note": "mcp-world-control dry-run"
+          }
+        },
+        {
+          "table": "npcs_items",
+          "row": {
+            "NpcId": 99999,
+            "Item": 12116,
+            "Price": 1000,
+            "Token": null,
+            "ActionId": 1,
+            "Note": "mcp dry-run"
+          }
+        },
+        {
+          "table": "quests",
+          "row": {
+            "Id": 99999,
+            "Name": "MCP Test Quest"
+          }
+        },
+        {
+          "table": "quests_steps",
+          "row": {
+            "Id": 999998,
+            "Quest": 99999,
+            "Name": "Test step",
+            "Description": "dry-run",
+            "Dialog": "",
+            "OptimalLevel": 1,
+            "ExperienceReward": 100,
+            "KamasReward": 500,
+            "ItemsRewardCSV": "12116,1",
+            "ObjectiveIdsCSV": ""
+          }
+        }
+      ],
+      "rollback": "DELETE FROM worlds_npcs WHERE Npc=99999; DELETE FROM npcs_items WHERE NpcId=99999; DELETE FROM npcs WHERE Id=99999; DELETE FROM quests_steps WHERE Quest=99999; DELETE FROM quests WHERE Id=99999;"
+    },
+    "structural_errors": [],
+    "integrity_valid": true,
+    "graph_update_required": "prototype JSONL would not reflect mutation — F1 ingestion needed"
+  },
+  "test_5": {
+    "test": "TEST_5_MCP_READINESS",
+    "readiness_score": 0.352,
+    "score_breakdown": {
+      "discovery": 0.247,
+      "economy": 0.7,
+      "completeness": 0.007,
+      "action": 0.6,
+      "truth_layer": 0.18181818181818182
+    },
+    "can_discover_systems": true,
+    "can_generate_admin_actions": true,
+    "can_mutate_world_safely": false,
+    "blocking_gaps": [
+      "F1 ingestion not built — world graph absent beyond vertical slice",
+      "prototype truth_coverage_minimal 0.182",
+      "no MCP write path to MariaDB",
+      "Admin API items-only (no NPC/quest CRUD HTTP)",
+      "quest/npc/item domains LOW_TRUTH_COVERAGE in graph",
+      "map/spawn/monster nodes NOT PRESENT in prototype",
+      "graph catalog coverage 0.0007 vs DB"
+    ],
+    "admin_without_manual_domain_knowledge": false,
+    "admin_without_manual_domain_note": "DB schema inferable and dry-run plans valid, but graph coverage and write path insufficient"
+  }
+}

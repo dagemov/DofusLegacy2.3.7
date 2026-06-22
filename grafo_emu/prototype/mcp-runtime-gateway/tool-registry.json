@@ -1,0 +1,120 @@
+{
+  "phase": "MCP_RUNTIME_GATEWAY_F27",
+  "version": "v1",
+  "tool_count": 8,
+  "tool_names": [
+    "beginTransaction",
+    "explainImpact",
+    "getTransaction",
+    "listTransactions",
+    "commitTransaction",
+    "rollbackTransaction",
+    "getReingestProposal",
+    "getTransactionConsistency"
+  ],
+  "tools": {
+    "beginTransaction": {
+      "name": "beginTransaction",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "TransactionView",
+      "required_args": [
+        "intent_id",
+        "target_node"
+      ],
+      "allowed_roles": [
+        "planner",
+        "operator"
+      ]
+    },
+    "explainImpact": {
+      "name": "explainImpact",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "ImpactView",
+      "required_args": [],
+      "allowed_roles": [
+        "reader",
+        "planner",
+        "operator",
+        "rollback_operator"
+      ]
+    },
+    "getTransaction": {
+      "name": "getTransaction",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "TransactionView",
+      "required_args": [
+        "transaction_id"
+      ],
+      "allowed_roles": [
+        "reader",
+        "planner",
+        "operator",
+        "rollback_operator"
+      ]
+    },
+    "listTransactions": {
+      "name": "listTransactions",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "TransactionView[]",
+      "required_args": [],
+      "allowed_roles": [
+        "reader",
+        "planner",
+        "operator",
+        "rollback_operator"
+      ]
+    },
+    "commitTransaction": {
+      "name": "commitTransaction",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "TransactionView",
+      "required_args": [
+        "transaction_id",
+        "confirm"
+      ],
+      "allowed_roles": [
+        "operator"
+      ]
+    },
+    "rollbackTransaction": {
+      "name": "rollbackTransaction",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "TransactionView",
+      "required_args": [
+        "transaction_id"
+      ],
+      "allowed_roles": [
+        "rollback_operator"
+      ]
+    },
+    "getReingestProposal": {
+      "name": "getReingestProposal",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "ReingestProposalView",
+      "required_args": [
+        "transaction_id"
+      ],
+      "allowed_roles": [
+        "reader",
+        "planner",
+        "operator",
+        "rollback_operator"
+      ]
+    },
+    "getTransactionConsistency": {
+      "name": "getTransactionConsistency",
+      "source": "F26_TOOL_SURFACE",
+      "output_type": "ConsistencyView",
+      "required_args": [
+        "transaction_id"
+      ],
+      "allowed_roles": [
+        "reader",
+        "planner",
+        "operator",
+        "rollback_operator"
+      ]
+    }
+  },
+  "permission_model_source": "F26_PERMISSION_MODEL"
+}

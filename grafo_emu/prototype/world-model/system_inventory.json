@@ -1,0 +1,2262 @@
+{
+  "phase": "A_SQL_INVENTORY",
+  "source": "database/sunshine.sql",
+  "table_count": 84,
+  "declared_foreign_keys": 0,
+  "inferred_fk_edge_count": 19,
+  "tables": [
+    {
+      "table": "worlds_interactives",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Map",
+        "Element",
+        "Type",
+        "SkillsCSV",
+        "ParametersCSV"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 32348,
+      "usage_frequency": 32348
+    },
+    {
+      "table": "spells_levels",
+      "purpose": "spell effects blob",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "SpellId",
+        "SpellBreed",
+        "ApCost",
+        "Range",
+        "CastInLine",
+        "CastInDiagonal",
+        "CastTestLos",
+        "CriticalHitProbability",
+        "StatesRequiredCSV",
+        "CriticalFailureProbability",
+        "NeedFreeCell",
+        "NeedFreeTrapCell",
+        "NeedTakenCell",
+        "RangeCanBeBoosted",
+        "MaxStack",
+        "MaxCastPerTurn",
+        "MaxCastPerTarget",
+        "MinCastInterval",
+        "InitialCooldown",
+        "GlobalCooldown",
+        "MinPlayerLevel",
+        "CriticalFailureEndsTurn",
+        "HideEffects",
+        "Hidden",
+        "MinRange",
+        "StatesForbiddenCSV",
+        "Effects",
+        "CriticalEffects"
+      ],
+      "column_count": 28,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 12521,
+      "usage_frequency": 12521
+    },
+    {
+      "table": "worlds_maps_positions",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "PosX",
+        "PosY",
+        "Outdoor",
+        "SubArea",
+        "Capabilities",
+        "WorldMap",
+        "Name"
+      ],
+      "column_count": 8,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 10196,
+      "usage_frequency": 10196
+    },
+    {
+      "table": "worlds_maps",
+      "purpose": "world placement / map instance; hub table (many references)",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "RelativeId",
+        "Version",
+        "MapType",
+        "SubAreaId",
+        "TopNeighbourId",
+        "BottomNeighbourId",
+        "LeftNeighbourId",
+        "RightNeighbourId",
+        "ShadowBonusOnEntities",
+        "UseLowpassFilter",
+        "UseReverb",
+        "PresetId",
+        "BlueCells",
+        "RedCells",
+        "Elements",
+        "IsInstance",
+        "IsBug",
+        "ParametersCSV"
+      ],
+      "column_count": 19,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [
+        {
+          "from": "dungeons.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "npcs_replies.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "world_maps_house.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "world_maps_paddock_instance.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_interactives.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_monsters_fix.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_npcs.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_taxcollectors.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_triggers.Map",
+          "confidence": 0.85,
+          "status": "inferred"
+        }
+      ],
+      "row_count": 9517,
+      "usage_frequency": 9607
+    },
+    {
+      "table": "npcs_messages",
+      "purpose": "npc extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "NpcId"
+      ],
+      "columns": [
+        "NpcId",
+        "MessageId",
+        "ParametersCSV"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 9118,
+      "usage_frequency": 9118
+    },
+    {
+      "table": "monsters_grades",
+      "purpose": "monster extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "MonsterId",
+        "GradeId",
+        "GradeExp",
+        "Level",
+        "PaDodge",
+        "PmDodge",
+        "EarthResistance",
+        "AirResistance",
+        "FireResistance",
+        "WaterResistance",
+        "NeutralResistance",
+        "LifePoints",
+        "ActionPoints",
+        "MovementPoints",
+        "TackleEvade",
+        "TackleBlock",
+        "Strength",
+        "Chance",
+        "Vitality",
+        "Wisdom",
+        "Intelligence",
+        "Agility"
+      ],
+      "column_count": 23,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 8518,
+      "usage_frequency": 8518
+    },
+    {
+      "table": "npcs_items",
+      "purpose": "npc extension; economy",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id",
+        "NpcId"
+      ],
+      "columns": [
+        "Id",
+        "NpcId",
+        "Item",
+        "Note",
+        "Price",
+        "Token",
+        "ActionId"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Item",
+          "references": "items.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 6721,
+      "usage_frequency": 6721
+    },
+    {
+      "table": "items",
+      "purpose": "economy; hub table (many references)",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Weight",
+        "Name",
+        "TypeId",
+        "DescriptionId",
+        "IconId",
+        "Level",
+        "Cursed",
+        "UseAnimationId",
+        "Usable",
+        "Targetable",
+        "Price",
+        "TwoHanded",
+        "Etheral",
+        "ItemSetId",
+        "Criteria",
+        "HideEffects",
+        "AppearanceId",
+        "RecipeIdsCSV",
+        "FavoriteSubAreasCSV",
+        "BonusIsSecret",
+        "FavoriteSubAreasBonus",
+        "Effects"
+      ],
+      "column_count": 23,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [
+        {
+          "from": "bids_house_items.Item",
+          "confidence": 0.9,
+          "status": "inferred"
+        },
+        {
+          "from": "characters_items.Item",
+          "confidence": 0.9,
+          "status": "inferred"
+        },
+        {
+          "from": "jobs_harvest.Item",
+          "confidence": 0.9,
+          "status": "inferred"
+        },
+        {
+          "from": "npcs_items.Item",
+          "confidence": 0.9,
+          "status": "inferred"
+        },
+        {
+          "from": "taxcollectors_items.Item",
+          "confidence": 0.9,
+          "status": "inferred"
+        }
+      ],
+      "row_count": 6652,
+      "usage_frequency": 6702
+    },
+    {
+      "table": "items_weapons",
+      "purpose": "item extension; economy",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "ApCost",
+        "MinRange",
+        "Range",
+        "CastInLine",
+        "CastInDiagonal",
+        "CastTestLos",
+        "CriticalHitProbability",
+        "CriticalHitBonus",
+        "CriticalFailureProbability",
+        "Id",
+        "Weight",
+        "Name",
+        "TypeId",
+        "DescriptionId",
+        "IconId",
+        "Level",
+        "Cursed",
+        "UseAnimationId",
+        "Usable",
+        "Targetable",
+        "Price",
+        "TwoHanded",
+        "Etheral",
+        "ItemSetId",
+        "Criteria",
+        "HideEffects",
+        "AppearanceId",
+        "RecipeIdsCSV",
+        "FavoriteSubAreasCSV",
+        "BonusIsSecret",
+        "FavoriteSubAreasBonus",
+        "Effects"
+      ],
+      "column_count": 32,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 4415,
+      "usage_frequency": 4415
+    },
+    {
+      "table": "monsters_drops",
+      "purpose": "monster extension; loot drops",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "MonsterId",
+        "ItemId",
+        "DropLimit",
+        "DropRateForGrade1",
+        "DropRateForGrade2",
+        "DropRateForGrade3",
+        "DropRateForGrade4",
+        "DropRateForGrade5",
+        "ProspectingLock"
+      ],
+      "column_count": 9,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 4014,
+      "usage_frequency": 4014
+    },
+    {
+      "table": "quests_objectives",
+      "purpose": "quest structure",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Step",
+        "Type",
+        "Criteria",
+        "ParametersCSV"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Step",
+          "references": "quests_steps.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 3385,
+      "usage_frequency": 3385
+    },
+    {
+      "table": "worlds_triggers",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Map",
+        "Cell",
+        "Type",
+        "ParametersCSV"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2688,
+      "usage_frequency": 2688
+    },
+    {
+      "table": "spells",
+      "purpose": "data store (spells)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Spell"
+      ],
+      "columns": [
+        "Spell",
+        "Name",
+        "Description",
+        "TypeId",
+        "ScriptParams",
+        "ScriptParamsCritical",
+        "ScriptId",
+        "ScriptIdCritical",
+        "IconId",
+        "SpellLevelsIdsCSV",
+        "UseParamCache"
+      ],
+      "column_count": 11,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2588,
+      "usage_frequency": 2588
+    },
+    {
+      "table": "recipes",
+      "purpose": "data store (recipes)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Result",
+        "ResultLevel",
+        "IngredientIdsCSV",
+        "QuantitiesCSV",
+        "Skill"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2490,
+      "usage_frequency": 2490
+    },
+    {
+      "table": "jobs_harvest",
+      "purpose": "data store (jobs harvest)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Item",
+        "Level",
+        "Experience",
+        "Loot",
+        "Time"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Item",
+          "references": "items.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2468,
+      "usage_frequency": 2468
+    },
+    {
+      "table": "world_maps_house",
+      "purpose": "economy",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "GuildId",
+        "MapId",
+        "EnterMapId",
+        "EnterCellId",
+        "EndMapIdInstance",
+        "EndCellIdIInstance",
+        "InstanceMapCellId",
+        "Zone",
+        "ModelId",
+        "InteractiveId",
+        "GuildShareParams",
+        "OwnerName",
+        "OwnerId",
+        "Abandonned",
+        "OnSale",
+        "SaleLocked",
+        "Locked",
+        "Code",
+        "Price",
+        "DefaultPrice",
+        "InterorMapsIdsCSV",
+        "ChestCode",
+        "HasChest",
+        "GuildChest",
+        "ChestType",
+        "ChestKamas",
+        "Map",
+        "ElementId",
+        "Type",
+        "SkillsCSV",
+        "ParametersCSV"
+      ],
+      "column_count": 32,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1882,
+      "usage_frequency": 1882
+    },
+    {
+      "table": "monsters",
+      "purpose": "data store (monsters)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "GfxId",
+        "Race",
+        "EntityLook",
+        "UseSummonSlot",
+        "UseBombSlot",
+        "CanPlay",
+        "CanTackle",
+        "AI"
+      ],
+      "column_count": 10,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1660,
+      "usage_frequency": 1660
+    },
+    {
+      "table": "monsters_spells",
+      "purpose": "monster extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Monster",
+        "SpellsCSV"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1660,
+      "usage_frequency": 1660
+    },
+    {
+      "table": "worlds_npcs",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Npc",
+        "Map",
+        "Cell",
+        "Direction",
+        "Note"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Npc",
+          "references": "npcs.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        },
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1255,
+      "usage_frequency": 1255
+    },
+    {
+      "table": "npcs",
+      "purpose": "economy",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "EntityLook",
+        "Gender",
+        "HasQuest",
+        "DialogMessagesIdCSV",
+        "DialogRepliesIdCSV",
+        "ActionsIdCSV",
+        "Token"
+      ],
+      "column_count": 9,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [
+        {
+          "from": "npcs_actions.NpcId",
+          "confidence": 0.95,
+          "status": "inferred"
+        },
+        {
+          "from": "npcs_replies.Npc",
+          "confidence": 0.9,
+          "status": "inferred"
+        },
+        {
+          "from": "worlds_npcs.Npc",
+          "confidence": 0.9,
+          "status": "inferred"
+        }
+      ],
+      "row_count": 1210,
+      "usage_frequency": 1240
+    },
+    {
+      "table": "quests_steps",
+      "purpose": "quest structure; rewards",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Quest",
+        "Name",
+        "Description",
+        "Dialog",
+        "OptimalLevel",
+        "ExperienceReward",
+        "KamasReward",
+        "ItemsRewardCSV",
+        "EmotesRewardCSV",
+        "JobsRewardCSV",
+        "SpellsRewardCSV",
+        "ObjectiveIdsCSV"
+      ],
+      "column_count": 13,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Quest",
+          "references": "quests.Id",
+          "confidence": 0.95,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [
+        {
+          "from": "quests_objectives.Step",
+          "confidence": 0.9,
+          "status": "inferred"
+        }
+      ],
+      "row_count": 1009,
+      "usage_frequency": 1019
+    },
+    {
+      "table": "quests",
+      "purpose": "data store (quests)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "StepIdsCSV"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [
+        {
+          "from": "quests_steps.Quest",
+          "confidence": 0.95,
+          "status": "inferred"
+        }
+      ],
+      "row_count": 619,
+      "usage_frequency": 629
+    },
+    {
+      "table": "world_maps_paddock",
+      "purpose": "economy",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "GuildId",
+        "MapId",
+        "MaxOutdoorMount",
+        "MaxItems",
+        "Abandonned",
+        "OnSale",
+        "Locked",
+        "Price",
+        "isPublic",
+        "TpCell",
+        "CellIdSpawnMount"
+      ],
+      "column_count": 12,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 430,
+      "usage_frequency": 430
+    },
+    {
+      "table": "dungeons",
+      "purpose": "data store (dungeons)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Map",
+        "MonstersCSV",
+        "Parameters",
+        "Note"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 429,
+      "usage_frequency": 429
+    },
+    {
+      "table": "breeds_spells",
+      "purpose": "data store (breeds spells)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Spell",
+        "ObtainLevel",
+        "Breed"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 307,
+      "usage_frequency": 307
+    },
+    {
+      "table": "items_sets",
+      "purpose": "item extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "BonusIsSecret",
+        "ItemsCSV",
+        "Effects"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 219,
+      "usage_frequency": 219
+    },
+    {
+      "table": "experiences",
+      "purpose": "data store (experiences)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Level"
+      ],
+      "columns": [
+        "Level",
+        "CharacterExp",
+        "GuildExp",
+        "MountExp",
+        "AlignmentExp",
+        "JobExp"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 200,
+      "usage_frequency": 200
+    },
+    {
+      "table": "mounts_bonus",
+      "purpose": "data store (mounts bonus)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "MountTemplateId",
+        "EffectId",
+        "Amount"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 194,
+      "usage_frequency": 194
+    },
+    {
+      "table": "interactives_skills",
+      "purpose": "data store (interactives skills)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "Interactive",
+        "ParentJob",
+        "IsForgemagus",
+        "ModifiableItemType",
+        "GatheredRessourceItem",
+        "CraftableItemIdsCSV",
+        "UseAnimation",
+        "IsRepair",
+        "Cursor",
+        "AvailableInHouse"
+      ],
+      "column_count": 12,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 151,
+      "usage_frequency": 151
+    },
+    {
+      "table": "worlds_monsters",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "MonstersCSV",
+        "SubArea"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 135,
+      "usage_frequency": 135
+    },
+    {
+      "table": "interactives",
+      "purpose": "data store (interactives)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "Action"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 112,
+      "usage_frequency": 112
+    },
+    {
+      "table": "house_chest_items",
+      "purpose": "data store (house chest items)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "HouseId",
+        "ItemUid"
+      ],
+      "columns": [
+        "HouseId",
+        "ItemUid",
+        "TemplateId",
+        "Stack",
+        "Position",
+        "Effects"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 99,
+      "usage_frequency": 99
+    },
+    {
+      "table": "worlds_characters",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Account",
+        "Owner",
+        "World"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 85,
+      "usage_frequency": 85
+    },
+    {
+      "table": "worlds_zaapis",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "IsBonta"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 79,
+      "usage_frequency": 79
+    },
+    {
+      "table": "mounts_templates",
+      "purpose": "data store (mounts templates)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "NameId",
+        "LookAsString",
+        "ScrollId",
+        "PodsBase",
+        "PodsPerLevel",
+        "EnergyBase",
+        "EnergyPerLevel",
+        "MaturityBase",
+        "FecondationTime",
+        "LearnCoefficient"
+      ],
+      "column_count": 11,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 72,
+      "usage_frequency": 72
+    },
+    {
+      "table": "teleports_zones_maps",
+      "purpose": "data store (teleports zones maps)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "TeleportMapId",
+        "TeleportCellId",
+        "DestinationName",
+        "DestinationDescription",
+        "KamasCost",
+        "RequiredItemId"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 58,
+      "usage_frequency": 58
+    },
+    {
+      "table": "bids_house",
+      "purpose": "data store (bids house)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "MapId",
+        "Types",
+        "Level",
+        "Note"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 55,
+      "usage_frequency": 55
+    },
+    {
+      "table": "teleports_donjons_maps",
+      "purpose": "data store (teleports donjons maps)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "TeleportMapId",
+        "TeleportCellId",
+        "DestinationName",
+        "DestinationDescription",
+        "KamasCost",
+        "RequiredItemId"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 55,
+      "usage_frequency": 55
+    },
+    {
+      "table": "world_maps_paddock_instance",
+      "purpose": "data store (world maps paddock instance)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "GuildId",
+        "MapId",
+        "EnterMapId",
+        "EnterCellId",
+        "Zone",
+        "InteractiveId",
+        "InterorMapsIdsCSV",
+        "Map",
+        "ElementId",
+        "Type",
+        "SkillsCSV",
+        "ParametersCSV"
+      ],
+      "column_count": 13,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 37,
+      "usage_frequency": 37
+    },
+    {
+      "table": "jobs",
+      "purpose": "data store (jobs)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "Specialization",
+        "Icon",
+        "ToolIdsCSV"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 33,
+      "usage_frequency": 33
+    },
+    {
+      "table": "npcs_replies",
+      "purpose": "npc extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Npc",
+        "Map",
+        "Type",
+        "MessageId",
+        "ReplieId",
+        "ParametersCSV",
+        "DialogParamsCSV",
+        "Note"
+      ],
+      "column_count": 8,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Npc",
+          "references": "npcs.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        },
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 23,
+      "usage_frequency": 23
+    },
+    {
+      "table": "breeds",
+      "purpose": "data store (breeds)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "MaleLook",
+        "FemaleLook",
+        "StartMap",
+        "StartCell",
+        "StartDirection",
+        "StatsPointsForStrengthCSV",
+        "StatsPointsForIntelligenceCSV",
+        "StatsPointsForChanceCSV",
+        "StatsPointsForAgilityCSV",
+        "StatsPointsForVitalityCSV",
+        "StatsPointsForWisdomCSV"
+      ],
+      "column_count": 12,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 14,
+      "usage_frequency": 14
+    },
+    {
+      "table": "quests_objectives_types",
+      "purpose": "quest structure",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 14,
+      "usage_frequency": 14
+    },
+    {
+      "table": "mounts",
+      "purpose": "data store (mounts)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Name",
+        "Sex",
+        "TemplateId",
+        "Experience",
+        "GivenExperience",
+        "Stamina",
+        "Maturity",
+        "Energy",
+        "Serenity",
+        "Love",
+        "ReproductionCount",
+        "BehaviorsCSV",
+        "OwnerId",
+        "OwnerName",
+        "PaddockId",
+        "IsInStable",
+        "StoredSince",
+        "Id"
+      ],
+      "column_count": 18,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 12,
+      "usage_frequency": 12
+    },
+    {
+      "table": "runes_effects",
+      "purpose": "data store (runes effects)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "PEffect"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 10,
+      "usage_frequency": 10
+    },
+    {
+      "table": "world_trashes",
+      "purpose": "data store (world trashes)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "MapId",
+        "ElementId"
+      ],
+      "columns": [
+        "MapId",
+        "ElementId",
+        "Kamas"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 9,
+      "usage_frequency": 9
+    },
+    {
+      "table": "items_livingobjects",
+      "purpose": "item extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "MoodsBin",
+        "SkinsCSV",
+        "ItemType"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 8,
+      "usage_frequency": 8
+    },
+    {
+      "table": "guilds_members",
+      "purpose": "data store (guilds members)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Owner"
+      ],
+      "columns": [
+        "Owner",
+        "Account",
+        "Guild",
+        "Rank",
+        "Rights",
+        "GivenExperience",
+        "GivenPercent"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 6,
+      "usage_frequency": 6
+    },
+    {
+      "table": "runes",
+      "purpose": "data store (runes)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Pwr",
+        "PEffect",
+        "Over"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 6,
+      "usage_frequency": 6
+    },
+    {
+      "table": "world_maps_merchant",
+      "purpose": "data store (world maps merchant)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "CharacterId"
+      ],
+      "columns": [
+        "CharacterId",
+        "AccountId",
+        "MapId",
+        "CellId",
+        "Direction",
+        "Name",
+        "LookString",
+        "IsActive",
+        "MerchantSince"
+      ],
+      "column_count": 9,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 5,
+      "usage_frequency": 5
+    },
+    {
+      "table": "world_maps_prism",
+      "purpose": "data store (world maps prism)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "SubAreaId",
+        "MapId",
+        "CellId",
+        "WorldX",
+        "WorldY",
+        "AlignmentSide",
+        "PlacementDate",
+        "IsInFight",
+        "IsFightable",
+        "Defeated",
+        "LastFight"
+      ],
+      "column_count": 12,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 5,
+      "usage_frequency": 5
+    },
+    {
+      "table": "guilds",
+      "purpose": "data store (guilds)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Date",
+        "Name",
+        "Experience",
+        "Boost",
+        "Prospecting",
+        "Wisdom",
+        "Pods",
+        "MaxTaxCollectors",
+        "SpellsCSV",
+        "SpellsLevelsCSV",
+        "EmblemBackgroundShape",
+        "EmblemBackgroundColor",
+        "EmblemForegroundShape",
+        "EmblemForegroundColor"
+      ],
+      "column_count": 15,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 3,
+      "usage_frequency": 3
+    },
+    {
+      "table": "bids_house_items",
+      "purpose": "economy",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "OwnerId",
+        "Item",
+        "Price",
+        "Stack",
+        "Effects",
+        "Selled"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Item",
+          "references": "items.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2,
+      "usage_frequency": 2
+    },
+    {
+      "table": "world_trashes_items",
+      "purpose": "data store (world trashes items)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "MapId",
+        "ElementId",
+        "ItemUid"
+      ],
+      "columns": [
+        "MapId",
+        "ElementId",
+        "ItemUid",
+        "TemplateId",
+        "Stack",
+        "Position",
+        "Effects"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2,
+      "usage_frequency": 2
+    },
+    {
+      "table": "worlds_monsters_fix",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "Map",
+        "MonstersCSV",
+        "CellsCSV",
+        "Note"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 2,
+      "usage_frequency": 2
+    },
+    {
+      "table": "dungeons_search",
+      "purpose": "data store (dungeons search)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "NameId",
+        "OptimalPlayerLevel",
+        "MapIdsBin",
+        "EntranceMapId",
+        "ExitMapId",
+        "Name",
+        "MapIdSpawn"
+      ],
+      "column_count": 8,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1,
+      "usage_frequency": 1
+    },
+    {
+      "table": "npcs_actions",
+      "purpose": "npc extension",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "NpcId",
+        "Type",
+        "Parameters",
+        "Priority"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "NpcId",
+          "references": "npcs.Id",
+          "confidence": 0.95,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1,
+      "usage_frequency": 1
+    },
+    {
+      "table": "teleports_maps",
+      "purpose": "data store (teleports maps)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "TeleportMapId",
+        "TeleportCellId",
+        "DestinationName",
+        "DestinationDescription",
+        "KamasCost",
+        "RequiredItemId"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1,
+      "usage_frequency": 1
+    },
+    {
+      "table": "worlds",
+      "purpose": "data store (worlds)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "Address",
+        "Port",
+        "Selectable",
+        "Status",
+        "RequiredRole",
+        "CharCount",
+        "CharCapacity"
+      ],
+      "column_count": 9,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 1,
+      "usage_frequency": 1
+    },
+    {
+      "table": "account_bank_items",
+      "purpose": "data store (account bank items)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "AccountId",
+        "ItemUid"
+      ],
+      "columns": [
+        "AccountId",
+        "ItemUid",
+        "TemplateId",
+        "Stack",
+        "Position",
+        "Effects"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "accounts",
+      "purpose": "player identity; economy",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Username",
+        "Password",
+        "Nickname",
+        "Role",
+        "SecretQuestion",
+        "SecretAnswer",
+        "IsBanned",
+        "Ticket",
+        "vote",
+        "heurevote",
+        "RegisteredIP",
+        "Tokens",
+        "NewTokens"
+      ],
+      "column_count": 14,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "accounts_bank",
+      "purpose": "data store (accounts bank)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "AccountId"
+      ],
+      "columns": [
+        "AccountId",
+        "Kamas"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "character_enemies",
+      "purpose": "data store (character enemies)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "CharacterId",
+        "EnemyCharacterId"
+      ],
+      "columns": [
+        "CharacterId",
+        "EnemyCharacterId",
+        "EnemyName"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "character_friends",
+      "purpose": "data store (character friends)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "CharacterId",
+        "FriendCharacterId"
+      ],
+      "columns": [
+        "CharacterId",
+        "FriendCharacterId",
+        "FriendName",
+        "FriendAccountNickname"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters",
+      "purpose": "player identity",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Name",
+        "Level",
+        "Breed",
+        "Sex",
+        "EntityLook",
+        "CustomLook",
+        "MapId",
+        "CellId",
+        "Direction",
+        "Experience",
+        "Kamas",
+        "StatsPoints",
+        "SpellsPoints",
+        "Zaaps",
+        "HouseId",
+        "CanUseRename",
+        "CanUseRecolor",
+        "CanUseRelook",
+        "EquippedMount",
+        "IsRiding",
+        "PaddockId"
+      ],
+      "column_count": 22,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_alignments",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId"
+      ],
+      "columns": [
+        "OwnerId",
+        "Side",
+        "Value",
+        "Grade",
+        "Honor",
+        "Dishonor",
+        "Enabled"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_items",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "OwnerId",
+        "Item",
+        "Position",
+        "Stack",
+        "Effects",
+        "ItemUid"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Item",
+          "references": "items.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_items_merchant",
+      "purpose": "per-character runtime state; economy",
+      "purpose_confidence": 0.8,
+      "purpose_inferred": true,
+      "primary_key": [
+        "ItemUid"
+      ],
+      "columns": [
+        "ItemUid",
+        "OwnerId",
+        "TemplateId",
+        "Stack",
+        "Position",
+        "Price",
+        "Effects"
+      ],
+      "column_count": 7,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_items_presets",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "PresetId",
+        "OwnerId",
+        "SymbolId",
+        "SerializedObjects"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_jobs",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "OwnerId",
+        "Job",
+        "Experience"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_quests",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId",
+        "Quest"
+      ],
+      "columns": [
+        "OwnerId",
+        "Quest",
+        "IsFinished",
+        "isValided"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_quests_objectives",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId",
+        "Step",
+        "Objective"
+      ],
+      "columns": [
+        "OwnerId",
+        "Step",
+        "Objective",
+        "Type",
+        "IsFinished",
+        "IsValided"
+      ],
+      "column_count": 6,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_quests_steps",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId",
+        "Quest",
+        "Step"
+      ],
+      "columns": [
+        "OwnerId",
+        "Quest",
+        "Step",
+        "IsFinished",
+        "isValided"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_shortcuts_items",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId",
+        "Slot"
+      ],
+      "columns": [
+        "OwnerId",
+        "Slot",
+        "ItemUid",
+        "ItemGid"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_shortcuts_items_presets",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "OwnerId",
+        "PresetId",
+        "Slot"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_shortcuts_spells",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "OwnerId",
+        "Spell",
+        "Slot"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_spells",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [],
+      "columns": [
+        "OwnerId",
+        "Spell",
+        "Level"
+      ],
+      "column_count": 3,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "characters_stats",
+      "purpose": "per-character runtime state",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "OwnerId"
+      ],
+      "columns": [
+        "OwnerId",
+        "AP",
+        "MP",
+        "Health",
+        "Vitality",
+        "Strength",
+        "Chance",
+        "Wisdom",
+        "Intelligence",
+        "Agility",
+        "DamageTaken"
+      ],
+      "column_count": 11,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "dungeon_finder_registrations",
+      "purpose": "data store (dungeon finder registrations)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "PlayerId",
+        "DungeonId",
+        "RegistrationDate"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "dungeon_finder_rooms",
+      "purpose": "data store (dungeon finder rooms)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "PlayerId",
+        "DungeonId",
+        "PlayerName",
+        "Breed",
+        "Sex",
+        "Level",
+        "GfxId",
+        "ColorsCSV",
+        "EquipmentsCSV",
+        "JoinDate"
+      ],
+      "column_count": 11,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "dungeons_symbioz",
+      "purpose": "data store (dungeons symbioz)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "MapId"
+      ],
+      "columns": [
+        "MapId",
+        "DungeonName"
+      ],
+      "column_count": 2,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "mounts_items",
+      "purpose": "data store (mounts items)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "MountId",
+        "Id",
+        "ItemId",
+        "Stack",
+        "SerializedEffects"
+      ],
+      "column_count": 5,
+      "inferred_foreign_keys_out": [],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "taxcollectors_items",
+      "purpose": "data store (taxcollectors items)",
+      "purpose_confidence": 0.4,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "Item",
+        "Stack",
+        "Effects"
+      ],
+      "column_count": 4,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Item",
+          "references": "items.Id",
+          "confidence": 0.9,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    },
+    {
+      "table": "worlds_taxcollectors",
+      "purpose": "world placement / map instance",
+      "purpose_confidence": 0.65,
+      "purpose_inferred": true,
+      "primary_key": [
+        "Id"
+      ],
+      "columns": [
+        "Id",
+        "OwnerId",
+        "Guild",
+        "Map",
+        "Cell",
+        "Direction",
+        "FirstName",
+        "LastName",
+        "CallerName",
+        "Date",
+        "GatheredExperience",
+        "GatheredKamas",
+        "AttacksCount"
+      ],
+      "column_count": 13,
+      "inferred_foreign_keys_out": [
+        {
+          "column": "Map",
+          "references": "worlds_maps.Id",
+          "confidence": 0.85,
+          "status": "inferred",
+          "multi_valued": false
+        }
+      ],
+      "inferred_foreign_keys_in": [],
+      "row_count": 0,
+      "usage_frequency": 0
+    }
+  ]
+}

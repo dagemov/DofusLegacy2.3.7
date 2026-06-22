@@ -1,0 +1,33 @@
+{
+  "phase": "CAUSAL_GRAPH_MANIFEST",
+  "generated_at": "2026-06-22T04:45:23.821Z",
+  "node_count": 37316,
+  "edge_count": 112635,
+  "relationship_types": 23,
+  "unchanged_vs_phase_20": true,
+  "enrichment_schema": {
+    "relation": "same as rel",
+    "semantic_role": "STRUCTURAL|FUNCTIONAL|BEHAVIORAL|ECONOMIC|NARRATIVE|DERIVATIVE",
+    "causal_weight": "0.0-1.0",
+    "gameplay_impact": "HIGH|MEDIUM|LOW|NEGLIGIBLE",
+    "modification_risk": "HIGH|MEDIUM|LOW",
+    "propagation_depth": "integer hops",
+    "derivative": "boolean"
+  },
+  "role_distribution": {
+    "STRUCTURAL": 82156,
+    "FUNCTIONAL": 5055,
+    "ECONOMIC": 11044,
+    "BEHAVIORAL": 4478,
+    "NARRATIVE": 6880,
+    "DERIVATIVE": 3022
+  },
+  "causal_weight_histogram": {
+    "0.0": 17729,
+    "0.3": 44706,
+    "0.6": 44122,
+    "0.9": 6078,
+    "1.0": 0
+  },
+  "enriched_stream": "causal_graph.jsonl"
+}

@@ -1,0 +1,122 @@
+{
+  "phase": "MCP_RUNTIME_GATEWAY_F27",
+  "version": "v1",
+  "timestamp": "2026-06-22T09:23:42.755Z",
+  "read_only": true,
+  "no_mcp_server": true,
+  "no_json_rpc": true,
+  "no_stdio": true,
+  "no_http": true,
+  "no_rest": true,
+  "no_websocket": true,
+  "no_sql": true,
+  "no_ssh": true,
+  "no_docker": true,
+  "no_writes": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "no_agent_layer": true,
+  "preflight": {
+    "passed": true
+  },
+  "registry": {
+    "tool_count": 8,
+    "tool_names": [
+      "beginTransaction",
+      "explainImpact",
+      "getTransaction",
+      "listTransactions",
+      "commitTransaction",
+      "rollbackTransaction",
+      "getReingestProposal",
+      "getTransactionConsistency"
+    ],
+    "source": "F26_TOOL_SURFACE"
+  },
+  "case_summary": {
+    "CASE_A": {
+      "transaction_id": "txn-item519-commit",
+      "tools_used": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction",
+        "getTransactionConsistency",
+        "getTransaction"
+      ]
+    },
+    "CASE_B": {
+      "transaction_id": "txn-npc462-blocked",
+      "tools_used": [
+        "beginTransaction",
+        "commitTransaction"
+      ]
+    },
+    "CASE_C": {
+      "transaction_id": "txn-item519-rollback",
+      "tools_used": [
+        "rollbackTransaction"
+      ]
+    },
+    "CASE_D": {
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "tools_used": [
+        "explainImpact",
+        "getReingestProposal"
+      ]
+    }
+  },
+  "outputs": {
+    "gateway_preflight": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-runtime-gateway\\gateway-preflight-report.json",
+    "tool_registry": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-runtime-gateway\\tool-registry.json",
+    "case_replay": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-runtime-gateway\\case-replay-report.json"
+  },
+  "tests": [
+    {
+      "id": "T1",
+      "status": "PASS",
+      "detail": "F26 present and F25 bundle OK"
+    },
+    {
+      "id": "T2",
+      "status": "PASS",
+      "detail": "Registry contains exactly 8 tools from F26 TOOL_SURFACE"
+    },
+    {
+      "id": "T3",
+      "status": "PASS",
+      "detail": "All 8 tools dispatch to ResponseModel"
+    },
+    {
+      "id": "T4",
+      "status": "PASS",
+      "detail": "CASE A executable via gateway"
+    },
+    {
+      "id": "T5",
+      "status": "PASS",
+      "detail": "CASE B returns BLOCKED_BY_BLAST_RADIUS"
+    },
+    {
+      "id": "T6",
+      "status": "PASS",
+      "detail": "CASE C rollback valid"
+    },
+    {
+      "id": "T7",
+      "status": "PASS",
+      "detail": "CASE D reingest proposal Phase20+Phase21"
+    },
+    {
+      "id": "T8",
+      "status": "PASS",
+      "detail": "all_tests_passed=true determinism_hash=4cb87207346420c1"
+    }
+  ],
+  "all_tests_passed": true,
+  "determinism_hash": "4cb87207346420c1",
+  "f28_readiness": {
+    "gateway_stable": true,
+    "any_client_can_consume": true,
+    "public_surface": "Gateway -> Tool Contract -> World Transaction"
+  }
+}

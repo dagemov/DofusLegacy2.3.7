@@ -1,0 +1,2467 @@
+{
+  "phase": "RELATIONSHIP_GRAPH",
+  "edges_discovered": 112635,
+  "relationship_types": 23,
+  "relationship_type_histogram": {
+    "SPAWNED_IN": 33603,
+    "LOCATED_AT": 429,
+    "CONTAINS_MONSTER": 2569,
+    "EXITS_TO": 429,
+    "SPAWNS_MONSTER": 836,
+    "IN_SUBAREA": 9517,
+    "NEIGHBOR_OF": 38064,
+    "SELLS": 6722,
+    "OFFERS_ACTION": 1,
+    "DROPS_ITEM": 4014,
+    "USES_SPELL": 4478,
+    "HAS_STEP": 1009,
+    "HAS_OBJECTIVE": 3385,
+    "DISCOVER_MAP": 250,
+    "INVOLVES_NPC": 2235,
+    "REQUIRES_ITEM": 716,
+    "DEFEAT_MONSTER": 933,
+    "DISCOVER_AREA": 1,
+    "REWARDS_ITEM": 305,
+    "REWARDS_SPELL": 3,
+    "TELEPORT_FROM": 114,
+    "STARTS_QUEST": 466,
+    "PARTICIPATES_IN_MAP": 2556
+  },
+  "unique_nodes": 37316,
+  "cross_system_paths": [
+    {
+      "template": "HAS_STEP -> HAS_OBJECTIVE -> INVOLVES_NPC",
+      "start": "quest:3",
+      "end": "npc:449",
+      "steps": [
+        {
+          "rel": "HAS_STEP",
+          "node": "quest:3"
+        },
+        {
+          "node": "queststep:3"
+        },
+        {
+          "rel": "HAS_OBJECTIVE",
+          "node": "objective:3"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "node": "npc:449"
+        }
+      ]
+    },
+    {
+      "template": "HAS_STEP -> HAS_OBJECTIVE -> INVOLVES_NPC -> SPAWNED_IN",
+      "start": "quest:3",
+      "end": "map:1810",
+      "steps": [
+        {
+          "rel": "HAS_STEP",
+          "node": "quest:3"
+        },
+        {
+          "node": "queststep:3"
+        },
+        {
+          "rel": "HAS_OBJECTIVE",
+          "node": "objective:3"
+        },
+        {
+          "rel": "INVOLVES_NPC",
+          "node": "npc:449"
+        },
+        {
+          "rel": "SPAWNED_IN",
+          "node": "map:1810"
+        }
+      ]
+    },
+    {
+      "template": "CONTAINS_MONSTER -> USES_SPELL",
+      "start": "dungeon:1",
+      "end": "spell:201",
+      "steps": [
+        {
+          "rel": "CONTAINS_MONSTER",
+          "node": "dungeon:1"
+        },
+        {
+          "node": "monster:970"
+        },
+        {
+          "rel": "USES_SPELL",
+          "node": "spell:201"
+        }
+      ]
+    },
+    {
+      "template": "CONTAINS_MONSTER -> DROPS_ITEM",
+      "start": "dungeon:1",
+      "end": "item:367",
+      "steps": [
+        {
+          "rel": "CONTAINS_MONSTER",
+          "node": "dungeon:1"
+        },
+        {
+          "node": "monster:970"
+        },
+        {
+          "rel": "DROPS_ITEM",
+          "node": "item:367"
+        }
+      ]
+    },
+    {
+      "template": "IN_SUBAREA -> SPAWNS_MONSTER",
+      "start": "map:10020",
+      "end": "monster:517",
+      "steps": [
+        {
+          "rel": "IN_SUBAREA",
+          "node": "map:10020"
+        },
+        {
+          "node": "subarea:108"
+        },
+        {
+          "rel": "SPAWNS_MONSTER",
+          "node": "monster:517"
+        }
+      ]
+    },
+    {
+      "template": "SELLS",
+      "start": "npc:462",
+      "end": "item:491",
+      "steps": [
+        {
+          "rel": "SELLS",
+          "node": "npc:462"
+        },
+        {
+          "node": "item:491"
+        }
+      ]
+    },
+    {
+      "template": "LOCATED_AT",
+      "start": "dungeon:1",
+      "end": "map:23857152",
+      "steps": [
+        {
+          "rel": "LOCATED_AT",
+          "node": "dungeon:1"
+        },
+        {
+          "node": "map:23857152"
+        }
+      ]
+    },
+    {
+      "template": "HAS_STEP -> HAS_OBJECTIVE -> DISCOVER_MAP",
+      "start": "quest:3",
+      "end": "map:51452",
+      "steps": [
+        {
+          "rel": "HAS_STEP",
+          "node": "quest:3"
+        },
+        {
+          "node": "queststep:2"
+        },
+        {
+          "rel": "HAS_OBJECTIVE",
+          "node": "objective:2"
+        },
+        {
+          "rel": "DISCOVER_MAP",
+          "node": "map:51452"
+        }
+      ]
+    }
+  ],
+  "cross_system_paths_found": 8,
+  "dependency_chains": {
+    "npc": {
+      "node": "npc:462",
+      "outgoing": [
+        {
+          "target": "map:38273033",
+          "rel": "SPAWNED_IN",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033"
+          ]
+        },
+        {
+          "target": "item:491",
+          "rel": "SELLS",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "SELLS->item:491"
+          ]
+        },
+        {
+          "target": "quest:5",
+          "rel": "STARTS_QUEST",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5"
+          ]
+        },
+        {
+          "target": "subarea:95",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95"
+          ]
+        },
+        {
+          "target": "map:38273032",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032"
+          ]
+        },
+        {
+          "target": "map:38273034",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034"
+          ]
+        },
+        {
+          "target": "map:38404617",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38404617"
+          ]
+        },
+        {
+          "target": "map:38273545",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273545"
+          ]
+        },
+        {
+          "target": "queststep:10",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10"
+          ]
+        },
+        {
+          "target": "queststep:11",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:11"
+          ]
+        },
+        {
+          "target": "queststep:12",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:12"
+          ]
+        },
+        {
+          "target": "queststep:13",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13"
+          ]
+        },
+        {
+          "target": "map:38273033",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "PARTICIPATES_IN_MAP->map:38273033"
+          ]
+        },
+        {
+          "target": "monster:236",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236"
+          ]
+        },
+        {
+          "target": "monster:489",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:489"
+          ]
+        },
+        {
+          "target": "monster:490",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:490"
+          ]
+        },
+        {
+          "target": "monster:491",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:491"
+          ]
+        },
+        {
+          "target": "monster:492",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:492"
+          ]
+        },
+        {
+          "target": "monster:493",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:493"
+          ]
+        },
+        {
+          "target": "map:38273031",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273031"
+          ]
+        },
+        {
+          "target": "map:38273033",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273033"
+          ]
+        },
+        {
+          "target": "map:38404616",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38404616"
+          ]
+        },
+        {
+          "target": "map:38273544",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273544"
+          ]
+        },
+        {
+          "target": "map:38273035",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38273035"
+          ]
+        },
+        {
+          "target": "map:38404618",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38404618"
+          ]
+        },
+        {
+          "target": "map:38273546",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38273546"
+          ]
+        },
+        {
+          "target": "map:38274057",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273545",
+            "NEIGHBOR_OF->map:38274057"
+          ]
+        },
+        {
+          "target": "objective:42",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10",
+            "HAS_OBJECTIVE->objective:42"
+          ]
+        },
+        {
+          "target": "item:6773",
+          "rel": "REWARDS_ITEM",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10",
+            "REWARDS_ITEM->item:6773"
+          ]
+        },
+        {
+          "target": "objective:43",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:11",
+            "HAS_OBJECTIVE->objective:43"
+          ]
+        },
+        {
+          "target": "objective:44",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:12",
+            "HAS_OBJECTIVE->objective:44"
+          ]
+        },
+        {
+          "target": "objective:45",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13",
+            "HAS_OBJECTIVE->objective:45"
+          ]
+        },
+        {
+          "target": "item:6793",
+          "rel": "REWARDS_ITEM",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13",
+            "REWARDS_ITEM->item:6793"
+          ]
+        },
+        {
+          "target": "item:6898",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:6898"
+          ]
+        },
+        {
+          "target": "item:287",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:287"
+          ]
+        },
+        {
+          "target": "item:2475",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:2475"
+          ]
+        },
+        {
+          "target": "spell:626",
+          "rel": "USES_SPELL",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "USES_SPELL->spell:626"
+          ]
+        },
+        {
+          "target": "item:6900",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:489",
+            "DROPS_ITEM->item:6900"
+          ]
+        },
+        {
+          "target": "item:6899",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:490",
+            "DROPS_ITEM->item:6899"
+          ]
+        },
+        {
+          "target": "item:6897",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:491",
+            "DROPS_ITEM->item:6897"
+          ]
+        }
+      ],
+      "outgoing_count": 3
+    },
+    "quest": {
+      "node": "quest:3",
+      "outgoing": [
+        {
+          "target": "queststep:2",
+          "rel": "HAS_STEP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2"
+          ]
+        },
+        {
+          "target": "queststep:3",
+          "rel": "HAS_STEP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:3"
+          ]
+        },
+        {
+          "target": "queststep:4",
+          "rel": "HAS_STEP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:4"
+          ]
+        },
+        {
+          "target": "queststep:5",
+          "rel": "HAS_STEP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:5"
+          ]
+        },
+        {
+          "target": "queststep:32",
+          "rel": "HAS_STEP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32"
+          ]
+        },
+        {
+          "target": "map:51452",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:51452"
+          ]
+        },
+        {
+          "target": "map:50948",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:50948"
+          ]
+        },
+        {
+          "target": "map:52018",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:52018"
+          ]
+        },
+        {
+          "target": "map:50942",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:50942"
+          ]
+        },
+        {
+          "target": "map:1810",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810"
+          ]
+        },
+        {
+          "target": "map:6667",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667"
+          ]
+        },
+        {
+          "target": "objective:2",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2",
+            "HAS_OBJECTIVE->objective:2"
+          ]
+        },
+        {
+          "target": "objective:32",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2",
+            "HAS_OBJECTIVE->objective:32"
+          ]
+        },
+        {
+          "target": "objective:177",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2",
+            "HAS_OBJECTIVE->objective:177"
+          ]
+        },
+        {
+          "target": "objective:3",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:3",
+            "HAS_OBJECTIVE->objective:3"
+          ]
+        },
+        {
+          "target": "objective:286",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:4",
+            "HAS_OBJECTIVE->objective:286"
+          ]
+        },
+        {
+          "target": "objective:178",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:4",
+            "HAS_OBJECTIVE->objective:178"
+          ]
+        },
+        {
+          "target": "objective:287",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:4",
+            "HAS_OBJECTIVE->objective:287"
+          ]
+        },
+        {
+          "target": "objective:179",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:4",
+            "HAS_OBJECTIVE->objective:179"
+          ]
+        },
+        {
+          "target": "objective:26",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:5",
+            "HAS_OBJECTIVE->objective:26"
+          ]
+        },
+        {
+          "target": "objective:284",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:5",
+            "HAS_OBJECTIVE->objective:284"
+          ]
+        },
+        {
+          "target": "objective:288",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:5",
+            "HAS_OBJECTIVE->objective:288"
+          ]
+        },
+        {
+          "target": "objective:148",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32",
+            "HAS_OBJECTIVE->objective:148"
+          ]
+        },
+        {
+          "target": "objective:315",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32",
+            "HAS_OBJECTIVE->objective:315"
+          ]
+        },
+        {
+          "target": "objective:304",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32",
+            "HAS_OBJECTIVE->objective:304"
+          ]
+        },
+        {
+          "target": "objective:314",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32",
+            "HAS_OBJECTIVE->objective:314"
+          ]
+        },
+        {
+          "target": "item:288",
+          "rel": "REWARDS_ITEM",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:32",
+            "REWARDS_ITEM->item:288"
+          ]
+        },
+        {
+          "target": "subarea:95",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810",
+            "IN_SUBAREA->subarea:95"
+          ]
+        },
+        {
+          "target": "map:1811",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810",
+            "NEIGHBOR_OF->map:1811"
+          ]
+        },
+        {
+          "target": "map:1809",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810",
+            "NEIGHBOR_OF->map:1809"
+          ]
+        },
+        {
+          "target": "map:1298",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810",
+            "NEIGHBOR_OF->map:1298"
+          ]
+        },
+        {
+          "target": "map:2322",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:1810",
+            "NEIGHBOR_OF->map:2322"
+          ]
+        },
+        {
+          "target": "subarea:103",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667",
+            "IN_SUBAREA->subarea:103"
+          ]
+        },
+        {
+          "target": "map:6666",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667",
+            "NEIGHBOR_OF->map:6666"
+          ]
+        },
+        {
+          "target": "map:6668",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667",
+            "NEIGHBOR_OF->map:6668"
+          ]
+        },
+        {
+          "target": "map:6155",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667",
+            "NEIGHBOR_OF->map:6155"
+          ]
+        },
+        {
+          "target": "map:7179",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "quest:3",
+            "PARTICIPATES_IN_MAP->map:6667",
+            "NEIGHBOR_OF->map:7179"
+          ]
+        },
+        {
+          "target": "map:51452",
+          "rel": "DISCOVER_MAP",
+          "depth": 3,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2",
+            "HAS_OBJECTIVE->objective:2",
+            "DISCOVER_MAP->map:51452"
+          ]
+        },
+        {
+          "target": "npc:449",
+          "rel": "INVOLVES_NPC",
+          "depth": 3,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:2",
+            "HAS_OBJECTIVE->objective:177",
+            "INVOLVES_NPC->npc:449"
+          ]
+        },
+        {
+          "target": "item:306",
+          "rel": "REQUIRES_ITEM",
+          "depth": 3,
+          "path": [
+            "quest:3",
+            "HAS_STEP->queststep:3",
+            "HAS_OBJECTIVE->objective:3",
+            "REQUIRES_ITEM->item:306"
+          ]
+        }
+      ],
+      "outgoing_count": 15
+    },
+    "monster": {
+      "node": "monster:31",
+      "outgoing": [
+        {
+          "target": "item:519",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:519"
+          ]
+        },
+        {
+          "target": "item:362",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:362"
+          ]
+        },
+        {
+          "target": "item:7423",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:7423"
+          ]
+        },
+        {
+          "target": "item:2474",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:2474"
+          ]
+        },
+        {
+          "target": "item:643",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:643"
+          ]
+        },
+        {
+          "target": "item:8143",
+          "rel": "DROPS_ITEM",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DROPS_ITEM->item:8143"
+          ]
+        },
+        {
+          "target": "spell:213",
+          "rel": "USES_SPELL",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "USES_SPELL->spell:213"
+          ]
+        },
+        {
+          "target": "spell:212",
+          "rel": "USES_SPELL",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "USES_SPELL->spell:212"
+          ]
+        }
+      ],
+      "outgoing_count": 8
+    },
+    "dungeon": {
+      "node": "dungeon:1",
+      "outgoing": [
+        {
+          "target": "map:23857152",
+          "rel": "LOCATED_AT",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152"
+          ]
+        },
+        {
+          "target": "monster:970",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970"
+          ]
+        },
+        {
+          "target": "monster:974",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974"
+          ]
+        },
+        {
+          "target": "monster:975",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975"
+          ]
+        },
+        {
+          "target": "monster:978",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978"
+          ]
+        },
+        {
+          "target": "monster:982",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:982"
+          ]
+        },
+        {
+          "target": "map:23858176",
+          "rel": "EXITS_TO",
+          "depth": 1,
+          "path": [
+            "dungeon:1",
+            "EXITS_TO->map:23858176"
+          ]
+        },
+        {
+          "target": "subarea:447",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "IN_SUBAREA->subarea:447"
+          ]
+        },
+        {
+          "target": "map:23857409",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "NEIGHBOR_OF->map:23857409"
+          ]
+        },
+        {
+          "target": "map:23857153",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "NEIGHBOR_OF->map:23857153"
+          ]
+        },
+        {
+          "target": "map:23856640",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "NEIGHBOR_OF->map:23856640"
+          ]
+        },
+        {
+          "target": "map:23857664",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "NEIGHBOR_OF->map:23857664"
+          ]
+        },
+        {
+          "target": "map:23857152",
+          "rel": "TELEPORT_FROM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "TELEPORT_FROM->map:23857152"
+          ]
+        },
+        {
+          "target": "item:8545",
+          "rel": "REQUIRES_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "LOCATED_AT->map:23857152",
+            "REQUIRES_ITEM->item:8545"
+          ]
+        },
+        {
+          "target": "item:367",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "DROPS_ITEM->item:367"
+          ]
+        },
+        {
+          "target": "item:301",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "DROPS_ITEM->item:301"
+          ]
+        },
+        {
+          "target": "item:366",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "DROPS_ITEM->item:366"
+          ]
+        },
+        {
+          "target": "item:8545",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "DROPS_ITEM->item:8545"
+          ]
+        },
+        {
+          "target": "item:2476",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "DROPS_ITEM->item:2476"
+          ]
+        },
+        {
+          "target": "spell:201",
+          "rel": "USES_SPELL",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:970",
+            "USES_SPELL->spell:201"
+          ]
+        },
+        {
+          "target": "item:307",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:307"
+          ]
+        },
+        {
+          "target": "item:519",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:519"
+          ]
+        },
+        {
+          "target": "item:371",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:371"
+          ]
+        },
+        {
+          "target": "item:6917",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:6917"
+          ]
+        },
+        {
+          "target": "item:6918",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:6918"
+          ]
+        },
+        {
+          "target": "item:2477",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:2477"
+          ]
+        },
+        {
+          "target": "item:6916",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:6916"
+          ]
+        },
+        {
+          "target": "item:6915",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "DROPS_ITEM->item:6915"
+          ]
+        },
+        {
+          "target": "spell:325",
+          "rel": "USES_SPELL",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:974",
+            "USES_SPELL->spell:325"
+          ]
+        },
+        {
+          "target": "item:362",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "DROPS_ITEM->item:362"
+          ]
+        },
+        {
+          "target": "item:7423",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "DROPS_ITEM->item:7423"
+          ]
+        },
+        {
+          "target": "item:2474",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "DROPS_ITEM->item:2474"
+          ]
+        },
+        {
+          "target": "item:643",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "DROPS_ITEM->item:643"
+          ]
+        },
+        {
+          "target": "spell:213",
+          "rel": "USES_SPELL",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "USES_SPELL->spell:213"
+          ]
+        },
+        {
+          "target": "spell:212",
+          "rel": "USES_SPELL",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:975",
+            "USES_SPELL->spell:212"
+          ]
+        },
+        {
+          "target": "item:290",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978",
+            "DROPS_ITEM->item:290"
+          ]
+        },
+        {
+          "target": "item:300",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978",
+            "DROPS_ITEM->item:300"
+          ]
+        },
+        {
+          "target": "item:377",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978",
+            "DROPS_ITEM->item:377"
+          ]
+        },
+        {
+          "target": "item:6920",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978",
+            "DROPS_ITEM->item:6920"
+          ]
+        },
+        {
+          "target": "item:6922",
+          "rel": "DROPS_ITEM",
+          "depth": 2,
+          "path": [
+            "dungeon:1",
+            "CONTAINS_MONSTER->monster:978",
+            "DROPS_ITEM->item:6922"
+          ]
+        }
+      ],
+      "outgoing_count": 7
+    },
+    "map": {
+      "node": "map:10020",
+      "outgoing": [
+        {
+          "target": "subarea:108",
+          "rel": "IN_SUBAREA",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108"
+          ]
+        },
+        {
+          "target": "map:10021",
+          "rel": "NEIGHBOR_OF",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10021"
+          ]
+        },
+        {
+          "target": "map:10019",
+          "rel": "NEIGHBOR_OF",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10019"
+          ]
+        },
+        {
+          "target": "map:9508",
+          "rel": "NEIGHBOR_OF",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:9508"
+          ]
+        },
+        {
+          "target": "map:10532",
+          "rel": "NEIGHBOR_OF",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10532"
+          ]
+        },
+        {
+          "target": "monster:517",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517"
+          ]
+        },
+        {
+          "target": "monster:566",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:566"
+          ]
+        },
+        {
+          "target": "monster:549",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:549"
+          ]
+        },
+        {
+          "target": "monster:537",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:537"
+          ]
+        },
+        {
+          "target": "map:10022",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10021",
+            "NEIGHBOR_OF->map:10022"
+          ]
+        },
+        {
+          "target": "map:10020",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10021",
+            "NEIGHBOR_OF->map:10020"
+          ]
+        },
+        {
+          "target": "map:9509",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10021",
+            "NEIGHBOR_OF->map:9509"
+          ]
+        },
+        {
+          "target": "map:10533",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10021",
+            "NEIGHBOR_OF->map:10533"
+          ]
+        },
+        {
+          "target": "map:10018",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10019",
+            "NEIGHBOR_OF->map:10018"
+          ]
+        },
+        {
+          "target": "map:9507",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10019",
+            "NEIGHBOR_OF->map:9507"
+          ]
+        },
+        {
+          "target": "map:10531",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10019",
+            "NEIGHBOR_OF->map:10531"
+          ]
+        },
+        {
+          "target": "map:8996",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:9508",
+            "NEIGHBOR_OF->map:8996"
+          ]
+        },
+        {
+          "target": "subarea:105",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10532",
+            "IN_SUBAREA->subarea:105"
+          ]
+        },
+        {
+          "target": "map:11044",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10532",
+            "NEIGHBOR_OF->map:11044"
+          ]
+        },
+        {
+          "target": "item:350",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:350"
+          ]
+        },
+        {
+          "target": "item:2287",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:2287"
+          ]
+        },
+        {
+          "target": "item:7017",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7017"
+          ]
+        },
+        {
+          "target": "item:6923",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:6923"
+          ]
+        },
+        {
+          "target": "item:7227",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7227"
+          ]
+        },
+        {
+          "target": "item:7231",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7231"
+          ]
+        },
+        {
+          "target": "item:7239",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7239"
+          ]
+        },
+        {
+          "target": "item:7243",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7243"
+          ]
+        },
+        {
+          "target": "item:7247",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7247"
+          ]
+        },
+        {
+          "target": "item:7251",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7251"
+          ]
+        },
+        {
+          "target": "item:7255",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7255"
+          ]
+        },
+        {
+          "target": "item:9028",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:9028"
+          ]
+        },
+        {
+          "target": "item:7229",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7229"
+          ]
+        },
+        {
+          "target": "item:7233",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7233"
+          ]
+        },
+        {
+          "target": "item:7241",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7241"
+          ]
+        },
+        {
+          "target": "item:7245",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7245"
+          ]
+        },
+        {
+          "target": "item:7249",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7249"
+          ]
+        },
+        {
+          "target": "item:7253",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7253"
+          ]
+        },
+        {
+          "target": "item:7256",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:7256"
+          ]
+        },
+        {
+          "target": "item:9030",
+          "rel": "DROPS_ITEM",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "DROPS_ITEM->item:9030"
+          ]
+        },
+        {
+          "target": "spell:537",
+          "rel": "USES_SPELL",
+          "depth": 3,
+          "path": [
+            "map:10020",
+            "IN_SUBAREA->subarea:108",
+            "SPAWNS_MONSTER->monster:517",
+            "USES_SPELL->spell:537"
+          ]
+        }
+      ],
+      "outgoing_count": 5
+    },
+    "merchant": {
+      "node": "npc:462",
+      "outgoing": [
+        {
+          "target": "map:38273033",
+          "rel": "SPAWNED_IN",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033"
+          ]
+        },
+        {
+          "target": "item:491",
+          "rel": "SELLS",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "SELLS->item:491"
+          ]
+        },
+        {
+          "target": "quest:5",
+          "rel": "STARTS_QUEST",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5"
+          ]
+        },
+        {
+          "target": "subarea:95",
+          "rel": "IN_SUBAREA",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95"
+          ]
+        },
+        {
+          "target": "map:38273032",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032"
+          ]
+        },
+        {
+          "target": "map:38273034",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034"
+          ]
+        },
+        {
+          "target": "map:38404617",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38404617"
+          ]
+        },
+        {
+          "target": "map:38273545",
+          "rel": "NEIGHBOR_OF",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273545"
+          ]
+        },
+        {
+          "target": "queststep:10",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10"
+          ]
+        },
+        {
+          "target": "queststep:11",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:11"
+          ]
+        },
+        {
+          "target": "queststep:12",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:12"
+          ]
+        },
+        {
+          "target": "queststep:13",
+          "rel": "HAS_STEP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13"
+          ]
+        },
+        {
+          "target": "map:38273033",
+          "rel": "PARTICIPATES_IN_MAP",
+          "depth": 2,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "PARTICIPATES_IN_MAP->map:38273033"
+          ]
+        },
+        {
+          "target": "monster:236",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236"
+          ]
+        },
+        {
+          "target": "monster:489",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:489"
+          ]
+        },
+        {
+          "target": "monster:490",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:490"
+          ]
+        },
+        {
+          "target": "monster:491",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:491"
+          ]
+        },
+        {
+          "target": "monster:492",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:492"
+          ]
+        },
+        {
+          "target": "monster:493",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:493"
+          ]
+        },
+        {
+          "target": "map:38273031",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273031"
+          ]
+        },
+        {
+          "target": "map:38273033",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273033"
+          ]
+        },
+        {
+          "target": "map:38404616",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38404616"
+          ]
+        },
+        {
+          "target": "map:38273544",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273032",
+            "NEIGHBOR_OF->map:38273544"
+          ]
+        },
+        {
+          "target": "map:38273035",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38273035"
+          ]
+        },
+        {
+          "target": "map:38404618",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38404618"
+          ]
+        },
+        {
+          "target": "map:38273546",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273034",
+            "NEIGHBOR_OF->map:38273546"
+          ]
+        },
+        {
+          "target": "map:38274057",
+          "rel": "NEIGHBOR_OF",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "NEIGHBOR_OF->map:38273545",
+            "NEIGHBOR_OF->map:38274057"
+          ]
+        },
+        {
+          "target": "objective:42",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10",
+            "HAS_OBJECTIVE->objective:42"
+          ]
+        },
+        {
+          "target": "item:6773",
+          "rel": "REWARDS_ITEM",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:10",
+            "REWARDS_ITEM->item:6773"
+          ]
+        },
+        {
+          "target": "objective:43",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:11",
+            "HAS_OBJECTIVE->objective:43"
+          ]
+        },
+        {
+          "target": "objective:44",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:12",
+            "HAS_OBJECTIVE->objective:44"
+          ]
+        },
+        {
+          "target": "objective:45",
+          "rel": "HAS_OBJECTIVE",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13",
+            "HAS_OBJECTIVE->objective:45"
+          ]
+        },
+        {
+          "target": "item:6793",
+          "rel": "REWARDS_ITEM",
+          "depth": 3,
+          "path": [
+            "npc:462",
+            "STARTS_QUEST->quest:5",
+            "HAS_STEP->queststep:13",
+            "REWARDS_ITEM->item:6793"
+          ]
+        },
+        {
+          "target": "item:6898",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:6898"
+          ]
+        },
+        {
+          "target": "item:287",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:287"
+          ]
+        },
+        {
+          "target": "item:2475",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "DROPS_ITEM->item:2475"
+          ]
+        },
+        {
+          "target": "spell:626",
+          "rel": "USES_SPELL",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:236",
+            "USES_SPELL->spell:626"
+          ]
+        },
+        {
+          "target": "item:6900",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:489",
+            "DROPS_ITEM->item:6900"
+          ]
+        },
+        {
+          "target": "item:6899",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:490",
+            "DROPS_ITEM->item:6899"
+          ]
+        },
+        {
+          "target": "item:6897",
+          "rel": "DROPS_ITEM",
+          "depth": 4,
+          "path": [
+            "npc:462",
+            "SPAWNED_IN->map:38273033",
+            "IN_SUBAREA->subarea:95",
+            "SPAWNS_MONSTER->monster:491",
+            "DROPS_ITEM->item:6897"
+          ]
+        }
+      ],
+      "outgoing_count": 3
+    }
+  },
+  "impact_chains": {
+    "npc": {
+      "node": "npc:462",
+      "incoming": [
+        {
+          "target": "npc:462",
+          "rel": "INVOLVES_NPC",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "INVOLVES_NPC->npc:462"
+          ]
+        }
+      ],
+      "incoming_count": 4
+    },
+    "quest": {
+      "node": "quest:3",
+      "incoming": [
+        {
+          "target": "quest:3",
+          "rel": "STARTS_QUEST",
+          "depth": 1,
+          "path": [
+            "quest:3",
+            "STARTS_QUEST->quest:3"
+          ]
+        }
+      ],
+      "incoming_count": 1
+    },
+    "monster": {
+      "node": "monster:31",
+      "incoming": [
+        {
+          "target": "monster:31",
+          "rel": "CONTAINS_MONSTER",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "CONTAINS_MONSTER->monster:31"
+          ]
+        },
+        {
+          "target": "monster:31",
+          "rel": "SPAWNS_MONSTER",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "SPAWNS_MONSTER->monster:31"
+          ]
+        },
+        {
+          "target": "monster:31",
+          "rel": "DEFEAT_MONSTER",
+          "depth": 1,
+          "path": [
+            "monster:31",
+            "DEFEAT_MONSTER->monster:31"
+          ]
+        }
+      ],
+      "incoming_count": 26
+    },
+    "dungeon": {
+      "node": "dungeon:1",
+      "incoming": [],
+      "incoming_count": 0
+    },
+    "map": {
+      "node": "map:10020",
+      "incoming": [
+        {
+          "target": "map:10020",
+          "rel": "NEIGHBOR_OF",
+          "depth": 1,
+          "path": [
+            "map:10020",
+            "NEIGHBOR_OF->map:10020"
+          ]
+        }
+      ],
+      "incoming_count": 4
+    },
+    "merchant": {
+      "node": "npc:462",
+      "incoming": [
+        {
+          "target": "npc:462",
+          "rel": "INVOLVES_NPC",
+          "depth": 1,
+          "path": [
+            "npc:462",
+            "INVOLVES_NPC->npc:462"
+          ]
+        }
+      ],
+      "incoming_count": 4
+    }
+  },
+  "entity_samples": {
+    "npc": "npc:462",
+    "quest": "quest:3",
+    "monster": "monster:31",
+    "dungeon": "dungeon:1",
+    "map": "map:10020",
+    "merchant": "npc:462"
+  }
+}

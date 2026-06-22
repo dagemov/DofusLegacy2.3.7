@@ -1,0 +1,238 @@
+{
+  "phase": "MCP_TOOL_CONTRACT_F26",
+  "version": "v1",
+  "read_only": true,
+  "tool_surface": [
+    "beginTransaction",
+    "explainImpact",
+    "getTransaction",
+    "listTransactions",
+    "commitTransaction",
+    "rollbackTransaction",
+    "getReingestProposal",
+    "getTransactionConsistency"
+  ],
+  "error_codes": [
+    "BLOCKED_BY_BLAST_RADIUS",
+    "BLOCKED_BY_MODIFICATION_RISK",
+    "REQUIRES_HUMAN_CONFIRMATION",
+    "VALIDATION_REVIEW_REQUIRED",
+    "TRANSACTION_NOT_FOUND",
+    "INVALID_STATE_TRANSITION",
+    "ROLLBACK_NOT_AVAILABLE",
+    "REINGEST_REQUIRED"
+  ],
+  "permission_model": {
+    "reader": [
+      "getTransaction",
+      "listTransactions",
+      "explainImpact",
+      "getReingestProposal",
+      "getTransactionConsistency"
+    ],
+    "planner": [
+      "getTransaction",
+      "listTransactions",
+      "explainImpact",
+      "getReingestProposal",
+      "getTransactionConsistency",
+      "beginTransaction"
+    ],
+    "operator": [
+      "getTransaction",
+      "listTransactions",
+      "explainImpact",
+      "getReingestProposal",
+      "getTransactionConsistency",
+      "beginTransaction",
+      "commitTransaction"
+    ],
+    "rollback_operator": [
+      "getTransaction",
+      "listTransactions",
+      "explainImpact",
+      "getReingestProposal",
+      "getTransactionConsistency",
+      "rollbackTransaction"
+    ]
+  },
+  "state_tool_matrix": {
+    "PLANNED": {
+      "observable_via": [
+        "beginTransaction",
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": [
+        "beginTransaction"
+      ]
+    },
+    "VALIDATED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact"
+      ],
+      "transition_via": [
+        "commitTransaction",
+        "explainImpact"
+      ]
+    },
+    "BLOCKED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact",
+        "getReingestProposal"
+      ],
+      "transition_via": []
+    },
+    "READY_TO_COMMIT": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions",
+        "explainImpact"
+      ],
+      "transition_via": [
+        "commitTransaction"
+      ]
+    },
+    "COMMITTED": {
+      "observable_via": [
+        "getTransaction",
+        "getTransactionConsistency",
+        "listTransactions"
+      ],
+      "transition_via": []
+    },
+    "ROLLBACK_AVAILABLE": {
+      "observable_via": [
+        "getTransaction",
+        "getTransactionConsistency",
+        "listTransactions"
+      ],
+      "transition_via": [
+        "rollbackTransaction"
+      ]
+    },
+    "ROLLED_BACK": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": []
+    },
+    "FAILED": {
+      "observable_via": [
+        "getTransaction",
+        "listTransactions"
+      ],
+      "transition_via": []
+    }
+  },
+  "world_transaction_states": [
+    "PLANNED",
+    "VALIDATED",
+    "BLOCKED",
+    "READY_TO_COMMIT",
+    "COMMITTED",
+    "ROLLBACK_AVAILABLE",
+    "ROLLED_BACK",
+    "FAILED"
+  ],
+  "inputs": {
+    "beginTransaction": {
+      "intent_id": "string",
+      "target_node": "string",
+      "fields": "optional Record"
+    },
+    "explainImpact": {
+      "transaction_id": "string OR intent_id+target_node"
+    },
+    "getTransaction": {
+      "transaction_id": "string"
+    },
+    "listTransactions": {
+      "state": "optional WorldTransactionState"
+    },
+    "commitTransaction": {
+      "transaction_id": "string",
+      "confirm": "true required"
+    },
+    "rollbackTransaction": {
+      "transaction_id": "string"
+    },
+    "getReingestProposal": {
+      "transaction_id": "string"
+    },
+    "getTransactionConsistency": {
+      "transaction_id": "string"
+    }
+  },
+  "output_types": [
+    "TransactionView",
+    "ImpactView",
+    "ConsistencyView",
+    "ReingestProposalView",
+    "ContractError"
+  ],
+  "forbidden_exposure": [
+    "mutation_plan_ref",
+    "trace_ref",
+    "event_ref",
+    "backup_id",
+    "rollback_sql_ref",
+    "run_id",
+    "commit_model",
+    "rollback_model",
+    "execution",
+    "ssh",
+    "sql",
+    "docker",
+    "causal_graph.jsonl"
+  ],
+  "case_bindings": {
+    "CASE_A": {
+      "transaction_id": "txn-item519-commit",
+      "tool_sequence": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction",
+        "getTransactionConsistency",
+        "getTransaction"
+      ],
+      "representable": true
+    },
+    "CASE_B": {
+      "transaction_id": "txn-npc462-blocked",
+      "tool_sequence": [
+        "beginTransaction",
+        "explainImpact",
+        "commitTransaction",
+        "getTransaction"
+      ],
+      "representable": true
+    },
+    "CASE_C": {
+      "transaction_id": "txn-item519-rollback",
+      "tool_sequence": [
+        "getTransaction",
+        "rollbackTransaction",
+        "getTransaction",
+        "listTransactions"
+      ],
+      "representable": true
+    },
+    "CASE_D": {
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "tool_sequence": [
+        "beginTransaction",
+        "explainImpact",
+        "getReingestProposal",
+        "commitTransaction",
+        "explainImpact"
+      ],
+      "representable": true
+    }
+  }
+}

@@ -1,0 +1,291 @@
+{
+  "phase": "WORLD_TRANSACTIONS",
+  "timestamp": "2026-06-22T08:17:44.117Z",
+  "read_only": true,
+  "no_graph_mutation": true,
+  "no_runtime_writes": true,
+  "transactions": [
+    {
+      "transaction_id": "txn-item519-commit",
+      "intent_id": "modify_item",
+      "target_node": "item:519",
+      "lifecycle": {
+        "current_state": "ROLLBACK_AVAILABLE",
+        "history": [
+          {
+            "state": "VALIDATED",
+            "at": "2026-06-22T08:17:44.117Z",
+            "reason": "F22 verdict APPROVE"
+          },
+          {
+            "state": "READY_TO_COMMIT",
+            "at": "2026-06-22T08:17:44.117Z",
+            "reason": "F22 APPROVE and F23 gates pass"
+          },
+          {
+            "state": "COMMITTED",
+            "at": "2026-06-22T08:17:44.119Z",
+            "reason": "F23 run 20260622T061552Z executed successfully"
+          },
+          {
+            "state": "ROLLBACK_AVAILABLE",
+            "at": "2026-06-22T08:17:44.119Z",
+            "reason": "backup 20260622T061552Z-pre"
+          }
+        ]
+      },
+      "mutation_plan_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+      "validation": {
+        "verdict": "APPROVE",
+        "blast_radius_total": 0,
+        "max_modification_risk": "LOW",
+        "why": "Blast radius within safe threshold"
+      },
+      "execution": {
+        "executed": true,
+        "success": true,
+        "run_id": "20260622T061552Z",
+        "trace_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061552Z\\execution_trace.json",
+        "event_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061552Z\\runtime_change_event.json",
+        "backup_id": "20260622T061552Z-pre",
+        "rollback_sql_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061552Z\\rollback.sql",
+        "dry_run": false
+      },
+      "consistency": {
+        "verdict": "CONSISTENT_TOPOLOGY",
+        "graph_requires_update": false,
+        "causal_recompute_required": false,
+        "recovery_required": [],
+        "edges_checked": 28,
+        "runtime_before": {
+          "Name": "Poudre de Perlinpainpain"
+        },
+        "runtime_after": {
+          "Name": "MEK-F23-bridge-test"
+        }
+      },
+      "reingest_proposal": null,
+      "commit_model": "confirm_gated_f23",
+      "rollback_model": "f23_backup_plus_rollback_sql",
+      "case_id": "CASE_A",
+      "parent_transaction_id": null,
+      "mode": "real"
+    },
+    {
+      "transaction_id": "txn-npc462-blocked",
+      "intent_id": "modify_npc",
+      "target_node": "npc:462",
+      "lifecycle": {
+        "current_state": "BLOCKED",
+        "history": [
+          {
+            "state": "VALIDATED",
+            "at": "2026-06-22T08:17:44.120Z",
+            "reason": "F22 verdict BLOCK"
+          },
+          {
+            "state": "BLOCKED",
+            "at": "2026-06-22T08:17:44.120Z",
+            "reason": "F22 BLOCK blast_radius=48"
+          }
+        ]
+      },
+      "mutation_plan_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+      "validation": {
+        "verdict": "BLOCK",
+        "blast_radius_total": 48,
+        "max_modification_risk": "HIGH",
+        "why": "HIGH modification risk with blast radius > 20"
+      },
+      "execution": null,
+      "consistency": null,
+      "reingest_proposal": null,
+      "commit_model": "confirm_gated_f23",
+      "rollback_model": "f23_backup_plus_rollback_sql",
+      "case_id": "CASE_B",
+      "parent_transaction_id": null,
+      "mode": "real"
+    },
+    {
+      "transaction_id": "txn-item519-rollback",
+      "intent_id": "modify_item",
+      "target_node": "item:519",
+      "lifecycle": {
+        "current_state": "ROLLED_BACK",
+        "history": [
+          {
+            "state": "PLANNED",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "Rollback child of txn-item519-commit"
+          },
+          {
+            "state": "VALIDATED",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "Inherits APPROVE from parent commit context"
+          },
+          {
+            "state": "READY_TO_COMMIT",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "Rollback uses F23 confirm path"
+          },
+          {
+            "state": "COMMITTED",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "F23 restore run 20260622T061633Z"
+          },
+          {
+            "state": "ROLLED_BACK",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "Runtime restored to pre-commit state"
+          }
+        ]
+      },
+      "mutation_plan_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+      "validation": {
+        "verdict": "APPROVE",
+        "blast_radius_total": 0,
+        "max_modification_risk": "LOW",
+        "why": "Blast radius within safe threshold"
+      },
+      "execution": {
+        "executed": true,
+        "success": true,
+        "run_id": "20260622T061633Z",
+        "trace_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061633Z\\execution_trace.json",
+        "event_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061633Z\\runtime_change_event.json",
+        "backup_id": "20260622T061633Z-pre",
+        "rollback_sql_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-bridge\\out\\20260622T061633Z\\rollback.sql",
+        "dry_run": false
+      },
+      "consistency": {
+        "verdict": "CONSISTENT_TOPOLOGY",
+        "graph_requires_update": false,
+        "causal_recompute_required": false,
+        "recovery_required": [],
+        "edges_checked": 28,
+        "runtime_before": {
+          "Name": "MEK-F23-bridge-test"
+        },
+        "runtime_after": {
+          "Name": "Poudre de Perlinpainpain"
+        }
+      },
+      "reingest_proposal": null,
+      "commit_model": "confirm_gated_f23",
+      "rollback_model": "f23_backup_plus_rollback_sql",
+      "case_id": "CASE_C",
+      "parent_transaction_id": "txn-item519-commit",
+      "mode": "real",
+      "net_runtime_unchanged": true
+    },
+    {
+      "transaction_id": "txn-npc462-reingest-proposal",
+      "intent_id": "modify_npc",
+      "target_node": "npc:462",
+      "lifecycle": {
+        "current_state": "BLOCKED",
+        "history": [
+          {
+            "state": "VALIDATED",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "F22 verdict BLOCK"
+          },
+          {
+            "state": "BLOCKED",
+            "at": "2026-06-22T08:17:44.122Z",
+            "reason": "F22 BLOCK — no F23 execution; reingest proposal from F24 benchmark"
+          }
+        ]
+      },
+      "mutation_plan_ref": "C:\\Dofus\\2.0.0\\grafo_emu\\prototype\\mcp-execution-sim\\execution_plans.json",
+      "validation": {
+        "verdict": "BLOCK",
+        "blast_radius_total": 48,
+        "max_modification_risk": "HIGH",
+        "why": "HIGH modification risk with blast radius > 20"
+      },
+      "execution": null,
+      "consistency": {
+        "verdict": "TOPOLOGY_STALE",
+        "graph_requires_update": true,
+        "causal_recompute_required": true,
+        "recovery_required": [
+          "Phase20",
+          "Phase21"
+        ],
+        "predicted_affected_edges": [
+          "INVOLVES_NPC",
+          "SELLS",
+          "SPAWNED_IN",
+          "STARTS_QUEST"
+        ],
+        "mode": "simulated",
+        "runtime_snapshot": null
+      },
+      "reingest_proposal": {
+        "invalidated_artifacts": [
+          {
+            "path": "world-relations/recovered_edges.jsonl",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-relations/relationship_graph.json",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-relations/relationship_benchmark.json",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-causal/causal_graph.jsonl",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          },
+          {
+            "path": "world-causal/propagation_models.json",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          },
+          {
+            "path": "world-causal/causal_benchmark.json",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          }
+        ],
+        "rerun_commands": [
+          {
+            "phase": "Phase20",
+            "command": "node run-relations.mjs",
+            "cwd": "grafo_emu/prototype/world-relations"
+          },
+          {
+            "phase": "Phase21",
+            "command": "node run-causal.mjs",
+            "cwd": "grafo_emu/prototype/world-causal"
+          }
+        ],
+        "recovery_required": [
+          "Phase20",
+          "Phase21"
+        ]
+      },
+      "commit_model": "confirm_gated_f23",
+      "rollback_model": "f23_backup_plus_rollback_sql",
+      "case_id": "CASE_D",
+      "parent_transaction_id": null,
+      "mode": "simulated",
+      "hypothetical_change": {
+        "table": "npcs_items",
+        "operation": "UPDATE",
+        "columns": [
+          "Item",
+          "Price"
+        ],
+        "note": "classification benchmark only — not executed"
+      }
+    }
+  ]
+}

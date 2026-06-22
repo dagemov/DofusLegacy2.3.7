@@ -1,0 +1,186 @@
+{
+  "phase": "F_SEMANTIC_BENCHMARK",
+  "question_count": 10,
+  "distribution": {
+    "partially_answerable": 10
+  },
+  "fully_answerable": 0,
+  "partially_answerable": 10,
+  "not_answerable": 0,
+  "concept_count": 15,
+  "questions": [
+    {
+      "question": "What defines a dungeon?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "dungeons",
+        "worlds_maps",
+        "monsters"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What NPC starts this quest?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "quests_objectives",
+        "npcs",
+        "quests_steps"
+      ],
+      "evidence_graph": [
+        {
+          "type": "rel",
+          "rel": "INVOLVES_NPC"
+        }
+      ],
+      "blockers": [
+        "quest giver role inferred from objective ParametersCSV — not a dedicated column",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What maps participate in this quest?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "quests_objectives",
+        "worlds_maps",
+        "worlds_npcs"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "map participation only explicit when objective type references map or NPC spawn map",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What monsters appear in this zone?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "worlds_monsters",
+        "monsters",
+        "worlds_maps"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "zone = SubArea via worlds_monsters — not per-map in open world",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What content depends on this NPC?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "npcs",
+        "npcs_items",
+        "quests_objectives",
+        "worlds_npcs"
+      ],
+      "evidence_graph": [
+        {
+          "type": "rel",
+          "rel": "SELLS"
+        }
+      ],
+      "blockers": [
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What must I modify to create a new quest?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "quests",
+        "quests_steps",
+        "quests_objectives"
+      ],
+      "evidence_graph": [
+        {
+          "type": "rel",
+          "rel": "HAS_STEP"
+        }
+      ],
+      "blockers": [
+        "no MCP write path to MariaDB",
+        "no transaction/rollback layer exposed to admin tools",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What must I modify to create a new dungeon?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "dungeons",
+        "monsters",
+        "worlds_maps"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "dungeon row + monster CSV + exit Parameters",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What must I modify to create a new merchant?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "npcs",
+        "npcs_items",
+        "npcs_actions",
+        "worlds_npcs"
+      ],
+      "evidence_graph": [
+        {
+          "type": "rel",
+          "rel": "SELLS"
+        }
+      ],
+      "blockers": [
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What must I modify to create a new boss?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "monsters",
+        "monsters_grades",
+        "monsters_spells",
+        "dungeons",
+        "worlds_monsters"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "boss = monster template + grade + placement in dungeon or sub-area group",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    },
+    {
+      "question": "What must I modify to create a new zone?",
+      "answerability": "partially_answerable",
+      "evidence_tables": [
+        "worlds_maps",
+        "worlds_maps_positions",
+        "worlds_monsters",
+        "worlds_npcs"
+      ],
+      "evidence_graph": [],
+      "blockers": [
+        "sub-area and map topology — continent names not in server DB (hypothesis: client D2O)",
+        "graph prototype covers <50 nodes — world semantics mostly SQL-only"
+      ],
+      "sql_priority": true
+    }
+  ]
+}

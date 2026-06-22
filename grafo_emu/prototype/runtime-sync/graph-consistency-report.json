@@ -1,0 +1,302 @@
+{
+  "phase": "GRAPH_CONSISTENCY",
+  "timestamp": "2026-06-22T07:48:14.710Z",
+  "entity_count": 2,
+  "reports": [
+    {
+      "entity": "item:519",
+      "mode": "real",
+      "consistency_verdict": "CONSISTENT_TOPOLOGY",
+      "graph_requires_update": false,
+      "causal_recompute_required": false,
+      "edges_checked": 28,
+      "rel_types_present": [
+        "DROPS_ITEM",
+        "REQUIRES_ITEM"
+      ],
+      "edges_potentially_invalid": [],
+      "graph_update_proposal": [
+        {
+          "action": "no_graph_update",
+          "entity": "item:519",
+          "reason": "metadata-only or topology unchanged",
+          "edges_checked": 28,
+          "note": "Graph topology remains valid"
+        }
+      ],
+      "recovery_required": [],
+      "invalidated_artifacts": []
+    },
+    {
+      "entity": "item:519",
+      "mode": "real",
+      "consistency_verdict": "CONSISTENT_TOPOLOGY",
+      "graph_requires_update": false,
+      "causal_recompute_required": false,
+      "edges_checked": 28,
+      "rel_types_present": [
+        "DROPS_ITEM",
+        "REQUIRES_ITEM"
+      ],
+      "edges_potentially_invalid": [],
+      "graph_update_proposal": [
+        {
+          "action": "no_graph_update",
+          "entity": "item:519",
+          "reason": "metadata-only or topology unchanged",
+          "edges_checked": 28,
+          "note": "Graph topology remains valid"
+        }
+      ],
+      "recovery_required": [],
+      "invalidated_artifacts": []
+    }
+  ],
+  "summary": {
+    "consistent_topology": 2,
+    "props_stale": 0,
+    "topology_stale": 0
+  },
+  "reingest_plan": {
+    "phase": "REINGEST_PLAN",
+    "timestamp": "2026-06-22T07:48:14.711Z",
+    "auto_sync": false,
+    "graph_mutation": false,
+    "real_writes_require_reingest": false,
+    "recovery_phases_required": [
+      "Phase20",
+      "Phase21"
+    ],
+    "invalidated_artifacts": [
+      {
+        "path": "world-relations/recovered_edges.jsonl",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-relations/relationship_graph.json",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-relations/relationship_benchmark.json",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-causal/causal_graph.jsonl",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      },
+      {
+        "path": "world-causal/propagation_models.json",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      },
+      {
+        "path": "world-causal/causal_benchmark.json",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      }
+    ],
+    "entity_plans": [
+      {
+        "entity": "npc:462",
+        "mode": "simulated",
+        "recovery_required": [
+          "Phase20",
+          "Phase21"
+        ],
+        "invalidated_artifacts": [
+          {
+            "path": "world-relations/recovered_edges.jsonl",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-relations/relationship_graph.json",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-relations/relationship_benchmark.json",
+            "rerun": "node run-relations.mjs",
+            "reason": "Phase20 re-ingest required"
+          },
+          {
+            "path": "world-causal/causal_graph.jsonl",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          },
+          {
+            "path": "world-causal/propagation_models.json",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          },
+          {
+            "path": "world-causal/causal_benchmark.json",
+            "rerun": "node run-causal.mjs",
+            "reason": "Phase21 re-ingest required"
+          }
+        ],
+        "graph_update_proposal": [
+          {
+            "action": "propose_reingest_if_executed",
+            "entity": "npc:462",
+            "note": "Benchmark prediction — no runtime write occurred"
+          }
+        ]
+      }
+    ],
+    "rerun_commands": [
+      {
+        "phase": "Phase20",
+        "cwd": "grafo_emu/prototype/world-relations",
+        "command": "node run-relations.mjs"
+      },
+      {
+        "phase": "Phase21",
+        "cwd": "grafo_emu/prototype/world-causal",
+        "command": "node run-causal.mjs"
+      }
+    ],
+    "world_diff_summary": {
+      "real_changes": 2,
+      "topology_changes": 0,
+      "metadata_only_changes": 2,
+      "entities_touched": [
+        "item:519"
+      ]
+    },
+    "consistency_summary": {
+      "consistent_topology": 2,
+      "props_stale": 0,
+      "topology_stale": 0
+    },
+    "benchmark_entity": "npc:462"
+  },
+  "simulated_benchmark": {
+    "mode": "simulated",
+    "write_executed": false,
+    "runtime_snapshot": null,
+    "entity": "npc:462",
+    "source": "f22_classification_benchmark",
+    "f22_plan": {
+      "intent_id": "modify_npc",
+      "target_node": "npc:462",
+      "cs_manager": "NpcManager"
+    },
+    "f22_blast_radius": 48,
+    "f22_verdict": "BLOCK",
+    "hypothetical_change": {
+      "table": "npcs_items",
+      "operation": "UPDATE",
+      "columns": [
+        "Item",
+        "Price"
+      ],
+      "note": "classification benchmark only — not executed"
+    },
+    "graph_requires_update": true,
+    "causal_recompute_required": true,
+    "predicted_affected_edges": [
+      "INVOLVES_NPC",
+      "SELLS",
+      "SPAWNED_IN",
+      "STARTS_QUEST"
+    ],
+    "predicted_recovery_phases": [
+      "Phase20",
+      "Phase21"
+    ],
+    "edges_in_current_graph": 7,
+    "current_rel_types": [
+      "SPAWNED_IN",
+      "SELLS",
+      "INVOLVES_NPC",
+      "STARTS_QUEST"
+    ],
+    "sample_edges": [
+      {
+        "rel": "SPAWNED_IN",
+        "src": "npc:462",
+        "dst": "map:38273033",
+        "ref": "worlds_npcs Id=221 Npc=462 Map=38273033"
+      },
+      {
+        "rel": "SELLS",
+        "src": "npc:462",
+        "dst": "item:491",
+        "ref": "npcs_items Id=1 NpcId=462 Item=491"
+      },
+      {
+        "rel": "INVOLVES_NPC",
+        "src": "objective:42",
+        "dst": "npc:462",
+        "ref": "quests_objectives Id=42 Type=3 ParametersCSV='462,365,10'"
+      },
+      {
+        "rel": "INVOLVES_NPC",
+        "src": "objective:43",
+        "dst": "npc:462",
+        "ref": "quests_objectives Id=43 Type=3 ParametersCSV='462,385,10'"
+      },
+      {
+        "rel": "INVOLVES_NPC",
+        "src": "objective:44",
+        "dst": "npc:462",
+        "ref": "quests_objectives Id=44 Type=3 ParametersCSV='462,377,6'"
+      },
+      {
+        "rel": "INVOLVES_NPC",
+        "src": "objective:160",
+        "dst": "npc:462",
+        "ref": "quests_objectives Id=160 Type=3 ParametersCSV='462,6824,1'"
+      },
+      {
+        "rel": "STARTS_QUEST",
+        "src": "npc:462",
+        "dst": "quest:5",
+        "ref": "derived: first INVOLVES_NPC on lowest queststep for quest 5"
+      }
+    ],
+    "invalidated_artifacts": [
+      {
+        "path": "world-relations/recovered_edges.jsonl",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-relations/relationship_graph.json",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-relations/relationship_benchmark.json",
+        "rerun": "node run-relations.mjs",
+        "reason": "Phase20 re-ingest required"
+      },
+      {
+        "path": "world-causal/causal_graph.jsonl",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      },
+      {
+        "path": "world-causal/propagation_models.json",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      },
+      {
+        "path": "world-causal/causal_benchmark.json",
+        "rerun": "node run-causal.mjs",
+        "reason": "Phase21 re-ingest required"
+      }
+    ],
+    "constraints": [
+      "NO writes",
+      "NO fake runtime_change_event",
+      "NO fake execution_trace",
+      "predictions only"
+    ]
+  }
+}

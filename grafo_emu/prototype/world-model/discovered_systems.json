@@ -1,0 +1,645 @@
+{
+  "phase": "B_SYSTEM_DISCOVERY",
+  "methodology": "prefix clustering on SQL tables + manager table hints + graph clusters (no preset NPC/Quest/Map names)",
+  "no_preset_names": true,
+  "system_count": 23,
+  "systems": [
+    {
+      "system_id": "sys_worlds",
+      "label": "sys_worlds",
+      "tables_involved": [
+        "worlds_interactives",
+        "worlds_maps_positions",
+        "worlds_maps",
+        "worlds_triggers",
+        "worlds_npcs",
+        "worlds_monsters",
+        "worlds_characters",
+        "worlds_zaapis",
+        "worlds_monsters_fix",
+        "worlds",
+        "worlds_taxcollectors"
+      ],
+      "table_count": 11,
+      "classes_involved": [
+        "CharacterManager",
+        "MonsterManager",
+        "MapManager",
+        "NpcManager",
+        "GuildManager",
+        "InteractiveSkillBinding",
+        "AccountManager",
+        "TaxCollectorManager",
+        "WorldServerManager",
+        "InteractiveManager"
+      ],
+      "class_count": 10,
+      "graph_seeds": [],
+      "cohesion": 0.909,
+      "external_coupling": 0,
+      "relations_observed": 5,
+      "evidence": [
+        {
+          "type": "sql_fk",
+          "from": "worlds_interactives",
+          "to": "worlds_maps",
+          "confidence": 0.85
+        },
+        {
+          "type": "sql_fk",
+          "from": "worlds_triggers",
+          "to": "worlds_maps",
+          "confidence": 0.85
+        },
+        {
+          "type": "sql_fk",
+          "from": "worlds_npcs",
+          "to": "worlds_maps",
+          "confidence": 0.85
+        },
+        {
+          "type": "sql_fk",
+          "from": "worlds_monsters_fix",
+          "to": "worlds_maps",
+          "confidence": 0.85
+        },
+        {
+          "type": "sql_fk",
+          "from": "worlds_taxcollectors",
+          "to": "worlds_maps",
+          "confidence": 0.85
+        }
+      ],
+      "why_these_entities_form_a_system": "tables share prefix 'worlds_' + 5 high-confidence inferred FK edges + 10 code managers reference them",
+      "hypothesis": false,
+      "rank": 1
+    },
+    {
+      "system_id": "sys_quests",
+      "label": "sys_quests",
+      "tables_involved": [
+        "quests_objectives",
+        "quests_steps",
+        "quests",
+        "quests_objectives_types"
+      ],
+      "table_count": 4,
+      "classes_involved": [
+        "QuestManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 1,
+      "external_coupling": 0,
+      "relations_observed": 2,
+      "evidence": [
+        {
+          "type": "sql_fk",
+          "from": "quests_objectives",
+          "to": "quests_steps",
+          "confidence": 0.9
+        },
+        {
+          "type": "sql_fk",
+          "from": "quests_steps",
+          "to": "quests",
+          "confidence": 0.95
+        }
+      ],
+      "why_these_entities_form_a_system": "tables share prefix 'quests' + 2 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": false,
+      "rank": 2
+    },
+    {
+      "system_id": "sys_characters",
+      "label": "sys_characters",
+      "tables_involved": [
+        "characters",
+        "characters_alignments",
+        "characters_items",
+        "characters_items_merchant",
+        "characters_items_presets",
+        "characters_jobs",
+        "characters_quests",
+        "characters_quests_objectives",
+        "characters_quests_steps",
+        "characters_shortcuts_items",
+        "characters_shortcuts_items_presets",
+        "characters_shortcuts_spells",
+        "characters_spells",
+        "characters_stats"
+      ],
+      "table_count": 14,
+      "classes_involved": [
+        "CharacterManager",
+        "AccountManager",
+        "MerchantManager",
+        "QuestManager",
+        "JobManager"
+      ],
+      "class_count": 5,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'characters' + 0 high-confidence inferred FK edges + 5 code managers reference them",
+      "hypothesis": true,
+      "rank": 3
+    },
+    {
+      "system_id": "sys_npcs",
+      "label": "sys_npcs",
+      "tables_involved": [
+        "npcs_messages",
+        "npcs_items",
+        "npcs",
+        "npcs_replies",
+        "npcs_actions"
+      ],
+      "table_count": 5,
+      "classes_involved": [
+        "NpcManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0.8,
+      "external_coupling": 0,
+      "relations_observed": 2,
+      "evidence": [
+        {
+          "type": "sql_fk",
+          "from": "npcs_replies",
+          "to": "npcs",
+          "confidence": 0.9
+        },
+        {
+          "type": "sql_fk",
+          "from": "npcs_actions",
+          "to": "npcs",
+          "confidence": 0.95
+        }
+      ],
+      "why_these_entities_form_a_system": "tables share prefix 'npcs' + 2 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": false,
+      "rank": 4
+    },
+    {
+      "system_id": "sys_world_maps",
+      "label": "sys_world_maps",
+      "tables_involved": [
+        "world_maps_house",
+        "world_maps_paddock",
+        "world_maps_paddock_instance",
+        "world_maps_merchant",
+        "world_maps_prism"
+      ],
+      "table_count": 5,
+      "classes_involved": [
+        "CharacterManager",
+        "InteractiveSkillBinding",
+        "MerchantManager",
+        "PrismManager",
+        "HouseManager",
+        "PaddockInstanceManager",
+        "PaddockManager"
+      ],
+      "class_count": 7,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'world_maps' + 0 high-confidence inferred FK edges + 7 code managers reference them",
+      "hypothesis": true,
+      "rank": 5
+    },
+    {
+      "system_id": "sys_graph_cluster_1",
+      "label": "sys_graph_combat_runtime_spell",
+      "tables_involved": [],
+      "table_count": 0,
+      "classes_involved": [],
+      "class_count": 0,
+      "graph_seeds": [
+        "spell:189",
+        "spell:196"
+      ],
+      "cohesion": 0.125,
+      "external_coupling": 0,
+      "relations_observed": 34,
+      "evidence": [
+        {
+          "type": "graph_cluster",
+          "cluster": "cluster:1",
+          "rel_signature": {
+            "HAS_LEVEL": 2,
+            "PARSED_EFFECT": 2,
+            "USES_EFFECT": 3,
+            "CONTRADICTS": 2,
+            "HANDLED_BY": 1,
+            "CAST_HANDLED_BY": 1,
+            "OBSERVED_IN": 2,
+            "GENERATED": 2,
+            "MATCHES": 2,
+            "EVIDENCES": 2,
+            "SIGNALS": 2,
+            "ASSOCIATED_WITH": 2,
+            "EXPLAINS": 2,
+            "SUPPORTED_BY": 1,
+            "DERIVED_FROM": 1,
+            "VIOLATES": 1,
+            "VALIDATED_BY": 2,
+            "TARGETS": 2,
+            "GUARDED_BY": 2
+          }
+        }
+      ],
+      "why_these_entities_form_a_system": "graph connected component with rel signature {\"HAS_LEVEL\":2,\"PARSED_EFFECT\":2,\"USES_EFFECT\":3,\"CONTRADICTS\":2,\"HANDLED_BY\":1,\"CAST_HANDLED_BY\":1,\"OBSERVED_IN\":2,\"GENERATED\":2,\"MATCHES\":2,\"EVIDENCES\":2,\"SIGNALS\":2,\"ASSOCIATED_WITH\":2,\"EXPLAINS\":2,\"SUPPORTED_BY\":1,\"DERIVED_FROM\":1,\"VIOLATES\":1,\"VALIDATED_BY\":2,\"TARGETS\":2,\"GUARDED_BY\":2}",
+      "hypothesis": true,
+      "rank": 6
+    },
+    {
+      "system_id": "sys_graph_cluster_3",
+      "label": "sys_graph_quest_progression",
+      "tables_involved": [],
+      "table_count": 0,
+      "classes_involved": [],
+      "class_count": 0,
+      "graph_seeds": [
+        "item:288",
+        "quest:3",
+        "npc:488",
+        "npc:449"
+      ],
+      "cohesion": 0.681,
+      "external_coupling": 0,
+      "relations_observed": 8,
+      "evidence": [
+        {
+          "type": "graph_cluster",
+          "cluster": "cluster:3",
+          "rel_signature": {
+            "HAS_STEP": 5,
+            "REWARDS": 1,
+            "INVOLVES_NPC": 2
+          }
+        }
+      ],
+      "why_these_entities_form_a_system": "graph connected component with rel signature {\"HAS_STEP\":5,\"REWARDS\":1,\"INVOLVES_NPC\":2}",
+      "hypothesis": false,
+      "rank": 7
+    },
+    {
+      "system_id": "sys_graph_cluster_2",
+      "label": "sys_graph_economy_catalog",
+      "tables_involved": [],
+      "table_count": 0,
+      "classes_involved": [],
+      "class_count": 0,
+      "graph_seeds": [
+        "item:12116",
+        "npc:1053"
+      ],
+      "cohesion": 0.575,
+      "external_coupling": 0,
+      "relations_observed": 2,
+      "evidence": [
+        {
+          "type": "graph_cluster",
+          "cluster": "cluster:2",
+          "rel_signature": {
+            "SELLS": 1,
+            "HAS_TYPE": 1
+          }
+        }
+      ],
+      "why_these_entities_form_a_system": "graph connected component with rel signature {\"SELLS\":1,\"HAS_TYPE\":1}",
+      "hypothesis": false,
+      "rank": 8
+    },
+    {
+      "system_id": "sys_accounts",
+      "label": "sys_accounts",
+      "tables_involved": [
+        "accounts",
+        "accounts_bank"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "AccountManager",
+        "MerchantManager"
+      ],
+      "class_count": 2,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'accounts' + 0 high-confidence inferred FK edges + 2 code managers reference them",
+      "hypothesis": true,
+      "rank": 9
+    },
+    {
+      "system_id": "sys_breeds",
+      "label": "sys_breeds",
+      "tables_involved": [
+        "breeds_spells",
+        "breeds"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "BreedManager",
+        "SpellManager"
+      ],
+      "class_count": 2,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'breeds' + 0 high-confidence inferred FK edges + 2 code managers reference them",
+      "hypothesis": true,
+      "rank": 10
+    },
+    {
+      "system_id": "sys_interactives",
+      "label": "sys_interactives",
+      "tables_involved": [
+        "interactives_skills",
+        "interactives"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "InteractiveSkillBinding",
+        "InteractiveManager"
+      ],
+      "class_count": 2,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'interactives' + 0 high-confidence inferred FK edges + 2 code managers reference them",
+      "hypothesis": true,
+      "rank": 11
+    },
+    {
+      "system_id": "sys_monsters",
+      "label": "sys_monsters",
+      "tables_involved": [
+        "monsters_grades",
+        "monsters_drops",
+        "monsters",
+        "monsters_spells"
+      ],
+      "table_count": 4,
+      "classes_involved": [
+        "MonsterManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'monsters' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 12
+    },
+    {
+      "system_id": "sys_items",
+      "label": "sys_items",
+      "tables_involved": [
+        "items",
+        "items_weapons",
+        "items_sets",
+        "items_livingobjects"
+      ],
+      "table_count": 4,
+      "classes_involved": [
+        "ItemManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'items' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 13
+    },
+    {
+      "system_id": "sys_mounts",
+      "label": "sys_mounts",
+      "tables_involved": [
+        "mounts_bonus",
+        "mounts_templates",
+        "mounts",
+        "mounts_items"
+      ],
+      "table_count": 4,
+      "classes_involved": [
+        "MountManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'mounts' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 14
+    },
+    {
+      "system_id": "sys_dungeons",
+      "label": "sys_dungeons",
+      "tables_involved": [
+        "dungeons",
+        "dungeons_search",
+        "dungeons_symbioz"
+      ],
+      "table_count": 3,
+      "classes_involved": [
+        "DungeonManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'dungeons' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 15
+    },
+    {
+      "system_id": "sys_spells",
+      "label": "sys_spells",
+      "tables_involved": [
+        "spells_levels",
+        "spells"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "SpellManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'spells' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 16
+    },
+    {
+      "system_id": "sys_guilds",
+      "label": "sys_guilds",
+      "tables_involved": [
+        "guilds_members",
+        "guilds"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "GuildManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'guilds' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 17
+    },
+    {
+      "system_id": "sys_jobs",
+      "label": "sys_jobs",
+      "tables_involved": [
+        "jobs_harvest",
+        "jobs"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "JobManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'jobs' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 18
+    },
+    {
+      "system_id": "sys_bids_house",
+      "label": "sys_bids_house",
+      "tables_involved": [
+        "bids_house",
+        "bids_house_items"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "BidHouseManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'bids_house' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 19
+    },
+    {
+      "system_id": "sys_runes",
+      "label": "sys_runes",
+      "tables_involved": [
+        "runes_effects",
+        "runes"
+      ],
+      "table_count": 2,
+      "classes_involved": [
+        "JobManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'runes' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 20
+    },
+    {
+      "system_id": "sys_recipes",
+      "label": "sys_recipes",
+      "tables_involved": [
+        "recipes"
+      ],
+      "table_count": 1,
+      "classes_involved": [
+        "JobManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'recipes' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 21
+    },
+    {
+      "system_id": "sys_experiences",
+      "label": "sys_experiences",
+      "tables_involved": [
+        "experiences"
+      ],
+      "table_count": 1,
+      "classes_involved": [
+        "ExperienceManager"
+      ],
+      "class_count": 1,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'experiences' + 0 high-confidence inferred FK edges + 1 code managers reference them",
+      "hypothesis": true,
+      "rank": 22
+    },
+    {
+      "system_id": "sys_teleports",
+      "label": "sys_teleports",
+      "tables_involved": [
+        "teleports_zones_maps",
+        "teleports_donjons_maps",
+        "teleports_maps"
+      ],
+      "table_count": 3,
+      "classes_involved": [],
+      "class_count": 0,
+      "graph_seeds": [],
+      "cohesion": 0,
+      "external_coupling": 0,
+      "relations_observed": 0,
+      "evidence": [],
+      "why_these_entities_form_a_system": "tables share prefix 'teleports' + 0 high-confidence inferred FK edges + 0 code managers reference them",
+      "hypothesis": true,
+      "rank": 23
+    }
+  ],
+  "honesty_note": "0 declared FKs in dump — grouping uses naming prefix + confidence>=0.7 inferred edges; mega-component avoided"
+}
