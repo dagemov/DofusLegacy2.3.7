@@ -4,7 +4,9 @@ using Sunshine.WorldServer.Game.Characters;
 using Sunshine.WorldServer.Game.Items;
 using Sunshine.WorldServer.Handlers.Basic;
 using Sunshine.WorldServer.Handlers.Characters.Inventory;
+using Sunshine.Logs;
 using System;
+using System.Linq;
 
 namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
 {
@@ -22,6 +24,7 @@ namespace Sunshine.WorldServer.Game.Actors.Npcs.Actions
         public override void Execute()
         {
             _character.Dialog = this;
+            Logger.WriteInfo($"[ShopTrace] NpcBuySellAction.Execute charId={_character.Id} npcTemplate={_npc?.Record?.Id} npcActor={_npc?.Id} items={_npc?.GetObjectItemToSellInNpcShops?.Count() ?? 0} dialogBefore={_character.Dialog?.GetType().Name ?? "null"}");
             InventoryHandler.SendExchangeStartOkNpcShopMessage(_character.Client, _npc);
         }
 

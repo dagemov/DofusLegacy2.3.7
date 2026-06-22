@@ -170,20 +170,43 @@ namespace Sunshine.WorldServer.Handlers.Context.Roleplay
         [WorldHandler(5898)]
         public static void HandleNpcGenericActionRequestMessage(WorldClient client, NpcGenericActionRequestMessage message)
         {
+            var charId = client.Character?.Id ?? 0;
+            var mapId = client.Character?.Map?.Id ?? 0;
+            var action = (NpcActionTypeEnum)message.npcActionId;
+
+            Logger.WriteInfo(
+                $"[ShopTrace] Rx5898 charId={charId} mapId={mapId} npcId={message.npcId} actionId={(int)action} ({action})");
+
             var npc = client.Character.Map.GetActor(message.npcId);
 
             if (npc != null)
             {
+                Logger.WriteInfo($"[ShopTrace] Rx5898 resolve=mapActor type={npc.GetType().Name} actorId={npc.Id}");
                 if (npc is Npc)
-                    ((Npc)npc).InteractWith((NpcActionTypeEnum)message.npcActionId, client.Character);
+                    ((Npc)npc).InteractWith(action, client.Character);
                 else if (npc is TaxCollector)
-                    ((TaxCollector)npc).InteractWith((NpcActionTypeEnum)message.npcActionId, client.Character);
+                    ((TaxCollector)npc).InteractWith(action, client.Character);
+                return;
             }
-            else
+
+            if (VirtualShopRegistry.Instance.TryGetShop(message.npcId, out var shopNpc))
             {
-                if (NpcManager.Instance.Npcs.ContainsKey(client.Character.Map.Id))
-                    NpcManager.Instance.Npcs[client.Character.Map.Id].First().InteractWith((NpcActionTypeEnum)message.npcActionId, client.Character);
+                Logger.WriteInfo(
+                    $"[ShopTrace] Rx5898 resolve=virtualShop template={shopNpc.Record?.Id} actor={shopNpc.Id} items={shopNpc.Shops?.Count ?? 0}");
+                shopNpc.InteractWith(action, client.Character);
+                return;
             }
+
+            if (NpcManager.Instance.Npcs.ContainsKey(client.Character.Map.Id))
+            {
+                var fallback = NpcManager.Instance.Npcs[client.Character.Map.Id].First();
+                Logger.WriteWarning(
+                    $"[ShopTrace] Rx5898 resolve=fallbackFirstNpc template={fallback.Record?.Id} actor={fallback.Id} requestedNpcId={message.npcId}");
+                fallback.InteractWith(action, client.Character);
+                return;
+            }
+
+            Logger.WriteWarning($"[ShopTrace] Rx5898 resolve=NONE charId={charId} npcId={message.npcId}");
         }
 
         [WorldHandler(5616)]

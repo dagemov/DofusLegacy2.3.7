@@ -1,0 +1,10 @@
+Kit L0 — archivos incluidos
+============================
+
+DofusInvoker.swf
+ui/Ankama_TradeCenter/TradeCenter.swf
+ui/Ankama_TradeCenter/Ankama_TradeCenter.dm
+ui/Ankama_TradeCenter/xml/stock.xml
+data/Launcher/VerInfo.rec
+
+Uso: .\aplicar.ps1 -GameRoot "C:\ruta\cliente"

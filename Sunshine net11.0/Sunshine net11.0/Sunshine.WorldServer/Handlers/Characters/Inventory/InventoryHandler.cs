@@ -21,6 +21,7 @@ using Sunshine.WorldServer.Game.Actors.TaxCollectors;
 using Sunshine.WorldServer.Game.Maps.Houses;
 using Sunshine.WorldServer.Game.Mounts;
 using Sunshine.WorldServer.Game.Spells;
+using Sunshine.Logs;
 
 namespace Sunshine.WorldServer.Handlers.Characters.Inventory
     {
@@ -1152,7 +1153,21 @@ namespace Sunshine.WorldServer.Handlers.Characters.Inventory
 
             public static void SendExchangeStartOkNpcShopMessage(WorldClient client, Npc npc)
             {
-                client.Send(new ExchangeStartOkNpcShopMessage(npc.Id, npc.ResolveShopToken(), npc.GetObjectItemToSellInNpcShops));
+                var sellerId = npc.Id;
+                var isVirtualShop = npc?.Record != null && VirtualShopRegistry.Instance.TryGetShop(npc.Record.Id, out _);
+
+                if (isVirtualShop)
+                    sellerId = VirtualShopRegistry.Instance.ResolveVirtualSellerId(client.Character, npc);
+
+                var items = npc.GetObjectItemToSellInNpcShops;
+                var itemCount = items?.Count() ?? 0;
+                var token = npc.ResolveShopToken();
+
+                Logger.WriteInfo(
+                    $"[ShopTrace] Send5761 charId={client.Character?.Id} sellerId={sellerId} virtual={isVirtualShop} " +
+                    $"npcTemplate={npc?.Record?.Id} npcActor={npc?.Id} token={token} items={itemCount}");
+
+                client.Send(new ExchangeStartOkNpcShopMessage(sellerId, token, items));
             }
 
             public static void SendExchangeStartOkNpcTradeMessage(WorldClient client, Npc npc)
