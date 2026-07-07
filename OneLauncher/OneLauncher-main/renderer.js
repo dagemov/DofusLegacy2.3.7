@@ -20,38 +20,99 @@ document.addEventListener('DOMContentLoaded', async () => {
     launcherStatus: document.getElementById('launcher-status'),
     minimumVersion: document.getElementById('minimum-version'),
     logOutput: document.getElementById('log-output'),
+    langPicker: document.getElementById('lang-picker'),
+    langPickerToggle: document.getElementById('lang-picker-toggle'),
+    langPickerMenu: document.getElementById('lang-picker-menu'),
+    langPickerCurrentFlag: document.getElementById('lang-picker-current-flag'),
     clearLogsButton: document.getElementById('clear-logs-button'),
     minimizeButton: document.getElementById('minimize-button'),
     closeButton: document.getElementById('close-button')
   };
 
   const authElements = {
-    sessionLabel: document.getElementById('account-session-label'),
+    titlebarAccount: document.getElementById('titlebar-account'),
+    titlebarUsername: document.getElementById('titlebar-username'),
+    accountProfileCenter: document.getElementById('account-profile-center'),
+    accountCenterUsername: document.getElementById('account-center-username'),
+    homeAuthGuest: document.getElementById('home-auth-guest'),
+    authTabLogin: document.getElementById('auth-tab-login'),
+    authTabRegister: document.getElementById('auth-tab-register'),
+    authPaneLogin: document.getElementById('auth-pane-login'),
+    authPaneRegister: document.getElementById('auth-pane-register'),
     loginForm: document.getElementById('auth-login-form'),
     registerForm: document.getElementById('auth-register-form'),
     logoutButton: document.getElementById('auth-logout-button'),
+    openFolderAccount: document.getElementById('open-client-folder-account'),
     feedback: document.getElementById('auth-feedback'),
     usernameInput: document.getElementById('auth-username')
+  };
+
+  const setActiveView = (viewName) => {
+    document.querySelectorAll('.nav-item[data-view]').forEach((item) => {
+      item.classList.toggle('active', item.getAttribute('data-view') === viewName);
+    });
+
+    document.querySelectorAll('.view-pane').forEach((pane) => {
+      pane.classList.toggle('active', pane.id === `view-${viewName}`);
+    });
+  };
+
+  const openClientFolder = async () => {
+    if (!window.api?.openClientFolder) {
+      addLog('No se puede abrir la carpeta del cliente.', 'error');
+      return;
+    }
+    try {
+      const result = await window.api.openClientFolder();
+      addLog(`Carpeta del cliente: ${result?.path || ''}`, 'success');
+    } catch (error) {
+      addLog(`Error al abrir carpeta: ${error.message}`, 'error');
+    }
   };
 
   const setAuthFeedback = (message, type = 'info') => {
     if (!authElements.feedback) return;
     authElements.feedback.textContent = message;
-    authElements.feedback.className = `auth-form__feedback ${type}`;
+    authElements.feedback.className = `auth-form__feedback auth-form__feedback--inline ${type}`;
   };
+
+  const setAuthTab = (tabName) => {
+    const isLogin = tabName === 'login';
+
+    authElements.authTabLogin?.classList.toggle('active', isLogin);
+    authElements.authTabRegister?.classList.toggle('active', !isLogin);
+    authElements.authTabLogin?.setAttribute('aria-selected', String(isLogin));
+    authElements.authTabRegister?.setAttribute('aria-selected', String(!isLogin));
+
+    authElements.authPaneLogin?.classList.toggle('active', isLogin);
+    authElements.authPaneRegister?.classList.toggle('active', !isLogin);
+  };
+
+  document.querySelectorAll('[data-auth-tab]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setAuthTab(button.getAttribute('data-auth-tab'));
+    });
+  });
 
   const refreshSessionUi = async () => {
     const session = await window.api?.getSession?.();
     const isLoggedIn = Boolean(session?.username);
+    const displayName = session?.nickname || session?.username || '—';
 
-    if (authElements.sessionLabel) {
-      authElements.sessionLabel.textContent = isLoggedIn
-        ? `Conectado: ${session.username}`
-        : 'Sin sesion';
+    if (authElements.titlebarAccount) {
+      authElements.titlebarAccount.hidden = !isLoggedIn;
     }
-
-    if (authElements.logoutButton) {
-      authElements.logoutButton.hidden = !isLoggedIn;
+    if (authElements.titlebarUsername) {
+      authElements.titlebarUsername.textContent = isLoggedIn ? displayName : '—';
+    }
+    if (authElements.accountProfileCenter) {
+      authElements.accountProfileCenter.hidden = !isLoggedIn;
+    }
+    if (authElements.accountCenterUsername) {
+      authElements.accountCenterUsername.textContent = isLoggedIn ? displayName : '—';
+    }
+    if (authElements.homeAuthGuest) {
+      authElements.homeAuthGuest.classList.toggle('is-hidden', isLoggedIn);
     }
 
     if (authElements.usernameInput && session?.username) {
@@ -85,7 +146,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   authElements.registerForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const username = document.getElementById('auth-username')?.value?.trim();
+    const username = document.getElementById('register-username')?.value?.trim()
+      || document.getElementById('auth-username')?.value?.trim();
     const email = document.getElementById('register-email')?.value?.trim();
     const password = document.getElementById('register-password')?.value ?? '';
     const confirmPassword = document.getElementById('register-confirm')?.value ?? '';
@@ -106,6 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (result?.success) {
       setAuthFeedback(result.message || 'Cuenta creada.', 'success');
       addLog(`Registro OK: ${result.username}`, 'success');
+      setAuthTab('login');
       return;
     }
 
@@ -113,42 +176,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     addLog(`Registro fallido: ${result?.message || 'error'}`, 'error');
   });
 
-  authElements.logoutButton?.addEventListener('click', async () => {
+  const handleLogout = async () => {
     await window.api?.authLogout?.();
     setAuthFeedback('Sesion cerrada.');
     await refreshSessionUi();
-  });
+    addLog('Sesion cerrada.', 'info');
+  };
+
+  authElements.logoutButton?.addEventListener('click', handleLogout);
+  authElements.openFolderAccount?.addEventListener('click', openClientFolder);
+  authElements.titlebarAccount?.addEventListener('click', () => setActiveView('home'));
 
   document.querySelectorAll('.nav-item[data-view]').forEach((button) => {
     button.addEventListener('click', () => {
-      const view = button.getAttribute('data-view');
-      const logsView = document.getElementById('logs-view');
-      const accountPanel = document.getElementById('account-panel');
-
-      document.querySelectorAll('.nav-item[data-view]').forEach((item) => {
-        item.classList.toggle('active', item === button);
-      });
-
-      if (logsView) logsView.hidden = view !== 'logs';
-      if (accountPanel) accountPanel.hidden = view !== 'account';
-      if (view === 'home') {
-        if (logsView) logsView.hidden = false;
-        if (accountPanel) accountPanel.hidden = true;
-      }
+      setActiveView(button.getAttribute('data-view'));
     });
   });
-
-  if (window.api?.checkApiHealth) {
-    window.api.checkApiHealth().then((health) => {
-      if (health?.online) {
-        addLog('Health API: online', 'success');
-      } else {
-        addLog(`Health API offline: ${health?.error || 'sin respuesta'}`, 'warn');
-      }
-    });
-  }
-
-  refreshSessionUi();
 
   const requiredElements = ['playButton', 'progressBar', 'statusMessage', 'logOutput'];
   for (const key of requiredElements) {
@@ -182,8 +225,207 @@ document.addEventListener('DOMContentLoaded', async () => {
     node.className = `log-line ${type}`;
     node.textContent = line;
     elements.logOutput.appendChild(node);
+
+    const maxLines = 80;
+    while (elements.logOutput.childElementCount > maxLines) {
+      elements.logOutput.removeChild(elements.logOutput.firstElementChild);
+    }
+
     elements.logOutput.scrollTop = elements.logOutput.scrollHeight;
   };
+
+  const FLAG_ICON_BY_CODE = {
+    fr: 'fr',
+    en: 'gb',
+    de: 'de',
+    es: 'es',
+    it: 'it',
+    pt: 'pt',
+    jp: 'jp',
+    nl: 'nl',
+    ru: 'ru'
+  };
+
+  const languageState = {
+    supportedLanguages: [],
+    selected: 'es',
+    applying: false
+  };
+
+  const getFlagIconPath = (code) => {
+    const normalizedCode = String(code || '').trim().toLowerCase();
+    const icon = FLAG_ICON_BY_CODE[normalizedCode] || normalizedCode || 'es';
+    return `./icons/flags/${icon}.svg`;
+  };
+
+  const getLanguageLabel = (code) => {
+    const normalizedCode = String(code || '').trim().toLowerCase();
+    const language = languageState.supportedLanguages.find((item) => item.code === normalizedCode);
+    return language?.label || normalizedCode.toUpperCase() || 'Desconocido';
+  };
+
+  const updateLangPickerCurrent = (code) => {
+    if (!elements.langPickerCurrentFlag) return;
+    const label = getLanguageLabel(code);
+    elements.langPickerCurrentFlag.src = getFlagIconPath(code);
+    elements.langPickerCurrentFlag.alt = label;
+    if (elements.langPickerToggle) {
+      elements.langPickerToggle.title = `Idioma: ${label}`;
+      elements.langPickerToggle.setAttribute('aria-label', `Idioma del cliente: ${label}`);
+    }
+  };
+
+  const closeLangMenu = () => {
+    if (!elements.langPickerMenu || !elements.langPickerToggle) return;
+    elements.langPickerMenu.hidden = true;
+    elements.langPickerToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  const openLangMenu = () => {
+    if (!elements.langPickerMenu || !elements.langPickerToggle) return;
+    elements.langPickerMenu.hidden = false;
+    elements.langPickerToggle.setAttribute('aria-expanded', 'true');
+  };
+
+  const toggleLangMenu = () => {
+    if (!elements.langPickerMenu) return;
+    if (elements.langPickerMenu.hidden) openLangMenu();
+    else closeLangMenu();
+  };
+
+  const renderLangMenu = () => {
+    if (!elements.langPickerMenu) return;
+
+    elements.langPickerMenu.innerHTML = '';
+
+    languageState.supportedLanguages.forEach((language) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'lang-picker__option';
+      button.setAttribute('role', 'menuitem');
+      button.title = language.label;
+      button.setAttribute('aria-label', language.label);
+
+      if (language.code === languageState.selected) {
+        button.classList.add('is-active');
+        button.setAttribute('aria-current', 'true');
+      }
+
+      const img = document.createElement('img');
+      img.src = getFlagIconPath(language.code);
+      img.alt = '';
+      img.width = 26;
+      img.height = 17;
+      button.appendChild(img);
+
+      button.addEventListener('click', async (event) => {
+        event.stopPropagation();
+        if (language.code === languageState.selected || languageState.applying) {
+          closeLangMenu();
+          return;
+        }
+        await applyLanguagePreference(language.code);
+        closeLangMenu();
+      });
+
+      elements.langPickerMenu.appendChild(button);
+    });
+  };
+
+  const applyLanguagePreference = async (languageCode) => {
+    if (!window.api?.setLanguagePreference) {
+      addLog('IPC de idioma no disponible.', 'error');
+      return;
+    }
+
+    if (languageState.applying) return;
+
+    languageState.applying = true;
+    const previousCode = languageState.selected;
+    const targetLabel = getLanguageLabel(languageCode);
+    addLog(`Aplicando idioma: ${targetLabel}...`, 'info');
+
+    try {
+      const result = await window.api.setLanguagePreference(languageCode);
+
+      if (result?.success) {
+        languageState.selected = result.selected || languageCode;
+        updateLangPickerCurrent(languageState.selected);
+        renderLangMenu();
+        addLog(result.message || `Idioma actualizado: ${result.label || targetLabel}`, 'success');
+        if (typeof result.updatedConfigCount === 'number') {
+          addLog(`Archivos de configuracion actualizados: ${result.updatedConfigCount}`, 'info');
+        }
+        return;
+      }
+
+      addLog(result?.message || 'No se pudo guardar el idioma.', 'error');
+    } catch (error) {
+      addLog(`Error al cambiar idioma: ${error.message}`, 'error');
+      languageState.selected = previousCode;
+      updateLangPickerCurrent(previousCode);
+      renderLangMenu();
+    } finally {
+      languageState.applying = false;
+    }
+  };
+
+  const loadLanguageSettings = async () => {
+    if (!window.api?.getLanguageSettings) {
+      addLog('IPC de idioma no disponible.', 'error');
+      return;
+    }
+
+    const result = await window.api.getLanguageSettings();
+    languageState.supportedLanguages = result?.supportedLanguages || [];
+    languageState.selected = result?.selected || 'es';
+
+    updateLangPickerCurrent(languageState.selected);
+    renderLangMenu();
+
+    if (result?.error) {
+      addLog(`No se pudo leer el idioma actual: ${result.error}`, 'error');
+      return;
+    }
+
+    const label = getLanguageLabel(languageState.selected);
+    if (result?.clientConfigFound) {
+      addLog(
+        result.hasStoredPreference
+          ? `Idioma del cliente: ${label} (guardado en launcher y cliente).`
+          : `Idioma del cliente: ${label} (leido desde config del cliente).`,
+        'info'
+      );
+    } else {
+      addLog(`Idioma preferido: ${label}. Se aplicara al terminar la descarga del cliente.`, 'info');
+    }
+  };
+
+  const initLangPicker = () => {
+    elements.langPickerToggle?.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleLangMenu();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!elements.langPicker?.contains(event.target)) {
+        closeLangMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeLangMenu();
+    });
+  };
+
+  initLangPicker();
+  setAuthTab('login');
+  setActiveView(document.querySelector('.nav-item[data-view].active')?.getAttribute('data-view') || 'home');
+
+  await Promise.all([
+    refreshSessionUi(),
+    loadLanguageSettings()
+  ]);
 
   const setApiState = (state, label) => {
     if (!elements.apiPill) return;
@@ -196,7 +438,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   const setPlayState = ({ enabled, title, subtitle }) => {
     if (elements.playButton) elements.playButton.disabled = !enabled;
     setText(elements.playTitle, title);
-    setText(elements.playSubtitle, subtitle);
+    if (elements.playSubtitle) {
+      elements.playSubtitle.textContent = subtitle || '';
+      elements.playSubtitle.hidden = !subtitle;
+    }
+  };
+
+  const refreshPlayAvailability = async (latestVersion) => {
+    const clientState = await window.api?.checkClientReady?.();
+
+    if (clientState?.ready) {
+      setPlayState({
+        enabled: true,
+        title: 'JUGAR',
+        subtitle: 'Cliente listo'
+      });
+      return true;
+    }
+
+    setPlayState({
+      enabled: false,
+      title: 'Instalar',
+      subtitle: 'Descarga pendiente'
+    });
+    setStatus('Cliente no instalado. Espera a que termine la descarga e instalacion.', 'warn');
+    addLog(`Dofus.exe no encontrado. Version remota: ${latestVersion || '--'}`, 'warn');
+    return false;
   };
 
   const setStatus = (message, type = 'info') => {
@@ -210,25 +477,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     return packages.map(item => item.name || item.file).filter(Boolean).join(', ');
   };
 
-  const updateManifestUi = ({ neededUpdates, localVersion, latestVersion, source, manifest }) => {
+  const updateManifestUi = ({ neededUpdates, localVersion, latestVersion, source, manifest, apiOnline }) => {
     const launcher = manifest?.launcher;
-    const sourceLabel = source === 'api' ? 'API local' : source === 'xml' ? 'XML legacy' : 'Desconocido';
+    const sourceLabel = 'Parches VPS (8090)';
 
     setText(elements.localVersion, localVersion || '--');
     setText(elements.latestVersion, latestVersion || manifest?.version || '--');
     setText(elements.packageValue, summarizePackages(neededUpdates, manifest));
     setText(elements.sourceBadge, `Fuente: ${sourceLabel}`);
-    setText(elements.launcherStatus, launcher?.status || (source === 'api' ? 'online' : 'fallback'));
+    setText(elements.launcherStatus, launcher?.status || (apiOnline ? 'online' : 'parches'));
     setText(elements.minimumVersion, `Minimo ${launcher?.minimumVersion || '1.0.0'}`);
-    setText(elements.serverStatus, source === 'api' ? 'ESTABLE' : 'FALLBACK');
+    setText(elements.serverStatus, apiOnline ? 'ESTABLE' : 'PARCHES');
 
-    if (source === 'api') {
+    if (apiOnline) {
       setApiState('online', 'API online');
-      addLog('API online', 'success');
-      addLog(`Manifest recibido: version ${manifest?.version || latestVersion}`, 'success');
+      addLog('Parches: Updates.xml VPS', 'success');
+      if (manifest?.version) {
+        addLog(`API informativa: ${manifest.version}`, 'info');
+      }
     } else {
-      setApiState('offline', 'API offline');
-      addLog('API offline: usando Updates.xml legacy', 'warn');
+      setApiState('offline', 'Solo parches');
+      addLog('Parches VPS (8090); API informativa offline', 'warn');
     }
 
     addLog(`Version detectada: local=${localVersion}, latest=${latestVersion}`, 'info');
@@ -298,17 +567,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     addLog('window.api.onExtractProgress no esta disponible.', 'error');
   }
 
+  window.api?.onLauncherUpdateStatus?.((data) => {
+    if (!data?.message) return;
+    const type = data.phase === 'error' ? 'error' : data.phase === 'downloaded' ? 'success' : 'info';
+    addLog(data.message, type);
+  });
+
+  window.api?.onLauncherUpdateProgress?.((data) => {
+    const percent = data?.percent ?? 0;
+    setProgress(percent, `${percent}%`);
+    setText(elements.statusMessage, `Actualizando launcher... ${percent}%`);
+    setPlayState({ enabled: false, title: 'Launcher', subtitle: 'Descargando actualizacion' });
+  });
+
   try {
     if (!window.api?.checkUpdates) {
       throw new Error('La API de verificacion de actualizaciones no esta disponible.');
     }
 
     setApiState('', 'Conectando');
-    setPlayState({ enabled: false, title: 'Actualizando', subtitle: 'Verificando API' });
+    setPlayState({ enabled: false, title: 'Actualizando', subtitle: 'Verificando cliente' });
     setProgress(0, '0%');
-    setStatus('Verificando actualizaciones...');
+    setStatus('Cargando datos del launcher...');
 
-    const updateResult = await window.api.checkUpdates();
+    const updateResult = await Promise.all([
+      window.api?.whenLauncherReady?.() ?? Promise.resolve(),
+      window.api.checkUpdates()
+    ]).then(([, result]) => result);
     const { neededUpdates, localVersion, latestVersion, error, source, manifest } = updateResult;
 
     if (error) {
@@ -316,7 +601,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     console.log('Resultado de checkUpdates:', updateResult);
-    updateManifestUi({ neededUpdates, localVersion, latestVersion, source, manifest });
+    updateManifestUi({
+      neededUpdates,
+      localVersion,
+      latestVersion,
+      source,
+      manifest,
+      apiOnline: updateResult.apiOnline
+    });
 
     if (neededUpdates && neededUpdates.length > 0) {
       setPlayState({ enabled: false, title: 'Actualizando', subtitle: 'Por favor espera' });
@@ -373,7 +665,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setStatus('Cliente actualizado.', 'success');
     }
 
-    setPlayState({ enabled: true, title: 'JUGAR', subtitle: 'Cliente listo' });
+    await refreshPlayAvailability(latestVersion);
   } catch (error) {
     console.error('Error en el proceso principal del renderer:', error);
     setApiState('offline', 'Error runtime');

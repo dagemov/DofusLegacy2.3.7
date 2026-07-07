@@ -12,20 +12,39 @@
 <body>
   <header class="titlebar" id="drag-region">
     <div class="brand-lockup">
-      <img src="./icons/favicon.ico" alt="Dofus" class="brand-icon">
+      <img src="./icons/logo_avatar.png" alt="Dofus" class="brand-icon">
       <div>
         <p class="eyebrow">OneLauncher</p>
         <h1>Dofus</h1>
       </div>
     </div>
 
-    <div class="top-actions">
+    <div class="titlebar-center">
       <div class="api-pill" id="api-pill">
         <span class="pulse-dot" id="api-dot"></span>
         <span id="api-state">Conectando</span>
       </div>
-      <button class="window-button" id="minimize-button" type="button" aria-label="Minimizar">&minus;</button>
-      <button class="window-button close" id="close-button" type="button" aria-label="Cerrar">&times;</button>
+    </div>
+
+    <div class="titlebar-end">
+      <button type="button" class="account-chip" id="titlebar-account" hidden title="Ver mi cuenta">
+        <img src="./icons/logo_avatar.png" alt="Rollblack" class="account-chip-avatar" width="26" height="30">
+        <div class="account-chip-text">
+          <strong id="titlebar-username">—</strong>
+          <span class="account-chip-status">Sesión activa</span>
+        </div>
+      </button>
+      <div class="lang-picker" id="lang-picker">
+        <button type="button" class="lang-picker__toggle" id="lang-picker-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Idioma del cliente" title="Idioma del cliente">
+          <img src="./icons/flags/es.svg" alt="" class="lang-picker__flag" id="lang-picker-current-flag" width="22" height="15">
+          <span class="lang-picker__caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="lang-picker__menu" id="lang-picker-menu" hidden role="menu" aria-label="Seleccionar idioma"></div>
+      </div>
+      <div class="window-controls">
+        <button class="window-button" id="minimize-button" type="button" aria-label="Minimizar">&minus;</button>
+        <button class="window-button close" id="close-button" type="button" aria-label="Cerrar">&times;</button>
+      </div>
     </div>
   </header>
 
@@ -44,10 +63,6 @@
         <button class="nav-item" type="button" data-view="logs">
           <span class="nav-icon" aria-hidden="true">≡</span>
           <span>Registros</span>
-        </button>
-        <button class="nav-item" type="button" data-view="account">
-          <span class="nav-icon" aria-hidden="true">◎</span>
-          <span>Cuenta</span>
         </button>
       </nav>
 
@@ -84,55 +99,136 @@
         <img src="./icons/fondo.webp" alt="">
       </div>
 
-      <!-- VISTA 1: INICIO -->
       <div id="view-home" class="view-pane active">
-        <section class="hero-panel">
-          <div class="hero-copy">
-            <span class="event-chip">Beta 1.0.0</span>
-            <h2>Bienvenido a Rollblack</h2>
-            <p>Explora el Mundo de los Doce en nuestro servidor privado. Experiencia clásica respaldada por una comunidad moderna y activa.</p>
-          </div>
-          <img src="./icons/logo-title.png" alt="Rollblack" class="hero-logo">
-        </section>
-
-        <section class="dashboard-section" aria-label="Estado del cliente">
-          <div class="section-heading">
-            <p class="eyebrow">Cliente</p>
-            <h3>Estado de versiones</h3>
-          </div>
-
-          <div class="dashboard-grid">
-            <article class="status-card status-card--local">
-              <div class="status-card-icon" aria-hidden="true">▣</div>
-              <div class="status-card-body">
-                <p class="card-label">Versión local</p>
-                <strong id="local-version-value">--</strong>
-                <span id="source-badge" class="badge">Esperando manifiesto</span>
+        <div class="home-layout">
+          <aside class="home-auth-panel" aria-label="Cuenta">
+            <article id="account-profile-center" class="account-profile-card account-profile-card--inline" hidden>
+              <div class="account-profile-avatar-wrap">
+                <img src="./icons/logo_avatar.png" alt="Rollblack" class="account-profile-avatar">
+              </div>
+              <div class="account-profile-body">
+                <p class="eyebrow">Sesión</p>
+                <h3 id="account-center-username">—</h3>
+                <p class="account-profile-hint" id="account-center-status">Conectado</p>
+              </div>
+              <div class="account-profile-actions account-profile-actions--stack">
+                <button type="button" class="auth-form__button auth-form__button--compact" id="open-client-folder-account">Carpeta cliente</button>
+                <button type="button" class="auth-form__button auth-form__button--ghost auth-form__button--compact" id="auth-logout-button">Cerrar sesión</button>
               </div>
             </article>
 
-            <article class="status-card status-card--remote">
-              <div class="status-card-icon" aria-hidden="true">↓</div>
-              <div class="status-card-body">
-                <p class="card-label">Versión disponible</p>
-                <strong id="latest-version-value">--</strong>
-                <span id="package-value" class="badge">Sin paquetes</span>
+            <div class="home-auth-guest" id="home-auth-guest">
+              <div class="auth-tabs" role="tablist" aria-label="Acceso">
+                <button type="button" class="auth-tab active" id="auth-tab-login" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="auth-pane-login">Login</button>
+                <button type="button" class="auth-tab" id="auth-tab-register" data-auth-tab="register" role="tab" aria-selected="false" aria-controls="auth-pane-register">Registro</button>
               </div>
-            </article>
 
-            <article class="status-card status-card--launcher">
-              <div class="status-card-icon" aria-hidden="true">⌘</div>
-              <div class="status-card-body">
-                <p class="card-label">Estado launcher</p>
-                <strong id="launcher-status">Inicializando</strong>
-                <span id="minimum-version" class="badge">Mínimo --</span>
+              <div class="auth-stack">
+                <div id="auth-pane-login" class="auth-pane active" role="tabpanel" aria-labelledby="auth-tab-login">
+                  <form id="auth-login-form" class="auth-form auth-form--minimal">
+                    <div class="input-group">
+                      <label class="auth-form__label" for="auth-username">Usuario</label>
+                      <input id="auth-username" class="auth-form__input" type="text" autocomplete="username" maxlength="24" required placeholder="Usuario">
+                    </div>
+                    <div class="input-group">
+                      <label class="auth-form__label" for="auth-password">Contraseña</label>
+                      <input id="auth-password" class="auth-form__input" type="password" autocomplete="current-password" required placeholder="••••••••">
+                    </div>
+                    <button class="auth-form__button auth-form__button--compact" type="submit">Entrar</button>
+                  </form>
+                </div>
+
+                <div id="auth-pane-register" class="auth-pane" role="tabpanel" aria-labelledby="auth-tab-register">
+                  <form id="auth-register-form" class="auth-form auth-form--minimal">
+                    <div class="input-group">
+                      <label class="auth-form__label" for="register-username">Usuario</label>
+                      <input id="register-username" class="auth-form__input" type="text" autocomplete="username" maxlength="24" required placeholder="Usuario">
+                    </div>
+                    <div class="input-group">
+                      <label class="auth-form__label" for="register-email">Email</label>
+                      <input id="register-email" class="auth-form__input" type="email" autocomplete="email" required placeholder="correo@ejemplo.com">
+                    </div>
+                    <div class="input-group">
+                      <label class="auth-form__label" for="register-password">Contraseña</label>
+                      <input id="register-password" class="auth-form__input" type="password" autocomplete="new-password" required placeholder="Mín. 6 caracteres">
+                    </div>
+                    <div class="input-group">
+                      <label class="auth-form__label" for="register-confirm">Confirmar</label>
+                      <input id="register-confirm" class="auth-form__input" type="password" autocomplete="new-password" required placeholder="Repetir">
+                    </div>
+                    <button class="auth-form__button auth-form__button--secondary auth-form__button--compact" type="submit">Crear cuenta</button>
+                  </form>
+                </div>
               </div>
-            </article>
+
+              <p class="auth-form__feedback auth-form__feedback--inline" id="auth-feedback" role="status"></p>
+            </div>
+          </aside>
+
+          <div class="home-layout__info">
+            <section class="home-info-card" aria-label="Estado del servidor">
+              <header class="home-info-card__hero">
+                <div class="hero-content">
+                  <div class="hero-copy-block">
+                    <span class="event-chip">Launcher · v1.0.8</span>
+                    <h2>Rollblack Legacy</h2>
+                    <p class="hero-lead">Servidor privado de Dofus 2.x | el Mundo de los Doce te espera de nuevo.</p>
+                    <div class="hero-lore">
+                      <p>Rollblack Legacy recupera la esencia del MMORPG tactico clasico: combates por turnos, economia viva y progresion de clases, con parches y soporte pensados para una comunidad que sigue activa hoy.</p>
+                      <ul class="hero-highlights">
+                        <li>Cliente actualizado desde el Onelauncher</li>
+                        <li>Comunidad activa y soporte</li>
+                        <li>Servidor Multi Idioma</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <img src="./icons/logo-title.png" alt="Rollblack Legacy" width="170" height="135">
+                  <div class="hero-visual">
+                    
+                  </div>
+                </div>
+              </header>
+
+              <div class="home-info-card__versions">
+                <div class="versions-strip-head">
+                  <p class="eyebrow">Cliente</p>
+                  <h3 class="versions-strip-title">Versiones</h3>
+                </div>
+
+                <div class="versions-board versions-board--compact">
+                  <article class="status-card status-card--local">
+                    <div class="status-card-icon" aria-hidden="true">▣</div>
+                    <div class="status-card-body">
+                      <p class="card-label">Instalada</p>
+                      <strong id="local-version-value">--</strong>
+                      <span id="source-badge" class="badge">Esperando</span>
+                    </div>
+                  </article>
+
+                  <article class="status-card status-card--remote">
+                    <div class="status-card-icon" aria-hidden="true">↓</div>
+                    <div class="status-card-body">
+                      <p class="card-label">Disponible</p>
+                      <strong id="latest-version-value">--</strong>
+                      <span id="package-value" class="badge">Sin paquetes</span>
+                    </div>
+                  </article>
+
+                  <article class="status-card status-card--launcher">
+                    <div class="status-card-icon" aria-hidden="true">⌘</div>
+                    <div class="status-card-body">
+                      <p class="card-label">Launcher</p>
+                      <strong id="launcher-status">Inicializando</strong>
+                      <span id="minimum-version" class="badge">Mín. --</span>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
+        </div>
       </div>
 
-      <!-- VISTA 2: REGISTROS -->
       <div id="view-logs" class="view-pane">
         <section class="workbench" aria-label="Registros del launcher">
           <div class="log-panel">
@@ -148,56 +244,6 @@
         </section>
       </div>
 
-      <!-- VISTA 3: CUENTA -->
-      <div id="view-account" class="view-pane">
-        <section class="account-hub">
-          <div class="account-info-box">
-            <div class="section-heading">
-              <p class="eyebrow">Perfil de Usuario</p>
-              <h3>Gestión de Credenciales</h3>
-            </div>
-            <p class="account-hub-session" id="account-session-label">Sin sesión activa</p>
-            <p class="auth-form__feedback" id="auth-feedback" role="status"></p>
-            <button id="auth-logout-button" class="auth-form__button auth-form__button--ghost" type="button" hidden>Cerrar sesión</button>
-          </div>
-
-          <div class="account-forms-grid">
-            <div class="auth-card" id="login-card">
-              <h4>Iniciar sesión</h4>
-              <form id="auth-login-form" class="auth-form">
-                <div class="input-group">
-                  <label class="auth-form__label" for="auth-username">Usuario</label>
-                  <input id="auth-username" class="auth-form__input" type="text" autocomplete="username" maxlength="24" required placeholder="Nombre de usuario">
-                </div>
-                <div class="input-group">
-                  <label class="auth-form__label" for="auth-password">Contraseña</label>
-                  <input id="auth-password" class="auth-form__input" type="password" autocomplete="current-password" required placeholder="••••••••">
-                </div>
-                <button class="auth-form__button" type="submit">Conectarse</button>
-              </form>
-            </div>
-
-            <div class="auth-card" id="register-card">
-              <h4>Crear cuenta nueva</h4>
-              <form id="auth-register-form" class="auth-form">
-                <div class="input-group">
-                  <label class="auth-form__label" for="register-email">Email</label>
-                  <input id="register-email" class="auth-form__input" type="email" autocomplete="email" required placeholder="correo@ejemplo.com">
-                </div>
-                <div class="input-group mb-half">
-                  <label class="auth-form__label" for="register-password">Contraseña</label>
-                  <input id="register-password" class="auth-form__input" type="password" autocomplete="new-password" required placeholder="Mínimo 6 caracteres">
-                </div>
-                <div class="input-group">
-                  <label class="auth-form__label" for="register-confirm">Confirmar Contraseña</label>
-                  <input id="register-confirm" class="auth-form__input" type="password" autocomplete="new-password" required placeholder="Repetir contraseña">
-                </div>
-                <button class="auth-form__button auth-form__button--secondary" type="submit">Registrarse</button>
-              </form>
-            </div>
-          </div>
-        </section>
-      </div>
     </main>
   </div>
 
@@ -222,31 +268,5 @@
   </footer>
 
   <script src="renderer.js"></script>
-  
-  <!-- Script integrado para asegurar la lógica de cambio de vistas en el DOM -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const navButtons = document.querySelectorAll('.nav-item[data-view]');
-      const viewPanes = document.querySelectorAll('.view-pane');
-
-      navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const targetView = button.getAttribute('data-view');
-          
-          navButtons.forEach(btn => btn.classList.remove('active'));
-          button.classList.add('active');
-
-          viewPanes.forEach(pane => {
-            pane.classList.remove('active');
-          });
-
-          const activePane = document.getElementById(`view-${targetView}`);
-          if (activePane) {
-            activePane.classList.add('active');
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>

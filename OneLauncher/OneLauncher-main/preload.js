@@ -36,5 +36,33 @@ contextBridge.exposeInMainWorld('api', {
   authRegister: (payload) => ipcRenderer.invoke('auth-register', payload),
   authLogout: () => ipcRenderer.invoke('auth-logout'),
   getSession: () => ipcRenderer.invoke('get-session'),
-  checkApiHealth: () => ipcRenderer.invoke('check-api-health')
+  getClientFolder: () => ipcRenderer.invoke('get-client-folder'),
+  openClientFolder: () => ipcRenderer.invoke('open-client-folder'),
+  checkApiHealth: () => ipcRenderer.invoke('check-api-health'),
+  checkClientReady: () => ipcRenderer.invoke('check-client-ready'),
+
+  // Lenguaje del cliente
+  getLanguageSettings: () => ipcRenderer.invoke('get-language-settings'),
+  setLanguagePreference: (languageCode) => ipcRenderer.invoke('set-language-preference', languageCode),
+
+  whenLauncherReady: () => new Promise((resolve) => {
+    const done = () => {
+      clearTimeout(timeout);
+      resolve();
+    };
+    const timeout = setTimeout(done, 8000);
+    ipcRenderer.once('launcher-ready', done);
+    const onStatus = (_event, data) => {
+      if (data?.phase === 'dev' || data?.phase === 'idle' || data?.phase === 'error') {
+        ipcRenderer.removeListener('launcher-update-status', onStatus);
+        done();
+      }
+    };
+    ipcRenderer.on('launcher-update-status', onStatus);
+  }),
+
+  onLauncherUpdateStatus: (callback) =>
+    ipcRenderer.on('launcher-update-status', (_event, data) => callback(data)),
+  onLauncherUpdateProgress: (callback) =>
+    ipcRenderer.on('launcher-update-progress', (_event, data) => callback(data))
 });

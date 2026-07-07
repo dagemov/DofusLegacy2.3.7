@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs-extra');
 const axios = require('axios');
-const { parseString } = require('xml2js');
 const { endpoints } = require('../config/endpoints');
+const { isClientReady } = require('./client-paths');
 
 class Version {
   constructor(version) {
@@ -25,6 +25,8 @@ class Version {
   }
 }
 
+const API_MANIFEST_TIMEOUT_MS = Number(process.env.LAUNCHER_API_TIMEOUT_MS || 15000);
+
 async function getLocalVersion(clientePath, logger = console) {
   const versionFileName = 'version';
   const versionPath = path.join(clientePath, versionFileName);
@@ -45,46 +47,65 @@ async function getLocalVersion(clientePath, logger = console) {
 }
 
 async function fetchApiManifest(logger = console) {
-  logger.log(`[Main:UpdateCheck] Consultando API local: ${endpoints.apiManifestUrl}`);
+  logger.log(`[Main:UpdateCheck] Consultando API: ${endpoints.apiManifestUrl}`);
 
   const response = await axios.get(endpoints.apiManifestUrl, {
-    timeout: 2500,
+    timeout: API_MANIFEST_TIMEOUT_MS,
     headers: {
       Accept: 'application/json'
     }
   });
 
   logger.log('[Main:UpdateCheck] API online');
-  logger.log('[Main:UpdateCheck] Manifest recibido desde API local:', response.data);
+  logger.log('[Main:UpdateCheck] Manifest recibido desde API:', response.data);
 
   return response.data;
 }
 
+function readManifestVersion(manifest) {
+  return manifest.version || manifest.Version;
+}
+
+function readManifestPackages(manifest) {
+  return manifest.packages || manifest.Packages || [];
+}
+
 function normalizeManifestUpdates(manifest) {
-  if (!manifest || typeof manifest.version !== 'string' || !Array.isArray(manifest.packages)) {
+  const version = readManifestVersion(manifest);
+  const packages = readManifestPackages(manifest);
+
+  if (!version || !Array.isArray(packages)) {
     throw new Error('El manifiesto de la API no tiene el formato esperado.');
   }
 
-  return manifest.packages
-    .map(packageInfo => ({
-      version: manifest.version,
-      file: packageInfo.name,
-      url: packageInfo.url,
-      checksum: packageInfo.checksum,
-      size: packageInfo.size,
+  return packages
+    .map((packageInfo) => ({
+      version,
+      file: packageInfo.name || packageInfo.Name,
+      url: packageInfo.url || packageInfo.Url,
+      checksum: packageInfo.checksum || packageInfo.Checksum,
+      size: packageInfo.size ?? packageInfo.Size,
       source: 'api'
     }))
-    .filter(update => update.version && update.file && update.url);
+    .filter((update) => update.version && update.file && update.url);
 }
 
-async function getUpdatesFromApi(localVersion, logger = console) {
+async function getUpdatesFromApi(localVersion, clientePath, logger = console) {
   const manifest = await fetchApiManifest(logger);
   const updates = normalizeManifestUpdates(manifest);
-  const latestVersion = manifest.version;
+  const latestVersion = readManifestVersion(manifest);
 
   logger.log(`[Main:UpdateCheck] Version detectada por API: ${latestVersion}`);
 
-  const neededUpdates = new Version(latestVersion).compare(localVersion) > 0
+  const versionNeedsUpdate = new Version(latestVersion).compare(localVersion) > 0;
+  const clientState = await isClientReady(clientePath);
+  const clientMissing = !clientState.ready;
+
+  if (clientMissing && !versionNeedsUpdate) {
+    logger.warn('[Main:UpdateCheck] Version local coincide pero Dofus.exe no existe. Forzando reinstalacion.');
+  }
+
+  const neededUpdates = versionNeedsUpdate || clientMissing
     ? updates
     : [];
 
@@ -93,69 +114,11 @@ async function getUpdatesFromApi(localVersion, logger = console) {
     localVersion,
     latestVersion,
     manifest,
-    source: 'api'
+    source: 'api',
+    apiOnline: true,
+    clientReady: clientState.ready,
+    clientPath: clientState.gamePath
   };
-}
-
-async function getLegacyXmlUpdates(logger = console) {
-  logger.log(`[Main:UpdateCheck] Consultando fallback XML: ${endpoints.legacyUpdatesXmlUrl}`);
-  const response = await axios.get(endpoints.legacyUpdatesXmlUrl);
-
-  return new Promise((resolve, reject) => {
-    parseString(response.data, (err, result) => {
-      if (err) {
-        logger.error('[Main:UpdateCheck] Error parseando XML:', err);
-        return reject(new Error(`Error parseando XML: ${err.message}`));
-      }
-
-      if (!result || !result.updates || !Array.isArray(result.updates.update)) {
-        logger.warn('[Main:UpdateCheck] Formato de Updates.xml inesperado o vacio.');
-        return resolve([]);
-      }
-
-      const parsedUpdates = result.updates.update.map(update => ({
-        version: update.version && update.version[0],
-        file: update.file && update.file[0],
-        url: update.file && update.file[0] ? `${endpoints.legacyUpdateBaseUrl}${update.file[0]}` : undefined,
-        source: 'xml'
-      })).filter(update => update.version && update.file);
-
-      logger.log(`[Main:UpdateCheck] Updates XML parseados: ${parsedUpdates.length}`);
-      resolve(parsedUpdates);
-    });
-  });
-}
-
-async function getUpdatesFromLegacyXml(localVersion, logger = console) {
-  const updates = await getLegacyXmlUpdates(logger);
-
-  if (updates.length === 0) {
-    logger.log('[Main:UpdateCheck] No se encontraron versiones validas en Updates.xml.');
-    return { neededUpdates: [], localVersion, latestVersion: localVersion, source: 'xml' };
-  }
-
-  const latestUpdate = updates.reduce((latest, current) => {
-    try {
-      return new Version(latest.version).compare(current.version) >= 0 ? latest : current;
-    } catch (error) {
-      logger.warn(`[Main:UpdateCheck] Formato de version invalido encontrado: ${current.version}, omitiendo.`);
-      return latest;
-    }
-  }, updates[0]);
-
-  const latestVersion = latestUpdate.version;
-  logger.log(`[Main:UpdateCheck] Ultima version disponible en XML: ${latestVersion}`);
-
-  const neededUpdates = updates.filter(update => {
-    try {
-      return new Version(update.version).compare(localVersion) > 0;
-    } catch (error) {
-      logger.warn(`[Main:UpdateCheck] Formato de version invalido en filtro: ${update.version}, omitiendo.`);
-      return false;
-    }
-  });
-
-  return { neededUpdates, localVersion, latestVersion, source: 'xml' };
 }
 
 async function checkUpdates(clientePath, logger = console) {
@@ -163,11 +126,10 @@ async function checkUpdates(clientePath, logger = console) {
   const localVersion = await getLocalVersion(clientePath, logger);
 
   try {
-    return await getUpdatesFromApi(localVersion, logger);
+    return await getUpdatesFromApi(localVersion, clientePath, logger);
   } catch (error) {
-    logger.warn(`[Main:UpdateCheck] API offline o invalida: ${error.message}`);
-    logger.warn('[Main:UpdateCheck] Continuando con fallback a Updates.xml.');
-    return await getUpdatesFromLegacyXml(localVersion, logger);
+    logger.error(`[Main:UpdateCheck] Error consultando API: ${error.message}`);
+    throw error;
   }
 }
 

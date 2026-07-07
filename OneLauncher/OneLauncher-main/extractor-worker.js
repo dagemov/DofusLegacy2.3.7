@@ -1,85 +1,112 @@
-// extractor-worker.js
-const AdmZip = require('adm-zip');
+const path = require('path');
 const fs = require('fs-extra');
+const { spawn } = require('child_process');
 const { parentPort, workerData } = require('worker_threads');
+const { path7za } = require('7zip-bin');
 
-const PROGRESS_UPDATE_INTERVAL_MS = 100; // Actualizar UI cada 100ms (ajusta según sea necesario)
+const PROGRESS_UPDATE_INTERVAL_MS = 250;
 
-async function extractZip({ zipFilePath, extractPath }) {
-  let lastProgressUpdateTime = 0;
+function extractWith7zip({ archivePath, extractPath }) {
+  return new Promise((resolve, reject) => {
+    const args = ['x', archivePath, `-o${extractPath}`, '-y', '-bsp1'];
+    const binaryPath = path7za;
 
-  try {
-    if (!await fs.pathExists(zipFilePath)) {
-      parentPort.postMessage({ type: 'error', error: `El archivo zip ${zipFilePath} no existe en el worker.` });
+    if (!binaryPath || !fs.existsSync(binaryPath)) {
+      reject(new Error('No se encontro 7zip para extraer el cliente.'));
       return;
     }
 
-    console.time('WorkerTotalExtractionTime'); // Para medir el tiempo total en el worker
-    const zip = new AdmZip(zipFilePath);
-    const entries = zip.getEntries().filter(entry => !entry.isDirectory); // Solo contar/procesar archivos
-    const totalFiles = entries.length;
-    let extractedFilesCount = 0;
+    const child = spawn(binaryPath, args, {
+      windowsHide: true,
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
 
-    if (totalFiles === 0) {
-        console.log('[Worker:Extract] El archivo ZIP no contiene archivos (solo directorios o está vacío).');
-        // Si AdmZip maneja bien la creación de directorios vacíos, esto podría ser un éxito.
-        // O podría considerarse un caso especial. Por ahora, lo trataremos como extracción completada.
-    }
+    let lastProgressUpdateTime = 0;
+    let lastProgress = 0;
+    let stderr = '';
 
-    parentPort.postMessage({ type: 'start', total: totalFiles });
-    console.log(`[Worker:Extract] Iniciando extracción. Total de archivos a extraer: ${totalFiles}`);
-
-
-    for (const entry of entries) {
-      // No es necesario verificar entry.isDirectory aquí si ya filtramos arriba
-      // console.time('WorkerSingleFileExtractTime'); // Descomentar para medir extracción de archivo individual
-      zip.extractEntryTo(entry, extractPath, true, true); // El tercer arg (mantenimiento de atributos de dir) y cuarto (overwrite) son importantes
-      // console.timeEnd('WorkerSingleFileExtractTime');
-      extractedFilesCount++;
-
+    const emitProgress = (progress) => {
+      const normalized = Math.max(0, Math.min(100, progress));
       const currentTime = Date.now();
-      if (currentTime - lastProgressUpdateTime > PROGRESS_UPDATE_INTERVAL_MS || extractedFilesCount === totalFiles) {
-        const progress = totalFiles > 0 ? Math.floor((extractedFilesCount / totalFiles) * 100) : 100;
-        parentPort.postMessage({
-          type: 'progress',
-          progress: progress,
-          current: extractedFilesCount,
-          total: totalFiles
-          // Ya no enviamos entryName para simplificar
-        });
-        lastProgressUpdateTime = currentTime;
-        // console.log(`[Worker:Extract] Progreso enviado: ${progress}%, ${extractedFilesCount}/${totalFiles}`);
+
+      if (normalized === lastProgress && normalized !== 100) {
+        return;
       }
-    }
 
-    // Asegurar un mensaje final de progreso al 100% si el throttling lo omitió
-    // (aunque la condición `extractedFilesCount === totalFiles` debería cubrirlo)
-    if (extractedFilesCount === totalFiles) {
-        const finalProgressState = {
-            type: 'progress',
-            progress: 100,
-            current: extractedFilesCount,
-            total: totalFiles
-        };
-        // Podrías verificar si el último mensaje enviado ya era 100% para no duplicar,
-        // pero el renderer usualmente manejará bien mensajes duplicados idénticos.
-        parentPort.postMessage(finalProgressState);
-        console.log(`[Worker:Extract] Enviando estado final de progreso: 100%`);
-    }
+      if (currentTime - lastProgressUpdateTime < PROGRESS_UPDATE_INTERVAL_MS && normalized !== 100) {
+        return;
+      }
 
+      lastProgress = normalized;
+      lastProgressUpdateTime = currentTime;
+      parentPort.postMessage({
+        type: 'progress',
+        progress: normalized,
+        current: normalized,
+        total: 100
+      });
+    };
 
-    console.log(`[Worker:Extract] Extracción de ${extractedFilesCount} archivos completada. Eliminando ZIP...`);
-    await fs.remove(zipFilePath);
-    console.log(`[Worker:Extract] Archivo ZIP ${zipFilePath} eliminado.`);
-    parentPort.postMessage({ type: 'done', message: 'Extracción completada y ZIP eliminado.' });
-    console.timeEnd('WorkerTotalExtractionTime');
+    parentPort.postMessage({ type: 'start', total: 100 });
+    emitProgress(0);
 
-  } catch (error) {
-    console.error('[Worker:Extract] Error durante la extracción:', error);
-    parentPort.postMessage({ type: 'error', error: error.message, stack: error.stack });
-    if (console.timeLog) console.timeLog('WorkerTotalExtractionTime'); // Detener si hubo error
-    else console.timeEnd('WorkerTotalExtractionTime');
-  }
+    const handleStream = (chunk) => {
+      const text = chunk.toString();
+      const matches = text.match(/(\d{1,3})%/g);
+
+      if (!matches) {
+        return;
+      }
+
+      const latest = Number.parseInt(matches[matches.length - 1], 10);
+      if (Number.isFinite(latest)) {
+        emitProgress(latest);
+      }
+    };
+
+    child.stdout.on('data', handleStream);
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+      handleStream(chunk);
+    });
+
+    child.on('error', (error) => {
+      reject(error);
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        emitProgress(100);
+        resolve();
+        return;
+      }
+
+      reject(new Error(stderr.trim() || `7zip termino con codigo ${code}.`));
+    });
+  });
 }
 
-extractZip(workerData);
+async function extractArchive({ archivePath, extractPath }) {
+  if (!await fs.pathExists(archivePath)) {
+    throw new Error(`El archivo ${archivePath} no existe.`);
+  }
+
+  await fs.ensureDir(extractPath);
+  await extractWith7zip({ archivePath, extractPath });
+  await fs.remove(archivePath);
+}
+
+extractArchive({
+  archivePath: workerData.zipFilePath || workerData.archivePath,
+  extractPath: workerData.extractPath
+})
+  .then(() => {
+    parentPort.postMessage({ type: 'done', message: 'Extraccion completada.' });
+  })
+  .catch((error) => {
+    parentPort.postMessage({
+      type: 'error',
+      error: error.message,
+      stack: error.stack
+    });
+  });
