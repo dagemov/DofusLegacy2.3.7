@@ -90,31 +90,83 @@ function normalizeManifestUpdates(manifest) {
     .filter((update) => update.version && update.file && update.url);
 }
 
-async function getUpdatesFromApi(localVersion, clientePath, logger = console) {
-  const manifest = await fetchApiManifest(logger);
-  const updates = normalizeManifestUpdates(manifest);
-  const latestVersion = readManifestVersion(manifest);
+function readManifestUpdates(manifest) {
+  return manifest?.updates || manifest?.Updates || [];
+}
 
-  logger.log(`[Main:UpdateCheck] Version detectada por API: ${latestVersion}`);
+function sortUpdatesByVersion(updates) {
+  return [...updates].sort((left, right) => new Version(left.version).compare(right.version));
+}
 
-  const versionNeedsUpdate = new Version(latestVersion).compare(localVersion) > 0;
-  const clientState = await isClientReady(clientePath);
-  const clientMissing = !clientState.ready;
+function resolveNeededUpdates(manifest, localVersion, clientMissing, logger = console) {
+  const versionedUpdates = readManifestUpdates(manifest)
+    .map((entry) => ({
+      version: entry.version || entry.Version,
+      file: entry.file || entry.File || entry.name || entry.Name,
+      url: entry.url || entry.Url,
+      checksum: entry.checksum || entry.Checksum || 'TEMP',
+      size: entry.size ?? entry.Size ?? 0,
+      source: 'updates-xml'
+    }))
+    .filter((entry) => entry.version && entry.file && entry.url);
 
-  if (clientMissing && !versionNeedsUpdate) {
-    logger.warn('[Main:UpdateCheck] Version local coincide pero Dofus.exe no existe. Forzando reinstalacion.');
+  if (versionedUpdates.length > 0) {
+    const sortedUpdates = sortUpdatesByVersion(versionedUpdates);
+    const pendingUpdates = sortedUpdates.filter(
+      (entry) => new Version(entry.version).compare(localVersion) > 0
+    );
+
+    if (clientMissing && pendingUpdates.length === 0) {
+      const latestPatch = sortedUpdates[sortedUpdates.length - 1];
+      const localIsFresh = new Version(localVersion).compare(latestPatch.version) >= 0;
+
+      if (localIsFresh) {
+        logger.warn(
+          '[Main:UpdateCheck] Cliente ausente pero parches al dia. Reaplicando ultimo parche: %s',
+          latestPatch.file
+        );
+        return [latestPatch];
+      }
+
+      if (new Version(localVersion).compare('0.0.0') === 0) {
+        logger.warn('[Main:UpdateCheck] Cliente ausente sin version local: aplicando cadena completa.');
+        return sortedUpdates;
+      }
+
+      logger.warn('[Main:UpdateCheck] Cliente ausente con version parcial: aplicando parches pendientes.');
+      return pendingUpdates;
+    }
+
+    return pendingUpdates;
   }
 
-  const neededUpdates = versionNeedsUpdate || clientMissing
-    ? updates
-    : [];
+  const updates = normalizeManifestUpdates(manifest);
+  const latestVersion = readManifestVersion(manifest);
+  const versionNeedsUpdate = new Version(latestVersion).compare(localVersion) > 0;
+
+  return versionNeedsUpdate || clientMissing ? updates : [];
+}
+
+async function getUpdatesFromApi(localVersion, clientePath, logger = console) {
+  const manifest = await fetchApiManifest(logger);
+  const latestVersion = readManifestVersion(manifest);
+  const clientState = await isClientReady(clientePath);
+  const clientMissing = !clientState.ready;
+  const neededUpdates = resolveNeededUpdates(manifest, localVersion, clientMissing, logger);
+
+  logger.log(`[Main:UpdateCheck] Version detectada por API: ${latestVersion}`);
+  logger.log(`[Main:UpdateCheck] Fuente manifiesto: ${manifest.manifestSource || manifest.ManifestSource || 'api'}`);
+
+  if (clientMissing && neededUpdates.length === 0) {
+    logger.warn('[Main:UpdateCheck] Cliente ausente pero Updates.xml no tiene parches pendientes.');
+  }
 
   return {
     neededUpdates,
     localVersion,
     latestVersion,
     manifest,
-    source: 'api',
+    source: manifest.manifestSource || manifest.ManifestSource || 'api',
     apiOnline: true,
     clientReady: clientState.ready,
     clientPath: clientState.gamePath

@@ -1,6 +1,6 @@
 {
   "name": "onelauncher",
-  "version": "1.0.9",
+  "version": "1.0.13",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -73,7 +73,8 @@
       "createStartMenuShortcut": true,
       "installerIcon": "icons/app-icon.ico",
       "uninstallerIcon": "icons/app-icon.ico",
-      "differentialPackage": true
+      "differentialPackage": true,
+      "include": "build/installer.nsh"
     },
     "win": {
       "target": [

@@ -18,12 +18,18 @@ services:
         User ID=${MYSQL_APP_USER:-sunshine};Password=${MYSQL_APP_PASSWORD:-change-me-app};
         Allow User Variables=true;TreatTinyAsBoolean=true
       PackageStorage__RootPath: /packages
-      LauncherManifest__Packages__0__Url: >-
-        https://rollblack-legacy.onesv.online/api/files/V0.rar
+      PackageStorage__ManifestFileName: Updates.xml
+      PackageStorage__PublicBaseUrl: https://rollblack-legacy.onesv.online
+      ONELAUNCHER_API_PUBLIC_URL: https://rollblack-legacy.onesv.online
       Cors__AllowedOrigins__0: https://rollblack-legacy.onesv.online
       ONELAUNCHER_CORS_ORIGINS: ${ONELAUNCHER_CORS_ORIGINS:-https://rollblack-legacy.onesv.online}
+      ElectronUpdates__RootPath: /electron-updates
+      ElectronUpdates__PublicBaseUrl: https://rollblack-legacy.onesv.online/api/launcher/electron-updates
+      ElectronUpdates__FileName: rollblack-legacy.exe
+      ElectronUpdates__Version: "1.0.13"
     volumes:
       - ../runtime/packages:/packages:ro
+      - ../runtime/electron-updates:/electron-updates:ro
     depends_on:
       db:
         condition: service_healthy

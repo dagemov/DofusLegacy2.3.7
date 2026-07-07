@@ -471,10 +471,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     addLog(message, type);
   };
 
-  const summarizePackages = (updates, manifest) => {
-    const packages = manifest?.packages || updates || [];
-    if (!packages.length) return 'Sin paquetes pendientes';
-    return packages.map(item => item.name || item.file).filter(Boolean).join(', ');
+  const summarizePackages = (updates) => {
+    if (!updates?.length) return 'Sin paquetes pendientes';
+    return updates.map(item => item.file || item.name).filter(Boolean).join(', ');
   };
 
   const updateManifestUi = ({ neededUpdates, localVersion, latestVersion, source, manifest, apiOnline }) => {
@@ -483,7 +482,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setText(elements.localVersion, localVersion || '--');
     setText(elements.latestVersion, latestVersion || manifest?.version || '--');
-    setText(elements.packageValue, summarizePackages(neededUpdates, manifest));
+    setText(elements.packageValue, summarizePackages(neededUpdates));
     setText(elements.sourceBadge, `Fuente: ${sourceLabel}`);
     setText(elements.launcherStatus, launcher?.status || (apiOnline ? 'online' : 'parches'));
     setText(elements.minimumVersion, `Minimo ${launcher?.minimumVersion || '1.0.0'}`);
@@ -650,6 +649,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         addLog(`Extraccion completada: ${update.file}`, 'success');
+
+        if (!window.api?.updateLocalVersion) {
+          throw new Error('La API de actualizacion de version no esta disponible.');
+        }
+
+        await window.api.updateLocalVersion(update.version);
+        setText(elements.localVersion, update.version || '--');
+        addLog(`Version local actualizada a ${update.version}`, 'success');
       }
 
       if (!window.api?.updateLocalVersion) {

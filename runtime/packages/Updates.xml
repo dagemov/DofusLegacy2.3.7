@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updates>
+  <update>
+    <version>2.0.0</version>
+    <file>V0.rar</file>
+  </update>
+  <update>
+    <version>2.0.1</version>
+    <file>config.zip</file>
+  </update>
+</updates>

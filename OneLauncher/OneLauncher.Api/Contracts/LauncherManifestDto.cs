@@ -3,7 +3,9 @@ namespace OneLauncher.Api.Contracts;
 public sealed record LauncherManifestDto(
     string Version,
     IReadOnlyList<LauncherPackageDto> Packages,
-    LauncherStatusDto Launcher);
+    LauncherStatusDto Launcher,
+    IReadOnlyList<LauncherUpdateEntryDto>? Updates = null,
+    string ManifestSource = "config");
 
 public sealed record LauncherPackageDto(
     string Name,

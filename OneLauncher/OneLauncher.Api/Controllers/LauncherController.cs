@@ -24,10 +24,24 @@ public sealed class LauncherController : ControllerBase
     {
         var manifest = _manifestService.GetManifest();
         _logger.LogInformation(
-            "Returning launcher manifest {ManifestVersion} with {PackageCount} packages",
+            "Returning launcher manifest {ManifestVersion} with {PackageCount} packages (source={Source})",
             manifest.Version,
-            manifest.Packages.Count);
+            manifest.Packages.Count,
+            manifest.ManifestSource);
 
         return Ok(manifest);
+    }
+
+    [HttpGet("updates.xml")]
+    public IActionResult GetUpdatesXml([FromServices] IUpdatesXmlCatalog catalog)
+    {
+        string? manifestPath = catalog.GetManifestPath();
+        if (manifestPath is null)
+        {
+            _logger.LogWarning("Updates.xml was requested but no manifest file exists on disk.");
+            return NotFound();
+        }
+
+        return PhysicalFile(manifestPath, "application/xml", "Updates.xml");
     }
 }

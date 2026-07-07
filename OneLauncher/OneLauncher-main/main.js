@@ -6,17 +6,45 @@ const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs-extra');
 const axios = require('axios');
-const { parseString } = require('xml2js');
 const { spawn } = require('child_process');
-// AdmZip ya no es necesario aquí directamente para la extracción, se usa en el worker
-// const AdmZip = require('adm-zip');
-const { Worker } = require('worker_threads'); // <--- AÑADIDO PARA WORKER THREADS
+const { Worker } = require('worker_threads');
+const { path7za } = require('7zip-bin');
 const { checkUpdates } = require('./services/update-service');
 const { runLauncherAutoUpdate } = require('./services/launcher-auto-update');
 const { login, register, checkHealth } = require('./services/auth-client');
 const { findGameExecutable, isClientReady } = require('./services/client-paths');
 
-let mainWindow;
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+}
+
+let mainWindow = null;
+const activeWorkers = new Set();
+
+function resolveSevenZipPath() {
+  const candidates = [];
+
+  if (app.isPackaged) {
+    candidates.push(
+      path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', '7zip-bin', 'win', 'x64', '7za.exe'),
+      path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', '7zip-bin', 'win', 'ia32', '7za.exe')
+    );
+  }
+
+  if (path7za) {
+    candidates.push(path7za);
+  }
+
+  for (const candidate of candidates) {
+    if (candidate && fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+
+  throw new Error('No se encontro el binario de 7zip en la instalacion del launcher.');
+}
 
 const userDataPath = process.env.ONELAUNCHER_USER_DATA_PATH || app.getPath('userData');
 const clientePath = path.join(userDataPath, 'cliente');
@@ -255,23 +283,6 @@ function createWindow() {
   });
 }
 
-class Version {
-  constructor(version) {
-    this.parts = version.split('.').map(Number);
-  }
-  compare(otherVersion) {
-    const other = new Version(otherVersion);
-    const maxLength = Math.max(this.parts.length, other.parts.length);
-    for (let i = 0; i < maxLength; i++) {
-      const partThis = this.parts[i] || 0;
-      const partOther = other.parts[i] || 0;
-      if (partThis > partOther) return 1;
-      if (partThis < partOther) return -1;
-    }
-    return 0;
-  }
-}
-
 ipcMain.handle('check-updates', async () => {
   try {
     const result = await checkUpdates(clientePath, console);
@@ -384,12 +395,24 @@ ipcMain.handle('extract-zip', async (_, zipFilePath) => {
     
     console.log(`[Main:ExtractWorker] Usando worker script desde: ${workerPath}`);
 
+    let sevenZipPath;
+    try {
+      sevenZipPath = resolveSevenZipPath();
+      console.log(`[Main:ExtractWorker] 7zip: ${sevenZipPath}`);
+    } catch (error) {
+      console.error(`[Main:ExtractWorker] ${error.message}`);
+      return reject(error);
+    }
+
     const worker = new Worker(workerPath, {
       workerData: {
         zipFilePath: zipFilePath,
-        extractPath: clientePath
+        extractPath: clientePath,
+        sevenZipPath
       }
     });
+
+    activeWorkers.add(worker);
 
     console.log(`[Main:ExtractWorker] Worker creado para ${zipFilePath}`);
 
@@ -426,12 +449,9 @@ ipcMain.handle('extract-zip', async (_, zipFilePath) => {
     });
 
     worker.on('exit', (code) => {
+      activeWorkers.delete(worker);
       if (code !== 0) {
         console.error(`[Main:ExtractWorker] Worker se detuvo con código de salida ${code}`);
-        // Si el worker sale con un código distinto de 0 y no hemos resuelto/rechazado ya,
-        // es probable un error no capturado dentro del worker o una salida prematura.
-        // Considera rechazar aquí si la promesa aún está pendiente.
-        // reject(new Error(`Worker se detuvo inesperadamente con código ${code}`));
       } else {
         console.log(`[Main:ExtractWorker] Worker finalizado exitosamente (código ${code}).`);
       }
@@ -675,6 +695,25 @@ app.whenReady().then(async () => {
         }
     });
 });
+
+if (gotTheLock) {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+}
+
+app.on('before-quit', () => {
+  for (const worker of activeWorkers) {
+    worker.terminate();
+  }
+  activeWorkers.clear();
+});
+
 app.on('window-all-closed', () => {
   console.log('[Main:App] Evento window-all-closed recibido.');
   if (process.platform !== 'darwin') {

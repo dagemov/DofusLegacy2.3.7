@@ -4,7 +4,7 @@
   Applies npc-shop-unified9-apply.sql (prices + catalog) on VPS sunshine-db.
 #>
 param(
-    [string]$VpsHost = "174.138.35.107"
+    [string]$VpsHost = "34.46.208.124"
 )
 
 $ErrorActionPreference = "Stop"

@@ -1,21 +1,30 @@
+const fs = require('fs');
+const fsp = require('fs/promises');
 const path = require('path');
-const fs = require('fs-extra');
 const { spawn } = require('child_process');
 const { parentPort, workerData } = require('worker_threads');
-const { path7za } = require('7zip-bin');
 
 const PROGRESS_UPDATE_INTERVAL_MS = 250;
 
-function extractWith7zip({ archivePath, extractPath }) {
+async function pathExists(targetPath) {
+  try {
+    await fsp.access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function extractWith7zip({ archivePath, extractPath, sevenZipPath }) {
   return new Promise((resolve, reject) => {
-    const args = ['x', archivePath, `-o${extractPath}`, '-y', '-bsp1'];
-    const binaryPath = path7za;
+    const binaryPath = sevenZipPath;
 
     if (!binaryPath || !fs.existsSync(binaryPath)) {
       reject(new Error('No se encontro 7zip para extraer el cliente.'));
       return;
     }
 
+    const args = ['x', archivePath, `-o${extractPath}`, '-y', '-bsp1'];
     const child = spawn(binaryPath, args, {
       windowsHide: true,
       stdio: ['ignore', 'pipe', 'pipe']
@@ -86,19 +95,20 @@ function extractWith7zip({ archivePath, extractPath }) {
   });
 }
 
-async function extractArchive({ archivePath, extractPath }) {
-  if (!await fs.pathExists(archivePath)) {
+async function extractArchive({ archivePath, extractPath, sevenZipPath }) {
+  if (!await pathExists(archivePath)) {
     throw new Error(`El archivo ${archivePath} no existe.`);
   }
 
-  await fs.ensureDir(extractPath);
-  await extractWith7zip({ archivePath, extractPath });
-  await fs.remove(archivePath);
+  await fsp.mkdir(extractPath, { recursive: true });
+  await extractWith7zip({ archivePath, extractPath, sevenZipPath });
+  await fsp.rm(archivePath, { force: true });
 }
 
 extractArchive({
   archivePath: workerData.zipFilePath || workerData.archivePath,
-  extractPath: workerData.extractPath
+  extractPath: workerData.extractPath,
+  sevenZipPath: workerData.sevenZipPath
 })
   .then(() => {
     parentPort.postMessage({ type: 'done', message: 'Extraccion completada.' });

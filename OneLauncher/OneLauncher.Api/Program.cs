@@ -13,6 +13,8 @@ builder.Services.Configure<LauncherManifestOptions>(
     builder.Configuration.GetSection(LauncherManifestOptions.SectionName));
 builder.Services.Configure<PackageStorageOptions>(
     builder.Configuration.GetSection(PackageStorageOptions.SectionName));
+builder.Services.Configure<ElectronUpdatesOptions>(
+    builder.Configuration.GetSection(ElectronUpdatesOptions.SectionName));
 
 string? corsFromEnv = builder.Configuration["ONELAUNCHER_CORS_ORIGINS"];
 string[] corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
@@ -33,7 +35,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IUpdatesXmlCatalog, UpdatesXmlCatalog>();
 builder.Services.AddSingleton<ILauncherManifestService, LauncherManifestService>();
+builder.Services.AddSingleton<IElectronUpdatesService, ElectronUpdatesService>();
 
 string packageRoot = builder.Configuration["PackageStorage:RootPath"] ?? string.Empty;
 if (!string.IsNullOrWhiteSpace(packageRoot) && Directory.Exists(packageRoot))
